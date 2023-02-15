@@ -40,7 +40,8 @@ const kScoreIndicatorTextStyle = TextStyle(
 const kQuizTextStyle = TextStyle(
   fontSize: 30,
   color: Colors.white60,
-  fontFamily: 'Architects_Daughter',
+  fontWeight: FontWeight.bold
+  ,
 );
 
 const kButtonTextStyle = TextStyle(

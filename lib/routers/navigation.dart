@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/data/local/prequizrepo.dart';
+import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/screen/game_screen/game_screen.dart';
 import 'package:math/screen/pre_quiz/pre_quiz.dart';
 import 'package:math/screen/welcome_screen.dart';
@@ -24,7 +27,10 @@ class Routers {
       case home:
         return const HomeScreen();
       case premake:
-        return  PreMakeQuiz();
+        return BlocProvider(
+            create: (context) => PreQuizCubit(preQuizLocalRepo: PreQuizLocalRepo()
+                ),
+            child: PreMakeQuiz());
       case game:
         return GameScreen();
 

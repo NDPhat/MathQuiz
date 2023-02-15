@@ -39,6 +39,13 @@ dependencies:
   outline_gradient_button: ^2.0.0+1
   percent_indicator: ^3.4.0
   audioplayers: ^0.20.1
+  flutter_bloc: 8.1.1
+  equatable: 2.0.5
+  drift: 2.5.0
+  sqlite3_flutter_libs: 0.5.0
+  path_provider: 2.0.1
+  path: 1.8.3
+  get_it: 7.2.0
   shared_preferences: ^2.0.7
 
 dev_dependencies:
@@ -51,6 +58,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: 2.3.3
+  drift_dev: 2.5.2
+  analyzer: 5.4.0
+  injectable_generator: 2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

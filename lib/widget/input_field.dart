@@ -28,6 +28,7 @@ class InputField extends StatelessWidget {
         validateText: validateText == null ? '' : validateText!,
         isHidden: isHidden == null ? false : isHidden!,
         child: TextField(
+          keyboardType: TextInputType.number,
           textInputAction: TextInputAction.next,
           style: s20f700ColorMBlue,
           decoration: InputDecoration(

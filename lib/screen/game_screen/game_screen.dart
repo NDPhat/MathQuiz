@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:math/data/model/make_quiz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -9,10 +11,7 @@ import '../../widget/landscape_mode.dart';
 import '../../widget/portrait_mode.dart';
 import '../../widget/show_alert_dialog.dart';
 
-
 class GameScreen extends StatefulWidget {
-  static final id = 'game_screen';
-
   @override
   _GameScreenState createState() => _GameScreenState();
 }
@@ -20,26 +19,40 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   late Timer _timer;
   int _totalTime = 0;
-  QuizBrain _quizBrain = QuizBrain();
+  late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
+  late PreQuiz _preQuiz;
   double _value = 0;
-  int _falseCounter = 0;
-  int _totalNumberOfQuizzes = 0;
+  int _totalNumberOfQuizzes = 1;
 
   @override
   void initState() {
     super.initState();
-    _startGame();
+    _quizBrain = QuizBrain();
+    _preQuiz = PreQuiz();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuiz;
+      _startGame(_preQuiz);
+    });
   }
 
-  void _startGame() async {
-    _quizBrain.makeQuiz();
+  void _startGame(PreQuiz _preQuiz) async {
+    _quizBrain.makeQuiz(_preQuiz);
     _startTimer();
     _value = 1;
     _score = 0;
-    _falseCounter = 0;
-    _totalNumberOfQuizzes = 0;
+    _totalNumberOfQuizzes = 1;
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    _highScore = _preferences.getInt('highscore') ?? 0;
+  }
+
+  void _startGameAgain() async {
+    _quizBrain.makeQuiz(_preQuiz);
+    _startTimer();
+    _value = 1;
+    _score = 0;
+    _totalNumberOfQuizzes = 1;
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     _highScore = _preferences.getInt('highscore') ?? 0;
   }
@@ -49,8 +62,10 @@ class _GameScreenState extends State<GameScreen> {
     _timer = Timer.periodic(speed, (timer) {
       if (_value > 0) {
         setState(() {
-          _value > 0.005 ? _value -= 0.005 : _value = 0;
-          _totalTime = (_value * 20 + 1).toInt();
+          _value > 1 / (_preQuiz.timePer! * 10)
+              ? _value -= 1 / (_preQuiz.timePer! * 10)
+              : _value = 0;
+          _totalTime = (_value * (_preQuiz.timePer!) + 1).toInt();
         });
       } else {
         setState(() {
@@ -67,12 +82,10 @@ class _GameScreenState extends State<GameScreen> {
     _player.play(soundName);
   }
 
-  void _checkAnswer(String userChoice) async {
-    _totalNumberOfQuizzes++;
+  void _checkAnswer(int userChoice) async {
     if (userChoice == _quizBrain.quizAnswer) {
       _playSound('correct-choice.wav');
       _score++;
-      _value >= 0.89 ? _value = 1 : _value += 0.1;
       if (_highScore < _score) {
         _highScore = _score;
         SharedPreferences _preferences = await SharedPreferences.getInstance();
@@ -80,12 +93,13 @@ class _GameScreenState extends State<GameScreen> {
       }
     } else {
       _playSound('wrong-choice.wav');
-      _falseCounter++;
-      _value < 0.02 * _falseCounter
-          ? _value = 0
-          : _value -= 0.02 * _falseCounter;
     }
-    _quizBrain.makeQuiz();
+    if (_totalNumberOfQuizzes == _preQuiz.numQ! ) {
+      showMyDialog();
+    } else {
+      _totalNumberOfQuizzes++;
+      _quizBrain.makeQuiz(_preQuiz);
+    }
   }
 
   Future<void> showMyDialog() {
@@ -96,7 +110,7 @@ class _GameScreenState extends State<GameScreen> {
         return ShowAlertDialog(
           score: _score,
           totalNumberOfQuizzes: _totalNumberOfQuizzes,
-          startGame: _startGame,
+          startGame: _startGameAgain,
         );
       },
     );
@@ -119,8 +133,9 @@ class _GameScreenState extends State<GameScreen> {
                 quizBrainObject: _quizBrain,
                 percentValue: _value,
                 totalTime: _totalTime,
-                onTap: _checkAnswer,
-              )
+                onTap: (int value) {
+                  _checkAnswer(value);
+                })
             : LandscapeMode(
                 highscore: _highScore,
                 score: _score,

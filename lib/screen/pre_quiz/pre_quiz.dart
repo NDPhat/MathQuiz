@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/application/enum/pre_status.dart';
+import 'package:math/data/model/make_quiz.dart';
+import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/routers/navigation.dart';
 import 'package:math/widget/button_custom.dart';
 import 'package:math/widget/input_field.dart';
 
 import '../../cons/color.dart';
 import '../../cons/text_style.dart';
+import '../../data/utils/find_time_per.dart';
 
 class PreMakeQuiz extends StatelessWidget {
   PreMakeQuiz({Key? key}) : super(key: key);
@@ -38,16 +43,60 @@ class PreMakeQuiz extends StatelessWidget {
                 SizedBox(
                   height: size.height * 0.08,
                 ),
-                InputField(
-                    hintText: 'How many question', size: size.width * 0.8),
+                BlocBuilder<PreQuizCubit, PreQuizState>(buildWhen: (pre, now) {
+                  return pre.numQMess != now.numQMess;
+                }, builder: (BuildContext context, state) {
+                  return InputField(
+                    hintText: 'How many question',
+                    size: size.width * 0.8,
+                    onChanged: (value) {
+                      context
+                          .read<PreQuizCubit>()
+                          .numQChanged(int.parse(value));
+                    },
+                    hasError: state.numQMess != "",
+                    isHidden: state.numQMess != "",
+                    validateText: state.numQMess,
+                  );
+                }),
                 SizedBox(
                   height: size.height * 0.03,
                 ),
-                InputField(hintText: 'Start Value', size: size.width * 0.8),
+                BlocBuilder<PreQuizCubit, PreQuizState>(buildWhen: (pre, now) {
+                  return pre.sNumMess != now.sNumMess;
+                }, builder: (BuildContext context, state) {
+                  return InputField(
+                    hintText: 'Start Value',
+                    size: size.width * 0.8,
+                    onChanged: (value) {
+                      context
+                          .read<PreQuizCubit>()
+                          .sNumChanged(int.parse(value));
+                    },
+                    hasError: state.sNumMess != "",
+                    isHidden: state.sNumMess != "",
+                    validateText: state.sNumMess,
+                  );
+                }),
                 SizedBox(
                   height: size.height * 0.03,
                 ),
-                InputField(hintText: 'End Value', size: size.width * 0.8),
+                BlocBuilder<PreQuizCubit, PreQuizState>(buildWhen: (pre, now) {
+                  return pre.eNumMess != now.eNumMess;
+                }, builder: (BuildContext context, state) {
+                  return InputField(
+                    hintText: 'End Value',
+                    size: size.width * 0.8,
+                    onChanged: (value) {
+                      context
+                          .read<PreQuizCubit>()
+                          .eNumChanged(int.parse(value));
+                    },
+                    hasError: state.eNumMess != "",
+                    isHidden: state.eNumMess != "",
+                    validateText: state.eNumMess,
+                  );
+                }),
                 SizedBox(
                   height: size.height * 0.03,
                 ),
@@ -64,48 +113,94 @@ class PreMakeQuiz extends StatelessWidget {
                         style: s16f700ColorGreyTe,
                       ),
                       SizedBox(width: size.width * 0.18),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10)),
+                      BlocBuilder<PreQuizCubit, PreQuizState>(
+                          builder: (BuildContext context, state) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
 
-                        // dropdown below..
-                        child: DropdownButton<String>(
-                          value: selectedValue,
-                          onChanged: (newValue) {},
-                          items: items
-                              .map<DropdownMenuItem<String>>(
-                                  (String value) => DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      ))
-                              .toList(),
+                          // dropdown below..
+                          child: DropdownButton<String>(
+                            value: '${state.time}s',
+                            onChanged: (newValue) {
+                              context
+                                  .read<PreQuizCubit>()
+                                  .timeChanged(findTimePer(newValue ?? "5s"));
+                            },
+                            items: items
+                                .map<DropdownMenuItem<String>>(
+                                    (String value) => DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        ))
+                                .toList(),
 
-                          // add extra sugar..
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 42,
-                          underline: const SizedBox(),
-                        ),
-                      )
+                            // add extra sugar..
+                            icon: const Icon(Icons.arrow_drop_down),
+                            iconSize: 42,
+                            underline: const SizedBox(),
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: size.height*0.05,
+                  height: size.height * 0.05,
                 ),
-                RoundedButton(
-                    text: 'GENERATE QUIZ',
-                    press: () {
-                      Navigator.pushNamed(context, Routers.game,arguments: sign);
+                BlocListener<PreQuizCubit, PreQuizState>(
+                    listener: (context, state) {
+                      if (state.status == PreQuizStatus.error) {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => Center(
+                            child: AlertDialog(
+                              content: const Text(
+                                "ERROR FORM !!",
+                                textAlign: TextAlign.center,
+                                style: s20f700ColorErrorPro,
+                              ),
+                              actions: <Widget>[
+                                RoundedButton(
+                                  text: 'Back',
+                                  press: () {
+                                    Navigator.pop(context);
+                                  },
+                                  color: colorMainBlue,
+                                  textColor: colorSystemWhite,
+                                  width: size.width,
+                                  height: size.height * 0.06,
+                                  textStyle: s16f700ColorBlueMa,
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                        context.read<PreQuizCubit>().clearOldDataErrorForm();
+                      } else if (state.status == PreQuizStatus.success) {
+                        Navigator.pushNamed(context, Routers.game,
+                            arguments: PreQuiz(
+                                numQ: state.numQ,
+                                timePer:state.time,
+                                sign: sign,
+                                startNum: state.sNum,
+                                endNum: state.eNum));
+                      }
                     },
-                    color: colorBlueQuaternery,
-                    textColor: colorMainBlue,
-                    width: size.width * 0.8,
-                    height: size.height * 0.06,
-                    textStyle: s20f700ColorMBlue),
+                    child: RoundedButton(
+                        text: 'GENERATE QUIZ',
+                        press: () {
+                          context.read<PreQuizCubit>().addPreQuiz();
+                        },
+                        color: colorBlueQuaternery,
+                        textColor: colorMainBlue,
+                        width: size.width * 0.8,
+                        height: size.height * 0.06,
+                        textStyle: s20f700ColorMBlue)),
                 SizedBox(
-                  height: size.height*0.03,
+                  height: size.height * 0.03,
                 ),
                 RoundedButton(
                     text: 'BACK',

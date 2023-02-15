@@ -1,0 +1,1 @@
+enum PreQuizStatus { initial,success,save,error}
