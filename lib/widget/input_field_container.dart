@@ -37,7 +37,7 @@ class InputFieldContainer extends StatelessWidget {
               children: [
                 Container(
                     alignment: Alignment.topLeft,
-                    child: Image.asset("assets/image/error_validate.png")),
+                    child: Image.asset("assets/images/error_validate.png")),
                 Text(
                   validateText ?? "",
                   style: s14f400ColorErrorPro,

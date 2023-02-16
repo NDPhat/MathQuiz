@@ -11,6 +11,8 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+
       body: GestureDetector(
         onTap: (){
           Navigator.pushNamed(context, Routers.home);

@@ -57,7 +57,6 @@ class PortraitMode extends StatelessWidget {
                         onTap(quizBrainObject.listAnswer[0]);
                       },
                       color: colorSystemWhite,
-                      textColor: colorMainBlue,
                       width: size.width * 0.38,
                       height: size.height * 0.1,
                       textStyle: s16f700ColorGreyTe),
@@ -70,7 +69,6 @@ class PortraitMode extends StatelessWidget {
                         onTap(quizBrainObject.listAnswer[1]);
                       },
                       color: colorSystemWhite,
-                      textColor: colorMainBlue,
                       width: size.width * 0.38,
                       height: size.height * 0.1,
                       textStyle: s16f700ColorGreyTe),
@@ -88,7 +86,6 @@ class PortraitMode extends StatelessWidget {
                         onTap(quizBrainObject.listAnswer[2]);
                       },
                       color: colorSystemWhite,
-                      textColor: colorMainBlue,
                       width: size.width * 0.38,
                       height: size.height * 0.1,
                       textStyle: s16f700ColorGreyTe),
@@ -101,7 +98,6 @@ class PortraitMode extends StatelessWidget {
                         onTap(quizBrainObject.listAnswer[3]);
                       },
                       color: colorSystemWhite,
-                      textColor: colorMainBlue,
                       width: size.width * 0.38,
                       height: size.height * 0.1,
                       textStyle: s16f700ColorGreyTe),

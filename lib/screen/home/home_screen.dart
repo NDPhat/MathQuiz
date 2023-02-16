@@ -11,95 +11,51 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(Icons.school),
-        backgroundColor: colorMainBlueChart,
-        title: const Text('Math Quiz', style: s30f500colorSysWhite),
-      ),
-      body: Container(
+      backgroundColor: colorSystemWhite,
+      resizeToAvoidBottomInset: false,
+      body: Padding(
         padding: EdgeInsets.only(
             top: size.height * 0.1,
             left: size.width * 0.05,
             right: size.width * 0.05,
             bottom: size.height * 0.1),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Choose any one',
-              style: s30f700colorAccBlue,
-            ),
-            SizedBox(
-              height: size.height * 0.1,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RoundedButton(
-                  text: '+',
-                  press: () {
-                    Navigator.pushNamed(context, Routers.premake,arguments:'+' );
-                  },
-                  color: colorBlueQuaternery,
-                  textColor: colorSystemWhite,
-                  width: size.width * 0.4,
-                  height: size.height * 0.15,
-                  textStyle: s60BoldColorSysWhite,
-                ),
-                RoundedButton(
-                    text: '-',
-                    press: () {
-                      Navigator.pushNamed(context, Routers.premake,arguments:'-' );
-
-                    },
-                    color: colorBlueQuaternery,
-                    textColor: colorSystemWhite,
-                    width: size.width * 0.4,
-                    height: size.height * 0.15,
-                    textStyle: s60BoldColorSysWhite),
-              ],
-            ),
-            SizedBox(
-              height: size.height * 0.1,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RoundedButton(
-                  text: 'x',
-                  press: () {
-                    Navigator.pushNamed(context, Routers.premake,arguments:'x' );
-
-                  },
-                  color: colorBlueQuaternery,
-                  textColor: colorSystemWhite,
-                  width: size.width * 0.4,
-                  height: size.height * 0.15,
-                  textStyle: s60BoldColorSysWhite,
-                ),
-                RoundedButton(
-                    text: '/',
-                    press: () {
-                      Navigator.pushNamed(context, Routers.premake,arguments:'/' );
-
-                    },
-                    color: colorBlueQuaternery,
-                    textColor: colorSystemWhite,
-                    width: size.width * 0.4,
-                    height: size.height * 0.15,
-                    textStyle: s60BoldColorSysWhite),
-              ],
-            ),
-            SizedBox(
-              height: size.height * 0.1,
+            Image.asset('assets/images/mathquiz.png'),
+             SizedBox(
+              height: size.height*0.15,
             ),
             RoundedButton(
-                text: ' Back',
+                text: 'HISTORY',
                 press: () {},
                 color: colorBlueQuaternery,
-                textColor: colorSystemWhite,
-                width: size.width * 0.4,
+                width: size.width * 0.8,
                 height: size.height * 0.06,
-                textStyle: s30f700colorAccBlue),
+                textStyle: s20f700ColorErrorPro),
+            SizedBox(
+              height: size.height*0.03,
+            ),
+            RoundedButton(
+                text: 'PRACTICE',
+                press: () {
+                  Navigator.pushNamed(context, Routers.chooseSign);
+                },
+                color: colorBlueQuaternery,
+                width: size.width * 0.8,
+                height: size.height * 0.06,
+                textStyle: s20f700ColorErrorPro),  SizedBox(
+              height: size.height*0.03,
+            ),
+            RoundedButton(
+                text: 'DO TEST',
+                press: () {
+                  Navigator.pushNamed(context, Routers.doTest);
+                },
+                color: colorBlueQuaternery,
+                width: size.width * 0.8,
+                height: size.height * 0.06,
+                textStyle: s20f700ColorErrorPro),
           ],
         ),
       ),

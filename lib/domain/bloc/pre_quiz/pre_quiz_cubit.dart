@@ -67,9 +67,11 @@ class PreQuizCubit extends Cubit<PreQuizState> {
       return true;
     }
   }
+
   void clearOldDataErrorForm() {
     emit(state.copyWith(status: PreQuizStatus.initial));
   }
+
   bool isFormValid() {
     if (nuMQValidator(state.numQ) &
         sNumValidator(state.sNum) &

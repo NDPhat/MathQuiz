@@ -169,7 +169,6 @@ class PreMakeQuiz extends StatelessWidget {
                                     Navigator.pop(context);
                                   },
                                   color: colorMainBlue,
-                                  textColor: colorSystemWhite,
                                   width: size.width,
                                   height: size.height * 0.06,
                                   textStyle: s16f700ColorBlueMa,
@@ -183,7 +182,7 @@ class PreMakeQuiz extends StatelessWidget {
                         Navigator.pushNamed(context, Routers.game,
                             arguments: PreQuiz(
                                 numQ: state.numQ,
-                                timePer:state.time,
+                                timePer: state.time,
                                 sign: sign,
                                 startNum: state.sNum,
                                 endNum: state.eNum));
@@ -195,10 +194,9 @@ class PreMakeQuiz extends StatelessWidget {
                           context.read<PreQuizCubit>().addPreQuiz();
                         },
                         color: colorBlueQuaternery,
-                        textColor: colorMainBlue,
                         width: size.width * 0.8,
                         height: size.height * 0.06,
-                        textStyle: s20f700ColorMBlue)),
+                        textStyle: s20f700ColorErrorPro)),
                 SizedBox(
                   height: size.height * 0.03,
                 ),
@@ -208,10 +206,9 @@ class PreMakeQuiz extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     color: colorBlueQuaternery,
-                    textColor: colorMainBlue,
                     width: size.width * 0.8,
                     height: size.height * 0.06,
-                    textStyle: s20f700ColorMBlue),
+                    textStyle: s20f700ColorErrorPro),
               ],
             ),
           )),
