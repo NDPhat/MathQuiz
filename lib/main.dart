@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:math/routers/navigation.dart';
-import 'package:math/screen/game_screen/game_screen.dart';
-import 'package:math/screen/welcome_screen.dart';
+
+GetIt instance = GetIt.instance;
 
 void main() {
   runApp(const MathQuizApp());

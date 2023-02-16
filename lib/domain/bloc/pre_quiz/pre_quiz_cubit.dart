@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../application/enum/pre_status.dart';
-import '../../../data/local/prequizrepo.dart';
+import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 part 'pre_quiz_state.dart';
 
 class PreQuizCubit extends Cubit<PreQuizState> {

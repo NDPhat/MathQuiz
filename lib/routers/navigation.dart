@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/data/local/prequizrepo.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/screen/game_screen/game_screen.dart';
 import 'package:math/screen/home/home_screen.dart';
 import 'package:math/screen/pre_quiz/pre_quiz.dart';
 import 'package:math/screen/welcome_screen.dart';
 
+import '../data/local/repo/pre_quiz/pre_quiz_repo.dart';
+import '../main.dart';
 import '../screen/choose_sign/choose_sign_screen.dart';
 import '../screen/test_screen/test_screen.dart';
 
@@ -35,12 +36,13 @@ class Routers {
         return const ChooseSignScreen();
       case premake:
         return BlocProvider(
-            create: (context) =>
-                PreQuizCubit(preQuizLocalRepo: PreQuizLocalRepo()),
+            create: (context) => PreQuizCubit(
+                preQuizLocalRepo: instance.get<PreQuizLocalRepo>()),
             child: PreMakeQuiz());
       case game:
-        return GameScreen();case doTest:
-          return const TestScreen();
+        return GameScreen();
+      case doTest:
+        return const TestScreen();
 
       default:
         return const HomeScreen();
