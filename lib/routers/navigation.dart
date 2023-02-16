@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
+import 'package:math/screen/check_answer/check_anwser_screen.dart';
 import 'package:math/screen/game_screen/game_screen.dart';
 import 'package:math/screen/home/home_screen.dart';
 import 'package:math/screen/pre_quiz/pre_quiz.dart';
@@ -18,6 +19,7 @@ class Routers {
   static const String game = '/game';
   static const String home = '/home';
   static const String premake = '/premake';
+  static const String checkAnswer = '/checkAnswer';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
@@ -43,6 +45,8 @@ class Routers {
         return GameScreen();
       case doTest:
         return const TestScreen();
+      case checkAnswer:
+        return const CheckAnswerScreen();
 
       default:
         return const HomeScreen();

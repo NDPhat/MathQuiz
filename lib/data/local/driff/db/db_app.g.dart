@@ -53,8 +53,8 @@ class $PreQuizEntityTable extends PreQuizEntity
   static const VerificationMeta _scoreMeta = const VerificationMeta('score');
   @override
   late final GeneratedColumn<int> score = GeneratedColumn<int>(
-      'score', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'score', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
       [id, sign, dateSave, numQ, eNum, sNum, timePer, score];
@@ -109,8 +109,6 @@ class $PreQuizEntityTable extends PreQuizEntity
     if (data.containsKey('score')) {
       context.handle(
           _scoreMeta, score.isAcceptableOrUnknown(data['score']!, _scoreMeta));
-    } else if (isInserting) {
-      context.missing(_scoreMeta);
     }
     return context;
   }
@@ -136,7 +134,7 @@ class $PreQuizEntityTable extends PreQuizEntity
       timePer: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}timePer'])!,
       score: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}score'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}score']),
     );
   }
 
@@ -155,7 +153,7 @@ class PreQuizEntityData extends DataClass
   final int eNum;
   final int sNum;
   final int timePer;
-  final int score;
+  final int? score;
   const PreQuizEntityData(
       {required this.id,
       required this.sign,
@@ -164,7 +162,7 @@ class PreQuizEntityData extends DataClass
       required this.eNum,
       required this.sNum,
       required this.timePer,
-      required this.score});
+      this.score});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -175,7 +173,9 @@ class PreQuizEntityData extends DataClass
     map['eNum'] = Variable<int>(eNum);
     map['sNum'] = Variable<int>(sNum);
     map['timePer'] = Variable<int>(timePer);
-    map['score'] = Variable<int>(score);
+    if (!nullToAbsent || score != null) {
+      map['score'] = Variable<int>(score);
+    }
     return map;
   }
 
@@ -188,7 +188,8 @@ class PreQuizEntityData extends DataClass
       eNum: Value(eNum),
       sNum: Value(sNum),
       timePer: Value(timePer),
-      score: Value(score),
+      score:
+          score == null && nullToAbsent ? const Value.absent() : Value(score),
     );
   }
 
@@ -203,7 +204,7 @@ class PreQuizEntityData extends DataClass
       eNum: serializer.fromJson<int>(json['eNum']),
       sNum: serializer.fromJson<int>(json['sNum']),
       timePer: serializer.fromJson<int>(json['timePer']),
-      score: serializer.fromJson<int>(json['score']),
+      score: serializer.fromJson<int?>(json['score']),
     );
   }
   @override
@@ -217,7 +218,7 @@ class PreQuizEntityData extends DataClass
       'eNum': serializer.toJson<int>(eNum),
       'sNum': serializer.toJson<int>(sNum),
       'timePer': serializer.toJson<int>(timePer),
-      'score': serializer.toJson<int>(score),
+      'score': serializer.toJson<int?>(score),
     };
   }
 
@@ -229,7 +230,7 @@ class PreQuizEntityData extends DataClass
           int? eNum,
           int? sNum,
           int? timePer,
-          int? score}) =>
+          Value<int?> score = const Value.absent()}) =>
       PreQuizEntityData(
         id: id ?? this.id,
         sign: sign ?? this.sign,
@@ -238,7 +239,7 @@ class PreQuizEntityData extends DataClass
         eNum: eNum ?? this.eNum,
         sNum: sNum ?? this.sNum,
         timePer: timePer ?? this.timePer,
-        score: score ?? this.score,
+        score: score.present ? score.value : this.score,
       );
   @override
   String toString() {
@@ -280,7 +281,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
   final Value<int> eNum;
   final Value<int> sNum;
   final Value<int> timePer;
-  final Value<int> score;
+  final Value<int?> score;
   const PreQuizEntityCompanion({
     this.id = const Value.absent(),
     this.sign = const Value.absent(),
@@ -299,14 +300,13 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
     required int eNum,
     required int sNum,
     required int timePer,
-    required int score,
+    this.score = const Value.absent(),
   })  : sign = Value(sign),
         dateSave = Value(dateSave),
         numQ = Value(numQ),
         eNum = Value(eNum),
         sNum = Value(sNum),
-        timePer = Value(timePer),
-        score = Value(score);
+        timePer = Value(timePer);
   static Insertable<PreQuizEntityData> custom({
     Expression<int>? id,
     Expression<String>? sign,
@@ -337,7 +337,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
       Value<int>? eNum,
       Value<int>? sNum,
       Value<int>? timePer,
-      Value<int>? score}) {
+      Value<int?>? score}) {
     return PreQuizEntityCompanion(
       id: id ?? this.id,
       sign: sign ?? this.sign,
@@ -426,8 +426,8 @@ class $PreTestEntityTable extends PreTestEntity
   static const VerificationMeta _scoreMeta = const VerificationMeta('score');
   @override
   late final GeneratedColumn<int> score = GeneratedColumn<int>(
-      'score', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'score', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [id, dateSave, sumTime, score];
   @override
@@ -457,8 +457,6 @@ class $PreTestEntityTable extends PreTestEntity
     if (data.containsKey('score')) {
       context.handle(
           _scoreMeta, score.isAcceptableOrUnknown(data['score']!, _scoreMeta));
-    } else if (isInserting) {
-      context.missing(_scoreMeta);
     }
     return context;
   }
@@ -476,7 +474,7 @@ class $PreTestEntityTable extends PreTestEntity
       sumTime: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}sumTime'])!,
       score: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}score'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}score']),
     );
   }
 
@@ -491,19 +489,21 @@ class PreTestEntityData extends DataClass
   final int id;
   final String dateSave;
   final int sumTime;
-  final int score;
+  final int? score;
   const PreTestEntityData(
       {required this.id,
       required this.dateSave,
       required this.sumTime,
-      required this.score});
+      this.score});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['dateSave'] = Variable<String>(dateSave);
     map['sumTime'] = Variable<int>(sumTime);
-    map['score'] = Variable<int>(score);
+    if (!nullToAbsent || score != null) {
+      map['score'] = Variable<int>(score);
+    }
     return map;
   }
 
@@ -512,7 +512,8 @@ class PreTestEntityData extends DataClass
       id: Value(id),
       dateSave: Value(dateSave),
       sumTime: Value(sumTime),
-      score: Value(score),
+      score:
+          score == null && nullToAbsent ? const Value.absent() : Value(score),
     );
   }
 
@@ -523,7 +524,7 @@ class PreTestEntityData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       dateSave: serializer.fromJson<String>(json['dateSave']),
       sumTime: serializer.fromJson<int>(json['sumTime']),
-      score: serializer.fromJson<int>(json['score']),
+      score: serializer.fromJson<int?>(json['score']),
     );
   }
   @override
@@ -533,17 +534,20 @@ class PreTestEntityData extends DataClass
       'id': serializer.toJson<int>(id),
       'dateSave': serializer.toJson<String>(dateSave),
       'sumTime': serializer.toJson<int>(sumTime),
-      'score': serializer.toJson<int>(score),
+      'score': serializer.toJson<int?>(score),
     };
   }
 
   PreTestEntityData copyWith(
-          {int? id, String? dateSave, int? sumTime, int? score}) =>
+          {int? id,
+          String? dateSave,
+          int? sumTime,
+          Value<int?> score = const Value.absent()}) =>
       PreTestEntityData(
         id: id ?? this.id,
         dateSave: dateSave ?? this.dateSave,
         sumTime: sumTime ?? this.sumTime,
-        score: score ?? this.score,
+        score: score.present ? score.value : this.score,
       );
   @override
   String toString() {
@@ -572,7 +576,7 @@ class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
   final Value<int> id;
   final Value<String> dateSave;
   final Value<int> sumTime;
-  final Value<int> score;
+  final Value<int?> score;
   const PreTestEntityCompanion({
     this.id = const Value.absent(),
     this.dateSave = const Value.absent(),
@@ -583,10 +587,9 @@ class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
     this.id = const Value.absent(),
     required String dateSave,
     required int sumTime,
-    required int score,
+    this.score = const Value.absent(),
   })  : dateSave = Value(dateSave),
-        sumTime = Value(sumTime),
-        score = Value(score);
+        sumTime = Value(sumTime);
   static Insertable<PreTestEntityData> custom({
     Expression<int>? id,
     Expression<String>? dateSave,
@@ -605,7 +608,7 @@ class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
       {Value<int>? id,
       Value<String>? dateSave,
       Value<int>? sumTime,
-      Value<int>? score}) {
+      Value<int?>? score}) {
     return PreTestEntityCompanion(
       id: id ?? this.id,
       dateSave: dateSave ?? this.dateSave,

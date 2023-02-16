@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:math/data/local/di/setupProject.dart';
 import 'package:math/routers/navigation.dart';
 
 GetIt instance = GetIt.instance;
 
 void main() {
+  setUpProject();
   runApp(const MathQuizApp());
 }
 

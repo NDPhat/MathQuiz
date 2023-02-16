@@ -1,6 +1,7 @@
 part of 'pre_quiz_cubit.dart';
 
 class PreQuizState extends Equatable {
+  int id;
   int numQ;
   int eNum;
   int sNum;
@@ -11,6 +12,7 @@ class PreQuizState extends Equatable {
   PreQuizStatus status;
 
   PreQuizState({
+    required this.id,
     required this.numQ,
     required this.sNum,
     required this.eNum,
@@ -23,6 +25,7 @@ class PreQuizState extends Equatable {
   });
   factory PreQuizState.initial() {
     return PreQuizState(
+      id:1,
       sNum: 1,
       eNum: 10,
       time: 5,
@@ -43,6 +46,7 @@ class PreQuizState extends Equatable {
         eNum,
         numQ,
         numQMess,
+    id,
         sNumMess,
         eNumMess,
         time,
@@ -53,6 +57,7 @@ class PreQuizState extends Equatable {
     int? numQ,
     int? sNum,
     int? eNum,
+    int ? id,
     String? numQMess,
     String? sNumMess,
     String? eNumMess,
@@ -60,6 +65,7 @@ class PreQuizState extends Equatable {
     PreQuizStatus? status,
   }) {
     return PreQuizState(
+      id:  id ?? this.id,
       numQ: numQ ?? this.numQ,
       sNum: sNum ?? this.sNum,
       eNum: eNum ?? this.eNum,

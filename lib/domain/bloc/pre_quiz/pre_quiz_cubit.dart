@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
+import 'package:math/data/local/driff/db/db_app.dart';
 
 import '../../../application/enum/pre_status.dart';
 import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
@@ -81,13 +83,41 @@ class PreQuizCubit extends Cubit<PreQuizState> {
     return false;
   }
 
-  void addPreQuiz() {
+  void updateScore(int score, int id) async {
+    try {
+      await preQuizLocalRepo.updatePreQuiz(id, score);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void addPreQuiz(String sign) async {
     if (isFormValid() == true) {
-      emit(state.copyWith(
-          numQMess: "",
-          sNumMess: "",
-          eNumMess: "",
-          status: PreQuizStatus.success));
+      try {
+        final entity = PreQuizEntityCompanion(
+            sNum: Value(state.sNum),
+            eNum: Value(state.eNum),
+            numQ: Value(state.numQ),
+            sign: Value(sign),
+            timePer: Value(state.time),
+            dateSave: Value(DateTime.now().toString()));
+        //insert task
+        await preQuizLocalRepo.insertPreQuiz(entity);
+        final data = await preQuizLocalRepo.getLatestPreQuiz();
+        emit(state.copyWith(
+            numQMess: "",
+            id: data.id,
+            sNumMess: "",
+            eNumMess: "",
+            status: PreQuizStatus.success));
+      } on Exception catch (e) {
+        print(e.toString());
+        emit(state.copyWith(
+            numQMess: numQMEss,
+            sNumMess: sNumMess,
+            eNumMess: eNumMess,
+            status: PreQuizStatus.error));
+      }
     } else {
       emit(state.copyWith(
           numQMess: numQMEss,

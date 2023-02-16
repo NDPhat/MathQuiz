@@ -183,6 +183,7 @@ class PreMakeQuiz extends StatelessWidget {
                             arguments: PreQuiz(
                                 numQ: state.numQ,
                                 timePer: state.time,
+                                id: state.id,
                                 sign: sign,
                                 startNum: state.sNum,
                                 endNum: state.eNum));
@@ -191,7 +192,7 @@ class PreMakeQuiz extends StatelessWidget {
                     child: RoundedButton(
                         text: 'GENERATE QUIZ',
                         press: () {
-                          context.read<PreQuizCubit>().addPreQuiz();
+                          context.read<PreQuizCubit>().addPreQuiz(sign);
                         },
                         color: colorBlueQuaternery,
                         width: size.width * 0.8,

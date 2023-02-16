@@ -8,5 +8,5 @@ class PreQuizEntity extends Table {
   IntColumn get eNum => integer().named("eNum")();
   IntColumn get sNum => integer().named("sNum")();
   IntColumn get timePer => integer().named("timePer")();
-  IntColumn get score => integer().named("score")();
+  IntColumn get score => integer().nullable().named("score")();
 }

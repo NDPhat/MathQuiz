@@ -5,7 +5,7 @@ import 'package:math/data/model/make_quiz.dart';
 class QuizBrain {
   int _quizAnswer = 0;
   var listAnswer = [0, 0, 0, 0];
-  var _quiz = '';
+  String _quiz = '';
   Random _random = Random();
   void makeQuiz(PreQuiz preQuiz) {
     int firstNumber = _random.nextInt(preQuiz.endNum!) + preQuiz.startNum!;

@@ -30,9 +30,18 @@ class PreQuizLocalRepoImpl extends PreQuizLocalRepo {
   }
 
   @override
-  Future<void> updatePreQuiz(PreQuizEntityData entity) async {
+  Future<void> updatePreQuiz(int id,int score ) async {
     (appDb.update(appDb.preQuizEntity)
-          ..where((tbl) => tbl.id.equals(entity.id)))
-        .write(entity);
+          ..where((tbl) => tbl.id.equals(id)))
+        .write(PreQuizEntityCompanion(score: Value(score)));
+  }
+
+  @override
+  Future<PreQuizEntityData> getLatestPreQuiz() async {
+    List<PreQuizEntityData> list = await (appDb.select(appDb.preQuizEntity)
+          ..orderBy(
+              [(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+        .get();
+    return list.first;
   }
 }
