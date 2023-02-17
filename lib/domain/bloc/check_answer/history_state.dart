@@ -1,14 +1,14 @@
-part of 'check_answer_cubit.dart';
+part of 'history_cubit.dart';
 
-class CheckAnswerState extends Equatable {
+class HistoryState extends Equatable {
   String timeNow;
 
-  CheckAnswerState({
+  HistoryState({
     required this.timeNow,
     //this.user,
   });
-  factory CheckAnswerState.initial() {
-    return CheckAnswerState(
+  factory HistoryState.initial() {
+    return HistoryState(
       timeNow: formatDateInput.format(DateTime.now()),
       //user: null,
     );
@@ -22,11 +22,11 @@ class CheckAnswerState extends Equatable {
 
   ];
 
-  CheckAnswerState copyWith({
+  HistoryState copyWith({
     String? timeNow,
     // auth.user? user,
   }) {
-    return CheckAnswerState(
+    return HistoryState(
       timeNow: timeNow ?? this.timeNow,
       //user: user ?? this.user,
     );

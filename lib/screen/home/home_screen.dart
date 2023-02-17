@@ -28,7 +28,9 @@ class HomeScreen extends StatelessWidget {
             ),
             RoundedButton(
                 text: 'HISTORY',
-                press: () {},
+                press: () {
+                  Navigator.pushNamed(context, Routers.history);
+                },
                 color: colorBlueQuaternery,
                 width: size.width * 0.8,
                 height: size.height * 0.06,

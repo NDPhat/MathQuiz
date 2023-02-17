@@ -86,6 +86,7 @@ class _TestScreenState extends State<TestScreen> {
           score: _score,
           totalNumberOfQuizzes: _totalNumberOfQuizzes,
           startGame: _startGame,
+          preId: 1,
         );
       },
     );

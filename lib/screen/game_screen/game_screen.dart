@@ -106,7 +106,8 @@ class _GameScreenState extends State<GameScreen> {
     _totalNumberOfQuizzes++;
     _makeNewQuiz();
   }
-  void _saveData(){
+
+  void _saveData() {
     _gameRepository.addDataToLocal(QuizPraEntityCompanion(
         preId: Value(_preQuiz.id!),
         num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
@@ -115,10 +116,11 @@ class _GameScreenState extends State<GameScreen> {
         answer: Value(_quizBrain.quizAnswer),
         answerSelect: Value(userChoose)));
   }
-  _updateScore(){
-    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizLocalRepo>()).updateScore(_score, _preQuiz.id!);
-  }
 
+  _updateScore() {
+    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizLocalRepo>())
+        .updateScore(_score, _preQuiz.id!);
+  }
 
   void _endGame() {
     _timer.cancel();
@@ -172,6 +174,7 @@ class _GameScreenState extends State<GameScreen> {
       builder: (BuildContext context) {
         return ShowAlertDialog(
           score: _score,
+          preId: _preQuiz.id!,
           totalNumberOfQuizzes: _totalNumberOfQuizzes,
           startGame: _startGameAgain,
         );

@@ -4,7 +4,6 @@ import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_pra_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_pra_repo_impl.dart';
 
-import '../../../domain/bloc/game/game_bloc.dart';
 import '../../../main.dart';
 import '../driff/db/db_app.dart';
 import '../repo/pre_quiz/pre_quiz_repo.dart';
@@ -18,6 +17,4 @@ void initDBandLocalRepo() {
 
   instance.registerLazySingleton<QuizPraLocalRepo>(
       () => QuizPraLocalRepoImpl(instance.get<AppDb>()));
-  instance.registerLazySingleton<GameRepository>(
-      () => instance.get<GameRepository>());
 }

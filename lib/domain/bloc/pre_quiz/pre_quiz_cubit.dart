@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
+import 'package:math/application/utils/format.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 
 import '../../../application/enum/pre_status.dart';
@@ -100,7 +101,7 @@ class PreQuizCubit extends Cubit<PreQuizState> {
             numQ: Value(state.numQ),
             sign: Value(sign),
             timePer: Value(state.time),
-            dateSave: Value(DateTime.now().toString()));
+            dateSave: Value(formatDateInput.format(DateTime.now())));
         //insert task
         await preQuizLocalRepo.insertPreQuiz(entity);
         final data = await preQuizLocalRepo.getLatestPreQuiz();

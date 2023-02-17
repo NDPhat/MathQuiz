@@ -8,8 +8,8 @@ abstract class PreQuizLocalRepo {
   //WEIGHT INTERFACE
   Future<void> insertPreQuiz(PreQuizEntityCompanion entity);
   Future<PreQuizEntityData> getLatestPreQuiz();
-  Future<void> deletePreQuiz(int taskId);
+  Future<void> deletePreQuiz(int id);
   Future<void> updatePreQuiz(int id, int score);
-  Stream<List<PreQuizEntityData>> getAllPreQuizByDay(String dayNeeded);
+  Stream<List<PreQuizEntityData>> getAllPreQuizByDay(String day);
   Stream<List<PreQuizEntityData>> getAllPreQuiz();
 }

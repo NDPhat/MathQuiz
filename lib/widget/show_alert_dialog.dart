@@ -4,16 +4,17 @@ import 'package:flutter/services.dart';
 import '../cons/constants.dart';
 import '../routers/navigation.dart';
 
-
 class ShowAlertDialog extends StatelessWidget {
   final score;
   final totalNumberOfQuizzes;
   final startGame;
+  final int preId;
 
   ShowAlertDialog(
       {required this.score,
       required this.totalNumberOfQuizzes,
-      required this.startGame});
+      required this.startGame,
+      required this.preId});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +25,7 @@ class ShowAlertDialog extends StatelessWidget {
       )),
       backgroundColor: const Color(0xff1542bf),
       title: const FittedBox(
-        child: Text('GAME OVER',
-            textAlign: TextAlign.center, style: kTitleTS),
+        child: Text('GAME OVER', textAlign: TextAlign.center, style: kTitleTS),
       ),
       content: Text('Score: $score | $totalNumberOfQuizzes',
           textAlign: TextAlign.center, style: kContentTS),
@@ -42,10 +42,10 @@ class ShowAlertDialog extends StatelessWidget {
             Navigator.pop(context);
           },
           child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
-        ),TextButton(
+        ),
+        TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, Routers.checkAnswer);
-            Navigator.pop(context);
+            Navigator.pushNamed(context, Routers.checkAnswer,arguments: preId);
           },
           child: const Text('CHECK ANSWER', style: kDialogButtonsTS),
         ),

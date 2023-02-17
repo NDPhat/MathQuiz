@@ -21,63 +21,59 @@ class AnswerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Card(
-        child: Container(
-          width: size.width * 0.9,
-          height: size.height * 0.1,
-          decoration: const BoxDecoration(
-              color: colorBlueQuaternery,
-              borderRadius: BorderRadius.all(Radius.circular(25))),
-          padding: EdgeInsets.only(
-              left: size.width * 0.02,
-              right: size.width * 0.02,
-              top: size.height * 0.01,
-              bottom: size.height * 0.01),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            SizedBox(
-              width: size.width * 0.4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(
-                      backgroundColor: colorSystemWhite,
-                      radius: 30,
-                      child: answer == answerSelect
-                          ? const Icon(
-                              (Icons.done),
-                              color: colorSystemWhite,
-                              size: 16,
-                            )
-                          : const Icon(
-                              (Icons.close),
-                              color: colorSystemErrorTer,
-                              size: 16,
-                            )),
-                  Column(
-                    children: [
-                      Text(
-                        "$num1 + $num2= ",
-                        style: s20f700ColorSysWhite,
-                      ),
-                      Text(
-                        "Answer = $answer",
-                        style: s16f500ColorSysWhite,
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Center(
-              child: Text(
-                answerSelect,
-                style: s20f700ColorSysWhite,
-              ),
-            )
-          ]),
+    return Card(
+      child: Container(
+        decoration:  BoxDecoration(
+          color:answer==answerSelect ? colorBlueQuaternery : colorSystemErrorTer,
         ),
+        padding: EdgeInsets.only(
+            left: size.width * 0.02,
+            right: size.width * 0.02,
+            top: size.height * 0.01,
+            bottom: size.height * 0.02),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          SizedBox(
+            width: size.width * 0.4,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CircleAvatar(
+                    backgroundColor: colorSystemWhite,
+                    radius: 30,
+                    child: answer == answerSelect
+                        ? const Icon(
+                            (Icons.done),
+                            color: colorMainBlue,
+                            size: 30,
+                          )
+                        : const Icon(
+                            (Icons.close),
+                            color: colorErrorPrimary,
+                            size: 30,
+                          )),
+                Column(
+                  children: [
+                    Text(
+                      "$num1 + $num2 = ",
+                      style: s20f700ColorMBlue,
+                    ),
+                    Text(
+                      "Answer = $answer",
+                      style: s16f700ColorBlueMa,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          Center(
+            child: Text(
+              answerSelect,
+              style: s20f700ColorMBlue,
+            ),
+          )
+        ]),
       ),
     );
   }

@@ -5,6 +5,8 @@ class PreQuiz {
   String? sign;
   int? timePer;
   int? numQ;
+  int? score;
+  String? dateSave;
 
   PreQuiz(
       {this.id,
@@ -12,5 +14,7 @@ class PreQuiz {
       this.startNum,
       this.endNum,
       this.sign,
-      this.timePer});
+      this.timePer,
+      this.score,
+      this.dateSave});
 }

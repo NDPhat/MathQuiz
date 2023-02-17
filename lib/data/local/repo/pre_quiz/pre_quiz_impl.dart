@@ -7,8 +7,8 @@ class PreQuizLocalRepoImpl extends PreQuizLocalRepo {
   PreQuizLocalRepoImpl(super.appDb);
 
   @override
-  Future<void> deletePreQuiz(int taskId) async {
-    await (appDb.delete(appDb.preQuizEntity)..where((t) => t.id.equals(taskId)))
+  Future<void> deletePreQuiz(int id) async {
+    await (appDb.delete(appDb.preQuizEntity)..where((t) => t.id.equals(id)))
         .go();
   }
 
@@ -18,9 +18,9 @@ class PreQuizLocalRepoImpl extends PreQuizLocalRepo {
   }
 
   @override
-  Stream<List<PreQuizEntityData>> getAllPreQuizByDay(String dayNeeded) async* {
+  Stream<List<PreQuizEntityData>> getAllPreQuizByDay(String day) async* {
     yield* (appDb.select(appDb.preQuizEntity)
-          ..where((tbl) => tbl.dateSave.equals(dayNeeded)))
+          ..where((tbl) => tbl.dateSave.equals(day)))
         .watch();
   }
 
@@ -30,9 +30,8 @@ class PreQuizLocalRepoImpl extends PreQuizLocalRepo {
   }
 
   @override
-  Future<void> updatePreQuiz(int id,int score ) async {
-    (appDb.update(appDb.preQuizEntity)
-          ..where((tbl) => tbl.id.equals(id)))
+  Future<void> updatePreQuiz(int id, int score) async {
+    (appDb.update(appDb.preQuizEntity)..where((tbl) => tbl.id.equals(id)))
         .write(PreQuizEntityCompanion(score: Value(score)));
   }
 
