@@ -1,0 +1,1 @@
+enum GameStatus { initial,success,save,error}

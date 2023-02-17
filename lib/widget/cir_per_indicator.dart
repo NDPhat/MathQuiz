@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math/cons/color.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../cons/constants.dart';
@@ -13,8 +14,10 @@ class CirPerIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircularPercentIndicator(
-      radius: 120.0,
-      lineWidth: 12,
+      radius: 80.0,
+      lineWidth: 10,
+      fillColor: colorSystemWhite,
+      backgroundColor: colorBGInput,
       percent: percentValue,
       circularStrokeCap: CircularStrokeCap.round,
       center: Text(
@@ -22,9 +25,9 @@ class CirPerIndicator extends StatelessWidget {
         style: kTimerTextStyle,
       ),
       progressColor: percentValue > 0.6
-          ? Colors.green
+          ? Colors.blueAccent
           : percentValue > 0.3
-              ? Colors.yellow
+              ? Colors.yellowAccent
               : Colors.red,
     );
   }

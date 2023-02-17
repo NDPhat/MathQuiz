@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cons/constants.dart';
+import '../domain/bloc/game/game_cubit.dart';
 import '../routers/navigation.dart';
 
 class ShowAlertDialog extends StatelessWidget {
@@ -36,13 +38,16 @@ class ShowAlertDialog extends StatelessWidget {
           },
           child: const Text('EXIT', style: kDialogButtonsTS),
         ),
-        TextButton(
-          onPressed: () {
-            startGame();
-            Navigator.pop(context);
-          },
-          child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
-        ),
+        BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+          return TextButton(
+            onPressed: () {
+              startGame();
+              context.read<GameCubit>().changeDataPlayAgain();
+              Navigator.pop(context);
+            },
+            child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
+          );
+        }),
       ],
     );
   }

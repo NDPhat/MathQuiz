@@ -69,10 +69,22 @@ const s16f700ColorBlueMa = TextStyle(
   fontSize: 16,
   color: colorMainBlue,
 );
+const s16f700ColorSysWhite = TextStyle(
+  fontWeight: font700,
+  fontSize: 16,
+  color: colorSystemWhite,
+);
+const s16f700ColorError = TextStyle(
+  fontWeight: font700,
+  fontSize: 16,
+  color: colorErrorPrimary,
+);
 const s14f400ColorErrorPro =
     TextStyle(fontWeight: font400, fontSize: 14, color: colorErrorPrimary);
 const s20f700ColorErrorPro =
     TextStyle(fontWeight: font700, fontSize: 20, color: colorErrorPrimary);
+const s20f700ColorGreyte =
+    TextStyle(fontWeight: font700, fontSize: 20, color: colorGreyTetiary);
 const s20f700ColorSysWhite =
     TextStyle(fontWeight: font700, fontSize: 20, color: colorSystemWhite);
 const s16f500ColorSysWhite =

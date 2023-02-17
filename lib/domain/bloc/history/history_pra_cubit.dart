@@ -4,13 +4,13 @@ import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 
 import '../../../application/utils/format.dart';
 
-part 'history_state.dart';
+part 'history_pra_state.dart';
 
-class HistoryCubit extends Cubit<HistoryState> {
+class HistoryPraCubit extends Cubit<HistoryPraState> {
   final PreQuizLocalRepo preQuizLocalRepo;
-  HistoryCubit({required PreQuizLocalRepo preQuizLocalRepo})
+  HistoryPraCubit({required PreQuizLocalRepo preQuizLocalRepo})
       : preQuizLocalRepo = preQuizLocalRepo,
-        super(HistoryState.initial());
+        super(HistoryPraState.initial());
   void dateChanged(DateTime value) {
     emit(state.copyWith(timeNow: formatDateInput.format(value)));
   }

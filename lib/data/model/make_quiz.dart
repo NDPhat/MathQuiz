@@ -7,6 +7,7 @@ class PreQuiz {
   int? numQ;
   int? score;
   String? dateSave;
+  String ? option;
 
   PreQuiz(
       {this.id,
@@ -16,5 +17,6 @@ class PreQuiz {
       this.sign,
       this.timePer,
       this.score,
-      this.dateSave});
+      this.dateSave,
+      this.option});
 }

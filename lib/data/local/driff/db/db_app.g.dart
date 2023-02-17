@@ -23,6 +23,11 @@ class $PreQuizEntityTable extends PreQuizEntity
   late final GeneratedColumn<String> sign = GeneratedColumn<String>(
       'sign', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _optionMeta = const VerificationMeta('option');
+  @override
+  late final GeneratedColumn<String> option = GeneratedColumn<String>(
+      'option', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _dateSaveMeta =
       const VerificationMeta('dateSave');
   @override
@@ -57,7 +62,7 @@ class $PreQuizEntityTable extends PreQuizEntity
       type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, sign, dateSave, numQ, eNum, sNum, timePer, score];
+      [id, sign, option, dateSave, numQ, eNum, sNum, timePer, score];
   @override
   String get aliasedName => _alias ?? 'pre_quiz_entity';
   @override
@@ -75,6 +80,12 @@ class $PreQuizEntityTable extends PreQuizEntity
           _signMeta, sign.isAcceptableOrUnknown(data['sign']!, _signMeta));
     } else if (isInserting) {
       context.missing(_signMeta);
+    }
+    if (data.containsKey('option')) {
+      context.handle(_optionMeta,
+          option.isAcceptableOrUnknown(data['option']!, _optionMeta));
+    } else if (isInserting) {
+      context.missing(_optionMeta);
     }
     if (data.containsKey('dateSave')) {
       context.handle(_dateSaveMeta,
@@ -123,6 +134,8 @@ class $PreQuizEntityTable extends PreQuizEntity
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       sign: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}sign'])!,
+      option: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}option'])!,
       dateSave: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}dateSave'])!,
       numQ: attachedDatabase.typeMapping
@@ -148,6 +161,7 @@ class PreQuizEntityData extends DataClass
     implements Insertable<PreQuizEntityData> {
   final int id;
   final String sign;
+  final String option;
   final String dateSave;
   final int numQ;
   final int eNum;
@@ -157,6 +171,7 @@ class PreQuizEntityData extends DataClass
   const PreQuizEntityData(
       {required this.id,
       required this.sign,
+      required this.option,
       required this.dateSave,
       required this.numQ,
       required this.eNum,
@@ -168,6 +183,7 @@ class PreQuizEntityData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['sign'] = Variable<String>(sign);
+    map['option'] = Variable<String>(option);
     map['dateSave'] = Variable<String>(dateSave);
     map['numQ'] = Variable<int>(numQ);
     map['eNum'] = Variable<int>(eNum);
@@ -183,6 +199,7 @@ class PreQuizEntityData extends DataClass
     return PreQuizEntityCompanion(
       id: Value(id),
       sign: Value(sign),
+      option: Value(option),
       dateSave: Value(dateSave),
       numQ: Value(numQ),
       eNum: Value(eNum),
@@ -199,6 +216,7 @@ class PreQuizEntityData extends DataClass
     return PreQuizEntityData(
       id: serializer.fromJson<int>(json['id']),
       sign: serializer.fromJson<String>(json['sign']),
+      option: serializer.fromJson<String>(json['option']),
       dateSave: serializer.fromJson<String>(json['dateSave']),
       numQ: serializer.fromJson<int>(json['numQ']),
       eNum: serializer.fromJson<int>(json['eNum']),
@@ -213,6 +231,7 @@ class PreQuizEntityData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'sign': serializer.toJson<String>(sign),
+      'option': serializer.toJson<String>(option),
       'dateSave': serializer.toJson<String>(dateSave),
       'numQ': serializer.toJson<int>(numQ),
       'eNum': serializer.toJson<int>(eNum),
@@ -225,6 +244,7 @@ class PreQuizEntityData extends DataClass
   PreQuizEntityData copyWith(
           {int? id,
           String? sign,
+          String? option,
           String? dateSave,
           int? numQ,
           int? eNum,
@@ -234,6 +254,7 @@ class PreQuizEntityData extends DataClass
       PreQuizEntityData(
         id: id ?? this.id,
         sign: sign ?? this.sign,
+        option: option ?? this.option,
         dateSave: dateSave ?? this.dateSave,
         numQ: numQ ?? this.numQ,
         eNum: eNum ?? this.eNum,
@@ -246,6 +267,7 @@ class PreQuizEntityData extends DataClass
     return (StringBuffer('PreQuizEntityData(')
           ..write('id: $id, ')
           ..write('sign: $sign, ')
+          ..write('option: $option, ')
           ..write('dateSave: $dateSave, ')
           ..write('numQ: $numQ, ')
           ..write('eNum: $eNum, ')
@@ -258,13 +280,14 @@ class PreQuizEntityData extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, sign, dateSave, numQ, eNum, sNum, timePer, score);
+      Object.hash(id, sign, option, dateSave, numQ, eNum, sNum, timePer, score);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PreQuizEntityData &&
           other.id == this.id &&
           other.sign == this.sign &&
+          other.option == this.option &&
           other.dateSave == this.dateSave &&
           other.numQ == this.numQ &&
           other.eNum == this.eNum &&
@@ -276,6 +299,7 @@ class PreQuizEntityData extends DataClass
 class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
   final Value<int> id;
   final Value<String> sign;
+  final Value<String> option;
   final Value<String> dateSave;
   final Value<int> numQ;
   final Value<int> eNum;
@@ -285,6 +309,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
   const PreQuizEntityCompanion({
     this.id = const Value.absent(),
     this.sign = const Value.absent(),
+    this.option = const Value.absent(),
     this.dateSave = const Value.absent(),
     this.numQ = const Value.absent(),
     this.eNum = const Value.absent(),
@@ -295,6 +320,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
   PreQuizEntityCompanion.insert({
     this.id = const Value.absent(),
     required String sign,
+    required String option,
     required String dateSave,
     required int numQ,
     required int eNum,
@@ -302,6 +328,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
     required int timePer,
     this.score = const Value.absent(),
   })  : sign = Value(sign),
+        option = Value(option),
         dateSave = Value(dateSave),
         numQ = Value(numQ),
         eNum = Value(eNum),
@@ -310,6 +337,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
   static Insertable<PreQuizEntityData> custom({
     Expression<int>? id,
     Expression<String>? sign,
+    Expression<String>? option,
     Expression<String>? dateSave,
     Expression<int>? numQ,
     Expression<int>? eNum,
@@ -320,6 +348,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (sign != null) 'sign': sign,
+      if (option != null) 'option': option,
       if (dateSave != null) 'dateSave': dateSave,
       if (numQ != null) 'numQ': numQ,
       if (eNum != null) 'eNum': eNum,
@@ -332,6 +361,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
   PreQuizEntityCompanion copyWith(
       {Value<int>? id,
       Value<String>? sign,
+      Value<String>? option,
       Value<String>? dateSave,
       Value<int>? numQ,
       Value<int>? eNum,
@@ -341,6 +371,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
     return PreQuizEntityCompanion(
       id: id ?? this.id,
       sign: sign ?? this.sign,
+      option: option ?? this.option,
       dateSave: dateSave ?? this.dateSave,
       numQ: numQ ?? this.numQ,
       eNum: eNum ?? this.eNum,
@@ -358,6 +389,9 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
     }
     if (sign.present) {
       map['sign'] = Variable<String>(sign.value);
+    }
+    if (option.present) {
+      map['option'] = Variable<String>(option.value);
     }
     if (dateSave.present) {
       map['dateSave'] = Variable<String>(dateSave.value);
@@ -385,6 +419,7 @@ class PreQuizEntityCompanion extends UpdateCompanion<PreQuizEntityData> {
     return (StringBuffer('PreQuizEntityCompanion(')
           ..write('id: $id, ')
           ..write('sign: $sign, ')
+          ..write('option: $option, ')
           ..write('dateSave: $dateSave, ')
           ..write('numQ: $numQ, ')
           ..write('eNum: $eNum, ')
@@ -417,19 +452,19 @@ class $PreTestEntityTable extends PreTestEntity
   late final GeneratedColumn<String> dateSave = GeneratedColumn<String>(
       'dateSave', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _sumTimeMeta =
-      const VerificationMeta('sumTime');
+  static const VerificationMeta _sumQuizMeta =
+      const VerificationMeta('sumQuiz');
   @override
-  late final GeneratedColumn<int> sumTime = GeneratedColumn<int>(
-      'sumTime', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+  late final GeneratedColumn<int> sumQuiz = GeneratedColumn<int>(
+      'sumQuiz', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _scoreMeta = const VerificationMeta('score');
   @override
   late final GeneratedColumn<int> score = GeneratedColumn<int>(
       'score', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
   @override
-  List<GeneratedColumn> get $columns => [id, dateSave, sumTime, score];
+  List<GeneratedColumn> get $columns => [id, dateSave, sumQuiz, score];
   @override
   String get aliasedName => _alias ?? 'pre_test_entity';
   @override
@@ -448,11 +483,9 @@ class $PreTestEntityTable extends PreTestEntity
     } else if (isInserting) {
       context.missing(_dateSaveMeta);
     }
-    if (data.containsKey('sumTime')) {
-      context.handle(_sumTimeMeta,
-          sumTime.isAcceptableOrUnknown(data['sumTime']!, _sumTimeMeta));
-    } else if (isInserting) {
-      context.missing(_sumTimeMeta);
+    if (data.containsKey('sumQuiz')) {
+      context.handle(_sumQuizMeta,
+          sumQuiz.isAcceptableOrUnknown(data['sumQuiz']!, _sumQuizMeta));
     }
     if (data.containsKey('score')) {
       context.handle(
@@ -471,8 +504,8 @@ class $PreTestEntityTable extends PreTestEntity
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       dateSave: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}dateSave'])!,
-      sumTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}sumTime'])!,
+      sumQuiz: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}sumQuiz']),
       score: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}score']),
     );
@@ -488,19 +521,18 @@ class PreTestEntityData extends DataClass
     implements Insertable<PreTestEntityData> {
   final int id;
   final String dateSave;
-  final int sumTime;
+  final int? sumQuiz;
   final int? score;
   const PreTestEntityData(
-      {required this.id,
-      required this.dateSave,
-      required this.sumTime,
-      this.score});
+      {required this.id, required this.dateSave, this.sumQuiz, this.score});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['dateSave'] = Variable<String>(dateSave);
-    map['sumTime'] = Variable<int>(sumTime);
+    if (!nullToAbsent || sumQuiz != null) {
+      map['sumQuiz'] = Variable<int>(sumQuiz);
+    }
     if (!nullToAbsent || score != null) {
       map['score'] = Variable<int>(score);
     }
@@ -511,7 +543,9 @@ class PreTestEntityData extends DataClass
     return PreTestEntityCompanion(
       id: Value(id),
       dateSave: Value(dateSave),
-      sumTime: Value(sumTime),
+      sumQuiz: sumQuiz == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sumQuiz),
       score:
           score == null && nullToAbsent ? const Value.absent() : Value(score),
     );
@@ -523,7 +557,7 @@ class PreTestEntityData extends DataClass
     return PreTestEntityData(
       id: serializer.fromJson<int>(json['id']),
       dateSave: serializer.fromJson<String>(json['dateSave']),
-      sumTime: serializer.fromJson<int>(json['sumTime']),
+      sumQuiz: serializer.fromJson<int?>(json['sumQuiz']),
       score: serializer.fromJson<int?>(json['score']),
     );
   }
@@ -533,7 +567,7 @@ class PreTestEntityData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'dateSave': serializer.toJson<String>(dateSave),
-      'sumTime': serializer.toJson<int>(sumTime),
+      'sumQuiz': serializer.toJson<int?>(sumQuiz),
       'score': serializer.toJson<int?>(score),
     };
   }
@@ -541,12 +575,12 @@ class PreTestEntityData extends DataClass
   PreTestEntityData copyWith(
           {int? id,
           String? dateSave,
-          int? sumTime,
+          Value<int?> sumQuiz = const Value.absent(),
           Value<int?> score = const Value.absent()}) =>
       PreTestEntityData(
         id: id ?? this.id,
         dateSave: dateSave ?? this.dateSave,
-        sumTime: sumTime ?? this.sumTime,
+        sumQuiz: sumQuiz.present ? sumQuiz.value : this.sumQuiz,
         score: score.present ? score.value : this.score,
       );
   @override
@@ -554,52 +588,51 @@ class PreTestEntityData extends DataClass
     return (StringBuffer('PreTestEntityData(')
           ..write('id: $id, ')
           ..write('dateSave: $dateSave, ')
-          ..write('sumTime: $sumTime, ')
+          ..write('sumQuiz: $sumQuiz, ')
           ..write('score: $score')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, dateSave, sumTime, score);
+  int get hashCode => Object.hash(id, dateSave, sumQuiz, score);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PreTestEntityData &&
           other.id == this.id &&
           other.dateSave == this.dateSave &&
-          other.sumTime == this.sumTime &&
+          other.sumQuiz == this.sumQuiz &&
           other.score == this.score);
 }
 
 class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
   final Value<int> id;
   final Value<String> dateSave;
-  final Value<int> sumTime;
+  final Value<int?> sumQuiz;
   final Value<int?> score;
   const PreTestEntityCompanion({
     this.id = const Value.absent(),
     this.dateSave = const Value.absent(),
-    this.sumTime = const Value.absent(),
+    this.sumQuiz = const Value.absent(),
     this.score = const Value.absent(),
   });
   PreTestEntityCompanion.insert({
     this.id = const Value.absent(),
     required String dateSave,
-    required int sumTime,
+    this.sumQuiz = const Value.absent(),
     this.score = const Value.absent(),
-  })  : dateSave = Value(dateSave),
-        sumTime = Value(sumTime);
+  }) : dateSave = Value(dateSave);
   static Insertable<PreTestEntityData> custom({
     Expression<int>? id,
     Expression<String>? dateSave,
-    Expression<int>? sumTime,
+    Expression<int>? sumQuiz,
     Expression<int>? score,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (dateSave != null) 'dateSave': dateSave,
-      if (sumTime != null) 'sumTime': sumTime,
+      if (sumQuiz != null) 'sumQuiz': sumQuiz,
       if (score != null) 'score': score,
     });
   }
@@ -607,12 +640,12 @@ class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
   PreTestEntityCompanion copyWith(
       {Value<int>? id,
       Value<String>? dateSave,
-      Value<int>? sumTime,
+      Value<int?>? sumQuiz,
       Value<int?>? score}) {
     return PreTestEntityCompanion(
       id: id ?? this.id,
       dateSave: dateSave ?? this.dateSave,
-      sumTime: sumTime ?? this.sumTime,
+      sumQuiz: sumQuiz ?? this.sumQuiz,
       score: score ?? this.score,
     );
   }
@@ -626,8 +659,8 @@ class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
     if (dateSave.present) {
       map['dateSave'] = Variable<String>(dateSave.value);
     }
-    if (sumTime.present) {
-      map['sumTime'] = Variable<int>(sumTime.value);
+    if (sumQuiz.present) {
+      map['sumQuiz'] = Variable<int>(sumQuiz.value);
     }
     if (score.present) {
       map['score'] = Variable<int>(score.value);
@@ -640,7 +673,7 @@ class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
     return (StringBuffer('PreTestEntityCompanion(')
           ..write('id: $id, ')
           ..write('dateSave: $dateSave, ')
-          ..write('sumTime: $sumTime, ')
+          ..write('sumQuiz: $sumQuiz, ')
           ..write('score: $score')
           ..write(')'))
         .toString();
@@ -1029,8 +1062,8 @@ class $QuizPraEntityTable extends QuizPraEntity
   static const VerificationMeta _num1Meta = const VerificationMeta('num1');
   @override
   late final GeneratedColumn<int> num1 = GeneratedColumn<int>(
-      'num1', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'num1', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _signMeta = const VerificationMeta('sign');
   @override
   late final GeneratedColumn<String> sign = GeneratedColumn<String>(
@@ -1039,8 +1072,8 @@ class $QuizPraEntityTable extends QuizPraEntity
   static const VerificationMeta _num2Meta = const VerificationMeta('num2');
   @override
   late final GeneratedColumn<int> num2 = GeneratedColumn<int>(
-      'num2', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'num2', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _answerMeta = const VerificationMeta('answer');
   @override
   late final GeneratedColumn<int> answer = GeneratedColumn<int>(
@@ -1076,8 +1109,6 @@ class $QuizPraEntityTable extends QuizPraEntity
     if (data.containsKey('num1')) {
       context.handle(
           _num1Meta, num1.isAcceptableOrUnknown(data['num1']!, _num1Meta));
-    } else if (isInserting) {
-      context.missing(_num1Meta);
     }
     if (data.containsKey('sign')) {
       context.handle(
@@ -1088,8 +1119,6 @@ class $QuizPraEntityTable extends QuizPraEntity
     if (data.containsKey('num2')) {
       context.handle(
           _num2Meta, num2.isAcceptableOrUnknown(data['num2']!, _num2Meta));
-    } else if (isInserting) {
-      context.missing(_num2Meta);
     }
     if (data.containsKey('answer')) {
       context.handle(_answerMeta,
@@ -1119,11 +1148,11 @@ class $QuizPraEntityTable extends QuizPraEntity
       preId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}preId'])!,
       num1: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}num1'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}num1']),
       sign: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}sign'])!,
       num2: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}num2'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}num2']),
       answer: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}answer'])!,
       answerSelect: attachedDatabase.typeMapping
@@ -1141,17 +1170,17 @@ class QuizPraEntityData extends DataClass
     implements Insertable<QuizPraEntityData> {
   final int id;
   final int preId;
-  final int num1;
+  final int? num1;
   final String sign;
-  final int num2;
+  final int? num2;
   final int answer;
   final int answerSelect;
   const QuizPraEntityData(
       {required this.id,
       required this.preId,
-      required this.num1,
+      this.num1,
       required this.sign,
-      required this.num2,
+      this.num2,
       required this.answer,
       required this.answerSelect});
   @override
@@ -1159,9 +1188,13 @@ class QuizPraEntityData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['preId'] = Variable<int>(preId);
-    map['num1'] = Variable<int>(num1);
+    if (!nullToAbsent || num1 != null) {
+      map['num1'] = Variable<int>(num1);
+    }
     map['sign'] = Variable<String>(sign);
-    map['num2'] = Variable<int>(num2);
+    if (!nullToAbsent || num2 != null) {
+      map['num2'] = Variable<int>(num2);
+    }
     map['answer'] = Variable<int>(answer);
     map['answerSelect'] = Variable<int>(answerSelect);
     return map;
@@ -1171,9 +1204,9 @@ class QuizPraEntityData extends DataClass
     return QuizPraEntityCompanion(
       id: Value(id),
       preId: Value(preId),
-      num1: Value(num1),
+      num1: num1 == null && nullToAbsent ? const Value.absent() : Value(num1),
       sign: Value(sign),
-      num2: Value(num2),
+      num2: num2 == null && nullToAbsent ? const Value.absent() : Value(num2),
       answer: Value(answer),
       answerSelect: Value(answerSelect),
     );
@@ -1185,9 +1218,9 @@ class QuizPraEntityData extends DataClass
     return QuizPraEntityData(
       id: serializer.fromJson<int>(json['id']),
       preId: serializer.fromJson<int>(json['preId']),
-      num1: serializer.fromJson<int>(json['num1']),
+      num1: serializer.fromJson<int?>(json['num1']),
       sign: serializer.fromJson<String>(json['sign']),
-      num2: serializer.fromJson<int>(json['num2']),
+      num2: serializer.fromJson<int?>(json['num2']),
       answer: serializer.fromJson<int>(json['answer']),
       answerSelect: serializer.fromJson<int>(json['answerSelect']),
     );
@@ -1198,9 +1231,9 @@ class QuizPraEntityData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'preId': serializer.toJson<int>(preId),
-      'num1': serializer.toJson<int>(num1),
+      'num1': serializer.toJson<int?>(num1),
       'sign': serializer.toJson<String>(sign),
-      'num2': serializer.toJson<int>(num2),
+      'num2': serializer.toJson<int?>(num2),
       'answer': serializer.toJson<int>(answer),
       'answerSelect': serializer.toJson<int>(answerSelect),
     };
@@ -1209,17 +1242,17 @@ class QuizPraEntityData extends DataClass
   QuizPraEntityData copyWith(
           {int? id,
           int? preId,
-          int? num1,
+          Value<int?> num1 = const Value.absent(),
           String? sign,
-          int? num2,
+          Value<int?> num2 = const Value.absent(),
           int? answer,
           int? answerSelect}) =>
       QuizPraEntityData(
         id: id ?? this.id,
         preId: preId ?? this.preId,
-        num1: num1 ?? this.num1,
+        num1: num1.present ? num1.value : this.num1,
         sign: sign ?? this.sign,
-        num2: num2 ?? this.num2,
+        num2: num2.present ? num2.value : this.num2,
         answer: answer ?? this.answer,
         answerSelect: answerSelect ?? this.answerSelect,
       );
@@ -1256,9 +1289,9 @@ class QuizPraEntityData extends DataClass
 class QuizPraEntityCompanion extends UpdateCompanion<QuizPraEntityData> {
   final Value<int> id;
   final Value<int> preId;
-  final Value<int> num1;
+  final Value<int?> num1;
   final Value<String> sign;
-  final Value<int> num2;
+  final Value<int?> num2;
   final Value<int> answer;
   final Value<int> answerSelect;
   const QuizPraEntityCompanion({
@@ -1273,15 +1306,13 @@ class QuizPraEntityCompanion extends UpdateCompanion<QuizPraEntityData> {
   QuizPraEntityCompanion.insert({
     this.id = const Value.absent(),
     required int preId,
-    required int num1,
+    this.num1 = const Value.absent(),
     required String sign,
-    required int num2,
+    this.num2 = const Value.absent(),
     required int answer,
     required int answerSelect,
   })  : preId = Value(preId),
-        num1 = Value(num1),
         sign = Value(sign),
-        num2 = Value(num2),
         answer = Value(answer),
         answerSelect = Value(answerSelect);
   static Insertable<QuizPraEntityData> custom({
@@ -1307,9 +1338,9 @@ class QuizPraEntityCompanion extends UpdateCompanion<QuizPraEntityData> {
   QuizPraEntityCompanion copyWith(
       {Value<int>? id,
       Value<int>? preId,
-      Value<int>? num1,
+      Value<int?>? num1,
       Value<String>? sign,
-      Value<int>? num2,
+      Value<int?>? num2,
       Value<int>? answer,
       Value<int>? answerSelect}) {
     return QuizPraEntityCompanion(

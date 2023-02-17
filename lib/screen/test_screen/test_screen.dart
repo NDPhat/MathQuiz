@@ -1,10 +1,22 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/data/local/driff/db/db_app.dart';
+import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
+import 'package:math/data/local/repo/test/test_repo.dart';
+import 'package:math/data/model/test_model.dart';
+import 'package:math/domain/bloc/test/test_cubit.dart';
+import 'package:math/domain/home_repo.dart';
+import 'package:math/main.dart';
+import 'package:math/widget/show_alert_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../cons/color.dart';
 import '../../cons/constants.dart';
+import '../../cons/text_style.dart';
 import '../../data/model/make_quiz.dart';
 import '../../logic/quizBrain.dart';
 import '../../widget/landscape_mode.dart';
@@ -22,15 +34,24 @@ class _TestScreenState extends State<TestScreen> {
   late Timer _timer;
   int _totalTime = 0;
   late QuizBrain _quizBrain;
+  late PreTest preTest;
   int _score = 0;
   int _highScore = 0;
   double _value = 0;
+  int userChoose = 1;
+  int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
+  late HomeRepo homeRepo;
   @override
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-    _startGame();
+    preTest = PreTest();
+    homeRepo = HomeRepo(preTestLocalRepo: instance.get<PreTestLocalRepo>());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      preTest = await ModalRoute.of(context)!.settings.arguments as PreTest;
+      _startGame();
+    });
   }
 
   void _startGame() async {
@@ -54,6 +75,7 @@ class _TestScreenState extends State<TestScreen> {
       } else {
         setState(() {
           _totalTime = 0;
+          _updateScoreAndNumQ();
           showMyDialog();
           _timer.cancel();
         });
@@ -61,19 +83,37 @@ class _TestScreenState extends State<TestScreen> {
     });
   }
 
+  void _addData(BuildContext context) {
+    context.read<TestCubit>().addDataToLocal(QuizTestEntityCompanion(
+        preId: Value(preTest.id!),
+        num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
+        sign: Value(_quizBrain.quiz.toString().split(" ")[1]),
+        num2: Value(int.parse(_quizBrain.quiz.toString().split(" ")[2])),
+        answer: Value(_quizBrain.quizAnswer),
+        answerSelect: Value(userChoose ?? 0)));
+  }
+
+  _updateScoreAndNumQ() {
+    homeRepo.updateScoreAndSumQ(_score, _totalNumberOfQuizzes, preTest.id!);
+  }
+
   void _playSound(String soundName) {
     final _player = AudioCache();
     _player.play(soundName);
   }
 
-  void _checkAnswer(int userChoice) async {
+  void _checkAnswer(int userChoice, BuildContext context) async {
     _totalNumberOfQuizzes++;
     if (userChoice == _quizBrain.quizAnswer) {
       _playSound('correct-choice.wav');
       _score++;
     } else {
+      setState(() {
+        falseChoose++;
+      });
       _playSound('wrong-choice.wav');
     }
+    _addData(context);
     _quizBrain.makeQuizTest();
   }
 
@@ -82,11 +122,10 @@ class _TestScreenState extends State<TestScreen> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return ShowAlertDialog(
+        return ShowAlerTesttDialog(
           score: _score,
           totalNumberOfQuizzes: _totalNumberOfQuizzes,
-          startGame: _startGame,
-          preId: 1,
+          preId: preTest.id!,
         );
       },
     );
@@ -96,6 +135,11 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        leading: const Icon(Icons.school),
+        backgroundColor: colorMainBlueChart,
+        title: const Text('Math Practice', style: s30f500colorSysWhite),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -110,8 +154,15 @@ class _TestScreenState extends State<TestScreen> {
                 percentValue: _value,
                 totalTime: _totalTime,
                 onTap: (int value) {
-                  _checkAnswer(value);
+                  setState(() {
+                    userChoose = value;
+                  });
+                  _checkAnswer(value, context);
                 },
+                trueQ: _score,
+                falseQ: falseChoose,
+                totalQ: 0,
+                quizNow: _totalNumberOfQuizzes,
               )
             : LandscapeMode(
                 highscore: _highScore,
@@ -120,7 +171,7 @@ class _TestScreenState extends State<TestScreen> {
                 percentValue: _value,
                 totalTime: _totalTime,
                 onTap: (int value) {
-                  _checkAnswer(value);
+                  _checkAnswer(value, context);
                 },
               ),
       ),

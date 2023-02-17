@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/enum/pre_status.dart';
 import 'package:math/data/model/make_quiz.dart';
+import 'package:math/data/model/option_quiz.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/routers/navigation.dart';
 import 'package:math/widget/button_custom.dart';
@@ -17,7 +18,8 @@ class PreMakeQuiz extends StatelessWidget {
   String selectedValue = '5s';
   @override
   Widget build(BuildContext context) {
-    final sign = ModalRoute.of(context)!.settings.arguments as String;
+    OptionQuiz option =
+        ModalRoute.of(context)!.settings.arguments as OptionQuiz;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +39,7 @@ class PreMakeQuiz extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  sign,
+                  option.sign ?? '+',
                   style: s60f700colorSysBlue,
                 ),
                 SizedBox(
@@ -50,9 +52,11 @@ class PreMakeQuiz extends StatelessWidget {
                     hintText: 'How many question',
                     size: size.width * 0.8,
                     onChanged: (value) {
-                      context
-                          .read<PreQuizCubit>()
-                          .numQChanged(int.parse(value));
+                      if (value.isNotEmpty) {
+                        context
+                            .read<PreQuizCubit>()
+                            .numQChanged(int.parse(value));
+                      }
                     },
                     hasError: state.numQMess != "",
                     isHidden: state.numQMess != "",
@@ -69,9 +73,11 @@ class PreMakeQuiz extends StatelessWidget {
                     hintText: 'Start Value',
                     size: size.width * 0.8,
                     onChanged: (value) {
-                      context
-                          .read<PreQuizCubit>()
-                          .sNumChanged(int.parse(value));
+                      if (value.isNotEmpty) {
+                        context
+                            .read<PreQuizCubit>()
+                            .sNumChanged(int.parse(value ?? "1"));
+                      }
                     },
                     hasError: state.sNumMess != "",
                     isHidden: state.sNumMess != "",
@@ -88,9 +94,11 @@ class PreMakeQuiz extends StatelessWidget {
                     hintText: 'End Value',
                     size: size.width * 0.8,
                     onChanged: (value) {
-                      context
-                          .read<PreQuizCubit>()
-                          .eNumChanged(int.parse(value));
+                      if (value.isNotEmpty) {
+                        context
+                            .read<PreQuizCubit>()
+                            .eNumChanged(int.parse(value ?? "1"));
+                      }
                     },
                     hasError: state.eNumMess != "",
                     isHidden: state.eNumMess != "",
@@ -164,14 +172,16 @@ class PreMakeQuiz extends StatelessWidget {
                               ),
                               actions: <Widget>[
                                 RoundedButton(
-                                  text: 'Back',
                                   press: () {
                                     Navigator.pop(context);
                                   },
                                   color: colorMainBlue,
                                   width: size.width,
                                   height: size.height * 0.06,
-                                  textStyle: s16f700ColorBlueMa,
+                                  child: const Text(
+                                    'BACK',
+                                    style: s16f700ColorBlueMa,
+                                  ),
                                 )
                               ],
                             ),
@@ -179,37 +189,44 @@ class PreMakeQuiz extends StatelessWidget {
                         );
                         context.read<PreQuizCubit>().clearOldDataErrorForm();
                       } else if (state.status == PreQuizStatus.success) {
-                        Navigator.pushNamed(context, Routers.game,
+                        Navigator.pushNamed(context, Routers.trueFalse,
                             arguments: PreQuiz(
                                 numQ: state.numQ,
                                 timePer: state.time,
                                 id: state.id,
-                                sign: sign,
+                                sign: option.sign!,
+                                option: option.optionQuiz!,
                                 startNum: state.sNum,
                                 endNum: state.eNum));
                       }
                     },
                     child: RoundedButton(
-                        text: 'GENERATE QUIZ',
-                        press: () {
-                          context.read<PreQuizCubit>().addPreQuiz(sign);
-                        },
-                        color: colorBlueQuaternery,
-                        width: size.width * 0.8,
-                        height: size.height * 0.06,
-                        textStyle: s20f700ColorErrorPro)),
+                      press: () {
+                        context.read<PreQuizCubit>().addPreQuiz(option.sign!);
+                      },
+                      color: colorBlueQuaternery,
+                      width: size.width * 0.8,
+                      height: size.height * 0.06,
+                      child: const Text(
+                        'START',
+                        style: s20f700ColorMBlue,
+                      ),
+                    )),
                 SizedBox(
                   height: size.height * 0.03,
                 ),
                 RoundedButton(
-                    text: 'BACK',
-                    press: () {
-                      Navigator.pop(context);
-                    },
-                    color: colorBlueQuaternery,
-                    width: size.width * 0.8,
-                    height: size.height * 0.06,
-                    textStyle: s20f700ColorErrorPro),
+                  press: () {
+                    Navigator.pop(context);
+                  },
+                  color: colorBlueQuaternery,
+                  width: size.width * 0.8,
+                  height: size.height * 0.06,
+                  child: const Text(
+                    'BACK',
+                    style: s20f700ColorErrorPro,
+                  ),
+                ),
               ],
             ),
           )),

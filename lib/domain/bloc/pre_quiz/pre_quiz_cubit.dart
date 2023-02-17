@@ -100,6 +100,7 @@ class PreQuizCubit extends Cubit<PreQuizState> {
             eNum: Value(state.eNum),
             numQ: Value(state.numQ),
             sign: Value(sign),
+            option: Value('truefalse'),
             timePer: Value(state.time),
             dateSave: Value(formatDateInput.format(DateTime.now())));
         //insert task

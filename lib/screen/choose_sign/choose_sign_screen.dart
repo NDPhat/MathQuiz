@@ -22,83 +22,158 @@ class ChooseSignScreen extends StatelessWidget {
             top: size.height * 0.1,
             left: size.width * 0.05,
             right: size.width * 0.05,
-            bottom: size.height * 0.1),
+            bottom: size.height * 0.05),
         child: Column(
           children: [
             const Text(
-              'Choose any one',
+              'CHOOSE ONE SIGN',
               style: s30f700colorAccBlue,
             ),
             SizedBox(
               height: size.height * 0.1,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RoundedButton(
-                  text: '+',
-                  press: () {
-                    Navigator.pushNamed(context, Routers.premake,
-                        arguments: '+');
-                  },
-                  color: colorBlueQuaternery,
-                  width: size.width * 0.4,
-                  height: size.height * 0.15,
-                  textStyle: s60BoldColorSysWhite,
-                ),
-                RoundedButton(
-                    text: '-',
-                    press: () {
-                      Navigator.pushNamed(context, Routers.premake,
-                          arguments: '-');
-                    },
-                    color: colorBlueQuaternery,
-                    width: size.width * 0.4,
-                    height: size.height * 0.15,
-                    textStyle: s60BoldColorSysWhite),
-              ],
-            ),
-            SizedBox(
-              height: size.height * 0.1,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RoundedButton(
-                  text: 'x',
-                  press: () {
-                    Navigator.pushNamed(context, Routers.premake,
-                        arguments: 'x');
-                  },
-                  color: colorBlueQuaternery,
-                  width: size.width * 0.4,
-                  height: size.height * 0.15,
-                  textStyle: s60BoldColorSysWhite,
-                ),
-                RoundedButton(
-                    text: '/',
-                    press: () {
-                      Navigator.pushNamed(context, Routers.premake,
-                          arguments: '/');
-                    },
-                    color: colorBlueQuaternery,
-                    width: size.width * 0.4,
-                    height: size.height * 0.15,
-                    textStyle: s60BoldColorSysWhite),
-              ],
+            Container(
+              padding: const EdgeInsets.only(
+                  top: 20, bottom: 20, left: 10, right: 10),
+              decoration: const BoxDecoration(
+                  color: colorSystemPurpleTertiary,
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          RoundedButton(
+                            press: () {
+                              Navigator.pushNamed(context, Routers.chooseOption,
+                                  arguments: '+');
+                            },
+                            color: colorGreyDisable,
+                            width: size.width * 0.35,
+                            height: size.height * 0.1,
+                            child: Icon(
+                              Icons.add_box,
+                              size: 60,
+                              color: colorMainBlueChart,
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.015,
+                          ),
+                          const Text(
+                            'ADDITION',
+                            style: s20f700ColorGreyte,
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.03,
+                      ),
+                      Column(
+                        children: [
+                          RoundedButton(
+                            press: () {
+                              Navigator.pushNamed(context, Routers.chooseOption,
+                                  arguments: '-');
+                            },
+                            color: colorGreyDisable,
+                            width: size.width * 0.35,
+                            height: size.height * 0.1,
+                            child: Icon(
+                              Icons.remove_circle,
+                              size: 60,
+                              color: colorMainBlueChart,
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.015,
+                          ),
+                          const Text(
+                            'SUBTRACTION',
+                            style: s20f700ColorGreyte,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.1,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          RoundedButton(
+                            press: () {
+                              Navigator.pushNamed(context, Routers.chooseOption,
+                                  arguments: 'x');
+                            },
+                            color: colorGreyDisable,
+                            width: size.width * 0.35,
+                            height: size.height * 0.1,
+                            child: Icon(
+                              Icons.close,
+                              size: 60,
+                              color: colorMainBlueChart,
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.015,
+                          ),
+                          const Text(
+                            'MULTIPLICATION',
+                            style: s20f700ColorGreyte,
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.05,
+                      ),
+                      Column(
+                        children: [
+                          RoundedButton(
+                            press: () {
+                              Navigator.pushNamed(context, Routers.chooseOption,
+                                  arguments: '/');
+                            },
+                            color: colorGreyDisable,
+                            width: size.width * 0.35,
+                            height: size.height * 0.1,
+                            child: Image.asset('assets/images/division.png'),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.015,
+                          ),
+                          const Text(
+                            'DIVISION',
+                            style: s20f700ColorGreyte,
+                          )
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: size.height * 0.1,
             ),
             RoundedButton(
-                text: ' BACK',
-                press: () {
-                  Navigator.pop(context);
-                },
-                color: colorBlueQuaternery,
-                width: size.width * 0.8,
-                height: size.height * 0.06,
-                textStyle: s20f700ColorErrorPro),
+              press: () {
+                Navigator.pop(context);
+              },
+              color: colorBlueQuaternery,
+              width: size.width * 0.8,
+              height: size.height * 0.06,
+              child: const Text(
+                'BACK',
+                style: s20f700ColorErrorPro,
+              ),
+            ),
           ],
         ),
       ),

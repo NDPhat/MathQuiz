@@ -15,11 +15,11 @@ class PreQuizTitle extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.only(bottom: 10, top: 10),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         //  width: SizeConfig.screenWidth * 0.78,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: preQuiz.score! < preQuiz.numQ!
+          color: (preQuiz.score ?? 1) < preQuiz.numQ!
               ? colorSystemErrorTer
               : colorBlueQuaternery,
         ),
@@ -36,7 +36,7 @@ class PreQuizTitle extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  " SCORE : ${preQuiz.score!}",
+                  " SCORE : ${preQuiz.score ?? 1}",
                   style: GoogleFonts.lato(
                     textStyle: s14f500ColorMainTe,
                   ),
@@ -60,7 +60,7 @@ class PreQuizTitle extends StatelessWidget {
           RotatedBox(
             quarterTurns: 3,
             child: Text(
-              preQuiz.score! == preQuiz.numQ! ? "COMPLETED" : "NOT GOOD",
+              (preQuiz.score?? 1) == preQuiz.numQ! ? "COMPLETED" : "NOT GOOD",
               style: GoogleFonts.lato(
                 textStyle: s14f500ColorGreyTe,
               ),
@@ -70,6 +70,7 @@ class PreQuizTitle extends StatelessWidget {
       ),
     );
   }
+
   _getMath(String sign) {
     switch (sign) {
       case "+":

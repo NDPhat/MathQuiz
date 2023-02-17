@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
-import 'package:math/data/local/repo/quiz_pra/quiz_pra_repo.dart';
+import 'package:math/data/local/repo/test/test_repo.dart';
 import 'package:math/routers/navigation.dart';
 import 'package:math/widget/answer_widget.dart';
 import 'package:math/widget/button_custom.dart';
-
 import '../../cons/color.dart';
 import '../../cons/text_style.dart';
 import '../../main.dart';
@@ -33,10 +31,10 @@ class CheckAnswerScreen extends StatelessWidget {
           children: [
             SizedBox(
               height: size.height * 0.7,
-              child: StreamBuilder<List<QuizPraEntityData>>(
+              child: StreamBuilder<List<QuizTestEntityData>>(
                   stream: instance
-                      .get<QuizPraLocalRepo>()
-                      .getAllQuizPraByPreQuizId(preId),
+                      .get<TestLocalRepo>()
+                      .getAllTestByPreTestId(preId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
@@ -58,14 +56,17 @@ class CheckAnswerScreen extends StatelessWidget {
                   }),
             ),
             RoundedButton(
-                text: 'BACK',
-                press: () {
-                  Navigator.pop(context);
-                },
-                color: colorBlueQuaternery,
-                width: size.width * 0.8,
-                height: size.height * 0.06,
-                textStyle: s20f700ColorErrorPro),
+              press: () {
+                Navigator.pushNamed(context, Routers.home);
+              },
+              color: colorBlueQuaternery,
+              width: size.width * 0.8,
+              height: size.height * 0.06,
+              child: const Text(
+                'BACK',
+                style: s20f700ColorErrorPro,
+              ),
+            ),
           ],
         ),
       ),

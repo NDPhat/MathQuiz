@@ -1,14 +1,14 @@
-part of 'history_cubit.dart';
+part of 'history_pra_cubit.dart';
 
-class HistoryState extends Equatable {
+class HistoryPraState extends Equatable {
   String timeNow;
 
-  HistoryState({
+  HistoryPraState({
     required this.timeNow,
     //this.user,
   });
-  factory HistoryState.initial() {
-    return HistoryState(
+  factory HistoryPraState.initial() {
+    return HistoryPraState(
       timeNow: formatDateInput.format(DateTime.now()),
       //user: null,
     );
@@ -22,11 +22,11 @@ class HistoryState extends Equatable {
 
   ];
 
-  HistoryState copyWith({
+  HistoryPraState copyWith({
     String? timeNow,
     // auth.user? user,
   }) {
-    return HistoryState(
+    return HistoryPraState(
       timeNow: timeNow ?? this.timeNow,
       //user: user ?? this.user,
     );

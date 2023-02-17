@@ -31,9 +31,18 @@ class PreTestLocalRepoImpl extends PreTestLocalRepo {
   }
 
   @override
-  Future<void> updatePreTest(PreTestEntityData entity) async {
-    (appDb.update(appDb.preTestEntity)
-          ..where((tbl) => tbl.id.equals(entity.id)))
-        .write(entity);
+  Future<void> updatePreTest(int score, int sumQ, int id) async {
+    (appDb.update(appDb.preTestEntity)..where((tbl) => tbl.id.equals(id)))
+        .write((PreTestEntityCompanion(
+            score: Value(score), sumQuiz: Value(sumQ))));
+  }
+
+  @override
+  Future<PreTestEntityData> getLatestPreTest() async {
+    List<PreTestEntityData> list = await (appDb.select(appDb.preTestEntity)
+          ..orderBy(
+              [(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+        .get();
+    return list.first;
   }
 }
