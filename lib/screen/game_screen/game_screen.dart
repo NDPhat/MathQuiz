@@ -10,6 +10,7 @@ import 'package:math/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+import '../../application/utils/format.dart';
 import '../../cons/constants.dart';
 import '../../data/local/repo/quiz_pra/quiz_pra_repo.dart';
 import '../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
@@ -30,6 +31,7 @@ class _GameScreenState extends State<GameScreen> {
   int _score = 0;
   int _highScore = 0;
   late PreQuiz _preQuiz;
+  int _preIdNow = 0;
   int userChoose = 1;
   double _value = 0;
   int _totalNumberOfQuizzes = 0;
@@ -44,6 +46,7 @@ class _GameScreenState extends State<GameScreen> {
         GameRepository(quizPraLocalRepo: instance.get<QuizPraLocalRepo>());
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuiz;
+      _preIdNow = _preQuiz.id!;
       _startGame(_preQuiz);
     });
   }
@@ -69,9 +72,17 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _value = 0;
       _totalTime = 0;
+      _preIdNow++;
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
+    instance.get<PreQuizLocalRepo>().insertPreQuiz(PreQuizEntityCompanion(
+        sNum: Value(_preQuiz.startNum!),
+        eNum: Value(_preQuiz.endNum!),
+        numQ: Value(_preQuiz.numQ!),
+        sign: Value(_preQuiz.sign!),
+        timePer: Value(_preQuiz.timePer!),
+        dateSave: Value(formatDateInput.format(DateTime.now()))));
     _quizBrain.makeQuiz(_preQuiz);
     _startTimer();
     _value = 1;
@@ -95,6 +106,7 @@ class _GameScreenState extends State<GameScreen> {
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
           _endGame();
         } else {
+          _saveData();
           _resetScreen();
         }
       }
@@ -109,17 +121,17 @@ class _GameScreenState extends State<GameScreen> {
 
   void _saveData() {
     _gameRepository.addDataToLocal(QuizPraEntityCompanion(
-        preId: Value(_preQuiz.id!),
+        preId: Value(_preIdNow),
         num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
         sign: Value(_preQuiz.sign!),
         num2: Value(int.parse(_quizBrain.quiz.toString().split(" ")[2])),
         answer: Value(_quizBrain.quizAnswer),
-        answerSelect: Value(userChoose)));
+        answerSelect: Value(userChoose ?? 0)));
   }
 
   _updateScore() {
     PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizLocalRepo>())
-        .updateScore(_score, _preQuiz.id!);
+        .updateScore(_score, _preIdNow);
   }
 
   void _endGame() {

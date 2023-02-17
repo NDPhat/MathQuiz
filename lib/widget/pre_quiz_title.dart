@@ -29,7 +29,7 @@ class PreQuizTitle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  " PRACTICE WITH ${_getMath(preQuiz.sign!.toString())!} MATH",
+                  "PRACTICE WITH ${_getMath(preQuiz.sign!.toString())!} MATH",
                   style: GoogleFonts.lato(
                     textStyle: s14f500ColorMainTe,
                   ),

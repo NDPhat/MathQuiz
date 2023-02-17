@@ -14,8 +14,8 @@ import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
 import '../../widget/pre_quiz_title.dart';
 
-class History extends StatelessWidget {
-  const History({Key? key}) : super(key: key);
+class HistoryPractice extends StatelessWidget {
+  const HistoryPractice({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +137,15 @@ class History extends StatelessWidget {
                                                   ),
                                                   RoundedButton(
                                                     text: 'Detail Task',
-                                                    press: () {},
+                                                    press: () {
+                                                      Navigator.pop(context);
+
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          Routers.checkAnswer,
+                                                          arguments: snapshot
+                                                              .data![index].id);
+                                                    },
                                                     color: colorGreyTetiary,
                                                     width: size.width * 0.8,
                                                     height: size.height * 0.06,

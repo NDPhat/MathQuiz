@@ -55,7 +55,7 @@ class AnswerWidget extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "$num1 + $num2 = ",
+                      "$num1 $sign $num2 = ",
                       style: s20f700ColorMBlue,
                     ),
                     Text(

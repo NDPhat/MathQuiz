@@ -16,7 +16,6 @@ class CheckAnswerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int preId = ModalRoute.of(context)!.settings.arguments as int;
-
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +32,7 @@ class CheckAnswerScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: size.height*0.7,
+              height: size.height * 0.7,
               child: StreamBuilder<List<QuizPraEntityData>>(
                   stream: instance
                       .get<QuizPraLocalRepo>()
@@ -59,9 +58,9 @@ class CheckAnswerScreen extends StatelessWidget {
                   }),
             ),
             RoundedButton(
-                text: 'BACK HOME',
+                text: 'BACK',
                 press: () {
-                  Navigator.pushNamed(context, Routers.home);
+                  Navigator.pop(context);
                 },
                 color: colorBlueQuaternery,
                 width: size.width * 0.8,

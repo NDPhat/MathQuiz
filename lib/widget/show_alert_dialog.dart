@@ -43,12 +43,6 @@ class ShowAlertDialog extends StatelessWidget {
           },
           child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
         ),
-        TextButton(
-          onPressed: () {
-            Navigator.pushNamed(context, Routers.checkAnswer,arguments: preId);
-          },
-          child: const Text('CHECK ANSWER', style: kDialogButtonsTS),
-        ),
       ],
     );
   }

@@ -48,8 +48,8 @@ class _TestScreenState extends State<TestScreen> {
     _timer = Timer.periodic(speed, (timer) {
       if (_value > 0) {
         setState(() {
-          _value > 1 / 1000 ? _value -= 1 / 1000 : _value = 0;
-          _totalTime = (_value * 100 + 1).toInt();
+          _value > 1 / 600 ? _value -= 1 / 600 : _value = 0;
+          _totalTime = (_value * 60 + 1).toInt();
         });
       } else {
         setState(() {
