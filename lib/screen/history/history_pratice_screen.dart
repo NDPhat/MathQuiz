@@ -5,10 +5,10 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:math/application/extension/to_get_model.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
-import 'package:math/domain/bloc/check_answer/history_cubit.dart';
 
 import '../../cons/color.dart';
 import '../../cons/text_style.dart';
+import '../../domain/bloc/history/history_pra_cubit.dart';
 import '../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
@@ -37,7 +37,7 @@ class HistoryPractice extends StatelessWidget {
             SizedBox(
               height: size.height * 0.04,
               width: size.width,
-              child: BlocBuilder<HistoryCubit, HistoryState>(
+              child: BlocBuilder<HistoryPraCubit, HistoryPraState>(
                   buildWhen: (previousState, state) {
                 return previousState.timeNow != state.timeNow;
               }, builder: (context, state) {
@@ -66,7 +66,7 @@ class HistoryPractice extends StatelessWidget {
             SizedBox(
               height: size.height * 0.02,
             ),
-            BlocBuilder<HistoryCubit, HistoryState>(builder: (context, state) {
+            BlocBuilder<HistoryPraCubit, HistoryPraState>(builder: (context, state) {
               return Container(
                 child: DatePicker(
                   DateTime.now().subtract(const Duration(days: 6)),
@@ -75,12 +75,12 @@ class HistoryPractice extends StatelessWidget {
                   initialSelectedDate: DateTime.now(),
                   selectionColor: colorMainBlue,
                   onDateChange: (date) {
-                    context.read<HistoryCubit>().dateChanged(date);
+                    context.read<HistoryPraCubit>().dateChanged(date);
                   },
                 ),
               );
             }),
-            BlocBuilder<HistoryCubit, HistoryState>(buildWhen: (pre, now) {
+            BlocBuilder<HistoryPraCubit, HistoryPraState>(buildWhen: (pre, now) {
               return pre.timeNow != now.timeNow;
             }, builder: (context, state) {
               return Expanded(
@@ -119,7 +119,7 @@ class HistoryPractice extends StatelessWidget {
                                                     text: 'Delete Task',
                                                     press: () {
                                                       context
-                                                          .read<HistoryCubit>()
+                                                          .read<HistoryPraCubit>()
                                                           .deletePreQuiz(
                                                               snapshot
                                                                   .data![index]
@@ -175,7 +175,7 @@ class HistoryPractice extends StatelessWidget {
             RoundedButton(
                 text: 'BACK',
                 press: () {
-                  Navigator.pushNamed(context, Routers.home);
+                  Navigator.pop(context);
                 },
                 color: colorBlueQuaternery,
                 width: size.width * 0.8,

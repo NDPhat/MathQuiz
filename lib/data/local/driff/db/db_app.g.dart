@@ -417,19 +417,19 @@ class $PreTestEntityTable extends PreTestEntity
   late final GeneratedColumn<String> dateSave = GeneratedColumn<String>(
       'dateSave', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _sumTimeMeta =
-      const VerificationMeta('sumTime');
+  static const VerificationMeta _sumQuizMeta =
+      const VerificationMeta('sumQuiz');
   @override
-  late final GeneratedColumn<int> sumTime = GeneratedColumn<int>(
-      'sumTime', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+  late final GeneratedColumn<int> sumQuiz = GeneratedColumn<int>(
+      'sumQuiz', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _scoreMeta = const VerificationMeta('score');
   @override
   late final GeneratedColumn<int> score = GeneratedColumn<int>(
       'score', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
   @override
-  List<GeneratedColumn> get $columns => [id, dateSave, sumTime, score];
+  List<GeneratedColumn> get $columns => [id, dateSave, sumQuiz, score];
   @override
   String get aliasedName => _alias ?? 'pre_test_entity';
   @override
@@ -448,11 +448,9 @@ class $PreTestEntityTable extends PreTestEntity
     } else if (isInserting) {
       context.missing(_dateSaveMeta);
     }
-    if (data.containsKey('sumTime')) {
-      context.handle(_sumTimeMeta,
-          sumTime.isAcceptableOrUnknown(data['sumTime']!, _sumTimeMeta));
-    } else if (isInserting) {
-      context.missing(_sumTimeMeta);
+    if (data.containsKey('sumQuiz')) {
+      context.handle(_sumQuizMeta,
+          sumQuiz.isAcceptableOrUnknown(data['sumQuiz']!, _sumQuizMeta));
     }
     if (data.containsKey('score')) {
       context.handle(
@@ -471,8 +469,8 @@ class $PreTestEntityTable extends PreTestEntity
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       dateSave: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}dateSave'])!,
-      sumTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}sumTime'])!,
+      sumQuiz: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}sumQuiz']),
       score: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}score']),
     );
@@ -488,19 +486,18 @@ class PreTestEntityData extends DataClass
     implements Insertable<PreTestEntityData> {
   final int id;
   final String dateSave;
-  final int sumTime;
+  final int? sumQuiz;
   final int? score;
   const PreTestEntityData(
-      {required this.id,
-      required this.dateSave,
-      required this.sumTime,
-      this.score});
+      {required this.id, required this.dateSave, this.sumQuiz, this.score});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['dateSave'] = Variable<String>(dateSave);
-    map['sumTime'] = Variable<int>(sumTime);
+    if (!nullToAbsent || sumQuiz != null) {
+      map['sumQuiz'] = Variable<int>(sumQuiz);
+    }
     if (!nullToAbsent || score != null) {
       map['score'] = Variable<int>(score);
     }
@@ -511,7 +508,9 @@ class PreTestEntityData extends DataClass
     return PreTestEntityCompanion(
       id: Value(id),
       dateSave: Value(dateSave),
-      sumTime: Value(sumTime),
+      sumQuiz: sumQuiz == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sumQuiz),
       score:
           score == null && nullToAbsent ? const Value.absent() : Value(score),
     );
@@ -523,7 +522,7 @@ class PreTestEntityData extends DataClass
     return PreTestEntityData(
       id: serializer.fromJson<int>(json['id']),
       dateSave: serializer.fromJson<String>(json['dateSave']),
-      sumTime: serializer.fromJson<int>(json['sumTime']),
+      sumQuiz: serializer.fromJson<int?>(json['sumQuiz']),
       score: serializer.fromJson<int?>(json['score']),
     );
   }
@@ -533,7 +532,7 @@ class PreTestEntityData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'dateSave': serializer.toJson<String>(dateSave),
-      'sumTime': serializer.toJson<int>(sumTime),
+      'sumQuiz': serializer.toJson<int?>(sumQuiz),
       'score': serializer.toJson<int?>(score),
     };
   }
@@ -541,12 +540,12 @@ class PreTestEntityData extends DataClass
   PreTestEntityData copyWith(
           {int? id,
           String? dateSave,
-          int? sumTime,
+          Value<int?> sumQuiz = const Value.absent(),
           Value<int?> score = const Value.absent()}) =>
       PreTestEntityData(
         id: id ?? this.id,
         dateSave: dateSave ?? this.dateSave,
-        sumTime: sumTime ?? this.sumTime,
+        sumQuiz: sumQuiz.present ? sumQuiz.value : this.sumQuiz,
         score: score.present ? score.value : this.score,
       );
   @override
@@ -554,52 +553,51 @@ class PreTestEntityData extends DataClass
     return (StringBuffer('PreTestEntityData(')
           ..write('id: $id, ')
           ..write('dateSave: $dateSave, ')
-          ..write('sumTime: $sumTime, ')
+          ..write('sumQuiz: $sumQuiz, ')
           ..write('score: $score')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, dateSave, sumTime, score);
+  int get hashCode => Object.hash(id, dateSave, sumQuiz, score);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PreTestEntityData &&
           other.id == this.id &&
           other.dateSave == this.dateSave &&
-          other.sumTime == this.sumTime &&
+          other.sumQuiz == this.sumQuiz &&
           other.score == this.score);
 }
 
 class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
   final Value<int> id;
   final Value<String> dateSave;
-  final Value<int> sumTime;
+  final Value<int?> sumQuiz;
   final Value<int?> score;
   const PreTestEntityCompanion({
     this.id = const Value.absent(),
     this.dateSave = const Value.absent(),
-    this.sumTime = const Value.absent(),
+    this.sumQuiz = const Value.absent(),
     this.score = const Value.absent(),
   });
   PreTestEntityCompanion.insert({
     this.id = const Value.absent(),
     required String dateSave,
-    required int sumTime,
+    this.sumQuiz = const Value.absent(),
     this.score = const Value.absent(),
-  })  : dateSave = Value(dateSave),
-        sumTime = Value(sumTime);
+  }) : dateSave = Value(dateSave);
   static Insertable<PreTestEntityData> custom({
     Expression<int>? id,
     Expression<String>? dateSave,
-    Expression<int>? sumTime,
+    Expression<int>? sumQuiz,
     Expression<int>? score,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (dateSave != null) 'dateSave': dateSave,
-      if (sumTime != null) 'sumTime': sumTime,
+      if (sumQuiz != null) 'sumQuiz': sumQuiz,
       if (score != null) 'score': score,
     });
   }
@@ -607,12 +605,12 @@ class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
   PreTestEntityCompanion copyWith(
       {Value<int>? id,
       Value<String>? dateSave,
-      Value<int>? sumTime,
+      Value<int?>? sumQuiz,
       Value<int?>? score}) {
     return PreTestEntityCompanion(
       id: id ?? this.id,
       dateSave: dateSave ?? this.dateSave,
-      sumTime: sumTime ?? this.sumTime,
+      sumQuiz: sumQuiz ?? this.sumQuiz,
       score: score ?? this.score,
     );
   }
@@ -626,8 +624,8 @@ class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
     if (dateSave.present) {
       map['dateSave'] = Variable<String>(dateSave.value);
     }
-    if (sumTime.present) {
-      map['sumTime'] = Variable<int>(sumTime.value);
+    if (sumQuiz.present) {
+      map['sumQuiz'] = Variable<int>(sumQuiz.value);
     }
     if (score.present) {
       map['score'] = Variable<int>(score.value);
@@ -640,7 +638,7 @@ class PreTestEntityCompanion extends UpdateCompanion<PreTestEntityData> {
     return (StringBuffer('PreTestEntityCompanion(')
           ..write('id: $id, ')
           ..write('dateSave: $dateSave, ')
-          ..write('sumTime: $sumTime, ')
+          ..write('sumQuiz: $sumQuiz, ')
           ..write('score: $score')
           ..write(')'))
         .toString();

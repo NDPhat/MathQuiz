@@ -1,7 +1,15 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:math/data/local/driff/db/db_app.dart';
+import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
+import 'package:math/data/local/repo/test/test_repo.dart';
+import 'package:math/data/model/test_model.dart';
+import 'package:math/domain/home_repo.dart';
+import 'package:math/main.dart';
+import 'package:math/widget/show_alert_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../cons/constants.dart';
@@ -22,15 +30,23 @@ class _TestScreenState extends State<TestScreen> {
   late Timer _timer;
   int _totalTime = 0;
   late QuizBrain _quizBrain;
+  late PreTest preTest;
   int _score = 0;
   int _highScore = 0;
   double _value = 0;
+  int userChoose = 1;
   int _totalNumberOfQuizzes = 0;
+  late HomeRepo homeRepo;
   @override
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-    _startGame();
+    preTest = PreTest();
+    homeRepo = HomeRepo(preTestLocalRepo: instance.get<PreTestLocalRepo>());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      preTest = await ModalRoute.of(context)!.settings.arguments as PreTest;
+      _startGame();
+    });
   }
 
   void _startGame() async {
@@ -54,11 +70,26 @@ class _TestScreenState extends State<TestScreen> {
       } else {
         setState(() {
           _totalTime = 0;
+          _updateScoreAndNumQ();
           showMyDialog();
           _timer.cancel();
         });
       }
     });
+  }
+
+  void _addData() {
+    instance.get<TestLocalRepo>().insertTest(QuizTestEntityCompanion(
+        preId: Value(preTest.id!),
+        num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
+        sign: Value(_quizBrain.quiz.toString().split(" ")[1]),
+        num2: Value(int.parse(_quizBrain.quiz.toString().split(" ")[2])),
+        answer: Value(_quizBrain.quizAnswer),
+        answerSelect: Value(userChoose ?? 0)));
+  }
+
+  _updateScoreAndNumQ() {
+    homeRepo.updateScoreAndSumQ(_score, _totalNumberOfQuizzes, preTest.id!);
   }
 
   void _playSound(String soundName) {
@@ -74,6 +105,7 @@ class _TestScreenState extends State<TestScreen> {
     } else {
       _playSound('wrong-choice.wav');
     }
+    _addData();
     _quizBrain.makeQuizTest();
   }
 
@@ -82,10 +114,9 @@ class _TestScreenState extends State<TestScreen> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return ShowAlertDialog(
+        return ShowAlerTesttDialog(
           score: _score,
           totalNumberOfQuizzes: _totalNumberOfQuizzes,
-          startGame: _startGame,
           preId: 1,
         );
       },
@@ -110,6 +141,9 @@ class _TestScreenState extends State<TestScreen> {
                 percentValue: _value,
                 totalTime: _totalTime,
                 onTap: (int value) {
+                  setState(() {
+                    userChoose = value;
+                  });
                   _checkAnswer(value);
                 },
               )

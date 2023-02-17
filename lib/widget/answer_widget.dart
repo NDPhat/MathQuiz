@@ -34,7 +34,7 @@ class AnswerWidget extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           SizedBox(
-            width: size.width * 0.4,
+            width: size.width * 0.42,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
