@@ -53,10 +53,50 @@ packages:
     dependency: "direct main"
     description:
       name: audioplayers
-      sha256: a565e7e3e8a21a823b8cd7fed0bde1eb3796a96b373374be557adecfb511fa6b
+      sha256: "04be55031153ca60dd8c2128df1da3a9f329e43c3085cc5ff5c9add7add2c47a"
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.1"
+    version: "1.0.0-rc.1"
+  audioplayers_android:
+    dependency: transitive
+    description:
+      name: audioplayers_android
+      sha256: cba55fe3f86ad04b3ae40490d316898faafa72ec9a9c08b5c107c878588d2993
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  audioplayers_darwin:
+    dependency: transitive
+    description:
+      name: audioplayers_darwin
+      sha256: f1628807d8c68820d112b1bd7b8b588dbf3faf3be29b151b16fdc66060250de6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  audioplayers_platform_interface:
+    dependency: transitive
+    description:
+      name: audioplayers_platform_interface
+      sha256: "55f5053f0fc43e400f6880e0e9f3188b9312077236d8bfc3aaedd7422b28e9b4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  audioplayers_web:
+    dependency: transitive
+    description:
+      name: audioplayers_web
+      sha256: "58e2d2b4ac9d0110db2797b4d2dce79325b1560dd28b2fba7ae0d3daf255351c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  audioplayers_windows:
+    dependency: transitive
+    description:
+      name: audioplayers_windows
+      sha256: "52e03a36358474db886012cb7c5818fc6c183a3cb0b404da41c0bd2d35831273"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   bloc:
     dependency: transitive
     description:

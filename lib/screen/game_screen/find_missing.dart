@@ -1,33 +1,35 @@
 import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
-import 'package:math/data/model/make_quiz.dart';
-import 'package:math/domain/bloc/game/game_cubit.dart';
-import 'package:math/main.dart';
+import 'package:math/widget/portrait_mode_find.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 import '../../application/utils/format.dart';
 import '../../cons/color.dart';
 import '../../cons/constants.dart';
 import '../../cons/text_style.dart';
-import '../../data/local/repo/quiz_pra/quiz_pra_repo.dart';
+import '../../data/local/driff/db/db_app.dart';
+import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
+import '../../data/model/make_quiz.dart';
+import '../../domain/bloc/game/game_cubit.dart';
 import '../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../logic/quizBrain.dart';
+import '../../main.dart';
 import '../../widget/landscape_mode.dart';
 import '../../widget/portrait_mode.dart';
 import '../../widget/show_alert_dialog.dart';
 
-class GameScreen extends StatefulWidget {
+class FindMissing extends StatefulWidget {
+  const FindMissing({Key? key}) : super(key: key);
+
   @override
-  _GameScreenState createState() => _GameScreenState();
+  State<FindMissing> createState() => _FindMissingState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _FindMissingState extends State<FindMissing> {
   late Timer _timer;
   int _totalTime = 0;
   late QuizBrain _quizBrain;
@@ -53,7 +55,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _startGame(PreQuiz _preQuiz) async {
-    _quizBrain.makeQuiz(_preQuiz);
+    _quizBrain.makeQuizFindMissing(_preQuiz);
     _startTimer();
     _value = 1;
     _score = 0;
@@ -63,7 +65,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _makeNewQuiz() async {
-    _quizBrain.makeQuiz(_preQuiz);
+    _quizBrain.makeQuizFindMissing(_preQuiz);
     _value = 0;
     _startTimer();
     _value = 1;
@@ -85,7 +87,7 @@ class _GameScreenState extends State<GameScreen> {
         sign: Value(_preQuiz.sign!),
         timePer: Value(_preQuiz.timePer!),
         dateSave: Value(formatDateInput.format(DateTime.now()))));
-    _quizBrain.makeQuiz(_preQuiz);
+    _quizBrain.makeQuizFindMissing(_preQuiz);
     _startTimer();
     _value = 1;
     _score = 0;
@@ -108,7 +110,7 @@ class _GameScreenState extends State<GameScreen> {
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
           _endGame();
         } else {
-          _saveData(context);
+          // _saveData(context);
           _resetScreen();
         }
       }
@@ -118,7 +120,6 @@ class _GameScreenState extends State<GameScreen> {
   void _resetScreen() {
     _timer.cancel();
     _totalNumberOfQuizzes++;
-    falseChoose++;
     _makeNewQuiz();
   }
 
@@ -149,15 +150,15 @@ class _GameScreenState extends State<GameScreen> {
 
   void _checkAnswer(int userChoice, BuildContext context) async {
     if (userChoice.toString().isNotEmpty) {
-      if (userChoice == _quizBrain.quizAnswer) {
+      if (userChoice == _quizBrain.getQuizMissing) {
         _playSound('correct-choice.wav');
         _score++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _saveData(context);
+          // _saveData(context);
           _updateScore();
           _endGame();
         } else {
-          _saveData(context);
+          // _saveData(context);
           _resetScreen();
         }
       } else {
@@ -166,20 +167,20 @@ class _GameScreenState extends State<GameScreen> {
           falseChoose++;
         });
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _saveData(context);
+          // _saveData(context);
           _updateScore();
           _endGame();
         } else {
-          _saveData(context);
+          // _saveData(context);
           _resetScreen();
         }
       }
     } else {
       if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-        _saveData(context);
+        // _saveData(context);
         _endGame();
       } else {
-        _saveData(context);
+        // _saveData(context);
         _resetScreen();
       }
     }
@@ -213,14 +214,14 @@ class _GameScreenState extends State<GameScreen> {
       ),
       resizeToAvoidBottomInset: false,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: kGradientColors,
           ),
         ),
         child: data.width < data.height
             ? BlocBuilder<GameCubit, GameState>(builder: (context, state) {
-                return PortraitMode(
+                return PortraitModeFind(
                   highscore: _highScore,
                   score: _score,
                   quizBrainObject: _quizBrain,

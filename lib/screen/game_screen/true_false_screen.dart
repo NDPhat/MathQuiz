@@ -144,8 +144,8 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   }
 
   void _playSound(String soundName) {
-    final _player = AudioCache();
-    _player.play(soundName);
+    final _player = AudioPlayer();
+    _player.play(AssetSource(soundName));
   }
 
   void _checkAnswer(String userChoice, BuildContext context) async {

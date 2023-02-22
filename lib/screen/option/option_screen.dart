@@ -138,7 +138,7 @@ class OptionScreen extends StatelessWidget {
                         children: [
                           RoundedButton(
                             press: () {
-                              Navigator.pushNamed(context, Routers.premake,
+                              Navigator.pushNamed(context, Routers.battle,
                                   arguments: OptionQuiz(
                                       sign: sign,
                                       optionQuiz: 'battle'

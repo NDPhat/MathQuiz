@@ -9,6 +9,10 @@ import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/screen/check_answer/check_anwser_screen.dart';
 import 'package:math/screen/detail_test/detail_test_screen.dart';
+import 'package:math/screen/duel/battle_bot_screen.dart';
+import 'package:math/screen/duel/duel_screen.dart';
+import 'package:math/screen/duel/option_bot_battle.dart';
+import 'package:math/screen/game_screen/find_missing.dart';
 import 'package:math/screen/game_screen/game_screen.dart';
 import 'package:math/screen/game_screen/true_false_screen.dart';
 import 'package:math/screen/history/history_home.dart';
@@ -23,6 +27,7 @@ import '../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../domain/bloc/history/history_pra_cubit.dart';
 import '../main.dart';
 import '../screen/choose_sign/choose_sign_screen.dart';
+import '../screen/duel/battle_human.dart';
 import '../screen/test_screen/test_screen.dart';
 
 class Routers {
@@ -32,6 +37,11 @@ class Routers {
   static const String doTest = '/doTest';
   static const String game = '/game';
   static const String trueFalse = '/truefalse';
+  static const String battle = '/battle';
+  static const String battleHuman = '/battleHuman';
+  static const String battleBOT = '/battleBOT';
+  static const String optionBot = '/optionBot';
+  static const String findMissing = '/findMissing';
   static const String home = '/home';
   static const String historyPra = '/historyPra';
   static const String historyTest = '/historyTest';
@@ -55,6 +65,10 @@ class Routers {
         return HomeScreen();
       case chooseSign:
         return const ChooseSignScreen();
+      case optionBot:
+        return OptionBotScreen();
+      case battleBOT:
+        return const BOTBattle();
       case chooseOption:
         return const OptionScreen();
       case premake:
@@ -72,6 +86,15 @@ class Routers {
             create: (context) =>
                 GameCubit(quizPraLocalRepo: instance.get<QuizPraLocalRepo>()),
             child: const TrueFalseScreen());
+      case battle:
+        return const DuelScreen();
+      case battleHuman:
+        return const HumanBattle();
+      case findMissing:
+        return BlocProvider(
+            create: (context) =>
+                GameCubit(quizPraLocalRepo: instance.get<QuizPraLocalRepo>()),
+            child: const FindMissing());
       case doTest:
         return BlocProvider(
             create: (context) =>

@@ -54,6 +54,12 @@ const kTitleTS = TextStyle(
   color: Colors.orangeAccent,
   fontFamily: 'Press_Start_2P',
 );
+const kTitleTSBold = TextStyle(
+  fontSize: 40,
+  color: Colors.orangeAccent,
+  fontFamily: 'Press_Start_2P',
+  fontWeight: FontWeight.bold
+);
 
 const kContentTS = TextStyle(
   fontSize: 24,

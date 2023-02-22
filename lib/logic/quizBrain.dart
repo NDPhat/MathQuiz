@@ -4,6 +4,7 @@ import 'package:math/data/model/make_quiz.dart';
 
 class QuizBrain {
   int _quizAnswer = 0;
+  int hiddenNum = 0;
   String quizTrueFalse = "True";
   var listAnswer = [0, 0, 0, 0];
   var listFakeNum = [0, 0, 0, 0];
@@ -118,15 +119,19 @@ class QuizBrain {
           _random.nextInt(preQuiz.endNum! + _quizAnswer) + preQuiz.startNum!;
     } while (fake3 == _quizAnswer || fake3 == fake1 || fake3 == fake2);
     //0 hidden num1,1 hidden num2
+    listFakeNum = [];
+
     var trueNumHidden = _random.nextInt(2);
     listFakeNum.add(fake1);
     listFakeNum.add(fake3);
     listFakeNum.add(fake2);
     if (trueNumHidden == 0) {
       listFakeNum.add(firstNumber);
+      hiddenNum = firstNumber;
       _quiz = '? ${preQuiz.sign} $secondNumber = $_quizAnswer';
     } else {
       listFakeNum.add(secondNumber);
+      hiddenNum = secondNumber;
       _quiz = '$firstNumber ${preQuiz.sign} ? = $_quizAnswer';
     }
     listFakeNum.shuffle();
@@ -137,7 +142,7 @@ class QuizBrain {
     Random _random = Random();
     var selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
     var firstNumber = _random.nextInt(20) + 1; // from 10 upto 19
-    var secondNumber = _random.nextInt(9) + 1; // from 1 upto 9  (9 included)
+    var secondNumber = _random.nextInt(20) + 1; // from 1 upto 9  (9 included)
     switch (selectedSign) {
       case '+':
         _quizAnswer = firstNumber + secondNumber;
@@ -187,7 +192,82 @@ class QuizBrain {
     listAnswer.add(anwser3);
     listAnswer.add(_quizAnswer);
     listAnswer.shuffle();
-    _quiz = '$firstNumber ${selectedSign} $secondNumber';
+    _quiz = '$firstNumber ${selectedSign} $secondNumber =';
+  }
+
+  void makeQuizBOT(String level) {
+    List<String> _listOfSigns = ['+', '-', 'x', '/'];
+    var selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
+    int firstNumber = 1;
+    int secondNumber = 10;
+    switch (level) {
+      case 'easy':
+        firstNumber = _random.nextInt(10) + 1; // from 10 upto 19
+        secondNumber = _random.nextInt(10) + 1; // from 1 upto 9
+        break; // (9 included)switch (level) {
+      case 'medium':
+        firstNumber = _random.nextInt(15) + 1; // from 10 upto 19
+        secondNumber = _random.nextInt(15) + 10;
+        break; // from 1 upto 9  (9 included)switch (level) {
+      case 'hard':
+        firstNumber = _random.nextInt(20) + 1; // from 10 upto 19
+        secondNumber = _random.nextInt(20) + 10;
+        break; // from 1 upto 9  (9 included)switch (level)
+      default:
+        firstNumber = _random.nextInt(10) + 1; // from 10 upto 19
+        secondNumber = _random.nextInt(10) + 1;
+    }
+
+    switch (selectedSign) {
+      case '+':
+        _quizAnswer = firstNumber + secondNumber;
+        break;
+      case '-':
+        secondNumber = _random.nextInt(firstNumber) + 1;
+        _quizAnswer = firstNumber - secondNumber;
+        break;
+      case 'x':
+        _quizAnswer = firstNumber * secondNumber;
+        break;
+      case '/':
+        {
+          var listNumber2 = [];
+          if (firstNumber % secondNumber != 0) {
+            for (int i = 1; i <= secondNumber; i++) {
+              if (firstNumber % i == 0) {
+                listNumber2.add(i);
+              }
+            }
+          }
+          if (listNumber2.isEmpty) {
+            secondNumber = firstNumber;
+          } else {
+            secondNumber = listNumber2[_random.nextInt(listNumber2.length)];
+          }
+          _quizAnswer = (firstNumber ~/ secondNumber);
+        }
+    }
+    int anwser1 = 1;
+    int anwser2 = 1;
+    int anwser3 = 1;
+    do {
+      anwser1 = _random.nextInt(_quizAnswer + 10) + 1;
+    } while (anwser1 == _quizAnswer);
+    do {
+      anwser2 = _random.nextInt(_quizAnswer + 10) + 1;
+    } while (anwser2 == _quizAnswer || anwser2 == anwser1);
+
+    do {
+      anwser3 = _random.nextInt(_quizAnswer + 10) + 1;
+    } while (
+        anwser3 == _quizAnswer || anwser3 == anwser1 || anwser3 == anwser2);
+    listAnswer = [];
+    listAnswer.add(anwser1);
+    listAnswer.add(anwser2);
+    listAnswer.add(anwser3);
+    listAnswer.add(_quizAnswer);
+    listAnswer.shuffle();
+    _quiz = '$firstNumber ${selectedSign} $secondNumber = ?';
   }
 
   void makeQuizTrueFalse(PreQuiz preQuiz) {
@@ -241,6 +321,7 @@ class QuizBrain {
 
   get quizAnswer => _quizAnswer;
   get getQuizTrueFalse => quizTrueFalse;
+  get getQuizMissing => hiddenNum;
   get quiz => _quiz;
   get listAWS => listAnswer;
   get listFake => listFakeNum;

@@ -98,8 +98,8 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   void _playSound(String soundName) {
-    final _player = AudioCache();
-    _player.play(soundName);
+    final _player = AudioPlayer();
+    _player.play(AssetSource(soundName));
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {

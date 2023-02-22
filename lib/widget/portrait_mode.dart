@@ -10,7 +10,7 @@ import 'package:math/widget/score_indicators.dart';
 
 import 'cir_per_indicator.dart';
 
-class PortraitMode extends StatelessWidget {
+class PortraitMode extends StatefulWidget {
   final highscore;
   final int score;
   final int trueQ, falseQ, totalQ;
@@ -20,6 +20,7 @@ class PortraitMode extends StatelessWidget {
   final onTap;
   final percentValue;
   final totalTime;
+
   PortraitMode({
     required this.highscore,
     required this.score,
@@ -33,6 +34,15 @@ class PortraitMode extends StatelessWidget {
     required this.percentValue,
     this.sign,
   });
+  @override
+  State<PortraitMode> createState() => _PortraitModeScreenState();
+}
+
+class _PortraitModeScreenState extends State<PortraitMode> {
+  bool _Press1 = false;
+  bool _Press2 = false;
+  bool _Press3 = false;
+  bool _Press4 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +75,13 @@ class PortraitMode extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          totalQ == 0
+                          widget.totalQ == 0
                               ? Text(
-                                  'Quiz : $quizNow',
+                                  'Quiz : ${widget.quizNow}',
                                   style: s16f700ColorGreyTe,
                                 )
                               : Text(
-                                  '$quizNow/$totalQ',
+                                  '${widget.quizNow}/${widget.totalQ}',
                                   style: s16f700ColorGreyTe,
                                 )
                         ],
@@ -86,7 +96,7 @@ class PortraitMode extends StatelessWidget {
                             style: s20f700ColorErrorPro,
                           ),
                           Text(
-                            score.toString(),
+                            widget.score.toString(),
                             style: s20f700ColorErrorPro,
                           )
                         ],
@@ -108,7 +118,7 @@ class PortraitMode extends StatelessWidget {
                                 width: 5,
                               ),
                               Text(
-                                trueQ.toString(),
+                                widget.trueQ.toString(),
                                 style: s16f700ColorBlueMa,
                               )
                             ],
@@ -129,7 +139,7 @@ class PortraitMode extends StatelessWidget {
                                 width: 5,
                               ),
                               Text(
-                                falseQ.toString(),
+                                widget.falseQ.toString(),
                                 style: s16f700ColorError,
                               )
                             ],
@@ -146,15 +156,15 @@ class PortraitMode extends StatelessWidget {
                   radius: 56,
                   backgroundColor: colorSystemWhite,
                   child: CirPerIndicator(
-                    percentValue: percentValue,
-                    totalTime: totalTime,
+                    percentValue: widget.percentValue,
+                    totalTime: widget.totalTime,
                   ),
                 ),
               ),
             ],
           ),
           QuizBody(
-            quizBrainObject: quizBrainObject,
+            quizBrainObject: widget.quizBrainObject,
           ),
           SizedBox(
             height: size.height * 0.1,
@@ -166,13 +176,23 @@ class PortraitMode extends StatelessWidget {
                 children: [
                   RoundedButton(
                     press: () {
-                      onTap(quizBrainObject.listAnswer[0]);
+                      setState(() {
+                        _Press1 = true;
+
+                      });
+
+                      widget.onTap(widget.quizBrainObject.listAnswer[0]);
+                      Future.delayed(Duration(seconds: 1), () {
+                        setState(() {
+                          _Press1 = false;
+                        });
+                      });
                     },
-                    color: colorAccentBlue,
+                    color: _Press1 ? colorErrorPrimary : colorAccentBlue,
                     width: size.width * 0.38,
                     height: size.height * 0.1,
                     child: Text(
-                      quizBrainObject.listAnswer[0].toString(),
+                      widget.quizBrainObject.listAnswer[0].toString(),
                       style: s16f700ColorSysWhite,
                     ),
                   ),
@@ -181,13 +201,21 @@ class PortraitMode extends StatelessWidget {
                   ),
                   RoundedButton(
                     press: () {
-                      onTap(quizBrainObject.listAnswer[1]);
+                      setState(() {
+                        _Press2 = true;
+                      });
+                      widget.onTap(widget.quizBrainObject.listAnswer[1]);
+                      Future.delayed(Duration(seconds: 1), () {
+                        setState(() {
+                          _Press2 = false;
+                        });
+                      });
                     },
-                    color: colorAccentBlue,
+                    color: _Press2 ? colorErrorPrimary : colorAccentBlue,
                     width: size.width * 0.38,
                     height: size.height * 0.1,
                     child: Text(
-                      quizBrainObject.listAnswer[1].toString(),
+                      widget.quizBrainObject.listAnswer[1].toString(),
                       style: s16f700ColorSysWhite,
                     ),
                   ),
@@ -201,13 +229,21 @@ class PortraitMode extends StatelessWidget {
                 children: [
                   RoundedButton(
                     press: () {
-                      onTap(quizBrainObject.listAnswer[2]);
+                      setState(() {
+                        _Press3 = true;
+                      });
+                      widget.onTap(widget.quizBrainObject.listAnswer[2]);
+                      Future.delayed(Duration(seconds: 1), () {
+                        setState(() {
+                          _Press3 = false;
+                        });
+                      });
                     },
-                    color: colorAccentBlue,
+                    color: _Press3 ? colorErrorPrimary : colorAccentBlue,
                     width: size.width * 0.38,
                     height: size.height * 0.1,
                     child: Text(
-                      quizBrainObject.listAnswer[2].toString(),
+                      widget.quizBrainObject.listAnswer[2].toString(),
                       style: s16f700ColorSysWhite,
                     ),
                   ),
@@ -216,13 +252,21 @@ class PortraitMode extends StatelessWidget {
                   ),
                   RoundedButton(
                     press: () {
-                      onTap(quizBrainObject.listAnswer[3]);
+                      setState(() {
+                        _Press4 = true;
+                      });
+                      widget.onTap(widget.quizBrainObject.listAnswer[3]);
+                      Future.delayed(Duration(seconds: 1), () {
+                        setState(() {
+                          _Press4 = false;
+                        });
+                      });
                     },
-                    color: colorAccentBlue,
+                    color: _Press4 ? colorErrorPrimary : colorAccentBlue,
                     width: size.width * 0.38,
                     height: size.height * 0.1,
                     child: Text(
-                      quizBrainObject.listAnswer[3].toString(),
+                      widget.quizBrainObject.listAnswer[3].toString(),
                       style: s16f700ColorSysWhite,
                     ),
                   ),

@@ -189,7 +189,13 @@ class PreMakeQuiz extends StatelessWidget {
                         );
                         context.read<PreQuizCubit>().clearOldDataErrorForm();
                       } else if (state.status == PreQuizStatus.success) {
-                        Navigator.pushNamed(context, Routers.trueFalse,
+                        Navigator.pushNamed(
+                            context,
+                            option.optionQuiz! == "input"
+                                ? Routers.game
+                                : (option.optionQuiz! == "missing"
+                                    ? Routers.findMissing
+                                    : Routers.trueFalse),
                             arguments: PreQuiz(
                                 numQ: state.numQ,
                                 timePer: state.time,

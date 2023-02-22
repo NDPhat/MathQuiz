@@ -5,11 +5,12 @@ import 'package:math/data/model/make_quiz.dart';
 import 'package:math/logic/quizBrain.dart';
 import 'package:math/widget/button_custom.dart';
 import 'package:math/widget/quiz_body.dart';
-
+import 'package:math/widget/reusable_button.dart';
+import 'package:math/widget/score_indicators.dart';
 
 import 'cir_per_indicator.dart';
 
-class PortraitModeTF extends StatelessWidget {
+class PortraitModeFind extends StatelessWidget {
   final highscore;
   final int score;
   final int trueQ, falseQ, totalQ;
@@ -19,7 +20,7 @@ class PortraitModeTF extends StatelessWidget {
   final onTap;
   final percentValue;
   final totalTime;
-  PortraitModeTF({
+  PortraitModeFind({
     required this.highscore,
     required this.score,
     required this.trueQ,
@@ -66,13 +67,13 @@ class PortraitModeTF extends StatelessWidget {
                           ),
                           totalQ == 0
                               ? Text(
-                                  'Quiz : $quizNow',
-                                  style: s16f700ColorGreyTe,
-                                )
+                            'Quiz : $quizNow',
+                            style: s16f700ColorGreyTe,
+                          )
                               : Text(
-                                  '$quizNow/$totalQ',
-                                  style: s16f700ColorGreyTe,
-                                )
+                            '$quizNow/$totalQ',
+                            style: s16f700ColorGreyTe,
+                          )
                         ],
                       ),
                     ),
@@ -156,31 +157,76 @@ class PortraitModeTF extends StatelessWidget {
             quizBrainObject: quizBrainObject,
           ),
           SizedBox(
-            height: size.height * 0.15,
+            height: size.height * 0.1,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
             children: [
-              RoundedButton(
-                press: () {
-                  onTap('TRUE');
-                },
-                color: colorSystemWhite,
-                width: size.width * 0.42,
-                height: size.height * 0.1,
-                child: Image.asset('assets/images/true.jpg'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RoundedButton(
+                    press: () {
+                      onTap(quizBrainObject.listFakeNum[0]);
+                    },
+                    color: colorAccentBlue,
+                    width: size.width * 0.38,
+                    height: size.height * 0.1,
+                    child: Text(
+                      quizBrainObject.listFakeNum[0].toString(),
+                      style: s16f700ColorSysWhite,
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.height * 0.05,
+                  ),
+                  RoundedButton(
+                    press: () {
+                      onTap(quizBrainObject.listFakeNum[1]);
+                    },
+                    color: colorAccentBlue,
+                    width: size.width * 0.38,
+                    height: size.height * 0.1,
+                    child: Text(
+                      quizBrainObject.listFakeNum[1].toString(),
+                      style: s16f700ColorSysWhite,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
-                width: size.height * 0.03,
+                height: size.height * 0.06,
               ),
-              RoundedButton(
-                press: () {
-                  onTap('FALSE');
-                },
-                color: colorSystemWhite,
-                width: size.width * 0.42,
-                height: size.height * 0.1,
-                child: Image.asset('assets/images/false.jpg'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RoundedButton(
+                    press: () {
+                      onTap(quizBrainObject.listFakeNum[2]);
+                    },
+                    color: colorAccentBlue,
+                    width: size.width * 0.38,
+                    height: size.height * 0.1,
+                    child: Text(
+                      quizBrainObject.listFakeNum[2].toString(),
+                      style: s16f700ColorSysWhite,
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.height * 0.05,
+                  ),
+                  RoundedButton(
+                    press: () {
+                      onTap(quizBrainObject.listFakeNum[3]);
+                    },
+                    color: colorAccentBlue,
+                    width: size.width * 0.38,
+                    height: size.height * 0.1,
+                    child: Text(
+                      quizBrainObject.listFakeNum[3].toString(),
+                      style: s16f700ColorSysWhite,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

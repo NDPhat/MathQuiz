@@ -54,30 +54,6 @@ class HomeScreen extends StatelessWidget {
                             RoundedButton(
                               press: () {
                                 Navigator.pushNamed(
-                                    context, Routers.historyHome);
-                              },
-                              color: colorGreyDisable,
-                              width: size.width * 0.32,
-                              height: size.height * 0.1,
-                              child: Image.asset('assets/images/history.png'),
-                            ),
-                            SizedBox(
-                              height: size.height * 0.01,
-                            ),
-                            const Text(
-                              'HISTORY',
-                              style: s20f700ColorGreyte,
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: size.height * 0.03,
-                        ),
-                        Column(
-                          children: [
-                            RoundedButton(
-                              press: () {
-                                Navigator.pushNamed(
                                     context, Routers.chooseSign);
                               },
                               color: colorGreyDisable,
@@ -91,17 +67,9 @@ class HomeScreen extends StatelessWidget {
                             const Text(
                               'PRACTICE',
                               style: s20f700ColorGreyte,
-                            )
+                            ),
                           ],
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
                         Column(
                           children: [
                             RoundedButton(
@@ -120,9 +88,14 @@ class HomeScreen extends StatelessWidget {
                             )
                           ],
                         ),
-                        SizedBox(
-                          height: size.height * 0.05,
-                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: size.height * 0.03,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Column(
                           children: [
                             RoundedButton(
@@ -141,6 +114,29 @@ class HomeScreen extends StatelessWidget {
                             ),
                             const Text(
                               'TESTING',
+                              style: s20f700ColorGreyte,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: size.height * 0.03,
+                        ),
+                        Column(
+                          children: [
+                            RoundedButton(
+                              press: () {
+                                Navigator.pushNamed(context, Routers.battle);
+                              },
+                              color: colorGreyDisable,
+                              width: size.width * 0.32,
+                              height: size.height * 0.1,
+                              child: Image.asset('assets/images/battle.png'),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.01,
+                            ),
+                            const Text(
+                              'DUEL',
                               style: s20f700ColorGreyte,
                             )
                           ],
