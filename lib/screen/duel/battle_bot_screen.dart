@@ -21,7 +21,7 @@ class BOTBattle extends StatefulWidget {
 }
 
 class _BOTBattleScreenState extends State<BOTBattle> {
-  late Timer _timer,timer, timerNew;
+  late Timer _timer, timer, timerNew;
   int _totalTime = 0;
   late QuizBrain _quizBrain;
   late String level;
