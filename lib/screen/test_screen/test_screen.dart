@@ -11,6 +11,7 @@ import 'package:math/data/model/test_model.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/domain/home_repo.dart';
 import 'package:math/main.dart';
+import 'package:math/routers/navigation.dart';
 import 'package:math/widget/show_alert_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,7 +51,7 @@ class _TestScreenState extends State<TestScreen> {
     homeRepo = HomeRepo(preTestLocalRepo: instance.get<PreTestLocalRepo>());
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       preTest = await ModalRoute.of(context)!.settings.arguments as PreTest;
-      _startGame();
+      showReadyDialog();
     });
   }
 
@@ -126,6 +127,42 @@ class _TestScreenState extends State<TestScreen> {
           score: _score,
           totalNumberOfQuizzes: _totalNumberOfQuizzes,
           preId: preTest.id!,
+        );
+      },
+    );
+  }
+
+  Future<void> showReadyDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+            25,
+          )),
+          backgroundColor: const Color(0xff1542bf),
+          title: const FittedBox(
+            child: Text('ARE YOU GUYS READY ?',
+                textAlign: TextAlign.center, style: kTitleTS),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _startGame();
+              },
+              child: const Text('GO', style: kDialogButtonsTS),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, Routers.home);
+              },
+              child: const Text('BACK', style: kDialogButtonsTS),
+            ),
+          ],
         );
       },
     );

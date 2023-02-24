@@ -23,13 +23,11 @@ class PreMakeQuiz extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.school),
         backgroundColor: colorMainBlueChart,
         title: const Text('Math Quiz', style: s30f500colorSysWhite),
       ),
       body: Padding(
         padding: EdgeInsets.only(
-          top: size.height * 0.08,
           left: size.width * 0.05,
           right: size.width * 0.05,
         ),
@@ -38,12 +36,16 @@ class PreMakeQuiz extends StatelessWidget {
               child: SingleChildScrollView(
             child: Column(
               children: [
-                Text(
-                  option.sign ?? '+',
-                  style: s60f700colorSysBlue,
+                CircleAvatar(
+                  radius: 40,
+                  backgroundColor: colorGrayBG,
+                  child: Text(
+                    option.sign ?? '+',
+                    style: s60f700colorSysBlue,
+                  ),
                 ),
                 SizedBox(
-                  height: size.height * 0.08,
+                  height: size.height * 0.04,
                 ),
                 BlocBuilder<PreQuizCubit, PreQuizState>(buildWhen: (pre, now) {
                   return pre.numQMess != now.numQMess;
@@ -218,21 +220,6 @@ class PreMakeQuiz extends StatelessWidget {
                         style: s20f700ColorMBlue,
                       ),
                     )),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                RoundedButton(
-                  press: () {
-                    Navigator.pop(context);
-                  },
-                  color: colorBlueQuaternery,
-                  width: size.width * 0.8,
-                  height: size.height * 0.06,
-                  child: const Text(
-                    'BACK',
-                    style: s20f700ColorErrorPro,
-                  ),
-                ),
               ],
             ),
           )),

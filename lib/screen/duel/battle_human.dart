@@ -219,6 +219,11 @@ class _HumanBattleScreenState extends State<HumanBattle> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Container(
+                          color: colorSystemWhite,
+                          width: size.width * 0.3,
+                          height: size.height * 0.1,
+                          child: Image.asset('assets/images/p1.jpg')),
                       SizedBox(
                         width: size.width * 0.36,
                         child: Row(
@@ -248,13 +253,6 @@ class _HumanBattleScreenState extends State<HumanBattle> {
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: size.width * 0.3,
-                        child: const Text(
-                          'Player 1',
-                          style: s16f700ColorBlueMa,
                         ),
                       ),
                       SizedBox(
@@ -335,10 +333,6 @@ class _HumanBattleScreenState extends State<HumanBattle> {
                     ),
                     SizedBox(
                       width: size.width * 0.3,
-                      child: const Text(
-                        'Player 2',
-                        style: s16f700ColorError,
-                      ),
                     ),
                     SizedBox(
                       width: size.width * 0.2,

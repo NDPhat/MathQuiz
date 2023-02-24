@@ -24,15 +24,16 @@ class _BOTBattleScreenState extends State<BOTBattle> {
   late Timer _timer, timer, timerNew;
   int _totalTime = 0;
   late QuizBrain _quizBrain;
-  late String level;
+  String level = "easy";
   int _scoreBot = 0;
   bool userClick = false;
   late AudioPlayer _player;
   int _scoreHM = 0;
   int _falsePlayer = 3;
+  late int timeSave;
   double _value = 0;
   int userChoose = 1;
-  int newT = 60;
+  int _start = 5;
   @override
   void initState() {
     super.initState();
@@ -42,15 +43,6 @@ class _BOTBattleScreenState extends State<BOTBattle> {
       level = ModalRoute.of(context)!.settings.arguments as String;
       findTimeForBot();
       showReadyDialog();
-    });
-    const oneSec = const Duration(seconds: 1);
-    timerNew = Timer.periodic(oneSec, (Timer timer) {
-      if (newT == 0) {
-        _player.dispose();
-        _player.stop();
-      } else {
-        newT--;
-      }
     });
   }
 
@@ -73,20 +65,19 @@ class _BOTBattleScreenState extends State<BOTBattle> {
     _startTimer();
   }
 
-  bool onTap = false;
-  late int _start;
-
   void _startTimer() {
-    const speed = Duration(milliseconds: 100);
+    const speed = Duration(seconds: 1);
     _timer = Timer.periodic(speed, (timer) {
       if (_value > 0) {
         setState(() {
-          _value > 1 / 600 ? _value -= 1 / 600 : _value = 0;
+          _value > 1 / 60 ? _value -= 1 / 60 : _value = 0;
           _totalTime = (_value * 60 + 1).toInt();
         });
       } else {
         setState(() {
           _totalTime = 0;
+          _timer.cancel();
+          _player.stop();
           if (_scoreBot > _scoreHM) {
             showEndDialog("BOT Winning");
           } else if (_scoreHM > _scoreBot) {
@@ -95,16 +86,8 @@ class _BOTBattleScreenState extends State<BOTBattle> {
             showEndDialog("No One Winning");
           }
         });
-        _timer.cancel();
-        _player.dispose();
       }
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _player.dispose();
   }
 
   void _checkAnswer() {
@@ -112,23 +95,30 @@ class _BOTBattleScreenState extends State<BOTBattle> {
     timer = Timer.periodic(
       oneSec,
       (Timer timer) {
-        if (_start == 0) {
+        if (_start <= 1) {
           _checkAnswerBot();
+          findTimeForBotNextTime();
           _quizBrain.makeQuizBOT(level);
           setState(() {
             timer.cancel();
-            findTimeForBot();
           });
-          _checkAnswer();
+
+          if (_totalTime >= _start) {
+            _checkAnswer();
+            setState(() {
+              timer.cancel();
+            });
+          }
         } else {
           if (userClick == true) {
             _checkAnswerPlayer(userChoose);
-            _quizBrain.makeQuizBOT(level);
             setState(() {
               timer.cancel();
-              findTimeForBot();
               userClick = false;
             });
+            findTimeForBotNextTime();
+            _quizBrain.makeQuizBOT(level);
+
             _checkAnswer();
           } else {
             setState(() {
@@ -145,16 +135,30 @@ class _BOTBattleScreenState extends State<BOTBattle> {
       case "easy":
         setState(() {
           _start = 5;
+          timeSave = 5;
+        });
+        break;
+      case "medium":
+        setState(() {
+          _start = 4;
+          timeSave = 5;
         });
 
         break;
-      case "medium":
-        _start = 4;
-        break;
       case "hard":
-        _start = 3;
+        setState(() {
+          _start = 3;
+          timeSave = 5;
+        });
+
         break;
     }
+  }
+
+  void findTimeForBotNextTime() {
+    setState(() {
+      _start = timeSave;
+    });
   }
 
   void _playSound(String soundName) {
@@ -205,7 +209,9 @@ class _BOTBattleScreenState extends State<BOTBattle> {
               onPressed: () {
                 Navigator.pop(context);
                 _startGame();
-                _checkAnswer();
+                Future.delayed(const Duration(milliseconds: 200), () {
+                  _checkAnswer();
+                });
               },
               child: const Center(child: Text('GO', style: kTitleTS)),
             ),
@@ -233,9 +239,9 @@ class _BOTBattleScreenState extends State<BOTBattle> {
           actions: [
             TextButton(
               onPressed: () {
-                _player.pause();
-                _player.stop();
-                _player.dispose();
+               setState(() {
+                 _start=0;
+               });
                 Navigator.pushNamed(context, Routers.home);
               },
               child: const Text('EXIT', style: kDialogButtonsTS),
@@ -272,8 +278,10 @@ class _BOTBattleScreenState extends State<BOTBattle> {
                 child: BattleScreenBot(
                   size: size,
                   quizBrain: _quizBrain,
-                  onTap: (int value) {},
                   answerBot: _quizBrain.quizAnswer,
+                  level: level,
+                  useClick: userClick,
+                  timePerQuiz: _start,
                 ),
               ),
               RotatedBox(

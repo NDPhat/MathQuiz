@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 
 import '../cons/text_style.dart';
 
@@ -19,8 +20,9 @@ class RoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: press,
+    return Bounce(
+      duration: Duration(milliseconds: 200),
+      onPressed: press,
       child: Container(
         decoration: BoxDecoration(
             color: color, borderRadius: BorderRadius.all(Radius.circular(50))),
