@@ -18,11 +18,16 @@ class GameCubit extends Cubit<GameState> {
 
   void changeDataAfterDoneQ(int trueQ, int falseQ, int score, int quizNow) {
     emit(state.copyWith(
-        trueQ: trueQ, falseQ: falseQ, qNow: quizNow, score: score));
+        trueQ: trueQ, falseQ: falseQ, qNow: quizNow, score: score, timeNow: 5));
+  }
+
+  void emitTimeNow(int time, int falseQ, int quizNow) {
+    if (time == 1) {
+      emit(state.copyWith(timeNow: 5, falseQ: falseQ++, qNow: quizNow++));
+    }
   }
 
   void changeDataPlayAgain() {
-    emit(state.copyWith(
-        trueQ: 0, falseQ: 0, qNow: 1, score: 0));
+    emit(state.copyWith(trueQ: 0, falseQ: 0, qNow: 1, score: 0));
   }
 }

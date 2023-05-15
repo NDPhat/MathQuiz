@@ -1,39 +1,35 @@
 part of 'pre_quiz_cubit.dart';
 
 class PreQuizState extends Equatable {
-  int id;
-  int numQ;
-  int eNum;
-  int sNum;
+  int  id;
+  int ? numQ;
+  int ? eNum;
+  int ? sNum;
   String numQMess;
   String sNumMess;
   String eNumMess;
-  int time;
+  int  time;
   PreQuizStatus status;
 
   PreQuizState({
-    required this.id,
-    required this.numQ,
-    required this.sNum,
-    required this.eNum,
+     required this.id,
+     this.numQ,
+     this.sNum,
+     this.eNum,
     required this.numQMess,
     required this.eNumMess,
     required this.sNumMess,
-    required this.time,
+     required this.time,
     required this.status,
     //this.user,
   });
   factory PreQuizState.initial() {
     return PreQuizState(
-      id:1,
-      sNum: 1,
-      eNum: 10,
-      time: 5,
+
       numQMess: "",
       sNumMess: "",
       eNumMess: "",
-      numQ: 10,
-      status: PreQuizStatus.initial,
+      status: PreQuizStatus.initial, id: 1, time: 5,
       //user: null,
     );
   }
@@ -46,7 +42,7 @@ class PreQuizState extends Equatable {
         eNum,
         numQ,
         numQMess,
-    id,
+        id,
         sNumMess,
         eNumMess,
         time,
@@ -57,7 +53,7 @@ class PreQuizState extends Equatable {
     int? numQ,
     int? sNum,
     int? eNum,
-    int ? id,
+    int? id,
     String? numQMess,
     String? sNumMess,
     String? eNumMess,
@@ -65,7 +61,7 @@ class PreQuizState extends Equatable {
     PreQuizStatus? status,
   }) {
     return PreQuizState(
-      id:  id ?? this.id,
+      id: id ?? this.id,
       numQ: numQ ?? this.numQ,
       sNum: sNum ?? this.sNum,
       eNum: eNum ?? this.eNum,

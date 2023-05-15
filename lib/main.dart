@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:math/data/local/di/setupProject.dart';
-import 'package:math/routers/navigation.dart';
+import 'package:math/presentation/routers/navigation.dart';
+import 'package:device_preview/device_preview.dart';
+import 'application/di/setupProject.dart';
 
 GetIt instance = GetIt.instance;
 
 void main() {
   setUpProject();
-  runApp(const MathQuizApp());
+
+  runApp(DevicePreview(
+    builder: (context) => const MathQuizApp(), // Wrap your app
+  ));
 }
 
 class MathQuizApp extends StatelessWidget {
@@ -25,6 +29,7 @@ class MathQuizApp extends StatelessWidget {
     );
     // SystemChrome.setEnabledSystemUIOverlays([]);
     return const MaterialApp(
+      builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       initialRoute: Routers.welcome,
       onGenerateRoute: Routers.generateRoute,

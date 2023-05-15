@@ -5,6 +5,7 @@ class GameState extends Equatable {
   int falseQ;
   int qNow;
   int score;
+  int timeNow;
 
   GameStatus status;
 
@@ -14,6 +15,7 @@ class GameState extends Equatable {
     required this.qNow,
     required this.score,
     required this.status,
+    required this.timeNow,
     //this.user,
   });
   factory GameState.initial() {
@@ -21,6 +23,7 @@ class GameState extends Equatable {
       trueQ: 0,
       falseQ: 0,
       score: 0, qNow: 1,
+      timeNow: 5,
       status: GameStatus.initial,
       //user: null,
     );
@@ -42,6 +45,7 @@ class GameState extends Equatable {
     int? falseQ,
     int? score,
     int? qNow,
+    int? timeNow,
     GameStatus? status,
   }) {
     return GameState(
@@ -49,6 +53,7 @@ class GameState extends Equatable {
       falseQ: falseQ ?? this.falseQ,
       score: score ?? this.score,
       qNow: qNow ?? this.qNow,
+      timeNow:  timeNow ?? this.timeNow,
       status: status ?? this.status,
       //user: user ?? this.user,
     );

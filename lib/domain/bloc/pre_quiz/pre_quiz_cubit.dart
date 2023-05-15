@@ -42,8 +42,8 @@ class PreQuizCubit extends Cubit<PreQuizState> {
   }
 
   bool nuMQValidator(int numQ) {
-    if (numQ.toString().isEmpty) {
-      numQMEss = 'This field is empty';
+    if (numQ <= 0) {
+      numQMEss = 'This field is not correct';
       return false;
     } else {
       numQMEss = "";
@@ -52,8 +52,8 @@ class PreQuizCubit extends Cubit<PreQuizState> {
   }
 
   bool sNumValidator(int sNum) {
-    if (sNum.toString().isEmpty) {
-      sNumMess = 'This field is empty';
+    if (sNum <= 0) {
+      sNumMess = 'This field is not correct';
       return false;
     } else {
       sNumMess = "";
@@ -62,8 +62,8 @@ class PreQuizCubit extends Cubit<PreQuizState> {
   }
 
   bool eNumValidator(int eNum) {
-    if (eNum.toString().isEmpty) {
-      eNumMess = 'This field is empty';
+    if (eNum <= 0) {
+      eNumMess = 'This field is not correct';
       return false;
     } else {
       eNumMess = "";
@@ -76,9 +76,9 @@ class PreQuizCubit extends Cubit<PreQuizState> {
   }
 
   bool isFormValid() {
-    if (nuMQValidator(state.numQ) &
-        sNumValidator(state.sNum) &
-        eNumValidator(state.eNum)) {
+    if (nuMQValidator(state.numQ ?? 0) &
+        sNumValidator(state.sNum ?? 0) &
+        eNumValidator(state.eNum ?? 0)) {
       return true;
     }
     return false;
@@ -96,9 +96,9 @@ class PreQuizCubit extends Cubit<PreQuizState> {
     if (isFormValid() == true) {
       try {
         final entity = PreQuizEntityCompanion(
-            sNum: Value(state.sNum),
-            eNum: Value(state.eNum),
-            numQ: Value(state.numQ),
+            sNum: Value(state.sNum!),
+            eNum: Value(state.eNum!),
+            numQ: Value(state.numQ!),
             sign: Value(sign),
             option: Value('truefalse'),
             timePer: Value(state.time),
