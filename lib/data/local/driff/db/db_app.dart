@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:math/data/local/driff/entities/PreQuiz.dart';
-import 'package:math/data/local/driff/entities/PreTest.dart';
-import 'package:math/data/local/driff/entities/Test.dart';
+
 
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
-import '../entities/Quiz.dart';
+import '../entities/pre_quiz_game.dart';
+import '../entities/pre_test.dart';
+import '../entities/quiz_game.dart';
+import '../entities/quiz_test.dart';
 
 part 'db_app.g.dart';
 
@@ -21,12 +22,22 @@ LazyDatabase _openConnection() {
 }
 
 @DriftDatabase(
-    tables: [PreQuizEntity, PreTestEntity, QuizTestEntity, QuizPraEntity])
+    tables: [PreQuizGameEntity, PreTestEntity, QuizGameEntity, QuizTestEntity])
 class AppDb extends _$AppDb {
   AppDb() : super(_openConnection());
+
 
   // you should bump this number whenever you change or add a table definition.
   // Migrations are covered later in the documentation.
   @override
   int get schemaVersion => 1;
+
+  // when change role to user
+  Future<void> deleteEverything() {
+    return transaction(() async {
+      for (final table in allTables) {
+        await delete(table).go();
+      }
+    });
+  }
 }

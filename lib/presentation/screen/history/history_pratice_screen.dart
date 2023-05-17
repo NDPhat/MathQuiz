@@ -85,10 +85,10 @@ class HistoryPractice extends StatelessWidget {
               return pre.timeNow != now.timeNow;
             }, builder: (context, state) {
               return Expanded(
-                  child: StreamBuilder<List<PreQuizEntityData>>(
+                  child: StreamBuilder<List<PreQuizGameEntityData>>(
                 stream: instance
-                    .get<PreQuizLocalRepo>()
-                    .getAllPreQuizByDay(state.timeNow.toString()),
+                    .get<PreQuizGameRepo>()
+                    .getAllPreQuizGameByDay(state.timeNow.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(

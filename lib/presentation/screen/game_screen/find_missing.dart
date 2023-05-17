@@ -35,7 +35,7 @@ class _FindMissingState extends State<FindMissing> {
   late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
-  late PreQuiz _preQuiz;
+  late PreQuizGame _preQuiz;
   int _preIdNow = 0;
   int userChoose = 1;
   double _value = 0;
@@ -46,15 +46,15 @@ class _FindMissingState extends State<FindMissing> {
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-    _preQuiz = PreQuiz();
+    _preQuiz = PreQuizGame();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuiz;
+      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
       _startGame(_preQuiz);
     });
   }
 
-  void _startGame(PreQuiz _preQuiz) async {
+  void _startGame(PreQuizGame _preQuiz) async {
     _quizBrain.makeQuizFindMissing(_preQuiz);
     _startTimer();
     _value = 1;
@@ -73,18 +73,21 @@ class _FindMissingState extends State<FindMissing> {
     setState(() {
       _value = 0;
       _totalTime = 0;
-      _preIdNow++;
       falseChoose = 0;
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
-    instance.get<PreQuizLocalRepo>().insertPreQuiz(PreQuizEntityCompanion(
+    instance.get<PreQuizGameRepo>().insertPreQuizGame(PreQuizGameEntityCompanion(
         sNum: Value(_preQuiz.startNum!),
         eNum: Value(_preQuiz.endNum!),
         numQ: Value(_preQuiz.numQ!),
         sign: Value(_preQuiz.sign!),
+        option:  Value(_preQuiz.option!),
         timePer: Value(_preQuiz.timePer!),
         dateSave: Value(formatDateInput.format(DateTime.now()))));
+    final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
+    // cap nhap lai id
+    _preIdNow = data.id;
     _quizBrain.makeQuizFindMissing(_preQuiz);
     _startTimer();
     _value = 1;
@@ -107,6 +110,7 @@ class _FindMissingState extends State<FindMissing> {
           falseChoose++;
         });
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
+          _updateScore();
           _endGame();
         } else {
           _resetScreen();
@@ -123,19 +127,19 @@ class _FindMissingState extends State<FindMissing> {
     _makeNewQuiz();
   }
 
-  // void _saveData(BuildContext context) {
-  //   context.read<GameCubit>().addDataToLocal(QuizPraEntityCompanion(
-  //       preId: Value(_preIdNow),
-  //       num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
-  //       sign: Value(_preQuiz.sign!),
-  //       num2: Value(int.parse(_quizBrain.quiz.toString().split(" ")[2])),
-  //       answer: Value(_quizBrain.quizAnswer),
-  //       answerSelect: Value(userChoose ?? 0)));
-  // }
+  void _saveData(BuildContext context) {
+    context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
+        preId: Value(_preIdNow),
+        num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
+        sign: Value(_preQuiz.sign!),
+        num2: Value(int.parse(_quizBrain.quiz.toString().split(" ")[2])),
+        answer: Value(_quizBrain.quizAnswer),
+        answerSelect: Value(userChoose ?? 0)));
+  }
 
   _updateScore() {
-    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizLocalRepo>())
-        .updateScore(_score, _preIdNow);
+    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>())
+        .updateScoreQuizGame(_score, _preIdNow);
   }
 
   void _endGame() {
@@ -144,37 +148,32 @@ class _FindMissingState extends State<FindMissing> {
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
+    _saveData(context);
     if (userChoice.toString().isNotEmpty) {
       if (userChoice == _quizBrain.getQuizMissing) {
         playSound('correct-choice.wav');
         _score++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          // _saveData(context);
           _updateScore();
           _endGame();
         } else {
-          // _saveData(context);
           _resetScreen();
         }
       } else {
         playSound('wrong-choice.wav');
         falseChoose++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          // _saveData(context);
           _updateScore();
           _endGame();
         } else {
-          // _saveData(context);
           _resetScreen();
         }
       }
     } else {
       if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-        // _saveData(context);
         _endGame();
       } else {
         falseChoose++;
-        // _saveData(context);
         _resetScreen();
       }
     }

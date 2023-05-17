@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import audioplayers_darwin
-import path_provider_macos
+import path_provider_foundation
 import shared_preferences_foundation
 import sqlite3_flutter_libs
 

@@ -13,14 +13,15 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 class CirPerIndicator extends StatelessWidget {
   final percentValue;
   final totalTime;
+  final Size size;
 
-  CirPerIndicator({@required this.totalTime, @required this.percentValue});
+  CirPerIndicator({@required this.totalTime, @required this.percentValue,required this.size});
 
   @override
   Widget build(BuildContext context) {
     return CircularPercentIndicator(
-      radius: 58.0,
-      lineWidth: 6,
+      radius: 40,
+      lineWidth: 8,
       percent: percentValue,
       circularStrokeCap: CircularStrokeCap.round,
       center: Text(

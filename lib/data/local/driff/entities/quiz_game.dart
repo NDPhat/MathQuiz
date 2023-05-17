@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-class QuizPraEntity extends Table {
+class QuizGameEntity extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get preId => integer().named("preId")();
   IntColumn get num1 => integer().nullable().named('num1')();

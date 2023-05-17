@@ -1,15 +1,15 @@
 import '../../driff/db/db_app.dart';
 
-abstract class PreQuizLocalRepo {
+abstract class PreQuizGameRepo {
   //Define DB
   final AppDb appDb;
   //Constructor
-  PreQuizLocalRepo(this.appDb);
+  PreQuizGameRepo(this.appDb);
   //WEIGHT INTERFACE
-  Future<void> insertPreQuiz(PreQuizEntityCompanion entity);
-  Future<PreQuizEntityData> getLatestPreQuiz();
-  Future<void> deletePreQuiz(int id);
-  Future<void> updatePreQuiz(int id, int score);
-  Stream<List<PreQuizEntityData>> getAllPreQuizByDay(String day);
-  Stream<List<PreQuizEntityData>> getAllPreQuiz();
+  Future<void> insertPreQuizGame(PreQuizGameEntityCompanion entity);
+  Future<PreQuizGameEntityData> getLatestPreQuizGame();
+  Future<void> deletePreQuizGame(int id);
+  Future<void> updatePreQuizGame(int id, int score);
+  Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDay(String day);
+  Stream<List<PreQuizGameEntityData>> getAllPreQuizGame();
 }

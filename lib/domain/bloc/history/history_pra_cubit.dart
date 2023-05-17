@@ -7,8 +7,8 @@ import '../../../application/utils/format.dart';
 part 'history_pra_state.dart';
 
 class HistoryPraCubit extends Cubit<HistoryPraState> {
-  final PreQuizLocalRepo preQuizLocalRepo;
-  HistoryPraCubit({required PreQuizLocalRepo preQuizLocalRepo})
+  final PreQuizGameRepo preQuizLocalRepo;
+  HistoryPraCubit({required PreQuizGameRepo preQuizLocalRepo})
       : preQuizLocalRepo = preQuizLocalRepo,
         super(HistoryPraState.initial());
   void dateChanged(DateTime value) {
@@ -17,7 +17,7 @@ class HistoryPraCubit extends Cubit<HistoryPraState> {
 
   void deletePreQuiz(int id) async{
     try {
-      await preQuizLocalRepo.deletePreQuiz(id);
+      await preQuizLocalRepo.deletePreQuizGame(id);
     } on Exception catch (e) {
       print(e.toString());
     }

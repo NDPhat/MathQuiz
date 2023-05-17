@@ -1,19 +1,19 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 
 import '../../../application/enum/game_status.dart';
 import '../../../data/local/driff/db/db_app.dart';
-import '../../../data/local/repo/quiz_pra/quiz_pra_repo.dart';
 
 part 'game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
-  final QuizPraLocalRepo quizPraLocalRepo;
-  GameCubit({required QuizPraLocalRepo quizPraLocalRepo})
+  final QuizGameLocalRepo quizPraLocalRepo;
+  GameCubit({required QuizGameLocalRepo quizPraLocalRepo})
       : quizPraLocalRepo = quizPraLocalRepo,
         super(GameState.initial());
-  void addDataToLocal(QuizPraEntityCompanion entityCompanion) {
-    quizPraLocalRepo.insertQuizPra(entityCompanion);
+  void addQuizToLocal(QuizGameEntityCompanion entityCompanion) {
+    quizPraLocalRepo.insertQuizGame(entityCompanion);
   }
 
   void changeDataAfterDoneQ(int trueQ, int falseQ, int score, int quizNow) {
