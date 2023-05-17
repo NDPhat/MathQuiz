@@ -8,7 +8,7 @@ import '../../application/cons/text_style.dart';
 import 'package:math/data/model/make_quiz.dart';
 
 class PreQuizTitle extends StatelessWidget {
-  final PreQuiz preQuiz;
+  final PreQuizGame preQuiz;
   const PreQuizTitle(this.preQuiz, {super.key});
 
   @override

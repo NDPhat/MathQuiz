@@ -9,11 +9,11 @@ import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 part 'pre_quiz_state.dart';
 
 class PreQuizCubit extends Cubit<PreQuizState> {
-  final PreQuizLocalRepo preQuizLocalRepo;
+  final PreQuizGameRepo preQuizLocalRepo;
   String numQMEss = "";
   String sNumMess = "";
   String eNumMess = "";
-  PreQuizCubit({required PreQuizLocalRepo preQuizLocalRepo})
+  PreQuizCubit({required PreQuizGameRepo preQuizLocalRepo})
       : preQuizLocalRepo = preQuizLocalRepo,
         super(PreQuizState.initial());
   void numQChanged(int value) {
@@ -84,28 +84,28 @@ class PreQuizCubit extends Cubit<PreQuizState> {
     return false;
   }
 
-  void updateScore(int score, int id) async {
+  void updateScoreQuizGame(int score, int id) async {
     try {
-      await preQuizLocalRepo.updatePreQuiz(id, score);
+      await preQuizLocalRepo.updatePreQuizGame(id, score);
     } on Exception catch (e) {
       print(e.toString());
     }
   }
 
-  void addPreQuiz(String sign) async {
+  void addPreQuizGame(String sign,String option) async {
     if (isFormValid() == true) {
       try {
-        final entity = PreQuizEntityCompanion(
+        final entity = PreQuizGameEntityCompanion(
             sNum: Value(state.sNum!),
             eNum: Value(state.eNum!),
             numQ: Value(state.numQ!),
             sign: Value(sign),
-            option: Value('truefalse'),
+            option: Value(option),
             timePer: Value(state.time),
             dateSave: Value(formatDateInput.format(DateTime.now())));
         //insert task
-        await preQuizLocalRepo.insertPreQuiz(entity);
-        final data = await preQuizLocalRepo.getLatestPreQuiz();
+        await preQuizLocalRepo.insertPreQuizGame(entity);
+        final data = await preQuizLocalRepo.getLatestPreQuizGame();
         emit(state.copyWith(
             numQMess: "",
             id: data.id,

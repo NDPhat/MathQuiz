@@ -1,10 +1,10 @@
 import '../../driff/db/db_app.dart';
 
-abstract class TestLocalRepo{
+abstract class QuizTestLocalRepo{
   //Define DB
   final AppDb appDb;
   //Constructor
-  TestLocalRepo(this.appDb);
+  QuizTestLocalRepo(this.appDb);
   //WEIGHT INTERFACE
   Future<void> insertTest(QuizTestEntityCompanion entity);
   Future<void> deleteTest(int testId);

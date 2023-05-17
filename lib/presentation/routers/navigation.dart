@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
-import 'package:math/data/local/repo/quiz_pra/quiz_pra_repo.dart';
-import 'package:math/data/local/repo/test/test_repo.dart';
+import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
+import 'package:math/data/local/repo/test/quiz_test_repo.dart';
+
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/domain/bloc/history/history_test_cubit.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
-import 'package:math/presentation/screen/option/option_sign_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
 
 import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
@@ -27,11 +27,13 @@ import '../screen/game_screen/true_false_screen.dart';
 import '../screen/history/history_home.dart';
 import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
-import '../screen/home/home_screen.dart';
+import '../screen/home/home_guest.dart';
+import '../screen/home/home_user.dart';
 import '../screen/home_work/home_work_game_screen.dart';
 import '../screen/home_work/home_work_screen.dart';
-import '../screen/option/option_game_mode_screen.dart';
-import '../screen/pre_quiz/pre_quiz.dart';
+import '../screen/option_game_mode/option_game_mode_screen.dart';
+import '../screen/option_game_mode/option_sign_screen.dart';
+import '../screen/pre_quiz/pre_quiz_game.dart';
 import '../screen/test_screen/test_exam_screen.dart';
 import '../screen/test_screen/test_practice_screen.dart';
 import '../screen/welcome_screen.dart';
@@ -81,10 +83,10 @@ class Routers {
       case homeworkGame:
         return BlocProvider(
             create: (context) =>
-                GameCubit(quizPraLocalRepo: instance.get<QuizPraLocalRepo>()),
+                GameCubit(quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
             child: HomeWorkGameScreen());
       case homeGuest:
-        return HomeScreen();
+        return HomeGuestScreen();
       case doTestExam:
         return TestExamScreen();
       case battleBOT:
@@ -97,18 +99,18 @@ class Routers {
         return OptionSignScreen();
       case premake:
         return BlocProvider(
-            create: (context) => PreQuizCubit(
-                preQuizLocalRepo: instance.get<PreQuizLocalRepo>()),
-            child: PreMakeQuiz());
+            create: (context) =>
+                PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>()),
+            child: PreMakeQuizGame());
       case game:
         return BlocProvider(
             create: (context) =>
-                GameCubit(quizPraLocalRepo: instance.get<QuizPraLocalRepo>()),
+                GameCubit(quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
             child: GameScreen());
       case trueFalse:
         return BlocProvider(
             create: (context) =>
-                GameCubit(quizPraLocalRepo: instance.get<QuizPraLocalRepo>()),
+                GameCubit(quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
             child: const TrueFalseScreen());
       case battle:
         return const DualMainScreen();
@@ -117,12 +119,12 @@ class Routers {
       case findMissing:
         return BlocProvider(
             create: (context) =>
-                GameCubit(quizPraLocalRepo: instance.get<QuizPraLocalRepo>()),
+                GameCubit(quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
             child: const FindMissing());
       case doTestPra:
         return BlocProvider(
             create: (context) =>
-                TestCubit(testLocalRepo: instance.get<TestLocalRepo>()),
+                TestCubit(testLocalRepo: instance.get<QuizTestLocalRepo>()),
             child: const TestScreen());
       case detailTest:
         return const DetailTestScreen();
@@ -133,7 +135,7 @@ class Routers {
       case historyPra:
         return BlocProvider(
             create: (context) => HistoryPraCubit(
-                preQuizLocalRepo: instance.get<PreQuizLocalRepo>()),
+                preQuizLocalRepo: instance.get<PreQuizGameRepo>()),
             child: const HistoryPractice());
       case historyTest:
         return BlocProvider(
@@ -141,7 +143,7 @@ class Routers {
                 preTestLocalRepo: instance.get<PreTestLocalRepo>()),
             child: const HistoryTest());
       default:
-        return HomeScreen();
+        return HomeUserScreen();
     }
   }
 }

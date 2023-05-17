@@ -9,14 +9,14 @@ import '../../../application/cons/text_style.dart';
 import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+class HomeUserScreen extends StatefulWidget {
+  HomeUserScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeUserScreen> createState() => _HomeUserScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeUserScreenState extends State<HomeUserScreen> {
   bool clickingGame = false;
   bool clickingHis = false;
   bool clickingHomeWork = false;
@@ -285,8 +285,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             RoundedButton(
                                                 press: () {
                                                   homeRepo.insertPreTest();
-                                                  Navigator.pushNamed(
-                                                      context, Routers.doTestPra,
+                                                  Navigator.pushNamed(context,
+                                                      Routers.doTestPra,
                                                       arguments: homeRepo
                                                           .getLatestPreTest());
                                                 },
@@ -392,8 +392,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             RoundedButton(
                                               press: () {
-                                                Navigator.pushNamed(
-                                                    context, Routers.historyPra);
+                                                Navigator.pushNamed(context,
+                                                    Routers.historyPra);
                                               },
                                               color: colorGreyDisable,
                                               width: size.width * 0.36,
@@ -406,8 +406,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             RoundedButton(
                                               press: () {
-                                                Navigator.pushNamed(
-                                                    context, Routers.historyTest);
+                                                Navigator.pushNamed(context,
+                                                    Routers.historyTest);
                                               },
                                               color: colorGreyDisable,
                                               width: size.width * 0.36,

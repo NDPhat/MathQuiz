@@ -1,9 +1,10 @@
-import 'package:math/data/local/repo/test/test_repo.dart';
+
+import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 
 import '../../driff/db/db_app.dart';
 
-class TestLocalRepoImpl extends TestLocalRepo {
-  TestLocalRepoImpl(super.appDb);
+class QuizTestLocalRepoImpl extends QuizTestLocalRepo {
+  QuizTestLocalRepoImpl(super.appDb);
 
   @override
   Future<void> deleteTest(int testId) async {

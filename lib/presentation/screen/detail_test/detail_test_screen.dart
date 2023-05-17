@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
-import 'package:math/data/local/repo/quiz_pra/quiz_pra_repo.dart';
-import 'package:math/data/local/repo/test/test_repo.dart';
+import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
@@ -36,7 +35,7 @@ class DetailTestScreen extends StatelessWidget {
               height: size.height * 0.6,
               child: StreamBuilder<List<QuizTestEntityData>>(
                   stream: instance
-                      .get<TestLocalRepo>()
+                      .get<QuizTestLocalRepo>()
                       .getAllTestByPreTestId(preId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {

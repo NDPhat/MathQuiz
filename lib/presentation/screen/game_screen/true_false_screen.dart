@@ -29,7 +29,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   int _totalTime = 0;
   late QuizBrain _quizBrain;
   int _score = 0;
-  late PreQuiz _preQuiz;
+  late PreQuizGame _preQuiz;
   int _preIdNow = 0;
   String userChoose = "True";
   double _value = 0;
@@ -40,15 +40,15 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-    _preQuiz = PreQuiz();
+    _preQuiz = PreQuizGame();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuiz;
+      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
       _startGame(_preQuiz);
     });
   }
 
-  void _startGame(PreQuiz _preQuiz) async {
+  void _startGame(PreQuizGame _preQuiz) async {
     _quizBrain.makeQuizTrueFalse(_preQuiz);
     _startTimer();
     _value = 1;
@@ -129,8 +129,8 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   // }
 
   _updateScore() {
-    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizLocalRepo>())
-        .updateScore(_score, _preIdNow);
+    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>())
+        .updateScoreQuizGame(_score, _preIdNow);
   }
 
   void _endGame() {

@@ -19,7 +19,6 @@ import '../../../application/utils/logic.dart';
 import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
 
-
 import '../../widget/portrait_mode_game.dart';
 import '../../widget/show_alert_dialog.dart';
 
@@ -34,7 +33,7 @@ class _GameScreenState extends State<GameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
-  late PreQuiz _preQuiz;
+  late PreQuizGame _preQuiz;
   int _preIdNow = 0;
   int userChoose = 1;
   double _value = 0;
@@ -45,15 +44,15 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-    _preQuiz = PreQuiz();
+    _preQuiz = PreQuizGame();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuiz;
+      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
       _startGame(_preQuiz);
     });
   }
 
-  void _startGame(PreQuiz _preQuiz) async {
+  void _startGame(PreQuizGame _preQuiz) async {
     _quizBrain.makeQuiz(_preQuiz);
     _startTimer();
     _value = 1;
@@ -74,25 +73,28 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _value = 0;
       _totalTime = 0;
-      _preIdNow++;
       falseChoose = 0;
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
-    instance.get<PreQuizLocalRepo>().insertPreQuiz(PreQuizEntityCompanion(
-        sNum: Value(_preQuiz.startNum!),
-        eNum: Value(_preQuiz.endNum!),
-        numQ: Value(_preQuiz.numQ!),
-        sign: Value(_preQuiz.sign!),
-        timePer: Value(_preQuiz.timePer!),
-        dateSave: Value(formatDateInput.format(DateTime.now()))));
+    // them 1 prequiz moi
+    instance.get<PreQuizGameRepo>().insertPreQuizGame(
+        PreQuizGameEntityCompanion(
+            sNum: Value(_preQuiz.startNum!),
+            eNum: Value(_preQuiz.endNum!),
+            numQ: Value(_preQuiz.numQ!),
+            sign: Value(_preQuiz.sign!),
+            option: Value(_preQuiz.option!),
+            timePer: Value(_preQuiz.timePer!),
+            dateSave: Value(formatDateInput.format(DateTime.now()))));
+    final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
+    // cap nhap lai id
+    _preIdNow = data.id;
     _quizBrain.makeQuiz(_preQuiz);
     _startTimer();
     _value = 1;
     _score = 0;
     _totalNumberOfQuizzes = 1;
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
-    _highScore = _preferences.getInt('highscore') ?? 0;
   }
 
   void _startTimer() {
@@ -109,10 +111,11 @@ class _GameScreenState extends State<GameScreen> {
         setState(() {
           falseChoose++;
         });
+        _saveData(context);
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
+          _updateScore();
           _endGame();
         } else {
-          // _saveData(context);
           _resetScreen();
         }
       }
@@ -128,7 +131,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _saveData(BuildContext context) {
-    context.read<GameCubit>().addDataToLocal(QuizPraEntityCompanion(
+    context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
         preId: Value(_preIdNow),
         num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
         sign: Value(_preQuiz.sign!),
@@ -138,8 +141,8 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   _updateScore() {
-    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizLocalRepo>())
-        .updateScore(_score, _preIdNow);
+    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>())
+        .updateScoreQuizGame(_score, _preIdNow);
   }
 
   void _endGame() {
@@ -148,43 +151,33 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
+    _saveData(context);
     if (userChoice.toString().isNotEmpty) {
       if (userChoice == _quizBrain.quizAnswer) {
         playSound('correct-choice.wav');
         _score++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _saveData(context);
           _updateScore();
           _endGame();
         } else {
-          _saveData(context);
           _resetScreen();
         }
       } else {
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          // _saveData(context);
-          // _updateScore();
+          _updateScore();
           playSound('wrong-choice.wav');
-          setState(() {
-            falseChoose++;
-          });
+          falseChoose++;
           _endGame();
         } else {
-          // _saveData(context);
           playSound('wrong-choice.wav');
-
           falseChoose++;
-
           _resetScreen();
         }
       }
     } else {
       if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-        // _saveData(context);
         _endGame();
       } else {
-        // _saveData(context);
-
         falseChoose++;
         _resetScreen();
       }
@@ -214,36 +207,35 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: kGradientColors,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: kGradientColors,
+            ),
           ),
-        ),
-        child:BlocBuilder<GameCubit, GameState>(builder: (context, state) {
-                return PortraitModeGame(
-                  highscore: _highScore,
-                  score: _score,
-                  quizBrainObject: _quizBrain,
-                  percentValue: _value,
-                  timeNow: _totalTime,
-                  typeOfGame: "Game",
-                  onTap: (int value) {
-                    setState(() {
-                      userChoose = value;
-                    });
-                    _checkAnswer(value, context);
-                    context.read<GameCubit>().changeDataAfterDoneQ(
-                        _score, falseChoose, _score, _totalNumberOfQuizzes);
-                  },
-                  trueQ: state.trueQ,
-                  falseQ: falseChoose,
-                  totalQ: _preQuiz.numQ ?? 1,
-                  quizNow: _totalNumberOfQuizzes,
-                  size: data, onBack: () {  },
-                );
-              })
-
-      ),
+          child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+            return PortraitModeGame(
+              highscore: _highScore,
+              score: _score,
+              quizBrainObject: _quizBrain,
+              percentValue: _value,
+              timeNow: _totalTime,
+              typeOfGame: "Game",
+              onTap: (int value) {
+                setState(() {
+                  userChoose = value;
+                });
+                _checkAnswer(value, context);
+                context.read<GameCubit>().changeDataAfterDoneQ(
+                    _score, falseChoose, _score, _totalNumberOfQuizzes);
+              },
+              trueQ: state.trueQ,
+              falseQ: falseChoose,
+              totalQ: _preQuiz.numQ ?? 1,
+              quizNow: _totalNumberOfQuizzes,
+              size: data,
+              onBack: () {},
+            );
+          })),
     );
   }
 

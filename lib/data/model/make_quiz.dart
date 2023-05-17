@@ -1,4 +1,4 @@
-class PreQuiz {
+class PreQuizGame {
   int? id;
   int? startNum;
   int? endNum;
@@ -9,7 +9,7 @@ class PreQuiz {
   String? dateSave;
   String ? option;
 
-  PreQuiz(
+  PreQuizGame(
       {this.id,
       this.numQ,
       this.startNum,

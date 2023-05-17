@@ -14,8 +14,8 @@ import '../../widget/button_custom.dart';
 import '../../widget/input_field.dart';
 
 
-class PreMakeQuiz extends StatelessWidget {
-  PreMakeQuiz({Key? key}) : super(key: key);
+class PreMakeQuizGame extends StatelessWidget {
+  PreMakeQuizGame({Key? key}) : super(key: key);
   final items = ['5s', '10s', '15s'];
   String selectedValue = '5s';
   @override
@@ -167,30 +167,7 @@ class PreMakeQuiz extends StatelessWidget {
                       if (state.status == PreQuizStatus.error) {
                         showDialog(
                             context: context,
-                            builder: (ctx) => Center(
-                                  child: AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                      25,
-                                    )),
-                                    backgroundColor: const Color(0xff1542bf),
-                                    title: const FittedBox(
-                                      child: Text('ERROR FORM ?',
-                                          textAlign: TextAlign.center,
-                                          style: kTitleTS),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Center(
-                                            child: Text('BACK',
-                                                style: kTitleTSBold)),
-                                      ),
-                                    ],
-                                  ),
-                                ));
+                            builder: (ctx) => const ShowDialogForm());
                         context.read<PreQuizCubit>().clearOldDataErrorForm();
                       } else if (state.status == PreQuizStatus.success) {
                         Navigator.pushNamed(
@@ -200,7 +177,7 @@ class PreMakeQuiz extends StatelessWidget {
                                 : (option.optionQuiz! == "missing"
                                     ? Routers.findMissing
                                     : Routers.trueFalse),
-                            arguments: PreQuiz(
+                            arguments: PreQuizGame(
                                 numQ: state.numQ,
                                 timePer: state.time,
                                 id: state.id,
@@ -212,7 +189,7 @@ class PreMakeQuiz extends StatelessWidget {
                     },
                     child: RoundedButton(
                       press: () {
-                        context.read<PreQuizCubit>().addPreQuiz(option.sign!);
+                        context.read<PreQuizCubit>().addPreQuizGame(option.sign!,option.optionQuiz!);
                       },
                       color: colorBlueQuaternery,
                       width: size.width * 0.8,
@@ -228,5 +205,39 @@ class PreMakeQuiz extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ShowDialogForm extends StatelessWidget {
+  const ShowDialogForm({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+              25,
+            )),
+            backgroundColor: const Color(0xff1542bf),
+            title: const FittedBox(
+              child: Text('ERROR FORM ?',
+                  textAlign: TextAlign.center,
+                  style: kTitleTS),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Center(
+                    child: Text('BACK',
+                        style: kTitleTSBold)),
+              ),
+            ],
+          ),
+        );
   }
 }
