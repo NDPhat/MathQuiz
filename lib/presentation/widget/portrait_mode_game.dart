@@ -49,7 +49,7 @@ class PortraitModeGame extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        AppBarWidget(size: size, onBack: onBack),
+        AppBarWidget(size: size, onBack: onBack,textTitle: 'PRACTICE TESTING',),
         Container(
           color: colorSystemWhite,
           padding: EdgeInsets.only(

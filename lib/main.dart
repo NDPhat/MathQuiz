@@ -9,7 +9,6 @@ GetIt instance = GetIt.instance;
 
 void main() {
   setUpProject();
-
   runApp(DevicePreview(
     builder: (context) => const MathQuizApp(), // Wrap your app
   ));

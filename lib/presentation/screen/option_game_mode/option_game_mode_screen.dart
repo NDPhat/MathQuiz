@@ -21,9 +21,9 @@ class OptionGameModeScreen extends StatelessWidget {
       backgroundColor: colorSystemWhite,
       resizeToAvoidBottomInset: false,
       body: Column(
-
         children: [  AppBarWidget(
             size: size,
+            textTitle: 'CHOOSE GAME MODE',
             onBack: () {
               Navigator.pop(context);
             }),

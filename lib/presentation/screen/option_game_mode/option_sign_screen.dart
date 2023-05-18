@@ -22,6 +22,7 @@ class OptionSignScreen extends StatelessWidget {
         children: [
           AppBarWidget(
               size: size,
+              textTitle: 'CHOOSE SIGN',
               onBack: () {
                 Navigator.pop(context);
               }),
@@ -33,7 +34,6 @@ class OptionSignScreen extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-
                   Image.asset(
                     "assets/images/picone.png",
                     width: size.width * 0.6,

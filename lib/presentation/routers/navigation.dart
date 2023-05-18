@@ -8,6 +8,7 @@ import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/domain/bloc/history/history_test_cubit.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
+import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
 
@@ -24,7 +25,6 @@ import '../screen/dual/option_bot_dual.dart';
 import '../screen/game_screen/find_missing.dart';
 import '../screen/game_screen/game_screen.dart';
 import '../screen/game_screen/true_false_screen.dart';
-import '../screen/history/history_home.dart';
 import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
 import '../screen/home/home_guest.dart';
@@ -60,6 +60,7 @@ class Routers {
   static const String premake = '/premake';
   static const String detailTest = '/detailTest';
   static const String checkAnswer = '/checkAnswer';
+  static const String detailQuizGame = '/detailQuizGame';
   static const String homework = '/homework';
   static const String homeworkGame = '/homeworkGame';
 
@@ -128,10 +129,10 @@ class Routers {
             child: const TestScreen());
       case detailTest:
         return const DetailTestScreen();
-      case historyHome:
-        return const HistoryHome();
       case checkAnswer:
         return const CheckAnswerScreen();
+      case detailQuizGame:
+        return const DetailQuizGame();
       case historyPra:
         return BlocProvider(
             create: (context) => HistoryPraCubit(

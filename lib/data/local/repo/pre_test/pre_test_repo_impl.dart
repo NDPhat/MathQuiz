@@ -45,4 +45,16 @@ class PreTestLocalRepoImpl extends PreTestLocalRepo {
         .get();
     return list.first;
   }
+
+  @override
+  Future<void> deleteAllPreTest() async {
+    await (appDb.delete(appDb.preTestEntity)).go();
+  }
+
+  @override
+  Future<void> deletePreTestByDay(String dateSave) async {
+    await (appDb.delete(appDb.preTestEntity)
+          ..where((t) => t.dateSave.equals(dateSave)))
+        .go();
+  }
 }

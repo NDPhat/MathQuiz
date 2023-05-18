@@ -41,6 +41,7 @@ class _FindMissingState extends State<FindMissing> {
   double _value = 0;
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
+  bool userAnswer = true;
 
   @override
   void initState() {
@@ -64,6 +65,7 @@ class _FindMissingState extends State<FindMissing> {
 
   void _makeNewQuiz() async {
     _quizBrain.makeQuizFindMissing(_preQuiz);
+    print(_quizBrain.getQuizMissing);
     _value = 0;
     _startTimer();
     _value = 1;
@@ -77,14 +79,15 @@ class _FindMissingState extends State<FindMissing> {
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
-    instance.get<PreQuizGameRepo>().insertPreQuizGame(PreQuizGameEntityCompanion(
-        sNum: Value(_preQuiz.startNum!),
-        eNum: Value(_preQuiz.endNum!),
-        numQ: Value(_preQuiz.numQ!),
-        sign: Value(_preQuiz.sign!),
-        option:  Value(_preQuiz.option!),
-        timePer: Value(_preQuiz.timePer!),
-        dateSave: Value(formatDateInput.format(DateTime.now()))));
+    instance.get<PreQuizGameRepo>().insertPreQuizGame(
+        PreQuizGameEntityCompanion(
+            sNum: Value(_preQuiz.startNum!),
+            eNum: Value(_preQuiz.endNum!),
+            numQ: Value(_preQuiz.numQ!),
+            sign: Value(_preQuiz.sign!),
+            option: Value(_preQuiz.option!),
+            timePer: Value(_preQuiz.timePer!),
+            dateSave: Value(formatDateInput.format(DateTime.now()))));
     final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
     // cap nhap lai id
     _preIdNow = data.id;
@@ -106,6 +109,9 @@ class _FindMissingState extends State<FindMissing> {
           _totalTime = (_value * (_preQuiz.timePer!) + 1).toInt();
         });
       } else {
+        // luu lai cau hoi va dap an da khong chon
+        userAnswer=false;
+        _saveData(context);
         setState(() {
           falseChoose++;
         });
@@ -130,11 +136,13 @@ class _FindMissingState extends State<FindMissing> {
   void _saveData(BuildContext context) {
     context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
         preId: Value(_preIdNow),
-        num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
+        num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
         sign: Value(_preQuiz.sign!),
-        num2: Value(int.parse(_quizBrain.quiz.toString().split(" ")[2])),
-        answer: Value(_quizBrain.quizAnswer),
-        answerSelect: Value(userChoose ?? 0)));
+        infoQuiz: Value(userAnswer),
+        quiz: Value(_quizBrain.quiz.toString()),
+        num2: Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
+        answer: Value(_quizBrain.getQuizMissing.toString()),
+        answerSelect: Value(userChoose.toString())));
   }
 
   _updateScore() {
@@ -148,9 +156,10 @@ class _FindMissingState extends State<FindMissing> {
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
-    _saveData(context);
     if (userChoice.toString().isNotEmpty) {
       if (userChoice == _quizBrain.getQuizMissing) {
+        userAnswer = true;
+        _saveData(context);
         playSound('correct-choice.wav');
         _score++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
@@ -160,6 +169,8 @@ class _FindMissingState extends State<FindMissing> {
           _resetScreen();
         }
       } else {
+        userAnswer = false;
+        _saveData(context);
         playSound('wrong-choice.wav');
         falseChoose++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
@@ -170,6 +181,8 @@ class _FindMissingState extends State<FindMissing> {
         }
       }
     } else {
+      userAnswer = false;
+      _saveData(context);
       if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
         _endGame();
       } else {
@@ -201,8 +214,7 @@ class _FindMissingState extends State<FindMissing> {
                 _timer.cancel();
                 Navigator.pushNamed(context, Routers.homeGuest);
               },
-              child:
-                  const Center(child: Text('YES', style: kDialogButtonsTS)),
+              child: const Center(child: Text('YES', style: kDialogButtonsTS)),
             ),
             TextButton(
               onPressed: () {

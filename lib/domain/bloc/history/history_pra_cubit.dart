@@ -15,9 +15,25 @@ class HistoryPraCubit extends Cubit<HistoryPraState> {
     emit(state.copyWith(timeNow: formatDateInput.format(value)));
   }
 
-  void deletePreQuiz(int id) async{
+  void deletePreQuiz(int id) async {
     try {
       await preQuizLocalRepo.deletePreQuizGame(id);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void deletePreQuizByDay(String dateSave) async {
+    try {
+      await preQuizLocalRepo.deletePreQuizGameByDay(dateSave);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void deleteAllPreQuiz() async {
+    try {
+      await preQuizLocalRepo.deleteAllPreQuiz();
     } on Exception catch (e) {
       print(e.toString());
     }

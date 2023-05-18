@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/cons/text_style.dart';
+import '../../../application/utils/format.dart';
 import '../../../application/utils/logic.dart';
+import '../../../data/local/driff/db/db_app.dart';
 import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../data/model/make_quiz.dart';
 import '../../../domain/bloc/game/game_cubit.dart';
@@ -31,10 +34,11 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   int _score = 0;
   late PreQuizGame _preQuiz;
   int _preIdNow = 0;
-  String userChoose = "True";
+  String userChoose = "TRUE";
   double _value = 0;
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
+  bool userAnswer = true;
 
   @override
   void initState() {
@@ -73,13 +77,18 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
-    // instance.get<PreQuizLocalRepo>().insertPreQuiz(PreQuizEntityCompanion(
-    //     sNum: Value(_preQuiz.startNum!),
-    //     eNum: Value(_preQuiz.endNum!),
-    //     numQ: Value(_preQuiz.numQ!),
-    //     sign: Value(_preQuiz.sign!),
-    //     timePer: Value(_preQuiz.timePer!),
-    //     dateSave: Value(formatDateInput.format(DateTime.now()))));
+    instance.get<PreQuizGameRepo>().insertPreQuizGame(
+        PreQuizGameEntityCompanion(
+            sNum: Value(_preQuiz.startNum!),
+            eNum: Value(_preQuiz.endNum!),
+            numQ: Value(_preQuiz.numQ!),
+            sign: Value(_preQuiz.sign!),
+            option: Value(_preQuiz.option!),
+            timePer: Value(_preQuiz.timePer!),
+            dateSave: Value(formatDateInput.format(DateTime.now()))));
+    final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
+    // cap nhap lai id
+    _preIdNow = data.id;
     _quizBrain.makeQuizTrueFalse(_preQuiz);
     _startTimer();
     _value = 1;
@@ -98,10 +107,15 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
           _totalTime = (_value * (_preQuiz.timePer!) + 1).toInt();
         });
       } else {
+        // luu lai cau hoi va dap an da khong chon
+
+        _saveData(context);
+        userAnswer = false;
         setState(() {
           falseChoose++;
         });
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
+          _updateScore();
           _endGame();
         } else {
           _resetScreen();
@@ -118,15 +132,17 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
     _makeNewQuiz();
   }
 
-  // void _saveData(BuildContext context) {
-  //   context.read<GameCubit>().addDataToLocal(QuizPraEntityCompanion(
-  //       preId: Value(_preIdNow),
-  //       num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
-  //       sign: Value(_preQuiz.sign!),
-  //       num2: Value(int.parse(_quizBrain.quiz.toString().split(" ")[2])),
-  //       answer: Value(_quizBrain.quizAnswer),
-  //       answerSelect: Value(userChoose == "True" ? 1 : 0)));
-  // }
+  void _saveData(BuildContext context) {
+    context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
+        preId: Value(_preIdNow),
+        num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
+        sign: Value(_preQuiz.sign!),
+        quiz: Value(_quizBrain.quiz.toString()),
+        infoQuiz: Value(userAnswer),
+        num2: Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
+        answer: Value(_quizBrain.quizTrueFalse),
+        answerSelect: Value(userChoose.toString())));
+  }
 
   _updateScore() {
     PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>())
@@ -141,36 +157,40 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   void _checkAnswer(String userChoice, BuildContext context) async {
     if (userChoice.isNotEmpty) {
       if (userChoice == _quizBrain.getQuizTrueFalse) {
+        // luu lai cau hoi va dap an chon dung
+
+        userAnswer = true;
+        _saveData(context);
         playSound('correct-choice.wav');
         _score++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          //_saveData(context);
-          // _updateScore();
+          _updateScore();
           _endGame();
         } else {
-          //_saveData(context);
           _resetScreen();
         }
       } else {
+        userAnswer = false;
+        _saveData(context);
+
         playSound('wrong-choice.wav');
         falseChoose++;
 
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          //_saveData(context);
-          // _updateScore();
+          _updateScore();
           _endGame();
         } else {
-          // _saveData(context);
           _resetScreen();
         }
       }
     } else {
+      userAnswer = false;
+      _saveData(context);
+
       if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-        // _saveData(context);
         _endGame();
       } else {
         falseChoose++;
-        //_saveData(context);
         _resetScreen();
       }
     }
@@ -244,6 +264,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
             return PortraitModeTF(
               score: state.score,
               quizBrainObject: _quizBrain,
+              onBack: () {},
               percentValue: _value,
               timeNow: _totalTime,
               onTap: (String value) {

@@ -704,9 +704,26 @@ class $QuizGameEntityTable extends QuizGameEntity
       type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _num1Meta = const VerificationMeta('num1');
   @override
-  late final GeneratedColumn<int> num1 = GeneratedColumn<int>(
+  late final GeneratedColumn<String> num1 = GeneratedColumn<String>(
       'num1', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _quizMeta = const VerificationMeta('quiz');
+  @override
+  late final GeneratedColumn<String> quiz = GeneratedColumn<String>(
+      'quiz', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _infoQuizMeta =
+      const VerificationMeta('infoQuiz');
+  @override
+  late final GeneratedColumn<bool> infoQuiz =
+      GeneratedColumn<bool>('infoQuiz', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("infoQuiz" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
   static const VerificationMeta _signMeta = const VerificationMeta('sign');
   @override
   late final GeneratedColumn<String> sign = GeneratedColumn<String>(
@@ -714,23 +731,23 @@ class $QuizGameEntityTable extends QuizGameEntity
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _num2Meta = const VerificationMeta('num2');
   @override
-  late final GeneratedColumn<int> num2 = GeneratedColumn<int>(
+  late final GeneratedColumn<String> num2 = GeneratedColumn<String>(
       'num2', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _answerMeta = const VerificationMeta('answer');
   @override
-  late final GeneratedColumn<int> answer = GeneratedColumn<int>(
+  late final GeneratedColumn<String> answer = GeneratedColumn<String>(
       'answer', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _answerSelectMeta =
       const VerificationMeta('answerSelect');
   @override
-  late final GeneratedColumn<int> answerSelect = GeneratedColumn<int>(
+  late final GeneratedColumn<String> answerSelect = GeneratedColumn<String>(
       'answerSelect', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, preId, num1, sign, num2, answer, answerSelect];
+      [id, preId, num1, quiz, infoQuiz, sign, num2, answer, answerSelect];
   @override
   String get aliasedName => _alias ?? 'quiz_game_entity';
   @override
@@ -752,6 +769,14 @@ class $QuizGameEntityTable extends QuizGameEntity
     if (data.containsKey('num1')) {
       context.handle(
           _num1Meta, num1.isAcceptableOrUnknown(data['num1']!, _num1Meta));
+    }
+    if (data.containsKey('quiz')) {
+      context.handle(
+          _quizMeta, quiz.isAcceptableOrUnknown(data['quiz']!, _quizMeta));
+    }
+    if (data.containsKey('infoQuiz')) {
+      context.handle(_infoQuizMeta,
+          infoQuiz.isAcceptableOrUnknown(data['infoQuiz']!, _infoQuizMeta));
     }
     if (data.containsKey('sign')) {
       context.handle(
@@ -791,15 +816,19 @@ class $QuizGameEntityTable extends QuizGameEntity
       preId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}preId'])!,
       num1: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}num1']),
+          .read(DriftSqlType.string, data['${effectivePrefix}num1']),
+      quiz: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}quiz']),
+      infoQuiz: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}infoQuiz']),
       sign: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}sign'])!,
       num2: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}num2']),
+          .read(DriftSqlType.string, data['${effectivePrefix}num2']),
       answer: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}answer'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}answer'])!,
       answerSelect: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}answerSelect'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}answerSelect'])!,
     );
   }
 
@@ -813,15 +842,19 @@ class QuizGameEntityData extends DataClass
     implements Insertable<QuizGameEntityData> {
   final int id;
   final int preId;
-  final int? num1;
+  final String? num1;
+  final String? quiz;
+  final bool? infoQuiz;
   final String sign;
-  final int? num2;
-  final int answer;
-  final int answerSelect;
+  final String? num2;
+  final String answer;
+  final String answerSelect;
   const QuizGameEntityData(
       {required this.id,
       required this.preId,
       this.num1,
+      this.quiz,
+      this.infoQuiz,
       required this.sign,
       this.num2,
       required this.answer,
@@ -832,14 +865,20 @@ class QuizGameEntityData extends DataClass
     map['id'] = Variable<int>(id);
     map['preId'] = Variable<int>(preId);
     if (!nullToAbsent || num1 != null) {
-      map['num1'] = Variable<int>(num1);
+      map['num1'] = Variable<String>(num1);
+    }
+    if (!nullToAbsent || quiz != null) {
+      map['quiz'] = Variable<String>(quiz);
+    }
+    if (!nullToAbsent || infoQuiz != null) {
+      map['infoQuiz'] = Variable<bool>(infoQuiz);
     }
     map['sign'] = Variable<String>(sign);
     if (!nullToAbsent || num2 != null) {
-      map['num2'] = Variable<int>(num2);
+      map['num2'] = Variable<String>(num2);
     }
-    map['answer'] = Variable<int>(answer);
-    map['answerSelect'] = Variable<int>(answerSelect);
+    map['answer'] = Variable<String>(answer);
+    map['answerSelect'] = Variable<String>(answerSelect);
     return map;
   }
 
@@ -848,6 +887,10 @@ class QuizGameEntityData extends DataClass
       id: Value(id),
       preId: Value(preId),
       num1: num1 == null && nullToAbsent ? const Value.absent() : Value(num1),
+      quiz: quiz == null && nullToAbsent ? const Value.absent() : Value(quiz),
+      infoQuiz: infoQuiz == null && nullToAbsent
+          ? const Value.absent()
+          : Value(infoQuiz),
       sign: Value(sign),
       num2: num2 == null && nullToAbsent ? const Value.absent() : Value(num2),
       answer: Value(answer),
@@ -861,11 +904,13 @@ class QuizGameEntityData extends DataClass
     return QuizGameEntityData(
       id: serializer.fromJson<int>(json['id']),
       preId: serializer.fromJson<int>(json['preId']),
-      num1: serializer.fromJson<int?>(json['num1']),
+      num1: serializer.fromJson<String?>(json['num1']),
+      quiz: serializer.fromJson<String?>(json['quiz']),
+      infoQuiz: serializer.fromJson<bool?>(json['infoQuiz']),
       sign: serializer.fromJson<String>(json['sign']),
-      num2: serializer.fromJson<int?>(json['num2']),
-      answer: serializer.fromJson<int>(json['answer']),
-      answerSelect: serializer.fromJson<int>(json['answerSelect']),
+      num2: serializer.fromJson<String?>(json['num2']),
+      answer: serializer.fromJson<String>(json['answer']),
+      answerSelect: serializer.fromJson<String>(json['answerSelect']),
     );
   }
   @override
@@ -874,26 +919,32 @@ class QuizGameEntityData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'preId': serializer.toJson<int>(preId),
-      'num1': serializer.toJson<int?>(num1),
+      'num1': serializer.toJson<String?>(num1),
+      'quiz': serializer.toJson<String?>(quiz),
+      'infoQuiz': serializer.toJson<bool?>(infoQuiz),
       'sign': serializer.toJson<String>(sign),
-      'num2': serializer.toJson<int?>(num2),
-      'answer': serializer.toJson<int>(answer),
-      'answerSelect': serializer.toJson<int>(answerSelect),
+      'num2': serializer.toJson<String?>(num2),
+      'answer': serializer.toJson<String>(answer),
+      'answerSelect': serializer.toJson<String>(answerSelect),
     };
   }
 
   QuizGameEntityData copyWith(
           {int? id,
           int? preId,
-          Value<int?> num1 = const Value.absent(),
+          Value<String?> num1 = const Value.absent(),
+          Value<String?> quiz = const Value.absent(),
+          Value<bool?> infoQuiz = const Value.absent(),
           String? sign,
-          Value<int?> num2 = const Value.absent(),
-          int? answer,
-          int? answerSelect}) =>
+          Value<String?> num2 = const Value.absent(),
+          String? answer,
+          String? answerSelect}) =>
       QuizGameEntityData(
         id: id ?? this.id,
         preId: preId ?? this.preId,
         num1: num1.present ? num1.value : this.num1,
+        quiz: quiz.present ? quiz.value : this.quiz,
+        infoQuiz: infoQuiz.present ? infoQuiz.value : this.infoQuiz,
         sign: sign ?? this.sign,
         num2: num2.present ? num2.value : this.num2,
         answer: answer ?? this.answer,
@@ -905,6 +956,8 @@ class QuizGameEntityData extends DataClass
           ..write('id: $id, ')
           ..write('preId: $preId, ')
           ..write('num1: $num1, ')
+          ..write('quiz: $quiz, ')
+          ..write('infoQuiz: $infoQuiz, ')
           ..write('sign: $sign, ')
           ..write('num2: $num2, ')
           ..write('answer: $answer, ')
@@ -914,8 +967,8 @@ class QuizGameEntityData extends DataClass
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, preId, num1, sign, num2, answer, answerSelect);
+  int get hashCode => Object.hash(
+      id, preId, num1, quiz, infoQuiz, sign, num2, answer, answerSelect);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -923,6 +976,8 @@ class QuizGameEntityData extends DataClass
           other.id == this.id &&
           other.preId == this.preId &&
           other.num1 == this.num1 &&
+          other.quiz == this.quiz &&
+          other.infoQuiz == this.infoQuiz &&
           other.sign == this.sign &&
           other.num2 == this.num2 &&
           other.answer == this.answer &&
@@ -932,15 +987,19 @@ class QuizGameEntityData extends DataClass
 class QuizGameEntityCompanion extends UpdateCompanion<QuizGameEntityData> {
   final Value<int> id;
   final Value<int> preId;
-  final Value<int?> num1;
+  final Value<String?> num1;
+  final Value<String?> quiz;
+  final Value<bool?> infoQuiz;
   final Value<String> sign;
-  final Value<int?> num2;
-  final Value<int> answer;
-  final Value<int> answerSelect;
+  final Value<String?> num2;
+  final Value<String> answer;
+  final Value<String> answerSelect;
   const QuizGameEntityCompanion({
     this.id = const Value.absent(),
     this.preId = const Value.absent(),
     this.num1 = const Value.absent(),
+    this.quiz = const Value.absent(),
+    this.infoQuiz = const Value.absent(),
     this.sign = const Value.absent(),
     this.num2 = const Value.absent(),
     this.answer = const Value.absent(),
@@ -950,10 +1009,12 @@ class QuizGameEntityCompanion extends UpdateCompanion<QuizGameEntityData> {
     this.id = const Value.absent(),
     required int preId,
     this.num1 = const Value.absent(),
+    this.quiz = const Value.absent(),
+    this.infoQuiz = const Value.absent(),
     required String sign,
     this.num2 = const Value.absent(),
-    required int answer,
-    required int answerSelect,
+    required String answer,
+    required String answerSelect,
   })  : preId = Value(preId),
         sign = Value(sign),
         answer = Value(answer),
@@ -961,16 +1022,20 @@ class QuizGameEntityCompanion extends UpdateCompanion<QuizGameEntityData> {
   static Insertable<QuizGameEntityData> custom({
     Expression<int>? id,
     Expression<int>? preId,
-    Expression<int>? num1,
+    Expression<String>? num1,
+    Expression<String>? quiz,
+    Expression<bool>? infoQuiz,
     Expression<String>? sign,
-    Expression<int>? num2,
-    Expression<int>? answer,
-    Expression<int>? answerSelect,
+    Expression<String>? num2,
+    Expression<String>? answer,
+    Expression<String>? answerSelect,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (preId != null) 'preId': preId,
       if (num1 != null) 'num1': num1,
+      if (quiz != null) 'quiz': quiz,
+      if (infoQuiz != null) 'infoQuiz': infoQuiz,
       if (sign != null) 'sign': sign,
       if (num2 != null) 'num2': num2,
       if (answer != null) 'answer': answer,
@@ -981,15 +1046,19 @@ class QuizGameEntityCompanion extends UpdateCompanion<QuizGameEntityData> {
   QuizGameEntityCompanion copyWith(
       {Value<int>? id,
       Value<int>? preId,
-      Value<int?>? num1,
+      Value<String?>? num1,
+      Value<String?>? quiz,
+      Value<bool?>? infoQuiz,
       Value<String>? sign,
-      Value<int?>? num2,
-      Value<int>? answer,
-      Value<int>? answerSelect}) {
+      Value<String?>? num2,
+      Value<String>? answer,
+      Value<String>? answerSelect}) {
     return QuizGameEntityCompanion(
       id: id ?? this.id,
       preId: preId ?? this.preId,
       num1: num1 ?? this.num1,
+      quiz: quiz ?? this.quiz,
+      infoQuiz: infoQuiz ?? this.infoQuiz,
       sign: sign ?? this.sign,
       num2: num2 ?? this.num2,
       answer: answer ?? this.answer,
@@ -1007,19 +1076,25 @@ class QuizGameEntityCompanion extends UpdateCompanion<QuizGameEntityData> {
       map['preId'] = Variable<int>(preId.value);
     }
     if (num1.present) {
-      map['num1'] = Variable<int>(num1.value);
+      map['num1'] = Variable<String>(num1.value);
+    }
+    if (quiz.present) {
+      map['quiz'] = Variable<String>(quiz.value);
+    }
+    if (infoQuiz.present) {
+      map['infoQuiz'] = Variable<bool>(infoQuiz.value);
     }
     if (sign.present) {
       map['sign'] = Variable<String>(sign.value);
     }
     if (num2.present) {
-      map['num2'] = Variable<int>(num2.value);
+      map['num2'] = Variable<String>(num2.value);
     }
     if (answer.present) {
-      map['answer'] = Variable<int>(answer.value);
+      map['answer'] = Variable<String>(answer.value);
     }
     if (answerSelect.present) {
-      map['answerSelect'] = Variable<int>(answerSelect.value);
+      map['answerSelect'] = Variable<String>(answerSelect.value);
     }
     return map;
   }
@@ -1030,6 +1105,8 @@ class QuizGameEntityCompanion extends UpdateCompanion<QuizGameEntityData> {
           ..write('id: $id, ')
           ..write('preId: $preId, ')
           ..write('num1: $num1, ')
+          ..write('quiz: $quiz, ')
+          ..write('infoQuiz: $infoQuiz, ')
           ..write('sign: $sign, ')
           ..write('num2: $num2, ')
           ..write('answer: $answer, ')
@@ -1061,33 +1138,45 @@ class $QuizTestEntityTable extends QuizTestEntity
       type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _num1Meta = const VerificationMeta('num1');
   @override
-  late final GeneratedColumn<int> num1 = GeneratedColumn<int>(
-      'num1', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _signMeta = const VerificationMeta('sign');
+  late final GeneratedColumn<String> num1 = GeneratedColumn<String>(
+      'num1', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _quizMeta = const VerificationMeta('quiz');
   @override
-  late final GeneratedColumn<String> sign = GeneratedColumn<String>(
-      'sign', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+  late final GeneratedColumn<String> quiz = GeneratedColumn<String>(
+      'quiz', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _infoQuizMeta =
+      const VerificationMeta('infoQuiz');
+  @override
+  late final GeneratedColumn<bool> infoQuiz =
+      GeneratedColumn<bool>('infoQuiz', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("infoQuiz" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
   static const VerificationMeta _num2Meta = const VerificationMeta('num2');
   @override
-  late final GeneratedColumn<int> num2 = GeneratedColumn<int>(
-      'num2', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+  late final GeneratedColumn<String> num2 = GeneratedColumn<String>(
+      'num2', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _answerMeta = const VerificationMeta('answer');
   @override
-  late final GeneratedColumn<int> answer = GeneratedColumn<int>(
+  late final GeneratedColumn<String> answer = GeneratedColumn<String>(
       'answer', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _answerSelectMeta =
       const VerificationMeta('answerSelect');
   @override
-  late final GeneratedColumn<int> answerSelect = GeneratedColumn<int>(
+  late final GeneratedColumn<String> answerSelect = GeneratedColumn<String>(
       'answerSelect', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, preId, num1, sign, num2, answer, answerSelect];
+      [id, preId, num1, quiz, infoQuiz, num2, answer, answerSelect];
   @override
   String get aliasedName => _alias ?? 'quiz_test_entity';
   @override
@@ -1109,20 +1198,18 @@ class $QuizTestEntityTable extends QuizTestEntity
     if (data.containsKey('num1')) {
       context.handle(
           _num1Meta, num1.isAcceptableOrUnknown(data['num1']!, _num1Meta));
-    } else if (isInserting) {
-      context.missing(_num1Meta);
     }
-    if (data.containsKey('sign')) {
+    if (data.containsKey('quiz')) {
       context.handle(
-          _signMeta, sign.isAcceptableOrUnknown(data['sign']!, _signMeta));
-    } else if (isInserting) {
-      context.missing(_signMeta);
+          _quizMeta, quiz.isAcceptableOrUnknown(data['quiz']!, _quizMeta));
+    }
+    if (data.containsKey('infoQuiz')) {
+      context.handle(_infoQuizMeta,
+          infoQuiz.isAcceptableOrUnknown(data['infoQuiz']!, _infoQuizMeta));
     }
     if (data.containsKey('num2')) {
       context.handle(
           _num2Meta, num2.isAcceptableOrUnknown(data['num2']!, _num2Meta));
-    } else if (isInserting) {
-      context.missing(_num2Meta);
     }
     if (data.containsKey('answer')) {
       context.handle(_answerMeta,
@@ -1152,15 +1239,17 @@ class $QuizTestEntityTable extends QuizTestEntity
       preId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}preId'])!,
       num1: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}num1'])!,
-      sign: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sign'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}num1']),
+      quiz: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}quiz']),
+      infoQuiz: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}infoQuiz']),
       num2: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}num2'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}num2']),
       answer: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}answer'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}answer'])!,
       answerSelect: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}answerSelect'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}answerSelect'])!,
     );
   }
 
@@ -1174,17 +1263,19 @@ class QuizTestEntityData extends DataClass
     implements Insertable<QuizTestEntityData> {
   final int id;
   final int preId;
-  final int num1;
-  final String sign;
-  final int num2;
-  final int answer;
-  final int answerSelect;
+  final String? num1;
+  final String? quiz;
+  final bool? infoQuiz;
+  final String? num2;
+  final String answer;
+  final String answerSelect;
   const QuizTestEntityData(
       {required this.id,
       required this.preId,
-      required this.num1,
-      required this.sign,
-      required this.num2,
+      this.num1,
+      this.quiz,
+      this.infoQuiz,
+      this.num2,
       required this.answer,
       required this.answerSelect});
   @override
@@ -1192,11 +1283,20 @@ class QuizTestEntityData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['preId'] = Variable<int>(preId);
-    map['num1'] = Variable<int>(num1);
-    map['sign'] = Variable<String>(sign);
-    map['num2'] = Variable<int>(num2);
-    map['answer'] = Variable<int>(answer);
-    map['answerSelect'] = Variable<int>(answerSelect);
+    if (!nullToAbsent || num1 != null) {
+      map['num1'] = Variable<String>(num1);
+    }
+    if (!nullToAbsent || quiz != null) {
+      map['quiz'] = Variable<String>(quiz);
+    }
+    if (!nullToAbsent || infoQuiz != null) {
+      map['infoQuiz'] = Variable<bool>(infoQuiz);
+    }
+    if (!nullToAbsent || num2 != null) {
+      map['num2'] = Variable<String>(num2);
+    }
+    map['answer'] = Variable<String>(answer);
+    map['answerSelect'] = Variable<String>(answerSelect);
     return map;
   }
 
@@ -1204,9 +1304,12 @@ class QuizTestEntityData extends DataClass
     return QuizTestEntityCompanion(
       id: Value(id),
       preId: Value(preId),
-      num1: Value(num1),
-      sign: Value(sign),
-      num2: Value(num2),
+      num1: num1 == null && nullToAbsent ? const Value.absent() : Value(num1),
+      quiz: quiz == null && nullToAbsent ? const Value.absent() : Value(quiz),
+      infoQuiz: infoQuiz == null && nullToAbsent
+          ? const Value.absent()
+          : Value(infoQuiz),
+      num2: num2 == null && nullToAbsent ? const Value.absent() : Value(num2),
       answer: Value(answer),
       answerSelect: Value(answerSelect),
     );
@@ -1218,11 +1321,12 @@ class QuizTestEntityData extends DataClass
     return QuizTestEntityData(
       id: serializer.fromJson<int>(json['id']),
       preId: serializer.fromJson<int>(json['preId']),
-      num1: serializer.fromJson<int>(json['num1']),
-      sign: serializer.fromJson<String>(json['sign']),
-      num2: serializer.fromJson<int>(json['num2']),
-      answer: serializer.fromJson<int>(json['answer']),
-      answerSelect: serializer.fromJson<int>(json['answerSelect']),
+      num1: serializer.fromJson<String?>(json['num1']),
+      quiz: serializer.fromJson<String?>(json['quiz']),
+      infoQuiz: serializer.fromJson<bool?>(json['infoQuiz']),
+      num2: serializer.fromJson<String?>(json['num2']),
+      answer: serializer.fromJson<String>(json['answer']),
+      answerSelect: serializer.fromJson<String>(json['answerSelect']),
     );
   }
   @override
@@ -1231,28 +1335,31 @@ class QuizTestEntityData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'preId': serializer.toJson<int>(preId),
-      'num1': serializer.toJson<int>(num1),
-      'sign': serializer.toJson<String>(sign),
-      'num2': serializer.toJson<int>(num2),
-      'answer': serializer.toJson<int>(answer),
-      'answerSelect': serializer.toJson<int>(answerSelect),
+      'num1': serializer.toJson<String?>(num1),
+      'quiz': serializer.toJson<String?>(quiz),
+      'infoQuiz': serializer.toJson<bool?>(infoQuiz),
+      'num2': serializer.toJson<String?>(num2),
+      'answer': serializer.toJson<String>(answer),
+      'answerSelect': serializer.toJson<String>(answerSelect),
     };
   }
 
   QuizTestEntityData copyWith(
           {int? id,
           int? preId,
-          int? num1,
-          String? sign,
-          int? num2,
-          int? answer,
-          int? answerSelect}) =>
+          Value<String?> num1 = const Value.absent(),
+          Value<String?> quiz = const Value.absent(),
+          Value<bool?> infoQuiz = const Value.absent(),
+          Value<String?> num2 = const Value.absent(),
+          String? answer,
+          String? answerSelect}) =>
       QuizTestEntityData(
         id: id ?? this.id,
         preId: preId ?? this.preId,
-        num1: num1 ?? this.num1,
-        sign: sign ?? this.sign,
-        num2: num2 ?? this.num2,
+        num1: num1.present ? num1.value : this.num1,
+        quiz: quiz.present ? quiz.value : this.quiz,
+        infoQuiz: infoQuiz.present ? infoQuiz.value : this.infoQuiz,
+        num2: num2.present ? num2.value : this.num2,
         answer: answer ?? this.answer,
         answerSelect: answerSelect ?? this.answerSelect,
       );
@@ -1262,7 +1369,8 @@ class QuizTestEntityData extends DataClass
           ..write('id: $id, ')
           ..write('preId: $preId, ')
           ..write('num1: $num1, ')
-          ..write('sign: $sign, ')
+          ..write('quiz: $quiz, ')
+          ..write('infoQuiz: $infoQuiz, ')
           ..write('num2: $num2, ')
           ..write('answer: $answer, ')
           ..write('answerSelect: $answerSelect')
@@ -1272,7 +1380,7 @@ class QuizTestEntityData extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, preId, num1, sign, num2, answer, answerSelect);
+      Object.hash(id, preId, num1, quiz, infoQuiz, num2, answer, answerSelect);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1280,7 +1388,8 @@ class QuizTestEntityData extends DataClass
           other.id == this.id &&
           other.preId == this.preId &&
           other.num1 == this.num1 &&
-          other.sign == this.sign &&
+          other.quiz == this.quiz &&
+          other.infoQuiz == this.infoQuiz &&
           other.num2 == this.num2 &&
           other.answer == this.answer &&
           other.answerSelect == this.answerSelect);
@@ -1289,16 +1398,18 @@ class QuizTestEntityData extends DataClass
 class QuizTestEntityCompanion extends UpdateCompanion<QuizTestEntityData> {
   final Value<int> id;
   final Value<int> preId;
-  final Value<int> num1;
-  final Value<String> sign;
-  final Value<int> num2;
-  final Value<int> answer;
-  final Value<int> answerSelect;
+  final Value<String?> num1;
+  final Value<String?> quiz;
+  final Value<bool?> infoQuiz;
+  final Value<String?> num2;
+  final Value<String> answer;
+  final Value<String> answerSelect;
   const QuizTestEntityCompanion({
     this.id = const Value.absent(),
     this.preId = const Value.absent(),
     this.num1 = const Value.absent(),
-    this.sign = const Value.absent(),
+    this.quiz = const Value.absent(),
+    this.infoQuiz = const Value.absent(),
     this.num2 = const Value.absent(),
     this.answer = const Value.absent(),
     this.answerSelect = const Value.absent(),
@@ -1306,31 +1417,31 @@ class QuizTestEntityCompanion extends UpdateCompanion<QuizTestEntityData> {
   QuizTestEntityCompanion.insert({
     this.id = const Value.absent(),
     required int preId,
-    required int num1,
-    required String sign,
-    required int num2,
-    required int answer,
-    required int answerSelect,
+    this.num1 = const Value.absent(),
+    this.quiz = const Value.absent(),
+    this.infoQuiz = const Value.absent(),
+    this.num2 = const Value.absent(),
+    required String answer,
+    required String answerSelect,
   })  : preId = Value(preId),
-        num1 = Value(num1),
-        sign = Value(sign),
-        num2 = Value(num2),
         answer = Value(answer),
         answerSelect = Value(answerSelect);
   static Insertable<QuizTestEntityData> custom({
     Expression<int>? id,
     Expression<int>? preId,
-    Expression<int>? num1,
-    Expression<String>? sign,
-    Expression<int>? num2,
-    Expression<int>? answer,
-    Expression<int>? answerSelect,
+    Expression<String>? num1,
+    Expression<String>? quiz,
+    Expression<bool>? infoQuiz,
+    Expression<String>? num2,
+    Expression<String>? answer,
+    Expression<String>? answerSelect,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (preId != null) 'preId': preId,
       if (num1 != null) 'num1': num1,
-      if (sign != null) 'sign': sign,
+      if (quiz != null) 'quiz': quiz,
+      if (infoQuiz != null) 'infoQuiz': infoQuiz,
       if (num2 != null) 'num2': num2,
       if (answer != null) 'answer': answer,
       if (answerSelect != null) 'answerSelect': answerSelect,
@@ -1340,16 +1451,18 @@ class QuizTestEntityCompanion extends UpdateCompanion<QuizTestEntityData> {
   QuizTestEntityCompanion copyWith(
       {Value<int>? id,
       Value<int>? preId,
-      Value<int>? num1,
-      Value<String>? sign,
-      Value<int>? num2,
-      Value<int>? answer,
-      Value<int>? answerSelect}) {
+      Value<String?>? num1,
+      Value<String?>? quiz,
+      Value<bool?>? infoQuiz,
+      Value<String?>? num2,
+      Value<String>? answer,
+      Value<String>? answerSelect}) {
     return QuizTestEntityCompanion(
       id: id ?? this.id,
       preId: preId ?? this.preId,
       num1: num1 ?? this.num1,
-      sign: sign ?? this.sign,
+      quiz: quiz ?? this.quiz,
+      infoQuiz: infoQuiz ?? this.infoQuiz,
       num2: num2 ?? this.num2,
       answer: answer ?? this.answer,
       answerSelect: answerSelect ?? this.answerSelect,
@@ -1366,19 +1479,22 @@ class QuizTestEntityCompanion extends UpdateCompanion<QuizTestEntityData> {
       map['preId'] = Variable<int>(preId.value);
     }
     if (num1.present) {
-      map['num1'] = Variable<int>(num1.value);
+      map['num1'] = Variable<String>(num1.value);
     }
-    if (sign.present) {
-      map['sign'] = Variable<String>(sign.value);
+    if (quiz.present) {
+      map['quiz'] = Variable<String>(quiz.value);
+    }
+    if (infoQuiz.present) {
+      map['infoQuiz'] = Variable<bool>(infoQuiz.value);
     }
     if (num2.present) {
-      map['num2'] = Variable<int>(num2.value);
+      map['num2'] = Variable<String>(num2.value);
     }
     if (answer.present) {
-      map['answer'] = Variable<int>(answer.value);
+      map['answer'] = Variable<String>(answer.value);
     }
     if (answerSelect.present) {
-      map['answerSelect'] = Variable<int>(answerSelect.value);
+      map['answerSelect'] = Variable<String>(answerSelect.value);
     }
     return map;
   }
@@ -1389,7 +1505,8 @@ class QuizTestEntityCompanion extends UpdateCompanion<QuizTestEntityData> {
           ..write('id: $id, ')
           ..write('preId: $preId, ')
           ..write('num1: $num1, ')
-          ..write('sign: $sign, ')
+          ..write('quiz: $quiz, ')
+          ..write('infoQuiz: $infoQuiz, ')
           ..write('num2: $num2, ')
           ..write('answer: $answer, ')
           ..write('answerSelect: $answerSelect')
