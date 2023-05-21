@@ -2,47 +2,48 @@ import 'package:flutter/material.dart';
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
 
-
 class InputFieldContainer extends StatelessWidget {
   final Widget child;
-  final double size;
+  final double width, height;
   final String? validateText;
   final bool? isHidden;
 
   const InputFieldContainer({
     Key? key,
     required this.child,
-    required this.size,
+    required this.width,
+    required this.height,
     this.validateText,
     this.isHidden,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size,
+    return SizedBox(
+      width: width,
+      height: height,
       child: Column(
         children: [
-          const SizedBox(
-            height: 8,
+          SizedBox(height: height * 0.8, child: child),
+          SizedBox(
+            height: height * 0.05,
           ),
-          child,
-          const SizedBox(
-            height: 4,
-          ),
-          Visibility(
-            visible: isHidden == null ? false : isHidden!,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    alignment: Alignment.topLeft,
-                    child: Image.asset("assets/images/error_validate.png")),
-                Text(
-                  validateText ?? "",
-                  style: s14f400ColorErrorPro,
-                )
-              ],
+          SizedBox(
+            height: height * 0.1,
+            child: Visibility(
+              visible: isHidden == null ? false : isHidden!,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      alignment: Alignment.topLeft,
+                      child: Image.asset("assets/images/error_validate.png")),
+                  Text(
+                    validateText ?? "",
+                    style: s14f400ColorErrorPro,
+                  )
+                ],
+              ),
             ),
           )
         ],

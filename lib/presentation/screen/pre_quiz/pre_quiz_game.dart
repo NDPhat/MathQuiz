@@ -61,7 +61,8 @@ class PreMakeQuizGame extends StatelessWidget {
                       }, builder: (BuildContext context, state) {
                         return InputField(
                           hintText: 'How many question',
-                          size: size.width * 0.8,
+                          width: size.width * 0.8,
+                          height: size.height*0.08,
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               context
@@ -83,8 +84,8 @@ class PreMakeQuizGame extends StatelessWidget {
                       }, builder: (BuildContext context, state) {
                         return InputField(
                           hintText: 'Start Value',
-                          size: size.width * 0.8,
-                          onChanged: (value) {
+                          width: size.width * 0.8,
+                          height: size.height*0.08,                          onChanged: (value) {
                             if (value.isNotEmpty) {
                               context
                                   .read<PreQuizCubit>()
@@ -105,8 +106,8 @@ class PreMakeQuizGame extends StatelessWidget {
                       }, builder: (BuildContext context, state) {
                         return InputField(
                           hintText: 'End Value',
-                          size: size.width * 0.8,
-                          onChanged: (value) {
+                          width: size.width * 0.8,
+                          height: size.height*0.08,                          onChanged: (value) {
                             if (value.isNotEmpty) {
                               context
                                   .read<PreQuizCubit>()

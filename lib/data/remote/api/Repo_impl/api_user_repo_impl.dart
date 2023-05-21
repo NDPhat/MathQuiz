@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../Repo/api_user_repo.dart';
 
 
-class UserLocalAPIRepoImpl extends UserLocalAPIRepo {
+class UserAPIRepoImpl extends UserAPIRepo {
   @override
   Future<UserModel> getUserByEmailAndPass(String email, String pass) async {
     try {

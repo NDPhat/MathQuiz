@@ -53,7 +53,7 @@ class _TestScreenState extends State<TestScreen> {
     preTest = PreTest();
     homeRepo = HomeRepo(
         preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-        userLocalAPIRepo: instance.get<UserLocalAPIRepo>());
+        userLocalAPIRepo: instance.get<UserAPIRepo>());
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       preTest = await ModalRoute.of(context)!.settings.arguments as PreTest;
       showReadyDialog();

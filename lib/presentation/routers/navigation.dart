@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
+import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/domain/bloc/history/history_test_cubit.dart';
+import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
@@ -30,7 +32,7 @@ import '../screen/history/history_test_screen.dart';
 import '../screen/home/home_guest.dart';
 import '../screen/home/home_user.dart';
 import '../screen/home_work/home_work_game_screen.dart';
-import '../screen/home_work/home_work_screen.dart';
+import '../screen/home_work/home_work_main_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
 import '../screen/option_game_mode/option_sign_screen.dart';
 import '../screen/pre_quiz/pre_quiz_game.dart';
@@ -54,6 +56,7 @@ class Routers {
   static const String optionBot = '/optionBot';
   static const String findMissing = '/findMissing';
   static const String homeGuest = '/homeGuest';
+  static const String homeUser = '/homeUser';
   static const String historyPra = '/historyPra';
   static const String historyTest = '/historyTest';
   static const String historyHome = '/historyHome';
@@ -76,7 +79,10 @@ class Routers {
       case welcome:
         return WelcomeScreen();
       case login:
-        return LoginUseApp();
+        return BlocProvider(
+            create: (context) =>
+                LoginCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+            child: LoginUserApp());
       case homework:
         return HomeWorkScreen();
       case chooseOptionUseApp:
@@ -88,6 +94,8 @@ class Routers {
             child: HomeWorkGameScreen());
       case homeGuest:
         return HomeGuestScreen();
+      case homeUser:
+        return HomeUserScreen();
       case doTestExam:
         return TestExamScreen();
       case battleBOT:

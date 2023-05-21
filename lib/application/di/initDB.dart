@@ -25,8 +25,7 @@ void initDBandLocalRepo() {
       () => QuizTestLocalRepoImpl(instance.get<AppDb>()));
   instance.registerLazySingleton<QuizGameLocalRepo>(
       () => QuizGameLocalRepoImpl(instance.get<AppDb>()));
-  instance
-      .registerLazySingleton<UserLocalAPIRepo>(() => UserLocalAPIRepoImpl());
+  instance.registerLazySingleton<UserAPIRepo>(() => UserAPIRepoImpl());
   instance.registerLazySingleton<TeacherLocalAPIRepo>(
       () => TeacherLocalAPIRepoImpl());
 }

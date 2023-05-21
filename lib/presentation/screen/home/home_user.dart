@@ -27,7 +27,7 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
     super.initState();
     homeRepo = HomeRepo(
         preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-        userLocalAPIRepo: instance.get<UserLocalAPIRepo>());
+        userLocalAPIRepo: instance.get<UserAPIRepo>());
   }
 
   @override
