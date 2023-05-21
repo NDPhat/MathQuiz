@@ -35,4 +35,31 @@ class UserAPIRepoImpl extends UserAPIRepo {
     }
   }
 
+  @override
+  Future<UserModel> forgetPassAndGetOTPCODE(String email) async{
+    try {
+      final url =
+          "${endpoint}forgetPassWordAndGetOTP?email=$email";
+      final res = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (res.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final userModel =
+            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        // log(addressModel.predictions![1].description.toString());
+        return userModel;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final userModel =
+            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        return userModel;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occured');
+    }
+  }
+
+
 }

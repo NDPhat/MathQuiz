@@ -108,10 +108,23 @@ class _LoginUserApp extends State<LoginUserApp> {
                             ],
                           ),
                         ),
+                    BlocListener<LoginCubit, LoginState>(
+                      listener: (context, state) {
+                        if(state.loginsuccess==true){
+                          Navigator.pushNamed(
+                              context, Routers.homeUser);
+                        }
+                        else{
+                          print('login fail');
+                        }
+                      },
+                      child:
                         ForgetPassWidget(
                           size: size,
-                          onForget: () {},
-                        ),
+                          onForget: ()async {
+                            await context.read<LoginCubit>().getOTPCODEByForgetPass('19110425@student.hcmute.edu.vn');
+                          },
+                        )),
                         SizedBox(
                           height: size.height * 0.1,
                           child: Row(
@@ -136,7 +149,7 @@ class _LoginUserApp extends State<LoginUserApp> {
                                           await context
                                               .read<LoginCubit>()
                                               .loginAppWithEmailandPass(
-                                                  'huy@gmail.com', '12131');
+                                                  'huy@gmail.com', '1213');
 
                                         },
                                         icon: const Icon(
