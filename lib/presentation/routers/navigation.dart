@@ -4,13 +4,16 @@ import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/domain/bloc/forget_pass/forget_pass_cubit.dart';
 
 import 'package:math/domain/bloc/game/game_cubit.dart';
+import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
 import 'package:math/domain/bloc/history/history_test_cubit.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
+import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
 
@@ -24,6 +27,7 @@ import '../screen/dual/dual_with_bot_screen.dart';
 import '../screen/dual/dual_with_player_screen.dart';
 
 import '../screen/dual/option_bot_dual.dart';
+import '../screen/forget_password/forget_password_screen.dart';
 import '../screen/game_screen/find_missing.dart';
 import '../screen/game_screen/game_screen.dart';
 import '../screen/game_screen/true_false_screen.dart';
@@ -50,7 +54,9 @@ class Routers {
   static const String doTestExam = '/doTestExam';
   static const String game = '/game';
   static const String trueFalse = '/truefalse';
+  static const String forgetPass = '/forgetPass';
   static const String battle = '/battle';
+  static const String getOTP = '/getOTP';
   static const String battleHuman = '/battleHuman';
   static const String battleBOT = '/battleBOT';
   static const String optionBot = '/optionBot';
@@ -83,6 +89,16 @@ class Routers {
             create: (context) =>
                 LoginCubit(userAPIRepo: instance.get<UserAPIRepo>()),
             child: LoginUserApp());
+      case forgetPass:
+        return BlocProvider(
+            create: (context) =>
+                ForgetPassCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+            child: const ForgetPassScreen());
+      case getOTP:
+        return BlocProvider(
+            create: (context) =>
+                GetOTPCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+            child: GetOTPScreen());
       case homework:
         return HomeWorkScreen();
       case chooseOptionUseApp:

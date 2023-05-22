@@ -108,23 +108,12 @@ class _LoginUserApp extends State<LoginUserApp> {
                             ],
                           ),
                         ),
-                    BlocListener<LoginCubit, LoginState>(
-                      listener: (context, state) {
-                        if(state.loginsuccess==true){
-                          Navigator.pushNamed(
-                              context, Routers.homeUser);
-                        }
-                        else{
-                          print('login fail');
-                        }
-                      },
-                      child:
                         ForgetPassWidget(
                           size: size,
-                          onForget: ()async {
-                            await context.read<LoginCubit>().getOTPCODEByForgetPass('19110425@student.hcmute.edu.vn');
+                          onForget: () {
+                            Navigator.pushNamed(context, Routers.forgetPass);
                           },
-                        )),
+                        ),
                         SizedBox(
                           height: size.height * 0.1,
                           child: Row(
@@ -132,11 +121,10 @@ class _LoginUserApp extends State<LoginUserApp> {
                             children: [
                               BlocListener<LoginCubit, LoginState>(
                                   listener: (context, state) {
-                                    if(state.loginsuccess==true){
+                                    if (state.loginsuccess == true) {
                                       Navigator.pushNamed(
                                           context, Routers.homeUser);
-                                    }
-                                    else{
+                                    } else {
                                       print('login fail');
                                     }
                                   },
@@ -150,7 +138,6 @@ class _LoginUserApp extends State<LoginUserApp> {
                                               .read<LoginCubit>()
                                               .loginAppWithEmailandPass(
                                                   'huy@gmail.com', '1213');
-
                                         },
                                         icon: const Icon(
                                           Icons.arrow_forward,

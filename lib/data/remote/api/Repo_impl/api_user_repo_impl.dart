@@ -7,10 +7,9 @@ import 'package:http/http.dart' as http;
 
 import '../Repo/api_user_repo.dart';
 
-
 class UserAPIRepoImpl extends UserAPIRepo {
   @override
-  Future<UserModel> getUserByEmailAndPass(String email, String pass) async {
+  Future<UserModel?> getUserByEmailAndPass(String email, String pass) async {
     try {
       final url =
           "${endpoint}getUserByEmailAndPassword?email=$email&password=$pass";
@@ -29,23 +28,21 @@ class UserAPIRepoImpl extends UserAPIRepo {
         return userModel;
       }
     } on SocketException catch (_) {
-      return Future.error('No network found');
+      return null;
     } catch (_) {
-      return Future.error('Something occured');
+      return null;
     }
   }
 
   @override
-  Future<UserModel> forgetPassAndGetOTPCODE(String email) async{
+  Future<UserModel?> submitEmailForGetOTPForgetPass(String email) async {
     try {
-      final url =
-          "${endpoint}forgetPassWordAndGetOTP?email=$email";
+      final url = "${endpoint}forgetPassWordAndGetOTP?email=$email";
       final res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(res.body);
         final userModel =
             GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
-        // log(addressModel.predictions![1].description.toString());
         return userModel;
       } else {
         // log(req.body);
@@ -55,11 +52,57 @@ class UserAPIRepoImpl extends UserAPIRepo {
         return userModel;
       }
     } on SocketException catch (_) {
-      return Future.error('No network found');
+      return null;
     } catch (_) {
-      return Future.error('Something occured');
+      return null;
     }
   }
 
+  @override
+  Future<UserModel?> reSendOTPMAIL(String email) async {
+    try {
+      final url = "${endpoint}forgetPassWordAndGetOTP?email=$email";
+      final res = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (res.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final userModel =
+            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        return userModel;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final userModel =
+            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        return userModel;
+      }
+    } on SocketException catch (_) {
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 
+  @override
+  Future<UserModel?> checkOTPCode(String email, String otp) async {
+    try {
+      final url = "${endpoint}checkOTPCode?email=$email&otp=$otp";
+      final res = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (res.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final userModel =
+            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        return userModel;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final userModel =
+            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        return userModel;
+      }
+    } on SocketException catch (_) {
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
 }

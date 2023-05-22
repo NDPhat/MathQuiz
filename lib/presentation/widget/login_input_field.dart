@@ -10,8 +10,8 @@ class LoginInputField extends StatelessWidget {
   String validateText;
   bool isHidden;
   VoidCallback? clickIcon;
-  Icon icon;
-  Icon ? iconRight;
+  Icon? icon;
+  Icon? iconRight;
   ValueChanged<String>? onChanged;
   bool hasError;
   bool? showValue;
@@ -23,7 +23,7 @@ class LoginInputField extends StatelessWidget {
       required this.height,
       required this.validateText,
       required this.isHidden,
-      required this.icon,
+      this.icon,
       required this.hasError,
       this.onChanged,
       this.clickIcon,
@@ -43,9 +43,10 @@ class LoginInputField extends StatelessWidget {
           style: s16f700ColorGreyTe,
           obscureText: showValue ?? false,
           decoration: InputDecoration(
-            prefixIcon: icon,
+            prefixIcon: icon ?? Container(),
             labelText: hintText,
-            suffixIcon: IconButton(onPressed: clickIcon, icon: iconRight ?? Container() ),
+            suffixIcon: IconButton(
+                onPressed: clickIcon, icon: iconRight ?? Container()),
             fillColor: colorBGInput,
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),

@@ -11,13 +11,7 @@ class LoginCubit extends Cubit<LoginState> {
       : userAPIRepo = userAPIRepo,
         super(LoginState.initial());
   Future<void> loginAppWithEmailandPass(String email, String pass) async {
-    UserModel user = await userAPIRepo.getUserByEmailAndPass(email, pass);
-    if (user != null) {
-      emit(state.copyWith(loginsuccess: true));
-    }
-    emit(state.copyWith(loginsuccess: false));
-  } Future<void> getOTPCODEByForgetPass(String email) async {
-    UserModel user = await userAPIRepo.forgetPassAndGetOTPCODE(email);
+    final user = await userAPIRepo.getUserByEmailAndPass(email, pass);
     if (user != null) {
       emit(state.copyWith(loginsuccess: true));
     }

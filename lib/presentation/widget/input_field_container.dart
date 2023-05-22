@@ -24,12 +24,12 @@ class InputFieldContainer extends StatelessWidget {
       height: height,
       child: Column(
         children: [
-          SizedBox(height: height * 0.8, child: child),
+          SizedBox(height: height * 0.75, child: child),
           SizedBox(
             height: height * 0.05,
           ),
           SizedBox(
-            height: height * 0.1,
+            height: height * 0.2,
             child: Visibility(
               visible: isHidden == null ? false : isHidden!,
               child: Row(
