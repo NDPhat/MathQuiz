@@ -5,28 +5,27 @@ import '../../application/cons/text_style.dart';
 import 'input_field_container.dart';
 
 class LoginInputField extends StatelessWidget {
-  String hintText;
+  String? hintText;
   double width, height;
-  String validateText;
-  bool isHidden;
-  VoidCallback? clickIcon;
+  String? validateText;
+  bool? isHidden;
   Icon? icon;
-  Icon? iconRight;
+  int? maxLength;
+  Widget? iconRight;
   ValueChanged<String>? onChanged;
-  bool hasError;
   bool? showValue;
-
+  TextInputType? typeText;
   LoginInputField(
       {Key? key,
-      required this.hintText,
+      this.hintText,
       required this.width,
       required this.height,
-      required this.validateText,
-      required this.isHidden,
+      this.validateText,
+      this.isHidden,
       this.icon,
-      required this.hasError,
+      this.typeText,
+      this.maxLength,
       this.onChanged,
-      this.clickIcon,
       this.iconRight,
       this.showValue})
       : super(key: key);
@@ -41,12 +40,14 @@ class LoginInputField extends StatelessWidget {
         child: TextField(
           textInputAction: TextInputAction.next,
           style: s16f700ColorGreyTe,
+          keyboardType: typeText == null ? null : typeText,
+          maxLength: maxLength == null ? null : maxLength,
           obscureText: showValue ?? false,
           decoration: InputDecoration(
-            prefixIcon: icon ?? Container(),
-            labelText: hintText,
-            suffixIcon: IconButton(
-                onPressed: clickIcon, icon: iconRight ?? Container()),
+            prefixIcon: icon ?? null,
+            labelText: hintText ?? "",
+            counterText: "",
+            suffixIcon: iconRight ?? null,
             fillColor: colorBGInput,
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),

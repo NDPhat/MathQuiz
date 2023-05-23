@@ -2,7 +2,7 @@ part of 'get_otp_cubit.dart';
 
 class GetOTPState extends Equatable {
   String num1, num2, num3, num4, num5;
-  Status status;
+  GetOTPStatus status;
   String verificationErrorMessage;
 
   //final auth.user? user;
@@ -27,7 +27,7 @@ class GetOTPState extends Equatable {
       num5: '',
 
       verificationErrorMessage: '',
-      status: Status.initial,
+      status: GetOTPStatus.initial,
 
       //user: null,
     );
@@ -54,7 +54,7 @@ class GetOTPState extends Equatable {
     num4,
     num5,
     String? verificationErrorMessage,
-    Status? status,
+    GetOTPStatus? status,
     // auth.user? user,
   }) {
     return GetOTPState(

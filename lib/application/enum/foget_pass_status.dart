@@ -1,0 +1,1 @@
+enum ForgetPassStatus { initial,success,onLoading,error}

@@ -1,1 +1,0 @@
-enum Status { initial,success,onLoading,error}

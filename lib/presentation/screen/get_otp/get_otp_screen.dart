@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/application/enum/get_otp_status.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
 import 'package:math/main.dart';
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
+import '../../../application/enum/foget_pass_status.dart';
 import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
 
@@ -46,18 +48,6 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
         }
       },
     );
-  }
-
-  late String _emailReset;
-  @override
-  void initState() {
-    _emailReset = "";
-    super.initState();
-    SharedPreferences.getInstance().then((prefValue) => {
-          setState(() {
-            _emailReset = prefValue.getString('emailReset') ?? "";
-          })
-        });
   }
 
   @override
@@ -137,49 +127,59 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 LoginInputField(
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    context
+                                        .read<GetOTPCubit>()
+                                        .number1Changed(value);
+                                  },
+                                  maxLength: 1,
+                                  typeText: TextInputType.number,
                                   width: size.width * 0.15,
-                                  hintText: '',
                                   height: size.height * 0.1,
-                                  validateText: '',
-                                  isHidden: false,
-                                  hasError: false,
                                 ),
                                 LoginInputField(
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    context
+                                        .read<GetOTPCubit>()
+                                        .number2Changed(value);
+                                  },
+                                  typeText: TextInputType.number,
+                                  maxLength: 1,
                                   width: size.width * 0.15,
-                                  hintText: '',
                                   height: size.height * 0.1,
-                                  validateText: '',
-                                  isHidden: false,
-                                  hasError: false,
                                 ),
                                 LoginInputField(
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    context
+                                        .read<GetOTPCubit>()
+                                        .number3Changed(value);
+                                  },
+                                  typeText: TextInputType.number,
+                                  maxLength: 1,
                                   width: size.width * 0.15,
-                                  hintText: '',
                                   height: size.height * 0.1,
-                                  validateText: '',
-                                  isHidden: false,
-                                  hasError: false,
                                 ),
                                 LoginInputField(
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    context
+                                        .read<GetOTPCubit>()
+                                        .number4Changed(value);
+                                  },
+                                  typeText: TextInputType.number,
+                                  maxLength: 1,
                                   width: size.width * 0.15,
-                                  hintText: '',
                                   height: size.height * 0.1,
-                                  validateText: '',
-                                  isHidden: false,
-                                  hasError: false,
                                 ),
                                 LoginInputField(
-                                  onChanged: (value) {},
+                                  maxLength: 1,
+                                  onChanged: (value) {
+                                    context
+                                        .read<GetOTPCubit>()
+                                        .number5Changed(value);
+                                  },
+                                  typeText: TextInputType.number,
                                   width: size.width * 0.15,
-                                  hintText: '',
                                   height: size.height * 0.1,
-                                  validateText: '',
-                                  isHidden: false,
-                                  hasError: false,
                                 ),
                               ],
                             ),
@@ -192,8 +192,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                       alignment: Alignment.topLeft,
                                       child: Image.asset(
                                           "assets/images/error_validate.png")),
-                                  const Text(
-                                      'Wrong verification code. Please type again.',
+                                  Text(state.verificationErrorMessage,
                                       style: s14f400ColorErrorPro)
                                 ],
                               ),
@@ -213,9 +212,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                           setState(() {
                                             onTap = true;
                                           });
-                                          instance
-                                              .get<UserAPIRepo>()
-                                              .reSendOTPMAIL(email);
+                                          context
+                                              .read<GetOTPCubit>()
+                                              .reSendOTPCode(email);
                                           setState(
                                               () => _enabledResend = false);
 
@@ -246,15 +245,42 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                         );
                       }),
                       Spacer(),
-                      RoundedButton(
-                          press: () {},
-                          color: colorMainBlue,
-                          width: size.width * 0.8,
-                          height: size.height * 0.08,
-                          child: const Text(
-                            'GO',
-                            style: s20f700ColorSysWhite,
-                          ))
+                      BlocConsumer<GetOTPCubit, GetOTPState>(
+                          listener: (context, state) {
+                        if (state.status == GetOTPStatus.success) {
+                          Navigator.pushNamed(context, Routers.updatePass,
+                              arguments: email);
+                        }
+                      }, builder: (context, state) {
+                        return RoundedButton(
+                            press: () {
+                              String code = state.num1.trim().toString() +
+                                  state.num2.trim().toString() +
+                                  state.num3.trim().toString() +
+                                  state.num4.trim().toString() +
+                                  state.num5.trim().toString();
+                              context
+                                  .read<GetOTPCubit>()
+                                  .checkOTPCode(email, code);
+                            },
+                            color: colorMainBlue,
+                            width: size.width * 0.8,
+                            height: size.height * 0.08,
+                            child: state.status == GetOTPStatus.onLoading
+                                ? SizedBox(
+                                    height: size.height * 0.1,
+                                    child: const Center(
+                                      child: CircularProgressIndicator(
+                                        color: colorSystemWhite,
+                                        strokeWidth: 3,
+                                      ),
+                                    ),
+                                  )
+                                : const Text(
+                                    'GO',
+                                    style: s20f700ColorSysWhite,
+                                  ));
+                      })
                     ],
                   ),
                 ),

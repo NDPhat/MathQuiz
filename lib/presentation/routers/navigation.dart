@@ -12,10 +12,13 @@ import 'package:math/domain/bloc/history/history_test_cubit.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
+import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
+import 'package:math/presentation/screen/home/home_user.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
+import 'package:math/presentation/screen/update_pass_word/update_pass_screen.dart';
 
 import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../domain/bloc/history/history_pra_cubit.dart';
@@ -33,8 +36,8 @@ import '../screen/game_screen/game_screen.dart';
 import '../screen/game_screen/true_false_screen.dart';
 import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
+import '../screen/home/game_screen_user.dart';
 import '../screen/home/home_guest.dart';
-import '../screen/home/home_user.dart';
 import '../screen/home_work/home_work_game_screen.dart';
 import '../screen/home_work/home_work_main_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
@@ -57,12 +60,14 @@ class Routers {
   static const String forgetPass = '/forgetPass';
   static const String battle = '/battle';
   static const String getOTP = '/getOTP';
+  static const String updatePass = '/updatePass';
   static const String battleHuman = '/battleHuman';
   static const String battleBOT = '/battleBOT';
   static const String optionBot = '/optionBot';
   static const String findMissing = '/findMissing';
   static const String homeGuest = '/homeGuest';
   static const String homeUser = '/homeUser';
+  static const String gameScreenUser = '/gameScreenUser';
   static const String historyPra = '/historyPra';
   static const String historyTest = '/historyTest';
   static const String historyHome = '/historyHome';
@@ -99,6 +104,11 @@ class Routers {
             create: (context) =>
                 GetOTPCubit(userAPIRepo: instance.get<UserAPIRepo>()),
             child: GetOTPScreen());
+      case updatePass:
+        return BlocProvider(
+            create: (context) =>
+                UpdatePassCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+            child: UpdatePasswordScreen());
       case homework:
         return HomeWorkScreen();
       case chooseOptionUseApp:
@@ -112,6 +122,8 @@ class Routers {
         return HomeGuestScreen();
       case homeUser:
         return HomeUserScreen();
+      case gameScreenUser:
+        return GameUserScreen();
       case doTestExam:
         return TestExamScreen();
       case battleBOT:
@@ -168,7 +180,7 @@ class Routers {
                 preTestLocalRepo: instance.get<PreTestLocalRepo>()),
             child: const HistoryTest());
       default:
-        return HomeUserScreen();
+        return GameUserScreen();
     }
   }
 }

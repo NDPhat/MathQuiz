@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/cons/color.dart';
-import 'package:math/application/enum/status.dart';
 import 'package:math/domain/bloc/forget_pass/forget_pass_cubit.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/widget/app_bar.dart';
@@ -9,6 +8,7 @@ import 'package:math/presentation/widget/button_custom.dart';
 import 'package:math/presentation/widget/login_input_field.dart';
 
 import '../../../application/cons/text_style.dart';
+import '../../../application/enum/foget_pass_status.dart';
 
 class ForgetPassScreen extends StatelessWidget {
   const ForgetPassScreen({Key? key}) : super(key: key);
@@ -49,35 +49,38 @@ class ForgetPassScreen extends StatelessWidget {
               SizedBox(
                 height: size.height * 0.02,
               ),
-              BlocConsumer<ForgetPassCubit, ForgetPassState>(
-              //     buildWhen: (pre, now) {
-              //   return pre.emailErrorMessage != now.emailErrorMessage || pre.status!=now.status;
-              // },
-                  listener: (context, state) {
-                if (state.status == Status.success) {
-                  Navigator.pushNamed(context, Routers.getOTP,arguments: state.email);
-                }
-              }, builder: (context, state) {
-                return SizedBox(
-                  height: size.height * 0.4,
-                  child: Column(
-                    children: [
-                      LoginInputField(
+              SizedBox(
+                height: size.height * 0.4,
+                child: Column(
+                  children: [
+                    BlocBuilder<ForgetPassCubit, ForgetPassState>(
+                        buildWhen: (previousState, state) {
+                      return previousState.emailErrorMessage !=
+                          state.emailErrorMessage;
+                    }, builder: (context, state) {
+                      return LoginInputField(
                         hintText: 'Enter your email',
                         icon: const Icon(Icons.email_outlined),
                         onChanged: (value) {
                           context.read<ForgetPassCubit>().emailChanged(value);
                         },
+                        isHidden:state.emailErrorMessage!="",
                         validateText: state.emailErrorMessage,
-                        isHidden: state.emailErrorMessage != "",
-                        hasError: state.emailErrorMessage != "",
                         width: size.width * 0.8,
                         height: size.height * 0.1,
-                      ),
-                      SizedBox(
-                        height: size.height * 0.2,
-                      ),
-                      RoundedButton(
+                      );
+                    }),
+                    SizedBox(
+                      height: size.height * 0.2,
+                    ),
+                    BlocConsumer<ForgetPassCubit, ForgetPassState>(
+                        listener: (context, state) {
+                      if (state.status == ForgetPassStatus.success) {
+                        Navigator.pushNamed(context, Routers.getOTP,
+                            arguments: state.email);
+                      }
+                    }, builder: (context, state) {
+                      return RoundedButton(
                           press: () {
                             context
                                 .read<ForgetPassCubit>()
@@ -86,7 +89,7 @@ class ForgetPassScreen extends StatelessWidget {
                           color: colorMainBlue,
                           width: size.width * 0.8,
                           height: size.height * 0.08,
-                          child: state.status == Status.onLoading
+                          child: state.status == ForgetPassStatus.onLoading
                               ? SizedBox(
                                   height: size.height * 0.1,
                                   child: const Center(
@@ -99,11 +102,11 @@ class ForgetPassScreen extends StatelessWidget {
                               : const Text(
                                   'GO',
                                   style: s20f700ColorSysWhite,
-                                ))
-                    ],
-                  ),
-                );
-              }),
+                                ));
+                    })
+                  ],
+                ),
+              )
             ]),
           ),
         ],

@@ -1,13 +1,27 @@
 part of 'login_cubit.dart';
 
 class LoginState extends Equatable {
-  bool loginsuccess;
+  String email;
+  String pass;
+  String emailError;
+  String passError;
+  LoginStatus status;
 
-  LoginState({required this.loginsuccess
-      //this.user,
-      });
+  LoginState({
+    required this.email,
+    required this.pass,
+    required this.emailError,
+    required this.passError,
+    required this.status,
+    //this.user,
+  });
   factory LoginState.initial() {
-    return LoginState(loginsuccess: false
+    return LoginState(
+        email: '',
+        pass: '',
+        emailError: '',
+        passError: '',
+        status: LoginStatus.initial
         //user: null,
         );
   }
@@ -15,12 +29,22 @@ class LoginState extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [loginsuccess];
+  List<Object?> get props => [email, pass, emailError, passError, status];
 
-  LoginState copyWith({bool? loginsuccess}) {
+  LoginState copyWith({
+    String? email,
+    String? pass,
+    String? emailError,
+    String? passError,
+    LoginStatus? status,
+  }) {
     return LoginState(
-      loginsuccess: loginsuccess ?? this.loginsuccess,
-      //user: user ?? this.user,
-    );
+        emailError: emailError ?? this.emailError,
+        email: email ?? this.email,
+        passError: passError ?? this.passError,
+        pass: pass ?? this.pass,
+        status: status ?? this.status
+        //user: user ?? this.user,
+        );
   }
 }

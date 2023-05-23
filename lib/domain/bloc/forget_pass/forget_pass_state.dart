@@ -2,7 +2,7 @@ part of 'forget_pass_cubit.dart';
 
 class ForgetPassState extends Equatable {
   String email;
-  Status status;
+  ForgetPassStatus status;
   String emailErrorMessage;
 
   //final auth.user? user;
@@ -18,7 +18,7 @@ class ForgetPassState extends Equatable {
     return ForgetPassState(
       email: '',
       emailErrorMessage: '',
-      status: Status.initial,
+      status: ForgetPassStatus.initial,
       //user: null,
     );
   }
@@ -32,7 +32,7 @@ class ForgetPassState extends Equatable {
   ForgetPassState copyWith({
     String? email,
     String? emailErrorMessage,
-    Status? status,
+    ForgetPassStatus? status,
     // auth.user? user,
   }) {
     return ForgetPassState(

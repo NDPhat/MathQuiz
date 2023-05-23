@@ -1,13 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:math/application/enum/status.dart';
+import 'package:math/application/enum/get_otp_status.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 
 part 'get_otp_state.dart';
 
 class GetOTPCubit extends Cubit<GetOTPState> {
   String codeMessage = "";
-  String codeVerify = "";
   final UserAPIRepo userAPIRepo;
 
   GetOTPCubit({required UserAPIRepo userAPIRepo})
@@ -15,16 +14,10 @@ class GetOTPCubit extends Cubit<GetOTPState> {
         super(GetOTPState.initial());
 
   bool codeValidator(String code) {
-    code = state.num1.trim().toString() +
-        state.num2.trim().toString() +
-        state.num3.trim().toString() +
-        state.num4.trim().toString() +
-        state.num5.trim().toString();
     if (code.length < 5) {
-      codeMessage = "";
+      codeMessage = 'Wrong verification code. Please type again.';
       return false;
     } else {
-      codeVerify = code;
       codeMessage = "";
       return true;
     }
@@ -32,40 +25,44 @@ class GetOTPCubit extends Cubit<GetOTPState> {
 
   void number1Changed(String value) {
     state.num1 = value;
-    if (state.verificationErrorMessage.isNotEmpty) {
-      emit(state.copyWith(verificationErrorMessage: ""));
-    }
   }
 
   void number2Changed(String value) {
     state.num2 = value;
-    if (state.verificationErrorMessage.isNotEmpty) {
-      emit(state.copyWith(verificationErrorMessage: ""));
-    }
   }
 
   void number3Changed(String value) {
     state.num3 = value;
-    if (state.verificationErrorMessage.isNotEmpty) {
-      emit(state.copyWith(verificationErrorMessage: ""));
-    }
   }
 
   void number4Changed(String value) {
     state.num4 = value;
-    if (state.verificationErrorMessage.isNotEmpty) {
-      emit(state.copyWith(verificationErrorMessage: ""));
-    }
   }
 
   void number5Changed(String value) {
     state.num5 = value;
-    if (state.verificationErrorMessage.isNotEmpty) {
-      emit(state.copyWith(verificationErrorMessage: ""));
-    }
   }
 
-  Future<void> sendOTPCode(String emailReset) async {
-    emit(state.copyWith(status: Status.onLoading));
+  Future<void> reSendOTPCode(String emailReset) async {
+    await userAPIRepo.reSendOTPMAIL(emailReset);
+  }
+
+  Future<void> checkOTPCode(String emailReset, String otp) async {
+    emit(state.copyWith(status: GetOTPStatus.onLoading));
+    if (codeValidator(otp)) {
+      final userModel = await userAPIRepo.checkOTPCode(emailReset, otp);
+      if (userModel != null) {
+        emit(state.copyWith(
+            verificationErrorMessage: codeMessage,
+            status: GetOTPStatus.success));
+      } else {
+        codeMessage = 'Wrong verification code. Please type again.';
+        emit(state.copyWith(
+            verificationErrorMessage: codeMessage, status: GetOTPStatus.error));
+      }
+    } else {
+      emit(state.copyWith(
+          verificationErrorMessage: codeMessage, status: GetOTPStatus.error));
+    }
   }
 }

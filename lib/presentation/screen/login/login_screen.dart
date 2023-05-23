@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/text_style.dart';
+import 'package:math/application/enum/login_status.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/widget/app_bar.dart';
@@ -75,36 +76,58 @@ class _LoginUserApp extends State<LoginUserApp> {
                           height: size.height * 0.23,
                           child: Column(
                             children: [
-                              LoginInputField(
-                                hintText: 'Email your email',
-                                width: size.width * 0.8,
-                                height: size.height * 0.1,
-                                onChanged: (value) {},
-                                hasError: false,
-                                isHidden: false,
-                                validateText: 'No',
-                                icon: Icon(Icons.email_outlined),
-                              ),
+                              BlocBuilder<LoginCubit, LoginState>(
+                                  buildWhen: (pre, now) {
+                                return pre.emailError != now.emailError;
+                              }, builder: (BuildContext context, state) {
+                                return LoginInputField(
+                                  hintText: 'Email your email',
+                                  width: size.width * 0.8,
+                                  height: size.height * 0.1,
+                                  onChanged: (value) {
+                                    context
+                                        .read<LoginCubit>()
+                                        .emailChanged(value);
+                                  },
+                                  validateText: state.emailError,
+                                  isHidden: state.emailError != "",
+                                  icon: Icon(Icons.email_outlined),
+                                );
+                              }),
                               SizedBox(
                                 height: size.height * 0.025,
                               ),
-                              LoginInputField(
-                                hintText: 'Email your password',
-                                width: size.width * 0.8,
-                                height: size.height * 0.1,
-                                onChanged: (value) {},
-                                hasError: false,
-                                iconRight: _obscureText
-                                    ? const Icon(Icons.visibility_off)
-                                    : const Icon(Icons.visibility),
-                                clickIcon: () {
-                                  _toggle();
-                                },
-                                showValue: _obscureText,
-                                isHidden: false,
-                                validateText: 'No',
-                                icon: const Icon(Icons.fingerprint),
-                              ),
+                              BlocBuilder<LoginCubit, LoginState>(
+                                  buildWhen: (pre, now) {
+                                return pre.passError != now.passError;
+                              }, builder: (BuildContext context, state) {
+                                return LoginInputField(
+                                  hintText: 'Email your password',
+                                  width: size.width * 0.8,
+                                  height: size.height * 0.1,
+                                  onChanged: (value) {
+                                    context
+                                        .read<LoginCubit>()
+                                        .passChanged(value);
+                                  },
+                                  iconRight: _obscureText
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            _toggle();
+                                          },
+                                          child:
+                                              const Icon(Icons.visibility_off))
+                                      : GestureDetector(
+                                          onTap: () {
+                                            _toggle();
+                                          },
+                                          child: const Icon(Icons.visibility)),
+                                  validateText: state.passError,
+                                  isHidden: state.passError != "",
+                                  showValue: _obscureText,
+                                  icon: const Icon(Icons.fingerprint),
+                                );
+                              }),
                             ],
                           ),
                         ),
@@ -119,31 +142,39 @@ class _LoginUserApp extends State<LoginUserApp> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              BlocListener<LoginCubit, LoginState>(
+                              BlocConsumer<LoginCubit, LoginState>(
                                   listener: (context, state) {
-                                    if (state.loginsuccess == true) {
-                                      Navigator.pushNamed(
-                                          context, Routers.homeUser);
-                                    } else {
-                                      print('login fail');
-                                    }
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: colorMainBlue,
-                                    child: IconButton(
-                                        color: Colors.white,
-                                        onPressed: () async {
-                                          await context
-                                              .read<LoginCubit>()
-                                              .loginAppWithEmailandPass(
-                                                  'huy@gmail.com', '1213');
-                                        },
-                                        icon: const Icon(
-                                          Icons.arrow_forward,
-                                          size: 30,
-                                        )),
-                                  ))
+                                if (state.status == LoginStatus.success) {
+                                  Navigator.pushNamed(
+                                      context, Routers.homeUser);
+                                }
+                              }, builder: (context, state) {
+                                return CircleAvatar(
+                                  radius: 50,
+                                  backgroundColor: colorMainBlue,
+                                  child: state.status == LoginStatus.onLoading
+                                      ? SizedBox(
+                                          height: size.height * 0.1,
+                                          child: const Center(
+                                            child: CircularProgressIndicator(
+                                              color: colorSystemWhite,
+                                              strokeWidth: 3,
+                                            ),
+                                          ),
+                                        )
+                                      : IconButton(
+                                          color: Colors.white,
+                                          onPressed: () async {
+                                            await context
+                                                .read<LoginCubit>()
+                                                .loginAppWithEmailAndPass();
+                                          },
+                                          icon: const Icon(
+                                            Icons.arrow_forward,
+                                            size: 30,
+                                          )),
+                                );
+                              })
                             ],
                           ),
                         ),

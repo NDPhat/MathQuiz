@@ -31,7 +31,7 @@ class AppBarWidget extends StatelessWidget {
             width: size.width,
             alignment: Alignment.center,
             child: Text(
-              textTitle!,
+              textTitle ?? "",
               style: s20f700ColorSysWhite,
             ),
           ),

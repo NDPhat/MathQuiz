@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:math/application/enum/status.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+
+import '../../../application/enum/foget_pass_status.dart';
 
 part 'forget_pass_state.dart';
 
@@ -24,23 +25,23 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
   }
 
   Future<void> submitEmailForGetOTPResetPass(String email) async {
-    emit(state.copyWith(status: Status.onLoading));
+    emit(state.copyWith(status: ForgetPassStatus.onLoading));
     if (isEmailValid(email)) {
       final userModel =
-          await userAPIRepo.submitEmailForGetOTPForgetPass(state.email);
+          await userAPIRepo.submitEmailForGetOTPForgetPass(email);
       if (userModel != null) {
         emailMessage = "";
         emit(state.copyWith(
-            emailErrorMessage: emailMessage, status: Status.success));
+            emailErrorMessage: emailMessage, status: ForgetPassStatus.success));
       } else {
         emailMessage = " Could not find any account with this email.";
         emit(state.copyWith(
-            emailErrorMessage: emailMessage, status: Status.error));
+            emailErrorMessage: emailMessage, status: ForgetPassStatus.error));
       }
     } else {
       emailMessage = "This is not an email. Please try again.";
       emit(state.copyWith(
-          emailErrorMessage: emailMessage, status: Status.error));
+          emailErrorMessage: emailMessage, status: ForgetPassStatus.error));
     }
   }
 }

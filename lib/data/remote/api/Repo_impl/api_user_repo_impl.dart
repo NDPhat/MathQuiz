@@ -105,4 +105,24 @@ class UserAPIRepoImpl extends UserAPIRepo {
       return null;
     }
   }
+
+  @override
+  Future<bool> updatePasswordUser(String email, UserModel user) async {
+    try {
+      final url = "${endpoint}updateUserByEmail?email=$email";
+      final res = await http.patch(Uri.parse(url),
+          headers: requestHeaders, body: jsonEncode(user.toJson()));
+
+      if (res.statusCode == 200) {
+        return true;
+      } else {
+        // log(req.body);
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
 }

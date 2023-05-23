@@ -1,0 +1,1 @@
+enum UpdatePassStatus { initial,success,onLoading,error}

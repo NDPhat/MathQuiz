@@ -24,7 +24,7 @@ class TeacherLocalAPIRepoImpl extends TeacherLocalAPIRepo {
     } on SocketException catch (_) {
       return Future.error('No network found');
     } catch (_) {
-      return Future.error('Something occured');
+      return Future.error('Something occurred');
     }
   }
 
