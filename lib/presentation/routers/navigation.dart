@@ -38,6 +38,7 @@ import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
 import '../screen/home/game_screen_user.dart';
 import '../screen/home/home_guest.dart';
+import '../screen/home/widget/profile_myaccount.dart';
 import '../screen/home_work/home_work_game_screen.dart';
 import '../screen/home_work/home_work_main_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
@@ -56,6 +57,7 @@ class Routers {
   static const String doTestPra = '/doTestPra';
   static const String doTestExam = '/doTestExam';
   static const String game = '/game';
+  static const String updateProfileUser = '/updateProfileUser';
   static const String trueFalse = '/truefalse';
   static const String forgetPass = '/forgetPass';
   static const String battle = '/battle';
@@ -89,6 +91,8 @@ class Routers {
     switch (settings.name) {
       case welcome:
         return WelcomeScreen();
+      case updateProfileUser:
+        return UpdateProfileUserScreen();
       case login:
         return BlocProvider(
             create: (context) =>
