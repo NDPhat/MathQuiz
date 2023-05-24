@@ -7,7 +7,8 @@ import '../../data/remote/model/pre_quiz_hw_response.dart';
 class QuizBrain {
   int _quizAnswer = 0;
   int hiddenNum = 0;
-  String quizTrueFalse = "True";
+  int hiddenPositionNumber = 0;
+  String quizTrueFalse = "TRUE";
   var listAnswer = [0, 0, 0, 0];
   String _quiz = '';
   Random _random = Random();
@@ -122,11 +123,11 @@ class QuizBrain {
     //0 hidden num1,1 hidden num2
     listAnswer = [];
 
-    var trueNumHidden = _random.nextInt(2);
+    hiddenPositionNumber = _random.nextInt(2);
     listAnswer.add(fake1);
     listAnswer.add(fake3);
     listAnswer.add(fake2);
-    if (trueNumHidden == 0) {
+    if (hiddenPositionNumber == 0) {
       listAnswer.add(firstNumber);
       hiddenNum = firstNumber;
       _quiz = '? ${preQuiz.sign} $secondNumber = $_quizAnswer';
@@ -364,6 +365,8 @@ class QuizBrain {
         }
     }
     var falseMaker = [-3, -2, -1, 1, 2, 3];
+    var _quizWrong = _quizAnswer;
+    // so lam de sai
     var randomlyChosen = falseMaker[_random.nextInt(falseMaker.length)];
 
     // 0 means make it false , 1 means true answer
@@ -372,11 +375,11 @@ class QuizBrain {
     quizTrueFalse = 'TRUE';
     if (trueOrFalseDecision == 0) {
       quizTrueFalse = 'FALSE';
-      _quizAnswer = _quizAnswer + randomlyChosen;
-      if (_quizAnswer < 0) _quizAnswer = _quizAnswer + _random.nextInt(2) + 4;
+      _quizWrong = _quizAnswer + randomlyChosen;
+      if (_quizWrong < 0) _quizWrong = _quizAnswer + _random.nextInt(2) + 4;
     }
 
-    _quiz = '$firstNumber ${preQuiz.sign!} $secondNumber = $_quizAnswer';
+    _quiz = '$firstNumber ${preQuiz.sign!} $secondNumber = $_quizWrong';
   }
 
   void makeQuizHomeWork(PreQuizHWResponse preQuiz) {

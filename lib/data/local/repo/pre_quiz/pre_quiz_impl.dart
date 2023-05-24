@@ -18,7 +18,8 @@ class PreQuizLocalRepoImpl extends PreQuizGameRepo {
   }
 
   @override
-  Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDay(String day) async* {
+  Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDay(
+      String day) async* {
     yield* (appDb.select(appDb.preQuizGameEntity)
           ..where((tbl) => tbl.dateSave.equals(day)))
         .watch();
@@ -37,10 +38,30 @@ class PreQuizLocalRepoImpl extends PreQuizGameRepo {
 
   @override
   Future<PreQuizGameEntityData> getLatestPreQuizGame() async {
-    List<PreQuizGameEntityData> list = await (appDb.select(appDb.preQuizGameEntity)
+    List<PreQuizGameEntityData> list = await (appDb
+            .select(appDb.preQuizGameEntity)
           ..orderBy(
               [(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
         .get();
     return list.first;
+  }
+
+  @override
+  Future<PreQuizGameEntityData> getPreQuizGameByPreId(int preId) async {
+    return (appDb.select(appDb.preQuizGameEntity)
+          ..where((tbl) => tbl.id.equals(preId)))
+        .getSingle();
+  }
+
+  @override
+  Future<void> deleteAllPreQuiz() async {
+    await (appDb.delete(appDb.preQuizGameEntity)).go();
+  }
+
+  @override
+  Future<void> deletePreQuizGameByDay(String dateSave) async {
+    await (appDb.delete(appDb.preQuizGameEntity)
+          ..where((t) => t.dateSave.equals(dateSave)))
+        .go();
   }
 }

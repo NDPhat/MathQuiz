@@ -4,10 +4,19 @@ import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
 
 class AppBarWidget extends StatelessWidget {
-  const AppBarWidget({Key? key, required this.size, required this.onBack})
+  AppBarWidget(
+      {Key? key,
+      required this.size,
+      required this.onBack,
+      this.textTitle,
+      this.onSetting,
+      this.childSetting})
       : super(key: key);
   final Size size;
+  String? textTitle;
   final VoidCallback onBack;
+  VoidCallback? onSetting;
+  Widget? childSetting;
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +24,36 @@ class AppBarWidget extends StatelessWidget {
       color: colorMainBlue,
       width: size.width,
       height: size.height * 0.1,
-      alignment: Alignment.centerLeft,
-      padding:
-          EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.1),
-      child: GestureDetector(
-          onTap: onBack,
-          child: const Icon(
-            Icons.keyboard_backspace,
-            color: colorSystemWhite,
-            size: 30,
-          )),
+      padding: EdgeInsets.only(top: size.height * 0.02),
+      child: Stack(
+        children: [
+          Container(
+            width: size.width,
+            alignment: Alignment.center,
+            child: Text(
+              textTitle ?? "",
+              style: s20f700ColorSysWhite,
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: size.width * 0.06),
+            child: GestureDetector(
+                onTap: onBack,
+                child: const Icon(
+                  Icons.keyboard_backspace,
+                  color: colorSystemWhite,
+                  size: 30,
+                )),
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(right: size.width * 0.06),
+            child: GestureDetector(
+                onTap: onSetting, child: childSetting ?? Container()),
+          )
+        ],
+      ),
     );
   }
 }

@@ -8,6 +8,7 @@ import '../../application/cons/text_style.dart';
 import '../../application/utils/make_quiz.dart';
 
 import '../../domain/bloc/game/game_cubit.dart';
+import 'app_bar.dart';
 import 'button_custom.dart';
 import 'cir_per_indicator.dart';
 import 'package:circular_countdown/circular_countdown.dart';
@@ -20,6 +21,7 @@ class PortraitModeTF extends StatelessWidget {
   final sign;
   final onTap;
   final percentValue;
+  VoidCallback onBack;
   int timeNow;
   PortraitModeTF({
     required this.score,
@@ -29,6 +31,7 @@ class PortraitModeTF extends StatelessWidget {
     required this.quizNow,
     required this.quizBrainObject,
     required this.onTap,
+    required this.onBack,
     required this.timeNow,
     required this.percentValue,
     this.sign,
@@ -37,60 +40,65 @@ class PortraitModeTF extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      color: colorSystemWhite,
-      padding: EdgeInsets.only(
-          top: size.height * 0.005,
-          bottom: size.height * 0.05,
-          left: size.width * 0.05,
-          right: size.width * 0.05),
-      child: Column(
-        children: [
-          UserTableScore(
-            size: size,
-            percentTime: percentValue,
-            timeNow: timeNow,
-            trueQ: trueQ,
-            falseQ: falseQ,
-            totalQuiz: totalQ,
-            typeOfGame: "TF",
-            quizNow: quizNow,
-          ),
-          QuizBody(
-            size: size,
-            quizBrainObject: quizBrainObject,
-          ),
-          SizedBox(
-            height: size.height * 0.15,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      children: [
+        AppBarWidget(size: size, onBack: onBack),
+        Container(
+          color: colorSystemWhite,
+          padding: EdgeInsets.only(
+              top: size.height * 0.005,
+              bottom: size.height * 0.05,
+              left: size.width * 0.05,
+              right: size.width * 0.05),
+          child: Column(
             children: [
-              RoundedButton(
-                press: () {
-                  onTap('TRUE');
-                },
-                color: colorSystemWhite,
-                width: size.width * 0.4,
-                height: size.height * 0.1,
-                child: Image.asset('assets/images/true.jpg'),
+              UserTableScore(
+                size: size,
+                percentTime: percentValue,
+                timeNow: timeNow,
+                trueQ: trueQ,
+                falseQ: falseQ,
+                totalQuiz: totalQ,
+                typeOfGame: "TF",
+                quizNow: quizNow,
+              ),
+              QuizBody(
+                size: size,
+                quizBrainObject: quizBrainObject,
               ),
               SizedBox(
-                width: size.height * 0.03,
+                height: size.height * 0.15,
               ),
-              RoundedButton(
-                press: () {
-                  onTap('FALSE');
-                },
-                color: colorSystemWhite,
-                width: size.width * 0.4,
-                height: size.height * 0.1,
-                child: Image.asset('assets/images/false.jpg'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RoundedButton(
+                    press: () {
+                      onTap('TRUE');
+                    },
+                    color: colorSystemWhite,
+                    width: size.width * 0.4,
+                    height: size.height * 0.1,
+                    child: Image.asset('assets/images/true.jpg'),
+                  ),
+                  SizedBox(
+                    width: size.height * 0.03,
+                  ),
+                  RoundedButton(
+                    press: () {
+                      onTap('FALSE');
+                    },
+                    color: colorSystemWhite,
+                    width: size.width * 0.4,
+                    height: size.height * 0.1,
+                    child: Image.asset('assets/images/false.jpg'),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

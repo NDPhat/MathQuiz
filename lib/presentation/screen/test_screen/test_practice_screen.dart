@@ -42,6 +42,7 @@ class _TestScreenState extends State<TestScreen> {
   int userChoose = 1;
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
+  bool userAnswer = false;
   late HomeRepo homeRepo;
   final CountDownController _controller = CountDownController();
 
@@ -52,7 +53,7 @@ class _TestScreenState extends State<TestScreen> {
     preTest = PreTest();
     homeRepo = HomeRepo(
         preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-        userLocalAPIRepo: instance.get<UserLocalAPIRepo>());
+        userLocalAPIRepo: instance.get<UserAPIRepo>());
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       preTest = await ModalRoute.of(context)!.settings.arguments as PreTest;
       showReadyDialog();
@@ -72,11 +73,12 @@ class _TestScreenState extends State<TestScreen> {
   void _addData(BuildContext context) {
     context.read<TestCubit>().addDataToLocal(QuizTestEntityCompanion(
         preId: Value(preTest.id!),
-        num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
-        sign: Value(_quizBrain.quiz.toString().split(" ")[1]),
-        num2: Value(int.parse(_quizBrain.quiz.toString().split(" ")[2])),
-        answer: Value(_quizBrain.quizAnswer),
-        answerSelect: Value(userChoose ?? 0)));
+        num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
+        quiz: Value(_quizBrain.quiz),
+        infoQuiz: Value(userAnswer),
+        num2: Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
+        answer: Value(_quizBrain.quizAnswer.toString()),
+        answerSelect: Value(userChoose.toString())));
   }
 
   _updateScoreAndNumQ() {
@@ -86,12 +88,12 @@ class _TestScreenState extends State<TestScreen> {
   void _checkAnswer(int userChoice, BuildContext context) async {
     _totalNumberOfQuizzes++;
     if (userChoice == _quizBrain.quizAnswer) {
+      userAnswer = true;
       playSound('correct-choice.wav');
       _score++;
     } else {
-      setState(() {
-        falseChoose++;
-      });
+      userAnswer = false;
+      falseChoose++;
       playSound('wrong-choice.wav');
     }
     _addData(context);

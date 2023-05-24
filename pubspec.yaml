@@ -36,6 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   animated_text_kit: ^4.2.1
+  image_cropper: 4.0.0
   outline_gradient_button: ^2.0.0+1
   percent_indicator: ^4.2.3
   audioplayers: 3.0.1
@@ -58,7 +59,8 @@ dependencies:
   device_preview: ^1.1.0
   circular_countdown: 2.1.0
   circular_countdown_timer: 0.2.3
-
+  line_awesome_flutter: ^2.0.0
+  image_picker: 0.8.7+5
 dev_dependencies:
   flutter_test:
     sdk: flutter

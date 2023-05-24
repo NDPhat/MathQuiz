@@ -9,7 +9,7 @@ import '../data/local/repo/pre_test/pre_test_repo.dart';
 import '../data/remote/api/Repo/api_user_repo.dart';
 
 class HomeRepo {
-  final UserLocalAPIRepo userLocalAPIRepo;
+  final UserAPIRepo userLocalAPIRepo;
 
   final PreTestLocalRepo preTestLocalRepo;
   HomeRepo({required this.preTestLocalRepo, required this.userLocalAPIRepo});

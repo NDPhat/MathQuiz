@@ -28,79 +28,32 @@ class GetUserByMailAndPassRes {
 }
 
 class UserModel {
-  String? _email;
-  String? _key;
-  String? _lop;
-  String? _name;
-  String? _password;
-  int? _scoreHomeWork;
-  int? _scoreTest;
+  String? email;
+  String? key;
+  String? lop;
+  String? name;
+  String? otp;
+  String? password;
 
-  UserModel(
-      {String? email,
-        String? key,
-        String? lop,
-        String? name,
-        String? password,
-        int? scoreHomeWork,
-        int? scoreTest}) {
-    if (email != null) {
-      this._email = email;
-    }
-    if (key != null) {
-      this._key = key;
-    }
-    if (lop != null) {
-      this._lop = lop;
-    }
-    if (name != null) {
-      this._name = name;
-    }
-    if (password != null) {
-      this._password = password;
-    }
-    if (scoreHomeWork != null) {
-      this._scoreHomeWork = scoreHomeWork;
-    }
-    if (scoreTest != null) {
-      this._scoreTest = scoreTest;
-    }
-  }
-
-  String? get email => _email;
-  set email(String? email) => _email = email;
-  String? get key => _key;
-  set key(String? key) => _key = key;
-  String? get lop => _lop;
-  set lop(String? lop) => _lop = lop;
-  String? get name => _name;
-  set name(String? name) => _name = name;
-  String? get password => _password;
-  set password(String? password) => _password = password;
-  int? get scoreHomeWork => _scoreHomeWork;
-  set scoreHomeWork(int? scoreHomeWork) => _scoreHomeWork = scoreHomeWork;
-  int? get scoreTest => _scoreTest;
-  set scoreTest(int? scoreTest) => _scoreTest = scoreTest;
+  UserModel({this.email, this.key, this.lop, this.name, this.otp, this.password});
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    _email = json['email'];
-    _key = json['key'];
-    _lop = json['lop'];
-    _name = json['name'];
-    _password = json['password'];
-    _scoreHomeWork = json['scoreHomeWork'];
-    _scoreTest = json['scoreTest'];
+  email = json['email'];
+  key = json['key'];
+  lop = json['lop'];
+  name = json['name'];
+  otp = json['otp'];
+  password = json['password'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this._email;
-    data['key'] = this._key;
-    data['lop'] = this._lop;
-    data['name'] = this._name;
-    data['password'] = this._password;
-    data['scoreHomeWork'] = this._scoreHomeWork;
-    data['scoreTest'] = this._scoreTest;
-    return data;
+  final Map<String, dynamic> data = new Map<String, dynamic>();
+  data['email'] = this.email;
+  data['key'] = this.key;
+  data['lop'] = this.lop;
+  data['name'] = this.name;
+  data['otp'] = this.otp;
+  data['password'] = this.password;
+  return data;
   }
-}
+  }

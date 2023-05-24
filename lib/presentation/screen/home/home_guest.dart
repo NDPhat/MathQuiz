@@ -25,7 +25,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
     super.initState();
     homeRepo = HomeRepo(
         preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-        userLocalAPIRepo: instance.get<UserLocalAPIRepo>());
+        userLocalAPIRepo: instance.get<UserAPIRepo>());
   }
 
   @override

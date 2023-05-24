@@ -5,6 +5,7 @@ import '../../../application/cons/constants.dart';
 import '../../../application/cons/text_style.dart';
 
 import '../../routers/navigation.dart';
+import '../../widget/app_bar.dart';
 import '../../widget/button_custom.dart';
 
 class OptionModeBotDual extends StatelessWidget {
@@ -13,41 +14,46 @@ class OptionModeBotDual extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
-      appBar: AppBar(
-        leading: const Icon(Icons.school),
-        backgroundColor: colorMainBlueChart,
-        title: const Text('Math Quiz', style: s30f500colorSysWhite),
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(
-            top: size.height * 0.15, bottom: size.height * 0.05),
-        child: Center(
-          child: Column(
-            children: [
-              Level_Box(
-                size: size,
-                level: "easy",
-                style: kTitleTSBold,
+      body: Column(
+        children: [
+          AppBarWidget(
+              size: size,
+              textTitle: 'CHOOSE ONE',
+              onBack: () {
+                Navigator.pop(context);
+              }),
+          Padding(
+            padding: EdgeInsets.only(
+                top: size.height * 0.15, bottom: size.height * 0.05),
+            child: Center(
+              child: Column(
+                children: [
+                  Level_Box(
+                    size: size,
+                    level: "easy",
+                    style: kTitleTSBold,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.04,
+                  ),
+                  Level_Box(
+                    size: size,
+                    level: "medium",
+                    style: kTitleTSBold1,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.04,
+                  ),
+                  Level_Box(
+                    size: size,
+                    level: "hard",
+                    style: kTitleTSBold2,
+                  ),
+                ],
               ),
-              SizedBox(
-                height: size.height * 0.04,
-              ),
-              Level_Box(
-                size: size,
-                level: "medium",
-                style: kTitleTSBold1,
-              ),
-              SizedBox(
-                height: size.height * 0.04,
-              ),
-              Level_Box(
-                size: size,
-                level: "hard",
-                style: kTitleTSBold2,
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

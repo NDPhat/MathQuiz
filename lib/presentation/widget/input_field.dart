@@ -8,7 +8,7 @@ import 'input_field_container.dart';
 
 class InputField extends StatelessWidget {
   String hintText;
-  double size;
+  double width,height;
   String? validateText;
   bool? isHidden;
   ValueChanged<String>? onChanged;
@@ -16,7 +16,8 @@ class InputField extends StatelessWidget {
   InputField({
     Key? key,
     required this.hintText,
-    required this.size,
+    required this.width,
+    required this.height,
     this.validateText,
     this.isHidden,
     this.hasError,
@@ -26,7 +27,8 @@ class InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InputFieldContainer(
-        size: size,
+        width: width,
+        height: height,
         validateText: validateText == null ? '' : validateText!,
         isHidden: isHidden == null ? false : isHidden!,
         child: TextField(

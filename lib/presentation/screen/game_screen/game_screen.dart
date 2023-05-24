@@ -39,6 +39,7 @@ class _GameScreenState extends State<GameScreen> {
   double _value = 0;
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
+  bool userAnswer = false;
 
   @override
   void initState() {
@@ -108,10 +109,13 @@ class _GameScreenState extends State<GameScreen> {
           _totalTime = (_value * (_preQuiz.timePer!) + 1).toInt();
         });
       } else {
+        // luu lai cau hoi va dap an da khong chon
+
+        userAnswer = false;
+        _saveData(context);
         setState(() {
           falseChoose++;
         });
-        _saveData(context);
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
           _updateScore();
           _endGame();
@@ -133,11 +137,13 @@ class _GameScreenState extends State<GameScreen> {
   void _saveData(BuildContext context) {
     context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
         preId: Value(_preIdNow),
-        num1: Value(int.parse(_quizBrain.quiz.toString().split(" ")[0])),
+        num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
         sign: Value(_preQuiz.sign!),
-        num2: Value(int.parse(_quizBrain.quiz.toString().split(" ")[2])),
-        answer: Value(_quizBrain.quizAnswer),
-        answerSelect: Value(userChoose ?? 0)));
+        quiz: Value(_quizBrain.quiz),
+        infoQuiz: Value(userAnswer),
+        num2: Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
+        answer: Value(_quizBrain.quizAnswer.toString()),
+        answerSelect: Value(userChoose.toString())));
   }
 
   _updateScore() {
@@ -151,9 +157,11 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
-    _saveData(context);
+
     if (userChoice.toString().isNotEmpty) {
       if (userChoice == _quizBrain.quizAnswer) {
+        userAnswer = true;
+        _saveData(context);
         playSound('correct-choice.wav');
         _score++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
@@ -163,6 +171,8 @@ class _GameScreenState extends State<GameScreen> {
           _resetScreen();
         }
       } else {
+        userAnswer = false;
+        _saveData(context);
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
           _updateScore();
           playSound('wrong-choice.wav');
@@ -175,6 +185,8 @@ class _GameScreenState extends State<GameScreen> {
         }
       }
     } else {
+      userAnswer = false;
+      _saveData(context);
       if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
         _endGame();
       } else {

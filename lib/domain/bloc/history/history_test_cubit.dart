@@ -24,4 +24,20 @@ class HistoryTestCubit extends Cubit<HistoryTestState> {
       print(e.toString());
     }
   }
+
+  void deletePreTestByDay(String dateSave) async {
+    try {
+      await preTestLocalRepo.deletePreTestByDay(dateSave);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void deleteAllPreTest() async {
+    try {
+      await preTestLocalRepo.deleteAllPreTest();
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
 }
