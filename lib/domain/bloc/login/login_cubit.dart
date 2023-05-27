@@ -39,7 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
         emit(state.copyWith(status: LoginStatus.success));
       } else {
         passMess = "Your password do not match";
-        emit(state.copyWith(status: LoginStatus.success, passError: passMess));
+        emit(state.copyWith(status: LoginStatus.error, passError: passMess));
       }
     } else {
       emailMess = "This is not an email!";

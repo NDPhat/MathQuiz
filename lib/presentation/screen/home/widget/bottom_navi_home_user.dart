@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
 
-class BottomAppIcon extends StatefulWidget {
+import '../../../../application/cons/color.dart';
+
+class BottomAppIcon extends StatelessWidget {
   BottomAppIcon({Key? key,
     required this.pathImage,
     required this.text,
@@ -14,26 +16,25 @@ class BottomAppIcon extends StatefulWidget {
   final Color color;
 
   @override
-  State<BottomAppIcon> createState() => _BottomAppIconState();
-}
-
-class _BottomAppIconState extends State<BottomAppIcon> {
-  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widget.size.width / 4,
-      height: widget.size.height * 0.08,
+      width: size.width / 4,
+      height:size.height * 0.06,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            widget.pathImage,
-            color:widget.color,
+          Container(
+            padding:  EdgeInsets.only(top:size.height*0.01),
+            child: Image.asset(
+             pathImage,
+              height: size.height*0.03,
+              color:color,
+            ),
           ),
           Text(
-            widget.text,
+            text,
             style: TextStyle(
-              color: widget.color,
+              color: color,
             ),
           )
         ],

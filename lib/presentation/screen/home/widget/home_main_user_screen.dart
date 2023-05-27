@@ -11,7 +11,6 @@ class HomeMainUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HomeUserBG(
-        onPress: () {},
         textNow: 'Home',
         size: size,
         child: Expanded(

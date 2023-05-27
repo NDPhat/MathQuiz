@@ -124,7 +124,7 @@ const s15f700ColorBlueMa = TextStyle(
 );const s15f700ColorErrorPri = TextStyle(
   fontWeight: font700,
   fontSize: 15,
-  color: colorSystemYeloow,
+  color: colorErrorPrimary,
 );
 const s30f700ColorGreyPri =
     TextStyle(fontSize: 30, fontWeight: font700, color: colorGreyPri);

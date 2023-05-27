@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/data/remote/model/pre_quiz_hw_res.dart';
 import 'package:math/data/remote/model/pre_quiz_hw_response.dart';
 import 'package:math/presentation/widget/portrait_mode_game.dart';
 
@@ -32,7 +33,7 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
-  late PreQuizHWResponse _preQuiz;
+  late PreQuizHW _preQuiz;
   int _preIdNow = 0;
   int userChoose = 1;
   double _value = 0;
@@ -43,15 +44,15 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-    _preQuiz = PreQuizHWResponse();
+    _preQuiz = PreQuizHW();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _preQuiz =
-          ModalRoute.of(context)!.settings.arguments as PreQuizHWResponse;
+          ModalRoute.of(context)!.settings.arguments as PreQuizHW;
       _startGame(_preQuiz);
     });
   }
 
-  void _startGame(PreQuizHWResponse _preQuiz) async {
+  void _startGame(PreQuizHW _preQuiz) async {
     _quizBrain.makeQuizHomeWork(_preQuiz);
     _startTimer();
     _value = 1;
@@ -167,11 +168,6 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(Icons.school),
-        backgroundColor: colorMainBlueChart,
-        title: const Text('Math Practice', style: s30f500colorSysWhite),
-      ),
       resizeToAvoidBottomInset: false,
       body: Container(
           decoration: const BoxDecoration(

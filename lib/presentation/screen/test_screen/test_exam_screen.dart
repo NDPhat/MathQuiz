@@ -88,12 +88,6 @@ class TestExamScreen extends StatelessWidget {
                             margin: const EdgeInsets.all(5),
                             padding: const EdgeInsets.all(5),
                             child: WeakWidget(
-                                onTap: () async {
-                                  data = await instance
-                                      .get<TeacherLocalAPIRepo>()
-                                      .getPreQuizForHW(element.weak);
-                                  showDetailDialog();
-                                },
                                 size: size,
                                 data: element)))
                         .toList(),

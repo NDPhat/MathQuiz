@@ -1,7 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:math/data/remote/model/pre_quiz_hw_res.dart';
+
 import '../../../../application/cons/endpoint.dart';
+import '../../../../application/di/event_local.dart';
+import '../../model/pre_quiz_hw_response.dart';
 import '../../model/user_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,15 +20,15 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(res.body);
-        final userModel =
-            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
-        // log(addressModel.predictions![1].description.toString());
+        final userModel = UserRes.fromJson(parsed).lItems!.first;
+        UserEventLocal.updateUserGlobal(userModel);
         return userModel;
       } else {
         // log(req.body);
         Map<String, dynamic> parsed = json.decode(res.body);
-        final userModel =
-            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        final userModel = UserRes.fromJson(parsed).lItems!.first;
+        UserEventLocal.updateUserGlobal(userModel);
+
         return userModel;
       }
     } on SocketException catch (_) {
@@ -41,14 +45,12 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(res.body);
-        final userModel =
-            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        final userModel = UserRes.fromJson(parsed).lItems!.first;
         return userModel;
       } else {
         // log(req.body);
         Map<String, dynamic> parsed = json.decode(res.body);
-        final userModel =
-            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        final userModel = UserRes.fromJson(parsed).lItems!.first;
         return userModel;
       }
     } on SocketException catch (_) {
@@ -65,14 +67,12 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(res.body);
-        final userModel =
-            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        final userModel = UserRes.fromJson(parsed).lItems!.first;
         return userModel;
       } else {
         // log(req.body);
         Map<String, dynamic> parsed = json.decode(res.body);
-        final userModel =
-            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        final userModel = UserRes.fromJson(parsed).lItems!.first;
         return userModel;
       }
     } on SocketException catch (_) {
@@ -89,14 +89,12 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(res.body);
-        final userModel =
-            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        final userModel = UserRes.fromJson(parsed).lItems!.first;
         return userModel;
       } else {
         // log(req.body);
         Map<String, dynamic> parsed = json.decode(res.body);
-        final userModel =
-            GetUserByMailAndPassRes.fromJson(parsed).lItems!.first;
+        final userModel = UserRes.fromJson(parsed).lItems!.first;
         return userModel;
       }
     } on SocketException catch (_) {
@@ -123,6 +121,72 @@ class UserAPIRepoImpl extends UserAPIRepo {
       return false;
     } catch (_) {
       return false;
+    }
+  }
+
+  @override
+  Future<bool?> updateProfileUser(String keyId, UserModel user) async {
+    try {
+      final url = "${endpoint}updateUserById?id=$keyId";
+      final res = await http.patch(Uri.parse(url),
+          headers: requestHeaders, body: jsonEncode(user.toJson()));
+      if (res.statusCode == 200) {
+        return true;
+      } else {
+        // log(req.body);
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<UserModel?> getUserByID(String id) async {
+    try {
+      final url = "${endpoint}getUserById?uId=$id";
+      final res = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (res.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final userModel = UserModel.fromJson(parsed);
+        UserEventLocal.updateUserGlobal(userModel);
+        return userModel;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final userModel = UserModel.fromJson(parsed);
+        UserEventLocal.updateUserGlobal(userModel);
+
+        return userModel;
+      }
+    } on SocketException catch (_) {
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Future<PreQuizHW?> getPreQuizHWByWeek(String week) async {
+    try {
+      final url = "${endpoint}getPreQuizByWeak?weak=$week";
+      final res = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (res.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final preQuizModel = PreQuizHWRes.fromJson(parsed).lItems!.first;
+        return preQuizModel;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(res.body);
+        final preQuizModel = PreQuizHWRes.fromJson(parsed).lItems!.first;
+        return preQuizModel;
+      }
+    } on SocketException catch (_) {
+      return null;
+    } catch (_) {
+      return null;
     }
   }
 }

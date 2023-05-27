@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:math/data/model/option_quiz.dart';
 
 import '../../../application/cons/color.dart';
@@ -8,6 +9,7 @@ import '../../../application/cons/text_style.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/button_custom.dart';
+import '../../widget/item_menu_game_widget.dart';
 
 class OptionGameModeScreen extends StatelessWidget {
   const OptionGameModeScreen({Key? key}) : super(key: key);
@@ -21,173 +23,84 @@ class OptionGameModeScreen extends StatelessWidget {
       backgroundColor: colorSystemWhite,
       resizeToAvoidBottomInset: false,
       body: Column(
-        children: [  AppBarWidget(
-            size: size,
-            textTitle: 'CHOOSE GAME MODE',
-            onBack: () {
-              Navigator.pop(context);
-            }),
+        children: [
+          AppBarWidget(
+              size: size,
+              textTitle: 'CHOOSE GAME MODE',
+              onBack: () {
+                Navigator.pop(context);
+              }),
           Padding(
             padding: EdgeInsets.only(
-                top: size.height * 0.05,
-                left: size.width * 0.02,
-                right: size.width * 0.02,
-                bottom: size.height * 0.05),
+              top: size.height * 0.05,
+              left: size.width * 0.02,
+              right: size.width * 0.02,
+            ),
             child: Center(
               child: Column(
                 children: [
                   Image.asset(
-                    "assets/images/choose.jpg",
-                    width: size.width * 0.6,
+                    "assets/images/gamemode.png",
+                    width: size.width * 0.5,
+                    height: size.height * 0.2,
                   ),
                   SizedBox(
-                    height: size.height * 0.1,
+                    height: size.height * 0.05,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Bounce(
-                        duration: Duration(milliseconds: 200),
-                        onPressed: () {},
-                        child: Image.asset(
-                          "assets/images/gamemode.png",
-                          width: size.width * 0.3,
-                        ),
-                      ),
-                      Column(
+                  SizedBox(
+                    height: size.height * 0.6,
+                    child: SingleChildScrollView(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                  color: colorSystemPurpleTertiary,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: RoundedButton(
-                                press: () {
-                                  Navigator.pushNamed(context, Routers.premake,
-                                      arguments: OptionQuiz(
-                                          sign: sign, optionQuiz: 'input'));
-                                },
-                                color: colorSystemPurpleTertiary,
-                                width: size.width * 0.55,
-                                height: size.height * 0.06,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Image.asset('assets/images/input.png'),
-                                    const Text(
-                                      'INPUT ANSWER',
-                                      style: s16f700ColorBlueMa,
-                                    ),
-                                  ],
-                                ),
-                              )),
-                          SizedBox(
-                            height: size.height * 0.03,
+                          ItemMenuGameMode(
+                            size: size,
+                            icon: const Icon(
+                              LineAwesomeIcons.keyboard,
+                              size: 30,
+                            ),
+                            textTitle: 'INPUT ANSWER',
+                            onPress: () {
+                              Navigator.pushNamed(context, Routers.premake,
+                                  arguments: OptionQuiz(
+                                      sign: sign, optionQuiz: 'input'));
+                            },
                           ),
-                          Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                  color: colorSystemPurpleTertiary,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: Column(
-                                children: [
-                                  RoundedButton(
-                                    press: () {
-                                      Navigator.pushNamed(context, Routers.premake,
-                                          arguments: OptionQuiz(
-                                              sign: sign, optionQuiz: 'truefalse'));
-                                    },
-                                    color: colorSystemPurpleTertiary,
-                                    width: size.width * 0.55,
-                                    height: size.height * 0.06,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image.asset('assets/images/truefalse.png'),
-                                        const Text(
-                                          'TRUE/FALSE',
-                                          style: s16f700ColorBlueMa,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
                           SizedBox(
-                            height: size.height * 0.03,
+                            height: size.height * 0.05,
                           ),
-                          Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                  color: colorSystemPurpleTertiary,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: Column(
-                                children: [
-                                  RoundedButton(
-                                    press: () {
-                                      Navigator.pushNamed(context, Routers.premake,
-                                          arguments: OptionQuiz(
-                                              sign: sign, optionQuiz: 'missing'));
-                                    },
-                                    color: colorSystemPurpleTertiary,
-                                    width: size.width * 0.55,
-                                    height: size.height * 0.06,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image.asset('assets/images/missing.png'),
-                                        const Text(
-                                          'FIND MISSING',
-                                          style: s16f700ColorBlueMa,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
+                          ItemMenuGameMode(
+                            size: size,
+                            icon: const Icon(
+                              LineAwesomeIcons.question,
+                              size: 30,
+                            ),
+                            textTitle: 'TRUE/FALSE',
+                            onPress: () {
+                              Navigator.pushNamed(context, Routers.premake,
+                                  arguments: OptionQuiz(
+                                      sign: sign, optionQuiz: 'truefalse'));
+                            },
+                          ),
                           SizedBox(
-                            height: size.height * 0.03,
+                            height: size.height * 0.05,
                           ),
-                          Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                  color: colorSystemPurpleTertiary,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: Column(
-                                children: [
-                                  RoundedButton(
-                                    press: () {},
-                                    color: colorSystemPurpleTertiary,
-                                    width: size.width * 0.55,
-                                    height: size.height * 0.06,
-                                    child: const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(
-                                          Icons.sync_problem,
-                                          size: 40,
-                                          color: colorMainBlue,
-                                        ),
-                                        Text(
-                                          'SYNTHETIC GAME',
-                                          style: s16f700ColorBlueMa,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
+                          ItemMenuGameMode(
+                            size: size,
+                            icon: const Icon(
+                              Icons.youtube_searched_for,
+                              size: 40,
+                            ),
+                            textTitle: 'FIND MISSING',
+                            onPress: () {
+                              Navigator.pushNamed(context, Routers.premake,
+                                  arguments: OptionQuiz(
+                                      sign: sign, optionQuiz: 'missing'));
+                            },
+                          )
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -196,5 +109,49 @@ class OptionGameModeScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ItemMenuGameMode extends StatelessWidget {
+  const ItemMenuGameMode({
+    super.key,
+    required this.size,
+    required this.textTitle,
+    required this.onPress,
+    required this.icon,
+  });
+
+  final Size size;
+  final String textTitle;
+  final Icon icon;
+  final VoidCallback onPress;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.only(
+            top: size.height * 0.02,
+            bottom: size.height * 0.02,
+            left: size.width * 0.05,
+            right: size.width * 0.05),
+        decoration: BoxDecoration(
+            border: Border.all(color: colorErrorPrimary),
+            borderRadius: const BorderRadius.all(Radius.circular(50))),
+        child: RoundedButton(
+          press: onPress,
+          color: colorSystemWhite,
+          width: size.width * 0.8,
+          height: size.height * 0.1,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              icon,
+              Text(
+                textTitle,
+                style: s16f700ColorGreyTe,
+              ),
+            ],
+          ),
+        ));
   }
 }

@@ -3,7 +3,7 @@ import 'package:math/application/cons/text_style.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/widget/home_user_bg.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:math/presentation/screen/home/widget/profile_menu_widget.dart';
+import 'package:math/presentation/screen/home/widget/my_account/profile_menu_widget.dart';
 
 import '../../../../application/cons/color.dart';
 
@@ -14,7 +14,6 @@ class HomeProfileUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HomeUserBG(
-        onPress: () {},
         textNow: 'Profile',
         size: size,
         child: Expanded(
@@ -58,13 +57,15 @@ class HomeProfileUserScreen extends StatelessWidget {
               SizedBox(height: size.height * 0.02),
 
               /// -- MENU
-              ProfileMenuWidget(
-                title: "My account",
-                icon: LineAwesomeIcons.user_check,
-                onPress: () {
-                  Navigator.pushNamed(context, Routers.updateProfileUser);
-                },
-                size: size,
+              SingleChildScrollView(
+                child: ProfileMenuWidget(
+                  title: "My account",
+                  icon: LineAwesomeIcons.user_check,
+                  onPress: () {
+                    Navigator.pushNamed(context, Routers.updateProfileUser);
+                  },
+                  size: size,
+                ),
               ),
               SizedBox(height: size.height * 0.02),
 
@@ -90,6 +91,18 @@ class HomeProfileUserScreen extends StatelessWidget {
                 size: size,
               ),
               SizedBox(height: size.height * 0.02),
+              ProfileMenuWidget(
+                title: "Logout",
+                icon: LineAwesomeIcons.alternate_sign_out,
+                onPress: () {},
+                size: size,
+              ),SizedBox(height: size.height * 0.02),
+              ProfileMenuWidget(
+                title: "Logout",
+                icon: LineAwesomeIcons.alternate_sign_out,
+                onPress: () {},
+                size: size,
+              ),SizedBox(height: size.height * 0.02),
               ProfileMenuWidget(
                 title: "Logout",
                 icon: LineAwesomeIcons.alternate_sign_out,

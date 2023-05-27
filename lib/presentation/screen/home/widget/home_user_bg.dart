@@ -8,12 +8,10 @@ class HomeUserBG extends StatelessWidget {
   HomeUserBG(
       {Key? key,
       required this.child,
-      required this.onPress,
       required this.textNow,
       required this.size})
       : super(key: key);
   Widget child;
-  GestureTapCallback? onPress;
   String textNow;
   Size size;
   @override
@@ -27,24 +25,15 @@ class HomeUserBG extends StatelessWidget {
               width: size.width * 0.75,
               child: Row(children: [
                 Padding(
-                  padding: EdgeInsets.only(right: size.width * 0.05),
+                  padding: EdgeInsets.only(right: size.width * 0.1),
                   child: Image.asset(
                     "assets/images/icon_app.png",
                   ),
                 ),
-                Text(textNow, style: s30f700ColorGreyPri),
+                Text(textNow, style: s26f700ColorGreyPri),
               ]),
             ),
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: colorMainBlue,
-              child: SizedBox(
-                  child: IconButton(
-                onPressed: onPress,
-                icon: const Icon(Icons.settings),
-                color: colorSystemWhite,
-              )),
-            )
+
           ],
         ),
         child
