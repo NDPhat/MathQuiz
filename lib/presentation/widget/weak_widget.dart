@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:math/data/remote/model/pre_quiz_hw_res.dart';
+import 'package:math/data/remote/model/result_quiz_hw_res.dart';
 import '../../application/cons/color.dart';
 import '../../application/cons/constants.dart';
 import '../../application/cons/text_style.dart';
@@ -15,7 +16,7 @@ class WeakWidget extends StatelessWidget {
   const WeakWidget({Key? key, required this.size, required this.data})
       : super(key: key);
   final Size size;
-  final DataWeak data;
+  final ResultQuizHWRes data;
 
   @override
   Widget build(BuildContext context) {
@@ -56,44 +57,14 @@ class WeakWidget extends StatelessWidget {
       );
     }
 
-    Future<void> showHWNotAvaDialog() {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-              25,
-            )),
-            backgroundColor: const Color(0xff1542bf),
-            title: const FittedBox(
-              child: Text('THIS HOMEWORK IS NOT AVAILABLE',
-                  textAlign: TextAlign.center, style: kTitleTS),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Center(child: Text('EXIT', style: kDialogButtonsTS)),
-              ),
-            ],
-          );
-        },
-      );
-    }
 
     return GestureDetector(
       onTap: () async {
         dataRes = await instance
             .get<UserAPIRepo>()
             .getPreQuizHWByWeek(data.weak.toString());
-        if (dataRes != null) {
           showJoinHWDialog();
-        } else {
-          showHWNotAvaDialog();
-        }
+
       },
       child: Center(
         child: Column(
@@ -114,7 +85,7 @@ class WeakWidget extends StatelessWidget {
               ),
             ),
             RatingBar.builder(
-              initialRating: data.score ?? 3,
+              initialRating: data.score!/10 ?? 0,
               minRating: 1,
               itemSize: 18,
               direction: Axis.horizontal,

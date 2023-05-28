@@ -32,19 +32,17 @@ import '../screen/dual/dual_with_player_screen.dart';
 
 import '../screen/dual/option_bot_dual.dart';
 import '../screen/forget_password/forget_password_screen.dart';
+import '../screen/game_screen/basic_game_screen.dart';
 import '../screen/game_screen/find_missing.dart';
-import '../screen/game_screen/game_screen.dart';
 import '../screen/game_screen/true_false_screen.dart';
 import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
-import '../screen/home/game_screen_user.dart';
 import '../screen/home/home_guest.dart';
-import '../screen/home/widget/my_account/profile_myaccount.dart';
-import '../screen/home_work/home_work_game_screen.dart';
-import '../screen/home_work/home_work_main_screen.dart';
+import '../screen/home_work/home_work_user_game_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
 import '../screen/option_game_mode/option_sign_screen.dart';
 import '../screen/pre_quiz/pre_quiz_game.dart';
+import '../screen/profile_user/my_account/profile_myaccount.dart';
 import '../screen/test_screen/test_exam_screen.dart';
 import '../screen/test_screen/test_practice_screen.dart';
 import '../screen/welcome_screen.dart';
@@ -78,7 +76,6 @@ class Routers {
   static const String detailTest = '/detailTest';
   static const String checkAnswer = '/checkAnswer';
   static const String detailQuizGame = '/detailQuizGame';
-  static const String homework = '/homework';
   static const String homeworkGame = '/homeworkGame';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -117,8 +114,6 @@ class Routers {
             create: (context) =>
                 UpdatePassCubit(userAPIRepo: instance.get<UserAPIRepo>()),
             child: UpdatePasswordScreen());
-      case homework:
-        return HomeWorkScreen();
       case chooseOptionUseApp:
         return OptionUseApp();
       case homeworkGame:
@@ -130,8 +125,6 @@ class Routers {
         return HomeGuestScreen();
       case homeUser:
         return HomeUserScreen();
-      case gameScreenUser:
-        return GameUserScreen();
       case doTestExam:
         return TestExamScreen();
       case battleBOT:
@@ -188,7 +181,7 @@ class Routers {
                 preTestLocalRepo: instance.get<PreTestLocalRepo>()),
             child: const HistoryTest());
       default:
-        return GameUserScreen();
+        return WelcomeScreen();
     }
   }
 }

@@ -3,9 +3,9 @@ import 'package:math/application/cons/text_style.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/widget/home_user_bg.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:math/presentation/screen/home/widget/my_account/profile_menu_widget.dart';
 
-import '../../../../application/cons/color.dart';
+import '../../../application/cons/color.dart';
+import 'my_account/profile_menu_widget.dart';
 
 class HomeProfileUserScreen extends StatelessWidget {
   HomeProfileUserScreen({Key? key, required this.size});

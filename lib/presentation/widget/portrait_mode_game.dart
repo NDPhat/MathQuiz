@@ -19,7 +19,7 @@ class PortraitModeGame extends StatelessWidget {
   final int quizNow;
   final QuizBrain quizBrainObject;
   final onTap;
-  VoidCallback  onBack;
+  VoidCallback onBack;
   double? percentValue;
   final Size size;
   String? typeOfGame;
@@ -49,14 +49,17 @@ class PortraitModeGame extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        AppBarWidget(size: size, onBack: onBack,textTitle: 'PRACTICE TESTING',),
+        AppBarWidget(
+          size: size,
+          onBack: onBack,
+          textTitle: 'PRACTICE TESTING',
+        ),
         Container(
           color: colorSystemWhite,
           padding: EdgeInsets.only(
-              top: size.height * 0.005,
-              bottom: size.height * 0.05,
-              left: size.width * 0.05,
-              right: size.width * 0.05),
+            top: size.height * 0.005,
+            bottom: size.height * 0.05,
+          ),
           child: Column(
             children: [
               UserTableScore(

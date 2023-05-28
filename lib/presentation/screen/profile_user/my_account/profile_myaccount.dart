@@ -16,12 +16,11 @@ import 'package:math/application/cons/text_style.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/button_custom.dart';
 import 'package:math/presentation/widget/login_input_field.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import '../../../../../application/cons/color.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import '../../../../widget/scroll_data_widget.dart';
+import '../../../widget/scroll_data_widget.dart';
 
 class UpdateProfileUserScreen extends StatefulWidget {
   UpdateProfileUserScreen({

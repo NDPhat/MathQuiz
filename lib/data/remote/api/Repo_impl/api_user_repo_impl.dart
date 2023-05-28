@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:math/data/remote/model/pre_quiz_hw_res.dart';
+import 'package:math/data/remote/model/result_quiz_hw_res.dart';
 
 import '../../../../application/cons/endpoint.dart';
 import '../../../../application/di/event_local.dart';
 import '../../model/pre_quiz_hw_response.dart';
+import '../../model/result_quiz_hw_req.dart';
 import '../../model/user_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -187,6 +189,73 @@ class UserAPIRepoImpl extends UserAPIRepo {
       return null;
     } catch (_) {
       return null;
+    }
+  }
+
+  @override
+  Future<bool?> updateInfoHomeWorkWeek(ResultQuizHWReq requestBody) async {
+    try {
+      const url = "${endpoint}create_result_quiz";
+      final req = await http.post(Uri.parse(url),
+          headers: requestHeaders, body: jsonEncode(requestBody.toJson()));
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        // log(req.body);
+        return false;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<List<ResultQuizHWRes>?> getALlResultQuizHW() async {
+    try {
+      const url = "${endpoint}getAllReultQuizHW";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<ResultQuizHWRes>? result =
+            GetAllResultQuizHWRes.fromJson(parsed).lItems;
+        return result;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<ResultQuizHWRes>? result =
+            GetAllResultQuizHWRes.fromJson(parsed).lItems;
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<List<PreQuizHWResponse>?> getALlPreQuizHW() async {
+    try {
+      const url = "${endpoint}getAllPreQuizHW";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<PreQuizHWResponse>? result =
+            GetPreQuizHWResponse.fromJson(parsed).lItems;
+        return result;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<PreQuizHWResponse>? result =
+            GetPreQuizHWResponse.fromJson(parsed).lItems;
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
     }
   }
 }

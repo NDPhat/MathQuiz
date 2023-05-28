@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:math/presentation/screen/home/widget/home_hwork_user_screen.dart';
-import 'package:math/presentation/screen/home/widget/home_profile_user_screen.dart';
+import 'package:math/presentation/screen/home_work/home_hwork_user_screen.dart';
+import 'package:math/presentation/screen/profile_user/home_profile_user_screen.dart';
 import 'home_game_user_screen.dart';
 import 'home_main_user_screen.dart';
 
@@ -25,7 +25,7 @@ class HomeBodyUser extends StatelessWidget {
               size: size,
             ),
             HomeGameUserScreen(size: size),
-            HomeHWorkUserScreen(size: size),
+            HomeHWorkUserScreen(),
             HomeProfileUserScreen(size: size),
             // HomeDetailBody(),
           ]),
