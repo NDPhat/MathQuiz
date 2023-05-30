@@ -1,23 +1,18 @@
-class ResultQuizHWReq {
-  String? weak;
+class ResultQuizHWAPIReq{
+  String? week;
   int? numQ;
-  String? userHWId;
+  String? userId;
   int? score;
   int? trueQ;
   int? falseQ;
 
-  ResultQuizHWReq(
-      {this.weak,
-        this.numQ,
-        this.userHWId,
-        this.score,
-        this.trueQ,
-        this.falseQ});
+  ResultQuizHWAPIReq(
+      {this.week, this.numQ, this.userId, this.score, this.trueQ, this.falseQ});
 
-  ResultQuizHWReq.fromJson(Map<String, dynamic> json) {
-    weak = json['weak'];
+  ResultQuizHWAPIReq.fromJson(Map<String, dynamic> json) {
+    week = json['week'];
     numQ = json['numQ'];
-    userHWId = json['userHWId'];
+    userId = json['userId'];
     score = json['score'];
     trueQ = json['trueQ'];
     falseQ = json['falseQ'];
@@ -25,9 +20,9 @@ class ResultQuizHWReq {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['weak'] = this.weak;
+    data['week'] = this.week;
     data['numQ'] = this.numQ;
-    data['userHWId'] = this.userHWId;
+    data['userId'] = this.userId;
     data['score'] = this.score;
     data['trueQ'] = this.trueQ;
     data['falseQ'] = this.falseQ;

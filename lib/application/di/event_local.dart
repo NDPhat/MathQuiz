@@ -1,10 +1,10 @@
-import 'package:math/data/remote/model/user_model.dart';
+import 'package:math/data/remote/model/user_api_res.dart';
 
 import '../../data/model/user_global.dart';
 import '../../main.dart';
 
 class UserEventLocal {
-  static void updateUserGlobal(UserModel a) {
+  static void updateUserGlobal(UserAPIModel a) {
     instance.get<UserGlobal>().fullName = a.name;
     instance.get<UserGlobal>().id = a.key;
     instance.get<UserGlobal>().email = a.email;

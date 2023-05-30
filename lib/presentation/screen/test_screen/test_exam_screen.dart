@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/model/data_weak.dart';
-import 'package:math/data/remote/api/Repo/api_teacher_repo.dart';
 import 'package:math/data/remote/model/pre_quiz_hw_response.dart';
 import 'package:math/main.dart';
 
@@ -19,7 +18,7 @@ class TestExamScreen extends StatelessWidget {
     DataWeak(weak: '12', score: 0),
     DataWeak(weak: '15', score: 0),
   ];
-  PreQuizHWResponse data = PreQuizHWResponse();
+  PreQuizHWResAPIModel data = PreQuizHWResAPIModel();
   @override
   Widget build(BuildContext context) {
     Future<void> showDetailDialog() {
@@ -89,7 +88,7 @@ class TestExamScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(5),
                             child: WeakWidget(
                                 size: size,
-                                data: element)))
+                                dataResult: element)))
                         .toList(),
                   ),
                 ))

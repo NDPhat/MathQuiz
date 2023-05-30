@@ -121,6 +121,10 @@ const s15f700ColorBlueMa = TextStyle(
   fontWeight: font700,
   fontSize: 15,
   color: colorMainBlue,
+);const s15f700ColorYellow = TextStyle(
+  fontWeight: font700,
+  fontSize: 15,
+  color: colorSystemYeloow,
 );const s15f700ColorErrorPri = TextStyle(
   fontWeight: font700,
   fontSize: 15,

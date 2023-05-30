@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/di/event_local.dart';
 import 'package:math/application/enum/update_profile_status.dart';
-import 'package:math/data/remote/model/user_model.dart';
+import 'package:math/data/remote/model/user_api_res.dart';
 
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
@@ -89,7 +89,7 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
   Future<void> updateProfileUser() async {
     emit(state.copyWith(status: UpdateProfileStatus.onLoading));
     if (isFormValid()) {
-      UserModel dataNew = UserModel(
+      UserAPIModel dataNew = UserAPIModel(
           add: state.address,
           phone: state.phone,
           name: state.fullName,

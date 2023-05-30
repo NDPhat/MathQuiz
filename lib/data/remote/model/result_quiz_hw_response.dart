@@ -1,17 +1,17 @@
-class GetAllResultQuizHWRes {
+class ResultQuizHWAPIResponse {
   int? iCount;
   Null? nLast;
-  List<ResultQuizHWRes>? lItems;
+  List<ResultQuizHWAPIModel>? lItems;
 
-  GetAllResultQuizHWRes({this.iCount, this.nLast, this.lItems});
+  ResultQuizHWAPIResponse({this.iCount, this.nLast, this.lItems});
 
-  GetAllResultQuizHWRes.fromJson(Map<String, dynamic> json) {
+  ResultQuizHWAPIResponse.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <ResultQuizHWRes>[];
+      lItems = <ResultQuizHWAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new ResultQuizHWRes.fromJson(v));
+        lItems!.add(new ResultQuizHWAPIModel.fromJson(v));
       });
     }
   }
@@ -27,32 +27,32 @@ class GetAllResultQuizHWRes {
   }
 }
 
-class ResultQuizHWRes {
+class ResultQuizHWAPIModel {
   int? falseQ;
   String? key;
   int? numQ;
   int? score;
   int? trueQ;
-  String? userHWId;
-  String? weak;
+  String? userId;
+  String? week;
 
-  ResultQuizHWRes(
+  ResultQuizHWAPIModel(
       {this.falseQ,
-        this.key,
-        this.numQ,
-        this.score,
-        this.trueQ,
-        this.userHWId,
-        this.weak});
+      this.key,
+      this.numQ,
+      this.score,
+      this.trueQ,
+      this.userId,
+      this.week});
 
-  ResultQuizHWRes.fromJson(Map<String, dynamic> json) {
+  ResultQuizHWAPIModel.fromJson(Map<String, dynamic> json) {
     falseQ = json['falseQ'];
     key = json['key'];
     numQ = json['numQ'];
     score = json['score'];
     trueQ = json['trueQ'];
-    userHWId = json['userHWId'];
-    weak = json['weak'];
+    userId = json['userId'];
+    week = json['week'];
   }
 
   Map<String, dynamic> toJson() {
@@ -62,8 +62,8 @@ class ResultQuizHWRes {
     data['numQ'] = this.numQ;
     data['score'] = this.score;
     data['trueQ'] = this.trueQ;
-    data['userHWId'] = this.userHWId;
-    data['weak'] = this.weak;
+    data['userId'] = this.userId;
+    data['week'] = this.week;
     return data;
   }
 }

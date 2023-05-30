@@ -1,17 +1,17 @@
-class UserRes {
+class UserAPIRes {
   int? iCount;
   Null? nLast;
-  List<UserModel>? lItems;
+  List<UserAPIModel>? lItems;
 
-  UserRes({this.iCount, this.nLast, this.lItems});
+  UserAPIRes({this.iCount, this.nLast, this.lItems});
 
-  UserRes.fromJson(Map<String, dynamic> json) {
+  UserAPIRes.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <UserModel>[];
+      lItems = <UserAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new UserModel.fromJson(v));
+        lItems!.add(new UserAPIModel.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class UserRes {
   }
 }
 
-class UserModel {
+class UserAPIModel {
   String? add;
   String? birthDate;
   String? email;
@@ -39,7 +39,7 @@ class UserModel {
   String? phone;
   String? sex;
 
-  UserModel(
+  UserAPIModel(
       {this.add,
       this.birthDate,
       this.email,
@@ -51,7 +51,7 @@ class UserModel {
       this.phone,
       this.sex});
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  UserAPIModel.fromJson(Map<String, dynamic> json) {
     add = json['add'];
     birthDate = json['birthDate'];
     email = json['email'];

@@ -14,6 +14,7 @@ import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
 import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
+import 'package:math/presentation/screen/check_answer/check_answer_hw.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/home/home_user.dart';
@@ -75,6 +76,7 @@ class Routers {
   static const String premake = '/premake';
   static const String detailTest = '/detailTest';
   static const String checkAnswer = '/checkAnswer';
+  static const String checkAnswerHW = '/checkAnswerHW';
   static const String detailQuizGame = '/detailQuizGame';
   static const String homeworkGame = '/homeworkGame';
 
@@ -125,6 +127,8 @@ class Routers {
         return HomeGuestScreen();
       case homeUser:
         return HomeUserScreen();
+      case checkAnswerHW:
+        return CheckAnswerHWScreen();
       case doTestExam:
         return TestExamScreen();
       case battleBOT:

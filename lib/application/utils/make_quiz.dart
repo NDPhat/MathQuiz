@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:math/data/model/make_quiz.dart';
 
-import '../../data/remote/model/pre_quiz_hw_res.dart';
+import '../../data/model/pre_join_homework.dart';
 import '../../data/remote/model/pre_quiz_hw_response.dart';
 
 class QuizBrain {
@@ -383,7 +383,7 @@ class QuizBrain {
     _quiz = '$firstNumber ${preQuiz.sign!} $secondNumber = $_quizWrong';
   }
 
-  void makeQuizHomeWork(PreQuizHW preQuiz) {
+  void makeQuizHomeWork(PreJoinQuizHW preQuiz) {
     int firstNumber = _random.nextInt(preQuiz.eNum!) + preQuiz.sNum!;
     int secondNumber = _random.nextInt(preQuiz.eNum!) + preQuiz.sNum!;
     String signChoose = preQuiz.sign![_random.nextInt(preQuiz.sign!.length)];
@@ -436,7 +436,7 @@ class QuizBrain {
     listAnswer.add(anwser3);
     listAnswer.add(_quizAnswer);
     listAnswer.shuffle();
-    _quiz = '$firstNumber $signChoose $secondNumber';
+    _quiz = '$firstNumber $signChoose $secondNumber =';
   }
 
   get quizAnswer => _quizAnswer;

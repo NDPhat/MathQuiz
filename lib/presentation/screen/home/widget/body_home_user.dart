@@ -25,7 +25,7 @@ class HomeBodyUser extends StatelessWidget {
               size: size,
             ),
             HomeGameUserScreen(size: size),
-            HomeHWorkUserScreen(),
+            HomeHWorkUserScreen(size: size,),
             HomeProfileUserScreen(size: size),
             // HomeDetailBody(),
           ]),
