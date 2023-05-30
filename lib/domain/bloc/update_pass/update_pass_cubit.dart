@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/model/user_model.dart';
 
 import '../../../application/enum/update_pass_status.dart';
+import '../../../data/remote/model/user_api_res.dart';
 
 part 'update_pass_state.dart';
 
@@ -56,7 +56,7 @@ class UpdatePassCubit extends Cubit<UpdatePassState> {
     emit(state.copyWith(status: UpdatePassStatus.onLoading));
     if (formValidator()) {
       bool updateDone = await userAPIRepo.updatePasswordUser(
-          email, UserModel(password: state.password));
+          email, UserAPIModel(password: state.password));
       if (updateDone) {
         emit(state.copyWith(
             passErrorMessage: "",

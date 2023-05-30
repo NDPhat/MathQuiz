@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/model/user_model.dart';
 
 import '../../../application/enum/login_status.dart';
 
@@ -39,7 +38,7 @@ class LoginCubit extends Cubit<LoginState> {
         emit(state.copyWith(status: LoginStatus.success));
       } else {
         passMess = "Your password do not match";
-        emit(state.copyWith(status: LoginStatus.success, passError: passMess));
+        emit(state.copyWith(status: LoginStatus.error, passError: passMess));
       }
     } else {
       emailMess = "This is not an email!";

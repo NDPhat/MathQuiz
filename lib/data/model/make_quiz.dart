@@ -7,7 +7,7 @@ class PreQuizGame {
   int? numQ;
   int? score;
   String? dateSave;
-  String ? option;
+  String? option;
 
   PreQuizGame(
       {this.id,

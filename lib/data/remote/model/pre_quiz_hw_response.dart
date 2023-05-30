@@ -1,17 +1,17 @@
-class GetPreQuizHWResponse {
+class PreQuizHWAPIResponse {
   int? iCount;
   Null? nLast;
-  List<PreQuizHWResponse>? lItems;
+  List<PreQuizHWResAPIModel>? lItems;
 
-  GetPreQuizHWResponse({this.iCount, this.nLast, this.lItems});
+  PreQuizHWAPIResponse({this.iCount, this.nLast, this.lItems});
 
-  GetPreQuizHWResponse.fromJson(Map<String, dynamic> json) {
+  PreQuizHWAPIResponse.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <PreQuizHWResponse>[];
+      lItems = <PreQuizHWResAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new PreQuizHWResponse.fromJson(v));
+        lItems!.add(new PreQuizHWResAPIModel.fromJson(v));
       });
     }
   }
@@ -27,43 +27,47 @@ class GetPreQuizHWResponse {
   }
 }
 
-class PreQuizHWResponse {
+class PreQuizHWResAPIModel {
+  String? dend;
+  String? dstart;
   int? eNum;
   String? key;
   int? numQ;
   int? sNum;
-  String? sign;
-  int? timePerQuiz;
-  String? weak;
+  List<String>? sign;
+  String? week;
 
-  PreQuizHWResponse(
-      {this.eNum,
+  PreQuizHWResAPIModel(
+      {this.dend,
+        this.dstart,
+        this.eNum,
         this.key,
         this.numQ,
         this.sNum,
         this.sign,
-        this.timePerQuiz,
-        this.weak});
+        this.week});
 
-  PreQuizHWResponse.fromJson(Map<String, dynamic> json) {
+  PreQuizHWResAPIModel.fromJson(Map<String, dynamic> json) {
+    dend = json['dend'];
+    dstart = json['dstart'];
     eNum = json['eNum'];
     key = json['key'];
     numQ = json['numQ'];
     sNum = json['sNum'];
-    sign = json['sign'];
-    timePerQuiz = json['timePerQuiz'];
-    weak = json['weak'];
+    sign = json['sign'].cast<String>();
+    week = json['week'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['dend'] = this.dend;
+    data['dstart'] = this.dstart;
     data['eNum'] = this.eNum;
     data['key'] = this.key;
     data['numQ'] = this.numQ;
     data['sNum'] = this.sNum;
     data['sign'] = this.sign;
-    data['timePerQuiz'] = this.timePerQuiz;
-    data['weak'] = this.weak;
+    data['week'] = this.week;
     return data;
   }
 }

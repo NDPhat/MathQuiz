@@ -13,6 +13,8 @@ import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
+import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
+import 'package:math/presentation/screen/check_answer/check_answer_hw.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/home/home_user.dart';
@@ -31,19 +33,17 @@ import '../screen/dual/dual_with_player_screen.dart';
 
 import '../screen/dual/option_bot_dual.dart';
 import '../screen/forget_password/forget_password_screen.dart';
+import '../screen/game_screen/basic_game_screen.dart';
 import '../screen/game_screen/find_missing.dart';
-import '../screen/game_screen/game_screen.dart';
 import '../screen/game_screen/true_false_screen.dart';
 import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
-import '../screen/home/game_screen_user.dart';
 import '../screen/home/home_guest.dart';
-import '../screen/home/widget/profile_myaccount.dart';
-import '../screen/home_work/home_work_game_screen.dart';
-import '../screen/home_work/home_work_main_screen.dart';
+import '../screen/home_work/home_work_user_game_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
 import '../screen/option_game_mode/option_sign_screen.dart';
 import '../screen/pre_quiz/pre_quiz_game.dart';
+import '../screen/profile_user/my_account/profile_myaccount.dart';
 import '../screen/test_screen/test_exam_screen.dart';
 import '../screen/test_screen/test_practice_screen.dart';
 import '../screen/welcome_screen.dart';
@@ -76,8 +76,8 @@ class Routers {
   static const String premake = '/premake';
   static const String detailTest = '/detailTest';
   static const String checkAnswer = '/checkAnswer';
+  static const String checkAnswerHW = '/checkAnswerHW';
   static const String detailQuizGame = '/detailQuizGame';
-  static const String homework = '/homework';
   static const String homeworkGame = '/homeworkGame';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -92,7 +92,10 @@ class Routers {
       case welcome:
         return WelcomeScreen();
       case updateProfileUser:
-        return UpdateProfileUserScreen();
+        return BlocProvider(
+            create: (context) =>
+                UpdateProfileCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+            child: UpdateProfileUserScreen());
       case login:
         return BlocProvider(
             create: (context) =>
@@ -113,8 +116,6 @@ class Routers {
             create: (context) =>
                 UpdatePassCubit(userAPIRepo: instance.get<UserAPIRepo>()),
             child: UpdatePasswordScreen());
-      case homework:
-        return HomeWorkScreen();
       case chooseOptionUseApp:
         return OptionUseApp();
       case homeworkGame:
@@ -126,8 +127,8 @@ class Routers {
         return HomeGuestScreen();
       case homeUser:
         return HomeUserScreen();
-      case gameScreenUser:
-        return GameUserScreen();
+      case checkAnswerHW:
+        return CheckAnswerHWScreen();
       case doTestExam:
         return TestExamScreen();
       case battleBOT:
@@ -184,7 +185,7 @@ class Routers {
                 preTestLocalRepo: instance.get<PreTestLocalRepo>()),
             child: const HistoryTest());
       default:
-        return GameUserScreen();
+        return WelcomeScreen();
     }
   }
 }

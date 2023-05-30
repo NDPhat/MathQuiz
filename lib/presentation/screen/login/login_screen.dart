@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/application/enum/login_status.dart';
@@ -147,6 +148,49 @@ class _LoginUserApp extends State<LoginUserApp> {
                                 if (state.status == LoginStatus.success) {
                                   Navigator.pushNamed(
                                       context, Routers.homeUser);
+                                } else  if (state.status == LoginStatus.error){
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) => Center(
+                                              child: AlertDialog(
+                                            shape: ShapeBorder.lerp(
+                                                const StadiumBorder(),
+                                                const StadiumBorder(),
+                                                100),
+                                            backgroundColor: colorSystemWhite,
+                                            title: const Center(
+                                              child: Text('LOGIN FAIL',
+                                                  style: s16f700ColorError,
+                                                  textAlign: TextAlign.center),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              15),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      100),
+                                                          border: Border.all(
+                                                              color:
+                                                                  colorSystemYeloow)),
+                                                      child: const Center(
+                                                        child: Text(
+                                                          'BACK',
+                                                          style:
+                                                              s15f700ColorErrorPri,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  }),
+                                            ],
+                                          )));
                                 }
                               }, builder: (context, state) {
                                 return CircleAvatar(

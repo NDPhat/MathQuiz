@@ -25,12 +25,13 @@ class _HomeScreentState extends State<HomeUserScreen> {
     Size size = MediaQuery.of(context).size;
     PageController _myPage = PageController(initialPage: 0);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      backgroundColor: colorSystemWhite,
       body: HomeBodyUser(
         myPage: _myPage,
         size: size,
       ),
       bottomNavigationBar: BottomAppBar(
+        notchMargin: 0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

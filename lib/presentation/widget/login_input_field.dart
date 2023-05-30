@@ -14,7 +14,9 @@ class LoginInputField extends StatelessWidget {
   Widget? iconRight;
   ValueChanged<String>? onChanged;
   bool? showValue;
+  TextEditingController? controller;
   TextInputType? typeText;
+  bool? readOnly;
   LoginInputField(
       {Key? key,
       this.hintText,
@@ -23,10 +25,12 @@ class LoginInputField extends StatelessWidget {
       this.validateText,
       this.isHidden,
       this.icon,
+      this.readOnly,
       this.typeText,
       this.maxLength,
       this.onChanged,
       this.iconRight,
+      this.controller,
       this.showValue})
       : super(key: key);
 
@@ -38,8 +42,10 @@ class LoginInputField extends StatelessWidget {
         validateText: validateText == null ? '' : validateText!,
         isHidden: isHidden == null ? false : isHidden!,
         child: TextField(
+          readOnly: readOnly == null ? false : readOnly!,
           textInputAction: TextInputAction.next,
           style: s16f700ColorGreyTe,
+          controller: controller != null ? controller : null,
           keyboardType: typeText == null ? null : typeText,
           maxLength: maxLength == null ? null : maxLength,
           obscureText: showValue ?? false,

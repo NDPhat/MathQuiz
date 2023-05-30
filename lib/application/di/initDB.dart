@@ -2,10 +2,9 @@ import 'package:math/data/local/repo/pre_quiz/pre_quiz_impl.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo_impl.dart';
+import 'package:math/data/model/user_global.dart';
 
-import 'package:math/data/remote/api/Repo/api_teacher_repo.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/api/Repo_impl/api_teacher_repo_impl.dart';
 
 import '../../../main.dart';
 import '../../data/local/driff/db/db_app.dart';
@@ -26,6 +25,5 @@ void initDBandLocalRepo() {
   instance.registerLazySingleton<QuizGameLocalRepo>(
       () => QuizGameLocalRepoImpl(instance.get<AppDb>()));
   instance.registerLazySingleton<UserAPIRepo>(() => UserAPIRepoImpl());
-  instance.registerLazySingleton<TeacherLocalAPIRepo>(
-      () => TeacherLocalAPIRepoImpl());
+  instance.registerLazySingleton<UserGlobal>(() => UserGlobal());
 }
