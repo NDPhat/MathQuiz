@@ -30,6 +30,8 @@ const s16f700ColorGreyTe =
     TextStyle(fontSize: 16, fontWeight: font700, color: colorGreySecond);
 const s16f500ColorGreyTe =
     TextStyle(fontSize: 16, fontWeight: font500, color: colorGreyTetiary);
+const s16f500ColorError =
+    TextStyle(fontSize: 16, fontWeight: font500, color: colorErrorPrimary);
 const s18f500ColorGreySe =
     TextStyle(fontSize: 16, fontWeight: font500, color: colorGreySecond);
 const s22f700colorGreyPri =
@@ -79,7 +81,7 @@ const s16f700ColorError = TextStyle(
   fontSize: 16,
   color: colorErrorPrimary,
 );
-const  s14f500ColorError = TextStyle(
+const s14f500ColorError = TextStyle(
   fontWeight: font500,
   fontSize: 14,
   color: colorErrorPrimary,
@@ -121,11 +123,13 @@ const s15f700ColorBlueMa = TextStyle(
   fontWeight: font700,
   fontSize: 15,
   color: colorMainBlue,
-);const s15f700ColorYellow = TextStyle(
+);
+const s15f700ColorYellow = TextStyle(
   fontWeight: font700,
   fontSize: 15,
   color: colorSystemYeloow,
-);const s15f700ColorErrorPri = TextStyle(
+);
+const s15f700ColorErrorPri = TextStyle(
   fontWeight: font700,
   fontSize: 15,
   color: colorErrorPrimary,

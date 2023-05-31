@@ -161,7 +161,7 @@ class _HomeGuestScreenState extends State<HomeGuestScreen> {
                                           RoundedButton(
                                             press: () {
                                               Navigator.pushNamed(
-                                                  context, Routers.battle);
+                                                  context, Routers.battleMainScreen);
                                             },
                                             color: colorGreyDisable,
                                             width: size.width * 0.36,

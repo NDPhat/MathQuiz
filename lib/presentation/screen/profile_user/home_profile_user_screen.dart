@@ -96,19 +96,8 @@ class HomeProfileUserScreen extends StatelessWidget {
                 icon: LineAwesomeIcons.alternate_sign_out,
                 onPress: () {},
                 size: size,
-              ),SizedBox(height: size.height * 0.02),
-              ProfileMenuWidget(
-                title: "Logout",
-                icon: LineAwesomeIcons.alternate_sign_out,
-                onPress: () {},
-                size: size,
-              ),SizedBox(height: size.height * 0.02),
-              ProfileMenuWidget(
-                title: "Logout",
-                icon: LineAwesomeIcons.alternate_sign_out,
-                onPress: () {},
-                size: size,
               ),
+
             ],
           ),
         )));

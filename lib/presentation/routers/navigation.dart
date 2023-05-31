@@ -26,6 +26,7 @@ import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../domain/bloc/history/history_pra_cubit.dart';
 import '../../main.dart';
 import '../screen/check_answer/check_anwser_screen.dart';
+import '../screen/detail_item_card_home/detail_item_card_home_screen.dart';
 import '../screen/detail_test/detail_test_screen.dart';
 import '../screen/dual/dual_main_screen.dart';
 import '../screen/dual/dual_with_bot_screen.dart';
@@ -60,7 +61,7 @@ class Routers {
   static const String updateProfileUser = '/updateProfileUser';
   static const String trueFalse = '/truefalse';
   static const String forgetPass = '/forgetPass';
-  static const String battle = '/battle';
+  static const String battleMainScreen = '/battleMainScreen';
   static const String getOTP = '/getOTP';
   static const String updatePass = '/updatePass';
   static const String battleHuman = '/battleHuman';
@@ -73,6 +74,7 @@ class Routers {
   static const String historyPra = '/historyPra';
   static const String historyTest = '/historyTest';
   static const String historyHome = '/historyHome';
+  static const String hwcardDetail = '/hwcardDetail';
   static const String premake = '/premake';
   static const String detailTest = '/detailTest';
   static const String checkAnswer = '/checkAnswer';
@@ -91,6 +93,8 @@ class Routers {
     switch (settings.name) {
       case welcome:
         return WelcomeScreen();
+      case hwcardDetail:
+        return DetailItemCardHome();
       case updateProfileUser:
         return BlocProvider(
             create: (context) =>
@@ -154,7 +158,7 @@ class Routers {
             create: (context) =>
                 GameCubit(quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
             child: const TrueFalseScreen());
-      case battle:
+      case battleMainScreen:
         return const DualMainScreen();
       case battleHuman:
         return const PlayerDual();

@@ -23,4 +23,5 @@ abstract class UserAPIRepo {
   Future<PreQuizHWResAPIModel?> getLatestPreQuizHW();
   Future<bool?> saveQuizDetailHW(DetailQuizHWAPIModel model);
   Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByResultID(String resultID);
+  Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByUserID(String userID);
 }

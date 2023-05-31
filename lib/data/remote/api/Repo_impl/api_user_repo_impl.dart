@@ -325,13 +325,14 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByResultID(String resultID) async {
+  Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByResultID(
+      String resultID) async {
     try {
       final url = "${endpoint}getAllQuizHWByResultID?resultID=$resultID";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(req.body);
-        List<DetailQuizHWAPIModel>?result =
+        List<DetailQuizHWAPIModel>? result =
             DetailQuizHWAPIResponse.fromJson(parsed).lItems;
         return result;
       } else {
@@ -340,6 +341,49 @@ class UserAPIRepoImpl extends UserAPIRepo {
         List<DetailQuizHWAPIModel>? result =
             DetailQuizHWAPIResponse.fromJson(parsed).lItems;
         return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByUserID(
+      String userID) async {
+    try {
+      final url = "${endpoint}getAllReultQuizHWByUId?userID=$userID";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<ResultQuizHWAPIModel>? result =
+            ResultQuizHWAPIResponse.fromJson(parsed).lItems;
+        List<String> resultID = [];
+        List<DetailQuizHWAPIModel>? listDetailQuiz;
+        result?.forEach((element) {
+          resultID.add(element!.key.toString());
+        });
+        for (String element in resultID) {
+          List<DetailQuizHWAPIModel>? newList =
+              await getALlQuizDetailByResultID(element);
+          listDetailQuiz!.addAll(newList!);
+        }
+        return listDetailQuiz;
+      } else {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<ResultQuizHWAPIModel>? result =
+            ResultQuizHWAPIResponse.fromJson(parsed).lItems;
+        List<String> resultID = [];
+        List<DetailQuizHWAPIModel>? listDetailQuiz;
+        result?.forEach((element) {
+          resultID.add(element!.key.toString());
+        });
+        for (String element in resultID) {
+          List<DetailQuizHWAPIModel>? newList =
+              await getALlQuizDetailByResultID(element);
+          listDetailQuiz!.addAll(newList!);
+        }
       }
     } on SocketException catch (_) {
       return Future.error('No network found');
