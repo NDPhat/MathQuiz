@@ -103,7 +103,6 @@ class HomeMainUserScreen extends StatelessWidget {
                               scoreAve: scoreAve.toStringAsFixed(2).toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childLeft: Container(),
                               childRight: ChildRightHW(
                                 size: size,
                               ),
@@ -151,7 +150,6 @@ class HomeMainUserScreen extends StatelessWidget {
                               scoreAve: scoreAve.toStringAsFixed(2).toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childLeft: Container(),
                               childRight: ChildRightHW(
                                 size: size,
                               ),
@@ -197,7 +195,6 @@ class HomeMainUserScreen extends StatelessWidget {
                               scoreAve: scoreAve.toStringAsFixed(2).toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childLeft: Container(),
                               childRight: ChildRightHW(
                                 size: size,
                               ),
@@ -243,7 +240,6 @@ class HomeMainUserScreen extends StatelessWidget {
                               scoreAve: scoreAve.toStringAsFixed(2).toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childLeft: Container(),
                               childRight: ChildRightHW(
                                 size: size,
                               ),
@@ -289,7 +285,6 @@ class HomeMainUserScreen extends StatelessWidget {
                               scoreAve: scoreAve.toStringAsFixed(2).toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childLeft: Container(),
                               childRight: ChildRightHW(
                                 size: size,
                               ),
@@ -337,7 +332,6 @@ class HomeMainUserScreen extends StatelessWidget {
                               scoreAve: scoreAve.toStringAsFixed(2).toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childLeft: Container(),
                               childRight: ChildRightHW(
                                 size: size,
                               ),

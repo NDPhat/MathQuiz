@@ -10,7 +10,6 @@ class ItemAsyncDataPageHome extends StatelessWidget {
     required this.textTitle,
     required this.scoreAve,
     required this.trueAve,
-    required this.childLeft,
     required this.childRight,
     required this.timeNow, required this.onTap,
   }) : super(key: key);
@@ -19,7 +18,6 @@ class ItemAsyncDataPageHome extends StatelessWidget {
   final String scoreAve;
   final String timeNow;
   final String trueAve;
-  final Widget childLeft;
   final Widget childRight;
   final VoidCallback onTap;
 
@@ -68,7 +66,6 @@ class ItemAsyncDataPageHome extends StatelessWidget {
                         style: s14f500ColorMainTe,
                       ),
                     ),
-                    childLeft
                   ],
                 ),
               ),

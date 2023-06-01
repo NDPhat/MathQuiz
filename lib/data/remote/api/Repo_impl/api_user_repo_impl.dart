@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:math/data/remote/model/result_quiz_hw_req.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
@@ -350,8 +351,8 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByUserID(
-      String userID) async {
+  Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByUserIDAndWeek(
+      String userID, String week) async {
     try {
       final url = "${endpoint}getAllReultQuizHWByUId?userID=$userID";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
@@ -359,16 +360,14 @@ class UserAPIRepoImpl extends UserAPIRepo {
         Map<String, dynamic> parsed = json.decode(req.body);
         List<ResultQuizHWAPIModel>? result =
             ResultQuizHWAPIResponse.fromJson(parsed).lItems;
-        List<String> resultID = [];
+        String? resultID;
         List<DetailQuizHWAPIModel>? listDetailQuiz;
         result?.forEach((element) {
-          resultID.add(element!.key.toString());
+          if (element.week == week) {
+            resultID = element!.key;
+          }
         });
-        for (String element in resultID) {
-          List<DetailQuizHWAPIModel>? newList =
-              await getALlQuizDetailByResultID(element);
-          listDetailQuiz!.addAll(newList!);
-        }
+        listDetailQuiz = await getALlQuizDetailByResultID(resultID!);
         return listDetailQuiz;
       } else {
         Map<String, dynamic> parsed = json.decode(req.body);

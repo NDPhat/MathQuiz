@@ -33,7 +33,7 @@ class PreMakeQuizGame extends StatelessWidget {
                 Navigator.pop(context);
               }),
           SizedBox(
-            height: size.height*0.8,
+            height: size.height * 0.8,
             child: Padding(
               padding: EdgeInsets.only(
                 left: size.width * 0.02,
@@ -62,7 +62,7 @@ class PreMakeQuizGame extends StatelessWidget {
                         return InputField(
                           hintText: 'How many question',
                           width: size.width * 0.8,
-                          height: size.height*0.08,
+                          height: size.height * 0.08,
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               context
@@ -85,7 +85,8 @@ class PreMakeQuizGame extends StatelessWidget {
                         return InputField(
                           hintText: 'Start Value',
                           width: size.width * 0.8,
-                          height: size.height*0.08,                          onChanged: (value) {
+                          height: size.height * 0.08,
+                          onChanged: (value) {
                             if (value.isNotEmpty) {
                               context
                                   .read<PreQuizCubit>()
@@ -107,7 +108,8 @@ class PreMakeQuizGame extends StatelessWidget {
                         return InputField(
                           hintText: 'End Value',
                           width: size.width * 0.8,
-                          height: size.height*0.08,                          onChanged: (value) {
+                          height: size.height * 0.08,
+                          onChanged: (value) {
                             if (value.isNotEmpty) {
                               context
                                   .read<PreQuizCubit>()

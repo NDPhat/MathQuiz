@@ -92,7 +92,7 @@ class PreQuizCubit extends Cubit<PreQuizState> {
     }
   }
 
-  void addPreQuizGame(String sign,String option) async {
+  void addPreQuizGame(String sign, String option) async {
     if (isFormValid() == true) {
       try {
         final entity = PreQuizGameEntityCompanion(
