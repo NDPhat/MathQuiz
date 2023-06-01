@@ -68,7 +68,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.homeworkGame,
                       arguments: preJoinHW);
                 },
-                child: const Text('GO', style: s15f700ColorErrorPri),
+                child: const Text('GO', style: s16f700ColorError),
               ),
               TextButton(
                 onPressed: () {
@@ -94,7 +94,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
             )),
             backgroundColor: const Color(0xff1542bf),
             title: const FittedBox(
-              child: Text('ALREADY DONE.DID YOU WANT TO CHECK ANSWER?',
+              child: Text('REVIEW YOUR ANSWER?',
                   textAlign: TextAlign.center, style: s30f700colorSysWhite),
             ),
             actions: [
@@ -104,7 +104,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.checkAnswerHW,
                       arguments: idResult);
                 },
-                child: const Text('GO', style: s15f700ColorErrorPri),
+                child: const Text('GO', style: s16f700ColorError),
               ),
               TextButton(
                 onPressed: () {
