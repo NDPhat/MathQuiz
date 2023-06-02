@@ -12,8 +12,10 @@ import '../../../../data/model/chart_data.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../../data/remote/model/detail_quiz_hw_response.dart';
+import '../../../../data/remote/model/pre_quiz_game_response.dart';
 import '../../../../data/remote/model/result_quiz_hw_response.dart';
 import '../../../../main.dart';
+import '../../../widget/child_right_home_practices_input.dart';
 import '../../../widget/child_right_item_card_home.dart';
 import '../../../widget/line_item_content_card_home.dart';
 
@@ -116,11 +118,11 @@ class HomeMainUserScreen extends StatelessWidget {
                     title: 'Practices',
                     icon: const Icon(Icons.dashboard),
                   ),
-                  FutureBuilder<List<ResultQuizHWAPIModel>?>(
+                  FutureBuilder<List<PreQuizGameAPIModel>?>(
                       future: instance
                           .get<UserAPIRepo>()
-                          .getALlResultQuizHWByUserID(
-                              instance.get<UserGlobal>().id.toString()),
+                          .getALlPreQuizGameByUidandOptionGame(
+                              instance.get<UserGlobal>().id.toString(),"input"),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -145,13 +147,16 @@ class HomeMainUserScreen extends StatelessWidget {
                           double scoreAve = score / snapshot.data!.length;
                           return ItemAsyncDataPageHome(
                               size: size,
-                              onTap: () {},
-                              textTitle: 'ADDITION',
+                              onTap: () {
+                                Navigator.pushNamed(context, Routers.practicecardDetail,arguments: "input");
+                              },
+                              textTitle: 'INPUT',
                               scoreAve: scoreAve.toStringAsFixed(2).toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childRight: ChildRightHW(
+                              childRight: ChildRightHomeInput(
                                 size: size,
+                                typeGame: "input",
                               ),
                               timeNow:
                                   DateFormat.yMMMEd().format(DateTime.now()));
@@ -161,11 +166,11 @@ class HomeMainUserScreen extends StatelessWidget {
                   SizedBox(
                     height: size.height * 0.02,
                   ),
-                  FutureBuilder<List<ResultQuizHWAPIModel>?>(
+                  FutureBuilder<List<PreQuizGameAPIModel>?>(
                       future: instance
                           .get<UserAPIRepo>()
-                          .getALlResultQuizHWByUserID(
-                              instance.get<UserGlobal>().id.toString()),
+                          .getALlPreQuizGameByUidandOptionGame(
+                          instance.get<UserGlobal>().id.toString(),"truefalse"),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -190,14 +195,17 @@ class HomeMainUserScreen extends StatelessWidget {
                           double scoreAve = score / snapshot.data!.length;
                           return ItemAsyncDataPageHome(
                               size: size,
-                              onTap: () {},
-                              textTitle: 'SUBTRACTION',
+                              onTap: () {
+                                Navigator.pushNamed(context, Routers.practicecardDetail,arguments: "truefalse");
+                              },
+                              textTitle: 'TRUE FALSE',
                               scoreAve: scoreAve.toStringAsFixed(2).toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childRight: ChildRightHW(
-                                size: size,
-                              ),
+                              childRight: ChildRightHomeInput(
+                            size: size,
+                            typeGame: "truefalse",
+                          ),
                               timeNow:
                                   DateFormat.yMMMEd().format(DateTime.now()));
                         }
@@ -206,11 +214,11 @@ class HomeMainUserScreen extends StatelessWidget {
                   SizedBox(
                     height: size.height * 0.02,
                   ),
-                  FutureBuilder<List<ResultQuizHWAPIModel>?>(
+                  FutureBuilder<List<PreQuizGameAPIModel>?>(
                       future: instance
                           .get<UserAPIRepo>()
-                          .getALlResultQuizHWByUserID(
-                              instance.get<UserGlobal>().id.toString()),
+                          .getALlPreQuizGameByUidandOptionGame(
+                          instance.get<UserGlobal>().id.toString(),"missing"),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -235,58 +243,16 @@ class HomeMainUserScreen extends StatelessWidget {
                           double scoreAve = score / snapshot.data!.length;
                           return ItemAsyncDataPageHome(
                               size: size,
-                              onTap: () {},
-                              textTitle: 'MULTIPLICATION',
+                              onTap: () {
+                                Navigator.pushNamed(context, Routers.practicecardDetail,arguments: "missing");
+                              },
+                              textTitle: 'MISSING',
                               scoreAve: scoreAve.toStringAsFixed(2).toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childRight: ChildRightHW(
+                              childRight: ChildRightHomeInput(
                                 size: size,
-                              ),
-                              timeNow:
-                                  DateFormat.yMMMEd().format(DateTime.now()));
-                        }
-                        return Container();
-                      }),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  FutureBuilder<List<ResultQuizHWAPIModel>?>(
-                      future: instance
-                          .get<UserAPIRepo>()
-                          .getALlResultQuizHWByUserID(
-                              instance.get<UserGlobal>().id.toString()),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return SizedBox(
-                            height: size.height * 0.3,
-                            width: size.width * 0.3,
-                            child: const Center(
-                              child: CircularProgressIndicator(
-                                color: colorMainBlue,
-                                strokeWidth: 5,
-                              ),
-                            ),
-                          );
-                        }
-                        if (snapshot.hasData) {
-                          int totalQ = 0;
-                          int score = 0;
-                          for (var element in snapshot.data!) {
-                            totalQ = totalQ + element.numQ!;
-                            score = score + element.score!;
-                          }
-                          double scoreAve = score / snapshot.data!.length;
-                          return ItemAsyncDataPageHome(
-                              size: size,
-                              onTap: () {},
-                              textTitle: 'DIVISION',
-                              scoreAve: scoreAve.toStringAsFixed(2).toString(),
-                              trueAve:
-                                  ((score / totalQ) * 100).toStringAsFixed(2),
-                              childRight: ChildRightHW(
-                                size: size,
+                                typeGame: "missing",
                               ),
                               timeNow:
                                   DateFormat.yMMMEd().format(DateTime.now()));

@@ -24,7 +24,6 @@ import '../../../main.dart';
 
 import '../../routers/navigation.dart';
 import '../../widget/portrait_mode_hword_user.dart';
-import '../../widget/show_alert_dialog.dart';
 import '../../widget/show_alert_test.dart';
 
 class HomeWorkGameScreen extends StatefulWidget {

@@ -2,14 +2,17 @@ import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:math/data/remote/model/user_api_res.dart';
 
 import '../../model/detail_quiz_hw_response.dart';
+import '../../model/pre_quiz_game_req.dart';
 import '../../model/pre_quiz_game_response.dart';
 import '../../model/pre_quiz_hw_response.dart';
+import '../../model/quiz_game_req.dart';
 import '../../model/quiz_game_response.dart';
 import '../../model/result_quiz_hw_req.dart';
 
 abstract class UserAPIRepo {
   Future<UserAPIModel?> getUserByEmailAndPass(String email, String pass);
   Future<UserAPIModel?> getUserByID(String id);
+  Future<UserAPIModel?> getUserByEmail(String email);
   Future<PreQuizHWResAPIModel?> getPreQuizHWByWeek(String week);
   Future<UserAPIModel?> submitEmailForGetOTPForgetPass(String email);
   Future<UserAPIModel?> reSendOTPMAIL(String email);
@@ -28,9 +31,10 @@ abstract class UserAPIRepo {
       String resultID);
   Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByUserIDAndWeek(
       String userID, String week);
-  Future<PreQuizGameAPIModel?> createPreQuizGame(
-      PreQuizGameAPIModel preQuizReq);
+  Future<List<QuizGameAPIModel>?> getALlQuizGameByPreGameID(String preID);
+  Future<List<PreQuizGameAPIModel>?> getALlPreQuizGameByUidandOptionGame(String uid,String option);
+  Future<PreQuizGameAPIModel?> createPreQuizGame(PreQuizGameAPIReq preQuizReq);
   Future<PreQuizGameAPIModel?> updatePreQuizGameByID(
-      PreQuizGameAPIModel preQuizReq, String preID);
-  Future<QuizGameAPIModel?> createQuizGame(QuizGameAPIModel quizReq);
+      PreQuizGameAPIReq preQuizReq, String preID);
+  Future<bool?> createQuizGame(QuizGameAPIReq quizReq);
 }

@@ -18,8 +18,8 @@ import '../../widget/async_data_detail_hw.dart';
 import '../../widget/card_data_item_home.dart';
 import '../../widget/child_right_item_card_home.dart';
 
-class DetailItemCardHome extends StatelessWidget {
-  const DetailItemCardHome({Key? key}) : super(key: key);
+class DetailItemCardHomeWork extends StatelessWidget {
+  const DetailItemCardHomeWork({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

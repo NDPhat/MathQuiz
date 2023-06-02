@@ -24,7 +24,6 @@ import '../../../domain/bloc/game/game_cubit.dart';
 import '../../routers/navigation.dart';
 
 import '../../widget/portrait_mode_game.dart';
-import '../../widget/show_alert_dialog.dart';
 import '../../widget/show_alert_test.dart';
 
 class TestScreen extends StatefulWidget {

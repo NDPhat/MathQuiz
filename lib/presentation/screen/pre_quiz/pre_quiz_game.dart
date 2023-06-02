@@ -196,6 +196,7 @@ class PreMakeQuizGame extends StatelessWidget {
                                       timePer: state.time,
                                       id: state.id,
                                       sign: option.sign!,
+                                      idServer: state.idServer,
                                       option: option.optionQuiz!,
                                       startNum: state.sNum,
                                       endNum: state.eNum));

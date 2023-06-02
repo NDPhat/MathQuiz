@@ -19,13 +19,6 @@ class MathQuizApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: [
-        // Hides Status bar and shows Navigation bar
-        SystemUiOverlay.bottom,
-      ],
-    );
     // SystemChrome.setEnabledSystemUIOverlays([]);
     return const MaterialApp(
       builder: DevicePreview.appBuilder,

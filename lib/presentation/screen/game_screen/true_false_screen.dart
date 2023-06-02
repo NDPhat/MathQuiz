@@ -11,6 +11,9 @@ import '../../../application/utils/logic.dart';
 import '../../../data/local/driff/db/db_app.dart';
 import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../data/model/make_quiz.dart';
+import '../../../data/model/user_global.dart';
+import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/quiz_game_req.dart';
 import '../../../domain/bloc/game/game_cubit.dart';
 import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
@@ -18,7 +21,7 @@ import '../../../main.dart';
 
 import '../../routers/navigation.dart';
 import '../../widget/portrait_mode_tf.dart';
-import '../../widget/show_alert_dialog.dart';
+import '../../widget/show_end_dialog.dart';
 
 class TrueFalseScreen extends StatefulWidget {
   const TrueFalseScreen({Key? key}) : super(key: key);
@@ -35,6 +38,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   late PreQuizGame _preQuiz;
   int _preIdNow = 0;
   String userChoose = "TRUE";
+  String _preIdServerNow = "";
   double _value = 0;
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
@@ -48,6 +52,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
+      _preIdServerNow = _preQuiz.idServer!;
       _startGame(_preQuiz);
     });
   }
@@ -133,6 +138,14 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   }
 
   void _saveData(BuildContext context) {
+    context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
+        prequizGameID: _preIdServerNow,
+        sign: _preQuiz.sign!,
+        quiz: _quizBrain.quiz,
+        infoQuiz: userAnswer,
+        userId: instance.get<UserGlobal>().id!,
+        answer: _quizBrain.quizTrueFalse == "TRUE" ? 1 : 0,
+        answerSelect: userChoose == _quizBrain.quizTrueFalse ? 1 : 0));
     context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
         preId: Value(_preIdNow),
         num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
@@ -145,13 +158,55 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   }
 
   _updateScore() {
-    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>())
+    PreQuizCubit(
+            preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+            userAPIRepo: instance.get<UserAPIRepo>())
         .updateScoreQuizGame(_score, _preIdNow);
   }
 
   void _endGame() {
     _timer.cancel();
     showMyDialog();
+  }
+
+  Future<void> showReadyDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+            25,
+          )),
+          backgroundColor: const Color(0xff1542bf),
+          title: const FittedBox(
+            child: Text('ARE YOU GUYS READY ?',
+                textAlign: TextAlign.center, style: kTitleTS),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _startGame(_preQuiz);
+              },
+              child: const Text('GO', style: kDialogButtonsTS),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                if (instance.get<UserGlobal>().onLogin == true) {
+                  Navigator.pushNamed(context, Routers.homeUser);
+                } else {
+                  Navigator.pushNamed(context, Routers.homeGuest);
+                }
+              },
+              child: const Text('BACK', style: kDialogButtonsTS),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _checkAnswer(String userChoice, BuildContext context) async {
@@ -203,8 +258,9 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
       builder: (BuildContext contextBuild) {
         return BlocProvider.value(
             value: BlocProvider.of<GameCubit>(context),
-            child: ShowAlertDialog(
+            child: ShowEndDialog(
               score: _score,
+              preIdServer: _preQuiz.idServer!,
               preId: _preQuiz.id!,
               totalNumberOfQuizzes: _totalNumberOfQuizzes,
               startGame: _startGameAgain,

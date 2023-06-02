@@ -1,16 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
+import 'package:math/data/remote/model/pre_quiz_game_req.dart';
+import 'package:math/data/remote/model/quiz_game_req.dart';
 
 import '../../../application/enum/game_status.dart';
 import '../../../data/local/driff/db/db_app.dart';
+import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/pre_quiz_game_response.dart';
+import '../../../data/remote/model/quiz_game_response.dart';
 
 part 'game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
   final QuizGameLocalRepo quizPraLocalRepo;
-  GameCubit({required QuizGameLocalRepo quizPraLocalRepo})
+  final UserAPIRepo userAPIRepo;
+
+  GameCubit(
+      {required QuizGameLocalRepo quizPraLocalRepo,
+      required UserAPIRepo userAPIRepo})
       : quizPraLocalRepo = quizPraLocalRepo,
+        userAPIRepo = userAPIRepo,
         super(GameState.initial());
   void addQuizToLocal(QuizGameEntityCompanion entityCompanion) {
     quizPraLocalRepo.insertQuizGame(entityCompanion);
@@ -29,5 +39,13 @@ class GameCubit extends Cubit<GameState> {
 
   void changeDataPlayAgain() {
     emit(state.copyWith(trueQ: 0, falseQ: 0, qNow: 1, score: 0));
+  }
+
+  void addQuizToServer(QuizGameAPIReq data) {
+    userAPIRepo.createQuizGame(data);
+  }
+
+  void updateScorePreQuizGameByID(String id, PreQuizGameAPIReq data) {
+    userAPIRepo.updatePreQuizGameByID(data, id);
   }
 }

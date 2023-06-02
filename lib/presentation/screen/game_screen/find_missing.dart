@@ -14,13 +14,16 @@ import '../../../application/utils/make_quiz.dart';
 import '../../../data/local/driff/db/db_app.dart';
 import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../data/model/make_quiz.dart';
+import '../../../data/model/user_global.dart';
+import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/quiz_game_req.dart';
 import '../../../domain/bloc/game/game_cubit.dart';
 import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../main.dart';
 
 import '../../routers/navigation.dart';
 import '../../widget/portrait_mode_game.dart';
-import '../../widget/show_alert_dialog.dart';
+import '../../widget/show_end_dialog.dart';
 
 class FindMissing extends StatefulWidget {
   const FindMissing({Key? key}) : super(key: key);
@@ -42,6 +45,7 @@ class _FindMissingState extends State<FindMissing> {
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = true;
+  String _preIdServerNow = "";
 
   @override
   void initState() {
@@ -51,6 +55,7 @@ class _FindMissingState extends State<FindMissing> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
+      _preIdServerNow=_preQuiz.idServer!;
       _startGame(_preQuiz);
     });
   }
@@ -134,6 +139,14 @@ class _FindMissingState extends State<FindMissing> {
   }
 
   void _saveData(BuildContext context) {
+    context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
+    prequizGameID: _preIdServerNow,
+    sign: _preQuiz.sign!,
+    quiz: _quizBrain.quiz,
+    infoQuiz: userAnswer,
+    userId: instance.get<UserGlobal>().id!,
+    answer: _quizBrain.getQuizMissing,
+    answerSelect: userChoose));
     context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
         preId: Value(_preIdNow),
         num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
@@ -145,14 +158,53 @@ class _FindMissingState extends State<FindMissing> {
         answerSelect: Value(userChoose.toString())));
   }
 
+
   _updateScore() {
-    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>())
+    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>(), userAPIRepo: instance.get<UserAPIRepo>())
         .updateScoreQuizGame(_score, _preIdNow);
   }
-
   void _endGame() {
     _timer.cancel();
     showMyDialog();
+  }
+  Future<void> showReadyDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                25,
+              )),
+          backgroundColor: const Color(0xff1542bf),
+          title: const FittedBox(
+            child: Text('ARE YOU GUYS READY ?',
+                textAlign: TextAlign.center, style: kTitleTS),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _startGame(_preQuiz);
+              },
+              child: const Text('GO', style: kDialogButtonsTS),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                if (instance.get<UserGlobal>().onLogin == true) {
+                  Navigator.pushNamed(context, Routers.homeUser);
+                } else {
+                  Navigator.pushNamed(context, Routers.homeGuest);
+                }
+              },
+              child: const Text('BACK', style: kDialogButtonsTS),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
@@ -235,8 +287,9 @@ class _FindMissingState extends State<FindMissing> {
       builder: (BuildContext contextBuild) {
         return BlocProvider.value(
             value: BlocProvider.of<GameCubit>(context),
-            child: ShowAlertDialog(
+            child: ShowEndDialog(
               score: _score,
+              preIdServer: _preQuiz.idServer!,
               preId: _preQuiz.id!,
               totalNumberOfQuizzes: _totalNumberOfQuizzes,
               startGame: _startGameAgain,
