@@ -97,6 +97,8 @@ class DetailItemCardHomeWork extends StatelessWidget {
                             return ListView.builder(
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
+                                snapshot.data!.sort(
+                                        (a, b) => a.week!.compareTo(b.week!));
                                 return ItemAsyncDataDetailHW(
                                   size: size,
                                   textTitle:

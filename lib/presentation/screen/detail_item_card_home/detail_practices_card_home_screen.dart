@@ -102,8 +102,11 @@ class DetailItemCardPractices extends StatelessWidget {
                             );
                           } else if (snapshot.hasData) {
                             return ListView.builder(
+
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
+                                snapshot.data!.sort(
+                                        (a, b) => a.dateSave!.compareTo(b.dateSave!));
                                 return ItemAsyncDataDetailHW(
                                   size: size,
                                   textTitle: 'Task ${index + 1}',

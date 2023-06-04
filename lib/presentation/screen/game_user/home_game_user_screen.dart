@@ -50,7 +50,10 @@ class HomeGameUserScreen extends StatelessWidget {
                     linkGif:
                         "https://media.tenor.com/kVRWeTAwcfoAAAAM/muji-confused.gif",
                     textTitle: 'TESTING',
-                    onPress: () {},
+                    onPress: () {
+                      Navigator.pushNamed(context, Routers.testingUser);
+
+                    },
                   )
                 ],
               ),

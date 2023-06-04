@@ -3,14 +3,19 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
+import 'package:math/data/remote/model/pre_test_req.dart';
+import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/data/remote/model/quiz_game_req.dart';
 import 'package:math/data/remote/model/quiz_game_response.dart';
+import 'package:math/data/remote/model/quiz_test_req.dart';
+import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/data/remote/model/result_quiz_hw_req.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:math/data/remote/model/user_api_res.dart';
 
 import '../../../../application/cons/endpoint.dart';
 import '../../../../application/di/event_local.dart';
+import '../../model/detail_quiz_hw_req.dart';
 import '../../model/detail_quiz_hw_response.dart';
 import '../../model/pre_quiz_game_req.dart';
 import '../../model/pre_quiz_hw_response.dart';
@@ -286,7 +291,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<bool?> saveQuizDetailHW(DetailQuizHWAPIModel model) async {
+  Future<bool?> saveQuizDetailHW(DetailQuizHWAPIReq model) async {
     try {
       const url = "${endpoint}create_quiz_detail";
       final req = await http.post(Uri.parse(url),
@@ -535,6 +540,71 @@ class UserAPIRepoImpl extends UserAPIRepo {
       return Future.error('No network found');
     } catch (_) {
       return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<PreTestAPIRes?> createPreQuizTest(PreTestReq preQuizReq) async {
+    try {
+      const url = "${endpoint}create_prequiz_test";
+      final req = await http.post(Uri.parse(url),
+          headers: requestHeaders, body: jsonEncode(preQuizReq.toJson()));
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreTestAPIRes? result = GetPreTestAPIRes.fromJson(parsed).lItems!.first;
+        return result;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreTestAPIRes? result = GetPreTestAPIRes.fromJson(parsed).lItems!.first;
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<bool?> createQuizTest(QuizTestReq quizReq) async {
+    try {
+      const url = "${endpoint}create_quiz_test";
+      final req = await http.post(Uri.parse(url),
+          headers: requestHeaders, body: jsonEncode(quizReq.toJson()));
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        // log(req.body);
+        return true;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<PreTestAPIRes?> updatePreQuizTestByID(
+      PreTestReq preQuizReq, String preID) async {
+    try {
+      final url = "${endpoint}updatePreQuizTesteById?id=$preID";
+      final req = await http.patch(Uri.parse(url),
+          headers: requestHeaders, body: jsonEncode(preQuizReq.toJson()));
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreTestAPIRes? result = PreTestAPIRes.fromJson(parsed);
+        return result;
+      } else {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreTestAPIRes? result = PreTestAPIRes.fromJson(parsed);
+        return result;
+      }
+    } on SocketException catch (_) {
+      return null;
+    } catch (_) {
+      return null;
     }
   }
 }

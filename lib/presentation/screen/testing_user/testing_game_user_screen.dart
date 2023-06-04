@@ -1,83 +1,71 @@
 import 'dart:async';
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/model/user_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/model/pre_quiz_hw_response.dart';
-import '../../../application/cons/color.dart';
+import 'package:math/data/remote/model/pre_test_res.dart';
+import 'package:math/data/remote/model/quiz_test_req.dart';
+import 'package:math/domain/bloc/test/test_cubit.dart';
+import 'package:math/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/cons/text_style.dart';
 import '../../../application/utils/logic.dart';
-import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
-import '../../../data/model/pre_join_homework.dart';
-import '../../../data/remote/model/detail_quiz_hw_req.dart';
-import '../../../data/remote/model/detail_quiz_hw_response.dart';
-import '../../../data/remote/model/result_quiz_hw_req.dart';
-import '../../../data/remote/model/result_quiz_hw_response.dart';
-import '../../../domain/bloc/game/game_cubit.dart';
-import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
-import '../../../main.dart';
-
+import '../../../data/remote/model/pre_test_req.dart';
+import '../../../domain/bloc/game/game_cubit.dart';
 import '../../routers/navigation.dart';
-import '../../widget/portrait_mode_hword_user.dart';
-import '../../widget/show_alert_test.dart';
+import '../../widget/portrait_mode_game.dart';
 
-class HomeWorkGameScreen extends StatefulWidget {
-  const HomeWorkGameScreen({Key? key}) : super(key: key);
+class TestTingUserGameScreen extends StatefulWidget {
+  const TestTingUserGameScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeWorkGameScreen> createState() => _GameHWScreenState();
+  State<TestTingUserGameScreen> createState() => _TestTingUserGameScreenState();
 }
 
-class _GameHWScreenState extends State<HomeWorkGameScreen> {
+class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
-  late PreJoinQuizHW _preQuiz;
   int userChoose = 1;
   int falseChoose = 0;
-  bool userAnswer = false;
   int _totalNumberOfQuizzes = 0;
+  bool userAnswer = false;
+  PreTestAPIRes preTestNow = PreTestAPIRes();
   final CountDownController _controller = CountDownController();
-
   @override
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-    _preQuiz = PreJoinQuizHW();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreJoinQuizHW;
-      showReadyDialog();
+      showReadyDialog(preTestNow);
     });
   }
 
-  void _startGame(PreJoinQuizHW _preQuiz) async {
+  void _startGame() async {
     setState(() {
-      _quizBrain.makeQuizHomeWork(_preQuiz);
+      _quizBrain.makeQuizTest();
     });
-    falseChoose = 0;
     _score = 0;
     _totalNumberOfQuizzes = 1;
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    _highScore = preferences.getInt('highscore') ?? 0;
   }
 
-  void _makeNewQuiz() async {
-    _quizBrain.makeQuizHomeWork(_preQuiz);
-  }
-
-  void _resetScreen() {
-    setState(() {
-      _totalNumberOfQuizzes++;
-    });
-    _makeNewQuiz();
-  }
-
-  void _endGame() {
-    showMyDialog();
+  void _checkAnswer(int userChoice, BuildContext context) async {
+    _totalNumberOfQuizzes++;
+    if (userChoice == _quizBrain.quizAnswer) {
+      userAnswer = true;
+      playSound('correct-choice.wav');
+      _score++;
+    } else {
+      userAnswer = false;
+      falseChoose++;
+      playSound('wrong-choice.wav');
+    }
+    _quizBrain.makeQuizTest();
   }
 
   Future<void> showMyDialog() {
@@ -100,15 +88,15 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
           actions: [
             TextButton(
               onPressed: () async {
-                instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
-                    ResultQuizHWAPIReq(
-                        week: _preQuiz.week,
-                        numQ: _preQuiz.numQ,
+                instance.get<UserAPIRepo>().updatePreQuizTestByID(
+                    PreTestReq(
+                        sumQ: _totalNumberOfQuizzes,
                         trueQ: _score,
                         falseQ: falseChoose,
                         score: _score,
-                        userId: instance.get<UserGlobal>().id),
-                    _preQuiz.resultID.toString());
+                        dateSave: DateTime.now().toString(),
+                        userID: instance.get<UserGlobal>().id),
+                    preTestNow.key.toString());
                 Navigator.pushNamed(context, Routers.homeUser);
               },
               child: const Center(child: Text('EXIT', style: kDialogButtonsTS)),
@@ -117,43 +105,6 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
         );
       },
     );
-  }
-
-  void _checkAnswer(int userChoice, BuildContext context) async {
-    if (userChoice.toString().isNotEmpty) {
-      if (userChoice == _quizBrain.quizAnswer) {
-        userAnswer=true;
-        playSound('hw_sound.mp3');
-        _score++;
-        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          // _saveData(context);
-          _endGame();
-        } else {
-          // _saveData(context);
-          _resetScreen();
-        }
-      } else {
-        userAnswer = false;
-        falseChoose++;
-        playSound('hw_sound.mp3');
-        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          // _saveData(context);
-          _endGame();
-        } else {
-          // _saveData(context);
-          _resetScreen();
-        }
-      }
-    } else {
-      falseChoose++;
-      if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-        //_saveData(context);
-        _endGame();
-      } else {
-        //_saveData(context);
-        _resetScreen();
-      }
-    }
   }
 
   Future<void> showOutDialog() {
@@ -175,7 +126,7 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, Routers.homeUser);
+                Navigator.pushNamed(context, Routers.homeGuest);
               },
               child: const Center(child: Text('YES', style: kDialogButtonsTS)),
             ),
@@ -192,7 +143,7 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
     );
   }
 
-  Future<void> showReadyDialog() {
+  Future<void> showReadyDialog(PreTestAPIRes preTestNow) {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -209,10 +160,20 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
                 _controller.start();
-                _startGame(_preQuiz);
+                preTestNow = (await instance
+                    .get<UserAPIRepo>()
+                    .createPreQuizTest(PreTestReq(
+                        sumQ: 0,
+                        score: 0,
+                        dateSave: DateTime.now().toString(),
+                        trueQ: 0,
+                        falseQ: 0,
+                        userID: instance.get<UserGlobal>().id!)))!;
+                print(preTestNow.key!);
+                _startGame();
               },
               child: const Text('GO', style: kDialogButtonsTS),
             ),
@@ -233,7 +194,6 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -241,7 +201,7 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
             ),
           ),
           child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
-            return PortraitModeHomeWork(
+            return PortraitModeGame(
               highscore: _highScore,
               score: _score,
               quizBrainObject: _quizBrain,
@@ -250,25 +210,23 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
                   userChoose = value;
                 });
                 _checkAnswer(value, context);
-               context.read<GameCubit>().addQuizHWoServer(
-                   DetailQuizHWAPIReq(
-                        quiz: _quizBrain.quiz.toString(),
-                        answerSelect: userChoose,
-                        answer: _quizBrain.quizAnswer,
-                        infoQuiz: userAnswer,
-                        resultHWID: _preQuiz.resultID));
-                context.read<GameCubit>().changeDataAfterDoneQ(
-                    _score, falseChoose, _score, _totalNumberOfQuizzes);
+                print(_quizBrain.quiz.toString());
+                context.read<GameCubit>().addQuizTesttoServer(QuizTestReq(
+                    quiz: _quizBrain.quiz.toString(),
+                    answerSelect: userChoose,
+                    answer: _quizBrain.quizAnswer,
+                    infoQuiz: userAnswer,
+                    preTestID: preTestNow.key!));
               },
-              trueQ: state.trueQ,
-              falseQ: state.falseQ,
-              totalQ: _preQuiz.numQ ?? 1,
-              quizNow: state.qNow,
-              size: data,
+              trueQ: _score,
+              falseQ: falseChoose,
+              typeOfGame: "Test",
+              controller: _controller,
+              quizNow: _totalNumberOfQuizzes,
               onFinished: () {
                 showMyDialog();
               },
-              controller: _controller,
+              size: data,
               onBack: () {
                 _controller.pause();
                 showOutDialog();

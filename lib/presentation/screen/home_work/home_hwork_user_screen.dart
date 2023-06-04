@@ -154,6 +154,8 @@ class HomeHWorkUserScreen extends StatelessWidget {
                               return ListView.builder(
                                 itemCount: snapshot.data!.length! + 1,
                                 itemBuilder: (context, index) {
+                                  snapshot.data!.sort(
+                                      (a, b) => a.week!.compareTo(b.week!));
                                   if (index < snapshot.data!.length!) {
                                     return ItemCardHW(
                                       onTap: () {

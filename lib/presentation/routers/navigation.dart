@@ -49,6 +49,7 @@ import '../screen/pre_quiz/pre_quiz_game.dart';
 import '../screen/profile_user/my_account/profile_myaccount.dart';
 import '../screen/test_screen/test_exam_screen.dart';
 import '../screen/test_screen/test_practice_screen.dart';
+import '../screen/testing_user/testing_game_user_screen.dart';
 import '../screen/welcome_screen.dart';
 
 class Routers {
@@ -80,6 +81,7 @@ class Routers {
   static const String practicecardDetail = '/practicecardDetail';
   static const String premake = '/premake';
   static const String detailTest = '/detailTest';
+  static const String testingUser = '/testingUser';
   static const String checkAnswer = '/checkAnswer';
   static const String checkAnswerHW = '/checkAnswerHW';
   static const String detailQuizGame = '/detailQuizGame';
@@ -134,6 +136,12 @@ class Routers {
                 quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
                 userAPIRepo: instance.get<UserAPIRepo>()),
             child: HomeWorkGameScreen());
+      case testingUser:
+        return BlocProvider(
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
+            child: TestTingUserGameScreen());
       case homeGuest:
         return HomeGuestScreen();
       case homeUser:

@@ -3,10 +3,13 @@ import 'package:equatable/equatable.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/remote/model/pre_quiz_game_req.dart';
 import 'package:math/data/remote/model/quiz_game_req.dart';
+import 'package:math/data/remote/model/quiz_test_req.dart';
 
 import '../../../application/enum/game_status.dart';
 import '../../../data/local/driff/db/db_app.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/detail_quiz_hw_req.dart';
+import '../../../data/remote/model/detail_quiz_hw_response.dart';
 import '../../../data/remote/model/pre_quiz_game_response.dart';
 import '../../../data/remote/model/quiz_game_response.dart';
 
@@ -39,6 +42,13 @@ class GameCubit extends Cubit<GameState> {
 
   void changeDataPlayAgain() {
     emit(state.copyWith(trueQ: 0, falseQ: 0, qNow: 1, score: 0));
+  }
+
+  void addQuizHWoServer(DetailQuizHWAPIReq data) {
+    userAPIRepo.saveQuizDetailHW(data);
+  }
+  void addQuizTesttoServer(QuizTestReq data) {
+    userAPIRepo.createQuizTest(data);
   }
 
   void addQuizToServer(QuizGameAPIReq data) {
