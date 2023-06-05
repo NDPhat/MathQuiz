@@ -48,6 +48,7 @@ class DetailItemCardHomeWork extends StatelessWidget {
                   Column(
                     children: [
                       ChildRightHW(
+                        type: "hw",
                         size: size,
                         deTail: true,
                       ),
@@ -244,7 +245,7 @@ class DetailItemCardHomeWork extends StatelessWidget {
                                         }),
                                   ),
                                   timeHW:
-                                      "${snapshot.data![index].dstart} To ${snapshot.data![index].dstart}",
+                                      "${snapshot.data![index].dstart} To ${snapshot.data![index].dstart}", type: "hw",
                                 );
                               },
                             );

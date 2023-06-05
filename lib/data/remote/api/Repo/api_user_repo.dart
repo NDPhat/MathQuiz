@@ -1,5 +1,6 @@
 import 'package:math/data/remote/model/pre_test_req.dart';
 import 'package:math/data/remote/model/quiz_test_req.dart';
+import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:math/data/remote/model/user_api_res.dart';
 
@@ -27,6 +28,8 @@ abstract class UserAPIRepo {
       ResultQuizHWAPIReq resultQuizHWReq);
   Future<bool?> updateInfoHomeWorkWeek(
       ResultQuizHWAPIReq resultQuizHWReq, String resultID);
+  Future<bool?> deleteResultHWNotDo(
+      String resultID);
   Future<List<ResultQuizHWAPIModel>?> getALlResultQuizHWByUserID(String uid);
   Future<List<PreQuizHWResAPIModel>?> getALlPreQuizHW();
   Future<PreQuizHWResAPIModel?> getLatestPreQuizHW();
@@ -42,8 +45,11 @@ abstract class UserAPIRepo {
   Future<PreTestAPIRes?> createPreQuizTest(PreTestReq preQuizReq);
   Future<PreQuizGameAPIModel?> updatePreQuizGameByID(
       PreQuizGameAPIReq preQuizReq, String preID);
-  Future<PreTestAPIRes?> updatePreQuizTestByID(
-      PreTestReq preQuizReq, String preID);
+  Future<bool?> updatePreQuizTestByID(PreTestReq preQuizReq, String preID);
   Future<bool?> createQuizGame(QuizGameAPIReq quizReq);
   Future<bool?> createQuizTest(QuizTestReq quizReq);
+  Future<List<QuizTestAPIRes>?> getALlQuizTestByPreTestID(String preID);
+  Future<List<PreTestAPIRes>?> getALlPreQuizTestByUid(String uid);
+  Future<bool?> deleteTestingNotDoByPreTestId(
+      String preID);
 }

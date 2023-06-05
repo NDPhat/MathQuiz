@@ -38,12 +38,12 @@ class PreTestAPIRes {
 
   PreTestAPIRes(
       {this.dateSave,
-        this.falseQ,
-        this.key,
-        this.score,
-        this.sumQ,
-        this.trueQ,
-        this.userID});
+      this.falseQ,
+      this.key,
+      this.score,
+      this.sumQ,
+      this.trueQ,
+      this.userID});
 
   PreTestAPIRes.fromJson(Map<String, dynamic> json) {
     dateSave = json['dateSave'];

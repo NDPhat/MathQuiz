@@ -35,6 +35,11 @@ class ChildRightHomeInput extends StatelessWidget {
                 for (int i = 0; i < snapshot.data!.length; i++) {
                   dataList.add(ChartData(i + 1, snapshot.data![i].score!));
                 }
+                if (dataList.length == 1) {
+                  for (int i = 2; i <= 5; i++) {
+                    dataList.add(ChartData(i, 0));
+                  }
+                }
                 return SfCartesianChart(
                     plotAreaBorderColor: colorMainBlue,
                     plotAreaBorderWidth: 0,

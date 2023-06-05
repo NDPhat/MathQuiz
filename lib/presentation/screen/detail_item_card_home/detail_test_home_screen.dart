@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/chart_data_week.dart';
 import 'package:math/data/remote/model/detail_quiz_hw_response.dart';
-import 'package:math/data/remote/model/pre_quiz_game_response.dart';
-import 'package:math/data/remote/model/quiz_game_response.dart';
+import 'package:math/data/remote/model/pre_test_res.dart';
+import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/presentation/widget/app_bar.dart';
-import 'package:math/presentation/widget/child_right_home_practices_input.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -21,11 +20,11 @@ import '../../widget/async_data_detail_hw.dart';
 import '../../widget/card_data_item_home.dart';
 import '../../widget/child_right_item_card_home.dart';
 
-class DetailItemCardPractices extends StatelessWidget {
-  DetailItemCardPractices({Key? key}) : super(key: key);
+class DetailTestHomeWork extends StatelessWidget {
+  const DetailTestHomeWork({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    String type = ModalRoute.of(context)!.settings.arguments as String;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -36,7 +35,7 @@ class DetailItemCardPractices extends StatelessWidget {
               onBack: () {
                 Navigator.pop(context);
               },
-              textTitle: 'Detail Input',
+              textTitle: 'Detail Tests',
             ),
             Container(
               height: size.height * 0.9,
@@ -50,14 +49,14 @@ class DetailItemCardPractices extends StatelessWidget {
                       icon: const Icon(Icons.calendar_month)),
                   Column(
                     children: [
-                      ChildRightHomeInput(
+                      ChildRightHW(
+                        type: "test",
                         size: size,
                         deTail: true,
-                        typeGame: type,
                       ),
-                      Center(
+                      const Center(
                           child: Text(
-                        'Data $type result',
+                        'Data test result ',
                         style: s14f500ColorMainTe,
                       ))
                     ],
@@ -78,15 +77,15 @@ class DetailItemCardPractices extends StatelessWidget {
                   ),
                   LineContentItem(
                       size: size,
-                      title: 'DATA WEEKLY',
+                      title: 'DATA DETAILED',
                       icon: const Icon(Icons.calendar_view_week)),
                   SizedBox(
                     height: size.height * 0.4,
-                    child: FutureBuilder<List<PreQuizGameAPIModel>?>(
+                    child: FutureBuilder<List<PreTestAPIRes>?>(
                         future: instance
                             .get<UserAPIRepo>()
-                            .getALlPreQuizGameByUidandOptionGame(
-                                instance.get<UserGlobal>().id.toString(), type),
+                            .getALlPreQuizTestByUid(
+                                instance.get<UserGlobal>().id!),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -102,22 +101,24 @@ class DetailItemCardPractices extends StatelessWidget {
                             );
                           } else if (snapshot.hasData) {
                             return ListView.builder(
-
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
-                                snapshot.data!.sort(
-                                        (a, b) => a.dateSave!.compareTo(b.dateSave!));
+                                int totalQ = 0;
+                                int score = 0;
+                                for (var element in snapshot.data!) {
+                                  totalQ = totalQ + element.sumQ!;
+                                  score = score + element.score!;
+                                }
                                 return ItemAsyncDataDetailHW(
                                   size: size,
+                                  scoreAve: "$score/$totalQ",
                                   textTitle: 'Task ${index + 1}',
-                                  listSIgn: '${snapshot.data![index].sign}',
                                   childRight: SizedBox(
                                     width: size.width * 0.45,
-                                    child: FutureBuilder<
-                                            List<QuizGameAPIModel>?>(
+                                    child: FutureBuilder<List<QuizTestAPIRes>?>(
                                         future: instance
                                             .get<UserAPIRepo>()
-                                            .getALlQuizGameByPreGameID(
+                                            .getALlQuizTestByPreTestID(
                                                 snapshot.data![index].key!),
                                         builder: (context, snapshotChild) {
                                           if (snapshotChild.hasData) {
@@ -246,7 +247,8 @@ class DetailItemCardPractices extends StatelessWidget {
                                           }
                                         }),
                                   ),
-                                  timeHW: "${snapshot.data![index].dateSave} ", type: "hw",
+                                  timeHW: "${snapshot.data![index].dateSave}",
+                                  type: "test",
                                 );
                               },
                             );

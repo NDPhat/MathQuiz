@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:math/application/utils/make_quiz.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/remote/model/pre_quiz_game_req.dart';
 import 'package:math/data/remote/model/quiz_game_req.dart';
@@ -44,9 +45,10 @@ class GameCubit extends Cubit<GameState> {
     emit(state.copyWith(trueQ: 0, falseQ: 0, qNow: 1, score: 0));
   }
 
-  void addQuizHWoServer(DetailQuizHWAPIReq data) {
+  void addQuizHWToServer(DetailQuizHWAPIReq data) {
     userAPIRepo.saveQuizDetailHW(data);
   }
+
   void addQuizTesttoServer(QuizTestReq data) {
     userAPIRepo.createQuizTest(data);
   }

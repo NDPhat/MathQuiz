@@ -7,10 +7,10 @@ class QuizTestReq {
 
   QuizTestReq(
       {this.quiz,
-        this.preTestID,
-        this.answer,
-        this.answerSelect,
-        this.infoQuiz});
+      this.preTestID,
+      this.answer,
+      this.answerSelect,
+      this.infoQuiz});
 
   QuizTestReq.fromJson(Map<String, dynamic> json) {
     quiz = json['quiz'];

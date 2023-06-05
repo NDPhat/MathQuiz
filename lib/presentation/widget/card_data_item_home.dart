@@ -8,14 +8,14 @@ class ItemAsyncDataPageHome extends StatelessWidget {
     Key? key,
     required this.size,
     required this.textTitle,
-    required this.scoreAve,
+    required this.totalQ,
     required this.trueAve,
     required this.childRight,
     required this.timeNow, required this.onTap,
   }) : super(key: key);
   final Size size;
   final String textTitle;
-  final String scoreAve;
+  final String totalQ;
   final String timeNow;
   final String trueAve;
   final Widget childRight;
@@ -55,7 +55,7 @@ class ItemAsyncDataPageHome extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Score : $scoreAve',
+                        'Total Quiz : $totalQ',
                         style: s16f500ColorError,
                       ),
                     ),

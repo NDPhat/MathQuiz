@@ -6,7 +6,6 @@ import 'package:math/data/model/user_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/data/remote/model/quiz_test_req.dart';
-import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../application/cons/constants.dart';
@@ -28,19 +27,19 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
-  int userChoose = 1;
   int falseChoose = 0;
+  late PreTestAPIRes preTest;
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = false;
-  PreTestAPIRes preTestNow = PreTestAPIRes();
   final CountDownController _controller = CountDownController();
   @override
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-
+    preTest = PreTestAPIRes();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      showReadyDialog(preTestNow);
+      preTest = ModalRoute.of(context)!.settings.arguments as PreTestAPIRes;
+      showReadyDialog(preTest);
     });
   }
 
@@ -65,7 +64,6 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
       falseChoose++;
       playSound('wrong-choice.wav');
     }
-    _quizBrain.makeQuizTest();
   }
 
   Future<void> showMyDialog() {
@@ -87,8 +85,8 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               textAlign: TextAlign.center, style: kContentTS),
           actions: [
             TextButton(
-              onPressed: () async {
-                instance.get<UserAPIRepo>().updatePreQuizTestByID(
+              onPressed: ()async  {
+                 await instance.get<UserAPIRepo>().updatePreQuizTestByID(
                     PreTestReq(
                         sumQ: _totalNumberOfQuizzes,
                         trueQ: _score,
@@ -96,7 +94,7 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
                         score: _score,
                         dateSave: DateTime.now().toString(),
                         userID: instance.get<UserGlobal>().id),
-                    preTestNow.key.toString());
+                    preTest.key.toString());
                 Navigator.pushNamed(context, Routers.homeUser);
               },
               child: const Center(child: Text('EXIT', style: kDialogButtonsTS)),
@@ -126,7 +124,16 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, Routers.homeGuest);
+                instance.get<UserAPIRepo>().updatePreQuizTestByID(
+                    PreTestReq(
+                        sumQ: _totalNumberOfQuizzes,
+                        trueQ: _score,
+                        falseQ: falseChoose,
+                        score: _score,
+                        dateSave: DateTime.now().toString(),
+                        userID: instance.get<UserGlobal>().id),
+                    preTest.key.toString());
+                Navigator.pushNamed(context, Routers.homeUser);
               },
               child: const Center(child: Text('YES', style: kDialogButtonsTS)),
             ),
@@ -163,22 +170,16 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               onPressed: () async {
                 Navigator.pop(context);
                 _controller.start();
-                preTestNow = (await instance
-                    .get<UserAPIRepo>()
-                    .createPreQuizTest(PreTestReq(
-                        sumQ: 0,
-                        score: 0,
-                        dateSave: DateTime.now().toString(),
-                        trueQ: 0,
-                        falseQ: 0,
-                        userID: instance.get<UserGlobal>().id!)))!;
-                print(preTestNow.key!);
+
                 _startGame();
               },
               child: const Text('GO', style: kDialogButtonsTS),
             ),
             TextButton(
               onPressed: () {
+                instance
+                    .get<UserAPIRepo>()
+                    .deleteTestingNotDoByPreTestId(preTest.key.toString());
                 Navigator.pop(context);
                 Navigator.pushNamed(context, Routers.homeUser);
               },
@@ -206,17 +207,17 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               score: _score,
               quizBrainObject: _quizBrain,
               onTap: (int value) {
-                setState(() {
-                  userChoose = value;
-                });
                 _checkAnswer(value, context);
-                print(_quizBrain.quiz.toString());
                 context.read<GameCubit>().addQuizTesttoServer(QuizTestReq(
                     quiz: _quizBrain.quiz.toString(),
-                    answerSelect: userChoose,
+                    answerSelect: value,
                     answer: _quizBrain.quizAnswer,
                     infoQuiz: userAnswer,
-                    preTestID: preTestNow.key!));
+                    preTestID: preTest.key));
+                _quizBrain.makeQuizTest();
+                context.read<GameCubit>().changeDataAfterDoneQ(
+                    _score, falseChoose, _score, _totalNumberOfQuizzes);
+
               },
               trueQ: _score,
               falseQ: falseChoose,

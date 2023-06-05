@@ -1,31 +1,19 @@
 import 'dart:async';
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/model/user_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/model/pre_quiz_hw_response.dart';
-import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/cons/text_style.dart';
 import '../../../application/utils/logic.dart';
-import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../data/model/pre_join_homework.dart';
 import '../../../data/remote/model/detail_quiz_hw_req.dart';
-import '../../../data/remote/model/detail_quiz_hw_response.dart';
 import '../../../data/remote/model/result_quiz_hw_req.dart';
-import '../../../data/remote/model/result_quiz_hw_response.dart';
 import '../../../domain/bloc/game/game_cubit.dart';
-import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../../main.dart';
-
 import '../../routers/navigation.dart';
 import '../../widget/portrait_mode_hword_user.dart';
-import '../../widget/show_alert_test.dart';
 
 class HomeWorkGameScreen extends StatefulWidget {
   const HomeWorkGameScreen({Key? key}) : super(key: key);
@@ -39,7 +27,6 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
   int _score = 0;
   int _highScore = 0;
   late PreJoinQuizHW _preQuiz;
-  int userChoose = 1;
   int falseChoose = 0;
   bool userAnswer = false;
   int _totalNumberOfQuizzes = 0;
@@ -65,7 +52,7 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
     _totalNumberOfQuizzes = 1;
   }
 
-  void _makeNewQuiz() async {
+  void _makeNewQuiz()  {
     _quizBrain.makeQuizHomeWork(_preQuiz);
   }
 
@@ -73,7 +60,6 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
     setState(() {
       _totalNumberOfQuizzes++;
     });
-    _makeNewQuiz();
   }
 
   void _endGame() {
@@ -100,7 +86,7 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
           actions: [
             TextButton(
               onPressed: () async {
-                instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
+               await  instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
                     ResultQuizHWAPIReq(
                         week: _preQuiz.week,
                         numQ: _preQuiz.numQ,
@@ -122,7 +108,7 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
   void _checkAnswer(int userChoice, BuildContext context) async {
     if (userChoice.toString().isNotEmpty) {
       if (userChoice == _quizBrain.quizAnswer) {
-        userAnswer=true;
+        userAnswer = true;
         playSound('hw_sound.mp3');
         _score++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
@@ -175,6 +161,15 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
+                    ResultQuizHWAPIReq(
+                        week: _preQuiz.week,
+                        numQ: _preQuiz.numQ,
+                        trueQ: _score,
+                        falseQ: falseChoose,
+                        score: _score,
+                        userId: instance.get<UserGlobal>().id),
+                    _preQuiz.resultID.toString());
                 Navigator.pushNamed(context, Routers.homeUser);
               },
               child: const Center(child: Text('YES', style: kDialogButtonsTS)),
@@ -218,6 +213,9 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
             ),
             TextButton(
               onPressed: () {
+                instance
+                    .get<UserAPIRepo>()
+                    .deleteResultHWNotDo(_preQuiz.resultID.toString());
                 Navigator.pop(context);
                 Navigator.pushNamed(context, Routers.homeUser);
               },
@@ -246,17 +244,14 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
               score: _score,
               quizBrainObject: _quizBrain,
               onTap: (int value) {
-                setState(() {
-                  userChoose = value;
-                });
                 _checkAnswer(value, context);
-               context.read<GameCubit>().addQuizHWoServer(
-                   DetailQuizHWAPIReq(
-                        quiz: _quizBrain.quiz.toString(),
-                        answerSelect: userChoose,
-                        answer: _quizBrain.quizAnswer,
-                        infoQuiz: userAnswer,
-                        resultHWID: _preQuiz.resultID));
+                context.read<GameCubit>().addQuizHWToServer(DetailQuizHWAPIReq(
+                    quiz: _quizBrain.quiz.toString(),
+                    answerSelect: value,
+                    answer: _quizBrain.quizAnswer,
+                    infoQuiz: userAnswer,
+                    resultHWID: _preQuiz.resultID));
+                _makeNewQuiz();
                 context.read<GameCubit>().changeDataAfterDoneQ(
                     _score, falseChoose, _score, _totalNumberOfQuizzes);
               },

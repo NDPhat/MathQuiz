@@ -549,16 +549,10 @@ class UserAPIRepoImpl extends UserAPIRepo {
       const url = "${endpoint}create_prequiz_test";
       final req = await http.post(Uri.parse(url),
           headers: requestHeaders, body: jsonEncode(preQuizReq.toJson()));
-      if (req.statusCode == 200) {
-        Map<String, dynamic> parsed = json.decode(req.body);
-        PreTestAPIRes? result = GetPreTestAPIRes.fromJson(parsed).lItems!.first;
-        return result;
-      } else {
-        // log(req.body);
-        Map<String, dynamic> parsed = json.decode(req.body);
-        PreTestAPIRes? result = GetPreTestAPIRes.fromJson(parsed).lItems!.first;
-        return result;
-      }
+      Map<String, dynamic> parsed = json.decode(req.body);
+      print(parsed);
+      PreTestAPIRes? result = GetPreTestAPIRes.fromJson(parsed).lItems!.first;
+      return result;
     } on SocketException catch (_) {
       return Future.error('No network found');
     } catch (_) {
@@ -576,7 +570,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
         return true;
       } else {
         // log(req.body);
-        return true;
+        return false;
       }
     } on SocketException catch (_) {
       return Future.error('No network found');
@@ -586,25 +580,96 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<PreTestAPIRes?> updatePreQuizTestByID(
+  Future<bool?> updatePreQuizTestByID(
       PreTestReq preQuizReq, String preID) async {
     try {
       final url = "${endpoint}updatePreQuizTesteById?id=$preID";
       final req = await http.patch(Uri.parse(url),
           headers: requestHeaders, body: jsonEncode(preQuizReq.toJson()));
       if (req.statusCode == 200) {
+        return true;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<List<PreTestAPIRes>?> getALlPreQuizTestByUid(String uid) async {
+    try {
+      final url = "${endpoint}getAllPreQuizTestByUId?uid=$uid";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(req.body);
-        PreTestAPIRes? result = PreTestAPIRes.fromJson(parsed);
+        List<PreTestAPIRes>? result = GetPreTestAPIRes.fromJson(parsed).lItems;
         return result;
       } else {
         Map<String, dynamic> parsed = json.decode(req.body);
-        PreTestAPIRes? result = PreTestAPIRes.fromJson(parsed);
+        List<PreTestAPIRes>? result = GetPreTestAPIRes.fromJson(parsed).lItems;
         return result;
       }
     } on SocketException catch (_) {
-      return null;
+      return Future.error('No network found');
     } catch (_) {
-      return null;
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<List<QuizTestAPIRes>?> getALlQuizTestByPreTestID(String preID) async {
+    try {
+      final url = "${endpoint}getAllQuizTestByPreID?preID=$preID";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<QuizTestAPIRes>? result =
+            GetQuizTestAPIRes.fromJson(parsed).lItems;
+        return result;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<QuizTestAPIRes>? result =
+            GetQuizTestAPIRes.fromJson(parsed).lItems;
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<bool?> deleteResultHWNotDo(String resultID) async{
+    try {
+      final url = "${endpoint}deleteResultQHWResultId?resultID=$resultID";
+      final req = await http.delete(Uri.parse(url),
+          headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool?> deleteTestingNotDoByPreTestId(String preID) async{
+    try {
+      final url = "${endpoint}deletePreTestByID?id=$preID";
+      final req = await http.delete(Uri.parse(url),
+          headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
     }
   }
 }

@@ -51,7 +51,7 @@ class HomeGameUserScreen extends StatelessWidget {
                         "https://media.tenor.com/kVRWeTAwcfoAAAAM/muji-confused.gif",
                     textTitle: 'TESTING',
                     onPress: () {
-                      Navigator.pushNamed(context, Routers.testingUser);
+                      Navigator.pushNamed(context, Routers.mainTestUser);
 
                     },
                   )

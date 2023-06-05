@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:math/application/cons/text_style.dart';
+import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/widget/home_user_bg.dart';
 import 'package:math/presentation/widget/card_data_item_home.dart';
@@ -87,14 +88,13 @@ class HomeMainUserScreen extends StatelessWidget {
                             ),
                           );
                         }
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                           int totalQ = 0;
                           int score = 0;
                           for (var element in snapshot.data!) {
                             totalQ = totalQ + element.numQ!;
                             score = score + element.score!;
                           }
-                          double scoreAve = score / snapshot.data!.length;
                           return ItemAsyncDataPageHome(
                               onTap: () {
                                 Navigator.pushNamed(
@@ -102,16 +102,19 @@ class HomeMainUserScreen extends StatelessWidget {
                               },
                               size: size,
                               textTitle: 'HOME WORK',
-                              scoreAve: scoreAve.toStringAsFixed(2).toString(),
+                              totalQ:totalQ.toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
                               childRight: ChildRightHW(
+                                type: "hw",
                                 size: size,
                               ),
                               timeNow:
                                   DateFormat.yMMMEd().format(DateTime.now()));
                         }
-                        return Container();
+                        else {
+                          return Container();
+                        }
                       }),
                   LineContentItem(
                     size: size,
@@ -122,7 +125,8 @@ class HomeMainUserScreen extends StatelessWidget {
                       future: instance
                           .get<UserAPIRepo>()
                           .getALlPreQuizGameByUidandOptionGame(
-                              instance.get<UserGlobal>().id.toString(),"input"),
+                              instance.get<UserGlobal>().id.toString(),
+                              "input"),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -137,21 +141,22 @@ class HomeMainUserScreen extends StatelessWidget {
                             ),
                           );
                         }
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData &&  snapshot.data!.isNotEmpty) {
                           int totalQ = 0;
                           int score = 0;
                           for (var element in snapshot.data!) {
                             totalQ = totalQ + element.numQ!;
                             score = score + element.score!;
                           }
-                          double scoreAve = score / snapshot.data!.length;
                           return ItemAsyncDataPageHome(
                               size: size,
                               onTap: () {
-                                Navigator.pushNamed(context, Routers.practicecardDetail,arguments: "input");
+                                Navigator.pushNamed(
+                                    context, Routers.practicecardDetail,
+                                    arguments: "input");
                               },
                               textTitle: 'INPUT',
-                              scoreAve: scoreAve.toStringAsFixed(2).toString(),
+                              totalQ: totalQ.toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
                               childRight: ChildRightHomeInput(
@@ -159,7 +164,7 @@ class HomeMainUserScreen extends StatelessWidget {
                                 typeGame: "input",
                               ),
                               timeNow:
-                                  DateFormat.yMMMEd().format(DateTime.now()));
+                                  DateFormat.yMMMEd().format(DateTime.now()),);
                         }
                         return Container();
                       }),
@@ -170,7 +175,8 @@ class HomeMainUserScreen extends StatelessWidget {
                       future: instance
                           .get<UserAPIRepo>()
                           .getALlPreQuizGameByUidandOptionGame(
-                          instance.get<UserGlobal>().id.toString(),"truefalse"),
+                              instance.get<UserGlobal>().id.toString(),
+                              "truefalse"),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -185,27 +191,28 @@ class HomeMainUserScreen extends StatelessWidget {
                             ),
                           );
                         }
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData &&  snapshot.data!.isNotEmpty) {
                           int totalQ = 0;
                           int score = 0;
                           for (var element in snapshot.data!) {
                             totalQ = totalQ + element.numQ!;
                             score = score + element.score!;
                           }
-                          double scoreAve = score / snapshot.data!.length;
                           return ItemAsyncDataPageHome(
                               size: size,
                               onTap: () {
-                                Navigator.pushNamed(context, Routers.practicecardDetail,arguments: "truefalse");
+                                Navigator.pushNamed(
+                                    context, Routers.practicecardDetail,
+                                    arguments: "truefalse");
                               },
                               textTitle: 'TRUE FALSE',
-                              scoreAve: scoreAve.toStringAsFixed(2).toString(),
+                              totalQ: totalQ.toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
                               childRight: ChildRightHomeInput(
-                            size: size,
-                            typeGame: "truefalse",
-                          ),
+                                size: size,
+                                typeGame: "truefalse",
+                              ),
                               timeNow:
                                   DateFormat.yMMMEd().format(DateTime.now()));
                         }
@@ -218,7 +225,8 @@ class HomeMainUserScreen extends StatelessWidget {
                       future: instance
                           .get<UserAPIRepo>()
                           .getALlPreQuizGameByUidandOptionGame(
-                          instance.get<UserGlobal>().id.toString(),"missing"),
+                              instance.get<UserGlobal>().id.toString(),
+                              "missing"),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -233,21 +241,22 @@ class HomeMainUserScreen extends StatelessWidget {
                             ),
                           );
                         }
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData &&  snapshot.data!.isNotEmpty) {
                           int totalQ = 0;
                           int score = 0;
                           for (var element in snapshot.data!) {
                             totalQ = totalQ + element.numQ!;
                             score = score + element.score!;
                           }
-                          double scoreAve = score / snapshot.data!.length;
                           return ItemAsyncDataPageHome(
                               size: size,
                               onTap: () {
-                                Navigator.pushNamed(context, Routers.practicecardDetail,arguments: "missing");
+                                Navigator.pushNamed(
+                                    context, Routers.practicecardDetail,
+                                    arguments: "missing");
                               },
                               textTitle: 'MISSING',
-                              scoreAve: scoreAve.toStringAsFixed(2).toString(),
+                              totalQ: totalQ.toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
                               childRight: ChildRightHomeInput(
@@ -264,10 +273,10 @@ class HomeMainUserScreen extends StatelessWidget {
                     title: 'Tests',
                     icon: const Icon(Icons.task),
                   ),
-                  FutureBuilder<List<ResultQuizHWAPIModel>?>(
+                  FutureBuilder<List<PreTestAPIRes>?>(
                       future: instance
                           .get<UserAPIRepo>()
-                          .getALlResultQuizHWByUserID(
+                          .getALlPreQuizTestByUid(
                               instance.get<UserGlobal>().id.toString()),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -283,22 +292,25 @@ class HomeMainUserScreen extends StatelessWidget {
                             ),
                           );
                         }
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                           int totalQ = 0;
                           int score = 0;
                           for (var element in snapshot.data!) {
-                            totalQ = totalQ + element.numQ!;
+                            totalQ = totalQ + element.sumQ!;
                             score = score + element.score!;
                           }
-                          double scoreAve = score / snapshot.data!.length;
                           return ItemAsyncDataPageHome(
                               size: size,
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, Routers.testDetail);
+                              },
                               textTitle: 'Tests',
-                              scoreAve: scoreAve.toStringAsFixed(2).toString(),
+                              totalQ: totalQ.toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
                               childRight: ChildRightHW(
+                                type: "test",
                                 size: size,
                               ),
                               timeNow:

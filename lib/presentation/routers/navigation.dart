@@ -21,6 +21,7 @@ import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/home/home_user.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
+import 'package:math/presentation/screen/testing_user/test_main_user_screen.dart';
 import 'package:math/presentation/screen/update_pass_word/update_pass_screen.dart';
 
 import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
@@ -29,6 +30,7 @@ import '../../main.dart';
 import '../screen/check_answer/check_anwser_screen.dart';
 import '../screen/detail_item_card_home/detail_hw_card_home_screen.dart';
 import '../screen/detail_item_card_home/detail_practices_card_home_screen.dart';
+import '../screen/detail_item_card_home/detail_test_home_screen.dart';
 import '../screen/detail_test/detail_test_screen.dart';
 import '../screen/dual/dual_main_screen.dart';
 import '../screen/dual/dual_with_bot_screen.dart';
@@ -78,9 +80,11 @@ class Routers {
   static const String historyTest = '/historyTest';
   static const String historyHome = '/historyHome';
   static const String hwcardDetail = '/hwcardDetail';
+  static const String testDetail = '/testDetail';
   static const String practicecardDetail = '/practicecardDetail';
   static const String premake = '/premake';
   static const String detailTest = '/detailTest';
+  static const String mainTestUser = '/mainTestUser';
   static const String testingUser = '/testingUser';
   static const String checkAnswer = '/checkAnswer';
   static const String checkAnswerHW = '/checkAnswerHW';
@@ -100,6 +104,10 @@ class Routers {
         return WelcomeScreen();
       case hwcardDetail:
         return DetailItemCardHomeWork();
+      case testDetail:
+        return DetailTestHomeWork();
+      case mainTestUser:
+        return MainTestingUserScreen();
       case practicecardDetail:
         return DetailItemCardPractices();
       case updateProfileUser:
