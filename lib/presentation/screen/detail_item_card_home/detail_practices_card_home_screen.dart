@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/chart_data_week.dart';
 import 'package:math/data/remote/model/detail_quiz_hw_response.dart';
+import 'package:math/data/remote/model/pre_quiz_game_response.dart';
+import 'package:math/data/remote/model/quiz_game_response.dart';
 import 'package:math/presentation/widget/app_bar.dart';
+import 'package:math/presentation/widget/child_right_home_practices_input.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -18,11 +21,11 @@ import '../../widget/async_data_detail_hw.dart';
 import '../../widget/card_data_item_home.dart';
 import '../../widget/child_right_item_card_home.dart';
 
-class DetailItemCardHome extends StatelessWidget {
-  const DetailItemCardHome({Key? key}) : super(key: key);
-
+class DetailItemCardPractices extends StatelessWidget {
+  DetailItemCardPractices({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    String type = ModalRoute.of(context)!.settings.arguments as String;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -33,7 +36,7 @@ class DetailItemCardHome extends StatelessWidget {
               onBack: () {
                 Navigator.pop(context);
               },
-              textTitle: 'Detail Home works',
+              textTitle: 'Detail Input',
             ),
             Container(
               height: size.height * 0.9,
@@ -47,13 +50,14 @@ class DetailItemCardHome extends StatelessWidget {
                       icon: const Icon(Icons.calendar_month)),
                   Column(
                     children: [
-                      ChildRightHW(
+                      ChildRightHomeInput(
                         size: size,
                         deTail: true,
+                        typeGame: type,
                       ),
-                      const Center(
+                      Center(
                           child: Text(
-                        'Data home work result by week',
+                        'Data $type result',
                         style: s14f500ColorMainTe,
                       ))
                     ],
@@ -78,8 +82,11 @@ class DetailItemCardHome extends StatelessWidget {
                       icon: const Icon(Icons.calendar_view_week)),
                   SizedBox(
                     height: size.height * 0.4,
-                    child: FutureBuilder<List<PreQuizHWResAPIModel>?>(
-                        future: instance.get<UserAPIRepo>().getALlPreQuizHW(),
+                    child: FutureBuilder<List<PreQuizGameAPIModel>?>(
+                        future: instance
+                            .get<UserAPIRepo>()
+                            .getALlPreQuizGameByUidandOptionGame(
+                                instance.get<UserGlobal>().id.toString(), type),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -95,25 +102,23 @@ class DetailItemCardHome extends StatelessWidget {
                             );
                           } else if (snapshot.hasData) {
                             return ListView.builder(
+
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
+                                snapshot.data!.sort(
+                                        (a, b) => a.dateSave!.compareTo(b.dateSave!));
                                 return ItemAsyncDataDetailHW(
                                   size: size,
-                                  textTitle:
-                                      'Week ${snapshot.data![index].week}',
+                                  textTitle: 'Task ${index + 1}',
                                   listSIgn: '${snapshot.data![index].sign}',
                                   childRight: SizedBox(
                                     width: size.width * 0.45,
                                     child: FutureBuilder<
-                                            List<DetailQuizHWAPIModel>?>(
+                                            List<QuizGameAPIModel>?>(
                                         future: instance
                                             .get<UserAPIRepo>()
-                                            .getALlQuizDetailByUserIDAndWeek(
-                                                instance
-                                                    .get<UserGlobal>()
-                                                    .id!
-                                                    .toString(),
-                                                snapshot.data![index].week!),
+                                            .getALlQuizGameByPreGameID(
+                                                snapshot.data![index].key!),
                                         builder: (context, snapshotChild) {
                                           if (snapshotChild.hasData) {
                                             int signAddTrue = 0;
@@ -241,8 +246,7 @@ class DetailItemCardHome extends StatelessWidget {
                                           }
                                         }),
                                   ),
-                                  timeHW:
-                                      "${snapshot.data![index].dstart} To ${snapshot.data![index].dstart}",
+                                  timeHW: "${snapshot.data![index].dateSave} ", type: "hw",
                                 );
                               },
                             );

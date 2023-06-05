@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
+import 'package:math/data/remote/authen/authen.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/widget/home_user_bg.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../../../application/cons/color.dart';
+import '../../../data/model/user_global.dart';
+import '../../../main.dart';
 import 'my_account/profile_menu_widget.dart';
 
 class HomeProfileUserScreen extends StatelessWidget {
@@ -94,10 +97,13 @@ class HomeProfileUserScreen extends StatelessWidget {
               ProfileMenuWidget(
                 title: "Logout",
                 icon: LineAwesomeIcons.alternate_sign_out,
-                onPress: () {},
+                onPress: () {
+                  instance.get<AuthenRepository>().handleAutoLoginApp(false);
+                  instance.get<UserGlobal>().onLogin = false;
+                  Navigator.pushNamed(context, Routers.welcome);
+                },
                 size: size,
               ),
-
             ],
           ),
         )));

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../data/model/test_model.dart';
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
+import '../../data/model/pre_test_model.dart';
 
 class PreTestTitle extends StatelessWidget {
   final PreTest preTest;

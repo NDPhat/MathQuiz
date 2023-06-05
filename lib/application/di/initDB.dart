@@ -5,6 +5,7 @@ import 'package:math/data/local/repo/test/quiz_test_repo_impl.dart';
 import 'package:math/data/model/user_global.dart';
 
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/data/remote/authen/authen.dart';
 
 import '../../../main.dart';
 import '../../data/local/driff/db/db_app.dart';
@@ -25,5 +26,6 @@ void initDBandLocalRepo() {
   instance.registerLazySingleton<QuizGameLocalRepo>(
       () => QuizGameLocalRepoImpl(instance.get<AppDb>()));
   instance.registerLazySingleton<UserAPIRepo>(() => UserAPIRepoImpl());
+  instance.registerLazySingleton<AuthenRepository>(() => AuthenRepository());
   instance.registerLazySingleton<UserGlobal>(() => UserGlobal());
 }

@@ -3,18 +3,28 @@ import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:math/application/utils/format.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
+import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/data/remote/model/pre_quiz_game_response.dart';
+import 'package:math/data/remote/model/user_api_res.dart';
 
 import '../../../application/enum/pre_status.dart';
 import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
+import '../../../data/model/user_global.dart';
+import '../../../data/remote/model/pre_quiz_game_req.dart';
+import '../../../main.dart';
 part 'pre_quiz_state.dart';
 
 class PreQuizCubit extends Cubit<PreQuizState> {
   final PreQuizGameRepo preQuizLocalRepo;
+  final UserAPIRepo userAPIRepo;
   String numQMEss = "";
   String sNumMess = "";
   String eNumMess = "";
-  PreQuizCubit({required PreQuizGameRepo preQuizLocalRepo})
+  PreQuizCubit(
+      {required PreQuizGameRepo preQuizLocalRepo,
+      required UserAPIRepo userAPIRepo})
       : preQuizLocalRepo = preQuizLocalRepo,
+        userAPIRepo = userAPIRepo,
         super(PreQuizState.initial());
   void numQChanged(int value) {
     state.numQ = value;
@@ -95,6 +105,21 @@ class PreQuizCubit extends Cubit<PreQuizState> {
   void addPreQuizGame(String sign, String option) async {
     if (isFormValid() == true) {
       try {
+        PreQuizGameAPIModel? dataServer;
+        if (instance.get<UserGlobal>().onLogin == true) {
+          dataServer = await userAPIRepo.createPreQuizGame(PreQuizGameAPIReq(
+              sNum: state.sNum!,
+              eNum: state.eNum!,
+              numQ: state.numQ!,
+              sign: sign,
+              score: 0,
+              optionGame: option,
+              timePerQuiz: state.time,
+              userID: instance.get<UserGlobal>().id,
+              dateSave: formatDateInput.format(
+                DateTime.now(),
+              )));
+        }
         final entity = PreQuizGameEntityCompanion(
             sNum: Value(state.sNum!),
             eNum: Value(state.eNum!),
@@ -109,6 +134,7 @@ class PreQuizCubit extends Cubit<PreQuizState> {
         emit(state.copyWith(
             numQMess: "",
             id: data.id,
+            idServer: dataServer!.key,
             sNumMess: "",
             eNumMess: "",
             status: PreQuizStatus.success));

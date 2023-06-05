@@ -1,17 +1,24 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/data/remote/authen/authen.dart';
 
 import '../../../application/enum/login_status.dart';
+import '../../../data/model/user_global.dart';
+import '../../../main.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final UserAPIRepo userAPIRepo;
+  final AuthenRepository authenRepository;
   String emailMess = "";
   String passMess = "";
-  LoginCubit({required UserAPIRepo userAPIRepo})
+  LoginCubit(
+      {required UserAPIRepo userAPIRepo,
+      required AuthenRepository authenRepository})
       : userAPIRepo = userAPIRepo,
+        authenRepository = authenRepository,
         super(LoginState.initial());
   void emailChanged(String value) {
     state.email = value;
@@ -35,6 +42,9 @@ class LoginCubit extends Cubit<LoginState> {
       final user =
           await userAPIRepo.getUserByEmailAndPass(state.email, state.pass);
       if (user != null) {
+        authenRepository.handleAutoLoginApp(true);
+        authenRepository.handleMailLoginApp(state.email.toString());
+        instance.get<UserGlobal>().onLogin = true;
         emit(state.copyWith(status: LoginStatus.success));
       } else {
         passMess = "Your password do not match";

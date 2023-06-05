@@ -4,6 +4,7 @@ import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/data/remote/authen/authen.dart';
 import 'package:math/domain/bloc/forget_pass/forget_pass_cubit.dart';
 
 import 'package:math/domain/bloc/game/game_cubit.dart';
@@ -20,13 +21,16 @@ import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/home/home_user.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
+import 'package:math/presentation/screen/testing_user/test_main_user_screen.dart';
 import 'package:math/presentation/screen/update_pass_word/update_pass_screen.dart';
 
 import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../domain/bloc/history/history_pra_cubit.dart';
 import '../../main.dart';
 import '../screen/check_answer/check_anwser_screen.dart';
-import '../screen/detail_item_card_home/detail_item_card_home_screen.dart';
+import '../screen/detail_item_card_home/detail_hw_card_home_screen.dart';
+import '../screen/detail_item_card_home/detail_practices_card_home_screen.dart';
+import '../screen/detail_item_card_home/detail_test_home_screen.dart';
 import '../screen/detail_test/detail_test_screen.dart';
 import '../screen/dual/dual_main_screen.dart';
 import '../screen/dual/dual_with_bot_screen.dart';
@@ -47,6 +51,7 @@ import '../screen/pre_quiz/pre_quiz_game.dart';
 import '../screen/profile_user/my_account/profile_myaccount.dart';
 import '../screen/test_screen/test_exam_screen.dart';
 import '../screen/test_screen/test_practice_screen.dart';
+import '../screen/testing_user/testing_game_user_screen.dart';
 import '../screen/welcome_screen.dart';
 
 class Routers {
@@ -75,8 +80,12 @@ class Routers {
   static const String historyTest = '/historyTest';
   static const String historyHome = '/historyHome';
   static const String hwcardDetail = '/hwcardDetail';
+  static const String testDetail = '/testDetail';
+  static const String practicecardDetail = '/practicecardDetail';
   static const String premake = '/premake';
   static const String detailTest = '/detailTest';
+  static const String mainTestUser = '/mainTestUser';
+  static const String testingUser = '/testingUser';
   static const String checkAnswer = '/checkAnswer';
   static const String checkAnswerHW = '/checkAnswerHW';
   static const String detailQuizGame = '/detailQuizGame';
@@ -94,7 +103,13 @@ class Routers {
       case welcome:
         return WelcomeScreen();
       case hwcardDetail:
-        return DetailItemCardHome();
+        return DetailItemCardHomeWork();
+      case testDetail:
+        return DetailTestHomeWork();
+      case mainTestUser:
+        return MainTestingUserScreen();
+      case practicecardDetail:
+        return DetailItemCardPractices();
       case updateProfileUser:
         return BlocProvider(
             create: (context) =>
@@ -102,8 +117,9 @@ class Routers {
             child: UpdateProfileUserScreen());
       case login:
         return BlocProvider(
-            create: (context) =>
-                LoginCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+            create: (context) => LoginCubit(
+                userAPIRepo: instance.get<UserAPIRepo>(),
+                authenRepository: instance.get<AuthenRepository>()),
             child: LoginUserApp());
       case forgetPass:
         return BlocProvider(
@@ -124,9 +140,16 @@ class Routers {
         return OptionUseApp();
       case homeworkGame:
         return BlocProvider(
-            create: (context) =>
-                GameCubit(quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
             child: HomeWorkGameScreen());
+      case testingUser:
+        return BlocProvider(
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
+            child: TestTingUserGameScreen());
       case homeGuest:
         return HomeGuestScreen();
       case homeUser:
@@ -145,18 +168,21 @@ class Routers {
         return OptionSignScreen();
       case premake:
         return BlocProvider(
-            create: (context) =>
-                PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>()),
+            create: (context) => PreQuizCubit(
+                preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
             child: PreMakeQuizGame());
       case game:
         return BlocProvider(
-            create: (context) =>
-                GameCubit(quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
             child: GameScreen());
       case trueFalse:
         return BlocProvider(
-            create: (context) =>
-                GameCubit(quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
             child: const TrueFalseScreen());
       case battleMainScreen:
         return const DualMainScreen();
@@ -164,8 +190,9 @@ class Routers {
         return const PlayerDual();
       case findMissing:
         return BlocProvider(
-            create: (context) =>
-                GameCubit(quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
             child: const FindMissing());
       case doTestPra:
         return BlocProvider(

@@ -10,13 +10,17 @@ class ItemAsyncDataDetailHW extends StatelessWidget {
     required this.textTitle,
     required this.childRight,
     required this.timeHW,
-    required this.listSIgn,
+    this.listSIgn,
+    required this.type,
+    this.scoreAve,
   }) : super(key: key);
   final Size size;
   final String textTitle;
   final String timeHW;
-  final String listSIgn;
+  final String? listSIgn;
+  final String? scoreAve;
   final Widget childRight;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +51,21 @@ class ItemAsyncDataDetailHW extends StatelessWidget {
                       style: s16f500ColorGreyTe,
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Sign : $listSIgn',
-                      style: s16f500ColorError,
-                    ),
-                  ),
+                  type == "hw"
+                      ? Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Sign : $listSIgn',
+                            style: s16f500ColorError,
+                          ),
+                        )
+                      : Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Average : $scoreAve',
+                            style: s16f500ColorError,
+                          ),
+                        ),
                 ],
               ),
             ),

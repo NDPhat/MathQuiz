@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
-import 'package:math/data/model/test_model.dart';
 
 import '../../../application/utils/format.dart';
 import '../../../data/local/repo/pre_test/pre_test_repo.dart';

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
-import 'package:math/data/model/test_model.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/domain/home_repo.dart';
 import 'package:math/main.dart';
@@ -18,13 +17,13 @@ import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/cons/text_style.dart';
 import '../../../application/utils/logic.dart';
+import '../../../data/model/pre_test_model.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../../domain/bloc/game/game_cubit.dart';
 import '../../routers/navigation.dart';
 
 import '../../widget/portrait_mode_game.dart';
-import '../../widget/show_alert_dialog.dart';
 import '../../widget/show_alert_test.dart';
 
 class TestScreen extends StatefulWidget {

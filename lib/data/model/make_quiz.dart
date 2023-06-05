@@ -4,6 +4,7 @@ class PreQuizGame {
   int? endNum;
   String? sign;
   int? timePer;
+  String? idServer;
   int? numQ;
   int? score;
   String? dateSave;
@@ -15,6 +16,7 @@ class PreQuizGame {
       this.startNum,
       this.endNum,
       this.sign,
+      this.idServer,
       this.timePer,
       this.score,
       this.dateSave,

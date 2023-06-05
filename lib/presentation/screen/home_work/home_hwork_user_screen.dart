@@ -12,6 +12,7 @@ import 'dart:math' as math;
 import '../../../application/cons/color.dart';
 
 import '../../../application/cons/constants.dart';
+import '../../../data/model/check_model.dart';
 import '../../../data/model/pre_join_homework.dart';
 import '../../../data/remote/model/result_quiz_hw_req.dart';
 import '../../routers/navigation.dart';
@@ -102,7 +103,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, Routers.checkAnswerHW,
-                      arguments: idResult);
+                      arguments: CheckAnswerModel(id: idResult,type: "hw"));
                 },
                 child: const Text('GO', style: s16f700ColorError),
               ),
@@ -154,6 +155,8 @@ class HomeHWorkUserScreen extends StatelessWidget {
                               return ListView.builder(
                                 itemCount: snapshot.data!.length! + 1,
                                 itemBuilder: (context, index) {
+                                  snapshot.data!.sort(
+                                      (a, b) => a.week!.compareTo(b.week!));
                                   if (index < snapshot.data!.length!) {
                                     return ItemCardHW(
                                       onTap: () {

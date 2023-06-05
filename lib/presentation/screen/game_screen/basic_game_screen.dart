@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import 'package:math/data/model/make_quiz.dart';
+import 'package:math/data/remote/model/quiz_game_req.dart';
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,11 +17,13 @@ import '../../../application/cons/constants.dart';
 import '../../../application/cons/text_style.dart';
 import '../../../application/utils/format.dart';
 import '../../../application/utils/logic.dart';
+import '../../../data/model/user_global.dart';
+import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
-
+import '../../routers/navigation.dart';
 import '../../widget/portrait_mode_game.dart';
-import '../../widget/show_alert_dialog.dart';
+import '../../widget/show_end_dialog.dart';
 
 class GameScreen extends StatefulWidget {
   @override
@@ -35,6 +38,7 @@ class _GameScreenState extends State<GameScreen> {
   int _highScore = 0;
   late PreQuizGame _preQuiz;
   int _preIdNow = 0;
+  String _preIdServerNow = "";
   int userChoose = 1;
   double _value = 0;
   int falseChoose = 0;
@@ -49,8 +53,51 @@ class _GameScreenState extends State<GameScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
+      _preIdServerNow = _preQuiz.idServer!;
       _startGame(_preQuiz);
     });
+  }
+
+  Future<void> showReadyDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+            25,
+          )),
+          backgroundColor: const Color(0xff1542bf),
+          title: const FittedBox(
+            child: Text('ARE YOU GUYS READY ?',
+                textAlign: TextAlign.center, style: kTitleTS),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (instance.get<UserGlobal>().onLogin == true) {
+                } else {}
+                Navigator.pop(context);
+                _startGame(_preQuiz);
+              },
+              child: const Text('GO', style: kDialogButtonsTS),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                if (instance.get<UserGlobal>().onLogin == true) {
+                  Navigator.pushNamed(context, Routers.homeUser);
+                } else {
+                  Navigator.pushNamed(context, Routers.homeGuest);
+                }
+              },
+              child: const Text('BACK', style: kDialogButtonsTS),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _startGame(PreQuizGame _preQuiz) async {
@@ -135,6 +182,14 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _saveData(BuildContext context) {
+    context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
+        prequizGameID: _preIdServerNow,
+        sign: _preQuiz.sign!,
+        quiz: _quizBrain.quiz,
+        infoQuiz: userAnswer,
+        userId: instance.get<UserGlobal>().id!,
+        answer: _quizBrain.quizAnswer,
+        answerSelect: userChoose));
     context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
         preId: Value(_preIdNow),
         num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
@@ -147,17 +202,18 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   _updateScore() {
-    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>())
+    PreQuizCubit(
+            preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+            userAPIRepo: instance.get<UserAPIRepo>())
         .updateScoreQuizGame(_score, _preIdNow);
   }
 
   void _endGame() {
     _timer.cancel();
-    showMyDialog();
+    showEndDialog();
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
-
     if (userChoice.toString().isNotEmpty) {
       if (userChoice == _quizBrain.quizAnswer) {
         userAnswer = true;
@@ -196,15 +252,16 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  Future<void> showMyDialog() {
+  Future<void> showEndDialog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext contextBuild) {
         return BlocProvider.value(
             value: BlocProvider.of<GameCubit>(context),
-            child: ShowAlertDialog(
+            child: ShowEndDialog(
               score: _score,
+              preIdServer: _preQuiz.idServer!,
               preId: _preQuiz.id!,
               totalNumberOfQuizzes: _totalNumberOfQuizzes,
               startGame: _startGameAgain,
