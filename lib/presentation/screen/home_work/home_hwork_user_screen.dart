@@ -16,6 +16,7 @@ import '../../../data/model/check_model.dart';
 import '../../../data/model/pre_join_homework.dart';
 import '../../../data/remote/model/result_quiz_hw_req.dart';
 import '../../routers/navigation.dart';
+import '../../widget/line_item_content_card_home.dart';
 import '../../widget/weak_widget.dart';
 
 class HomeHWorkUserScreen extends StatelessWidget {
@@ -45,12 +46,12 @@ class HomeHWorkUserScreen extends StatelessWidget {
                 onPressed: () async {
                   PreQuizHWResAPIModel? preQuiz = await instance
                       .get<UserAPIRepo>()
-                      .getPreQuizHWByWeek(dataPre!.week.toString());
+                      .getPreQuizHWByWeek(dataPre.week.toString());
                   ResultQuizHWAPIModel? data = await instance
                       .get<UserAPIRepo>()
                       .createResultHomeWorkWeek(ResultQuizHWAPIReq(
-                          week: dataPre!.week.toString(),
-                          numQ: dataPre!.numQ,
+                          week: dataPre.week.toString(),
+                          numQ: dataPre.numQ,
                           trueQ: 0,
                           falseQ: 0,
                           score: 0,
@@ -58,12 +59,12 @@ class HomeHWorkUserScreen extends StatelessWidget {
                   PreJoinQuizHW preJoinHW = PreJoinQuizHW(
                     resultID: data!.key,
                     week: preQuiz!.week,
-                    numQ: preQuiz!.numQ,
-                    sign: preQuiz!.sign,
-                    sNum: preQuiz!.sNum,
-                    eNum: preQuiz!.eNum,
-                    dend: preQuiz!.dend,
-                    dstart: preQuiz!.dstart,
+                    numQ: preQuiz.numQ,
+                    sign: preQuiz.sign,
+                    sNum: preQuiz.sNum,
+                    eNum: preQuiz.eNum,
+                    dend: preQuiz.dend,
+                    dstart: preQuiz.dstart,
                   );
                   Navigator.pop(context);
                   Navigator.pushNamed(context, Routers.homeworkGame,
@@ -103,7 +104,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, Routers.checkAnswerHW,
-                      arguments: CheckAnswerModel(id: idResult,type: "hw"));
+                      arguments: CheckAnswerModel(id: idResult, type: "hw"));
                 },
                 child: const Text('GO', style: s16f700ColorError),
               ),
@@ -129,9 +130,13 @@ class HomeHWorkUserScreen extends StatelessWidget {
             children: [
               Column(
                 children: [
+                  LineContentItem(
+                      size: size,
+                      title: 'DONE',
+                      icon: const Icon(Icons.check)),
                   SingleChildScrollView(
                     child: SizedBox(
-                      height: size.height * 0.7,
+                      height: size.height * 0.4,
                       child: FutureBuilder<List<ResultQuizHWAPIModel>?>(
                           future: instance
                               .get<UserAPIRepo>()
@@ -153,88 +158,26 @@ class HomeHWorkUserScreen extends StatelessWidget {
                             }
                             if (snapshot.hasData) {
                               return ListView.builder(
-                                itemCount: snapshot.data!.length! + 1,
+                                itemCount: snapshot.data!.length,
                                 itemBuilder: (context, index) {
                                   snapshot.data!.sort(
                                       (a, b) => a.week!.compareTo(b.week!));
-                                  if (index < snapshot.data!.length!) {
-                                    return ItemCardHW(
-                                      onTap: () {
-                                        showDoneDialog(
-                                            snapshot.data![index].key!);
-                                      },
-                                      size: size,
-                                      backgroundColor: colorMainBlue,
-                                      childRight: const Center(
-                                          child: Text(
-                                        'DONE',
-                                        style: s20f700ColorSysWhite,
-                                      )),
-                                      childLeft: WeakWidget(
-                                          size: size,
-                                          dataResult: snapshot.data![index]),
-                                    );
-                                  } else {
-                                    return SizedBox(
-                                      height: size.height * 0.3,
-                                      child: FutureBuilder<
-                                              PreQuizHWResAPIModel?>(
-                                          future: instance
-                                              .get<UserAPIRepo>()
-                                              .getLatestPreQuizHW(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return SizedBox(
-                                                height: size.height * 0.2,
-                                                width: size.width * 0.5,
-                                                child: const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: colorMainBlue,
-                                                    strokeWidth: 5,
-                                                  ),
-                                                ),
-                                              );
-                                            }
-                                            if (snapshot.hasData) {
-                                              if (int.parse(snapshot.data!.week
-                                                      .toString()) >
-                                                  index) {
-                                                return ListView.builder(
-                                                  itemCount: 1,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return ItemCardHW(
-                                                      size: size,
-                                                      backgroundColor:
-                                                          colorErrorPrimary,
-                                                      childRight: const Center(
-                                                          child: Text(
-                                                        'DO',
-                                                        style:
-                                                            s20f700ColorGreyte,
-                                                      )),
-                                                      childLeft: WeakWidget(
-                                                          size: size,
-                                                          dataPre:
-                                                              snapshot.data),
-                                                      onTap: () {
-                                                        showJoinHWDialog(
-                                                            snapshot.data!);
-                                                      },
-                                                    );
-                                                  },
-                                                );
-                                              } else {
-                                                return Container();
-                                              }
-                                            } else {
-                                              return Container();
-                                            }
-                                          }),
-                                    );
-                                  }
+                                  return ItemCardHW(
+                                    onTap: () {
+                                      showDoneDialog(
+                                          snapshot.data![index].key!);
+                                    },
+                                    size: size,
+                                    backgroundColor: colorMainBlue,
+                                    childRight: const Center(
+                                        child: Text(
+                                      'DONE',
+                                      style: s20f700ColorSysWhite,
+                                    )),
+                                    childLeft: WeakWidget(
+                                        size: size,
+                                        dataResult: snapshot.data![index]),
+                                  );
                                 },
                               );
                             }
@@ -242,6 +185,67 @@ class HomeHWorkUserScreen extends StatelessWidget {
                             return Container();
                           }),
                     ),
+                  ),
+                  Container(
+                    height: 1,
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 2, color: colorGrayBG),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  LineContentItem(
+                      size: size,
+                      title: 'ON SCHEDULE',
+                      icon: const Icon(Icons.do_not_disturb)),
+                  SingleChildScrollView(
+                    child: SizedBox(
+                        height: size.height * 0.2,
+                        child: FutureBuilder<PreQuizHWResAPIModel?>(
+                            future: instance
+                                .get<UserAPIRepo>()
+                                .getOnGoingPreHWandNotDO(instance.get<UserGlobal>().id.toString()),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return SizedBox(
+                                  height: size.height * 0.2,
+                                  width: size.width * 0.5,
+                                  child: const Center(
+                                    child: CircularProgressIndicator(
+                                      color: colorMainBlue,
+                                      strokeWidth: 5,
+                                    ),
+                                  ),
+                                );
+                              }
+                              if (snapshot.hasData) {
+                                return ListView.builder(
+                                  itemCount: 1,
+                                  itemBuilder: (context, index) {
+                                    return ItemCardHW(
+                                      size: size,
+                                      backgroundColor: colorErrorPrimary,
+                                      childRight: const Center(
+                                          child: Text(
+                                        'DO',
+                                        style: s20f700ColorGreyte,
+                                      )),
+                                      childLeft: WeakWidget(
+                                          size: size, dataPre: snapshot.data),
+                                      onTap: () {
+                                        showJoinHWDialog(snapshot.data!);
+                                      },
+                                    );
+                                  },
+                                );
+                              } else {
+                                return Container();
+                              }
+                            })),
                   )
                 ],
               ),

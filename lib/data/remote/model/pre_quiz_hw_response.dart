@@ -36,6 +36,7 @@ class PreQuizHWResAPIModel {
   int? sNum;
   List<String>? sign;
   String? week;
+  String ? status;
 
   PreQuizHWResAPIModel(
       {this.dend,
@@ -44,6 +45,7 @@ class PreQuizHWResAPIModel {
         this.key,
         this.numQ,
         this.sNum,
+        this.status,
         this.sign,
         this.week});
 
@@ -54,6 +56,7 @@ class PreQuizHWResAPIModel {
     key = json['key'];
     numQ = json['numQ'];
     sNum = json['sNum'];
+    status=json["status"];
     sign = json['sign'].cast<String>();
     week = json['week'];
   }
@@ -65,6 +68,7 @@ class PreQuizHWResAPIModel {
     data['eNum'] = this.eNum;
     data['key'] = this.key;
     data['numQ'] = this.numQ;
+    data['status']=this.status;
     data['sNum'] = this.sNum;
     data['sign'] = this.sign;
     data['week'] = this.week;

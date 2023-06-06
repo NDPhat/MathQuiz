@@ -18,7 +18,7 @@ class LineContentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding:
-      EdgeInsets.only(top: size.height * 0.02, bottom: size.height * 0.01),
+      EdgeInsets.only(top: size.height * 0.01),
       alignment: Alignment.centerLeft,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

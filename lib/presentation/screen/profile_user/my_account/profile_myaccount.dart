@@ -41,11 +41,20 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
 
   Widget _previewImages() {
     if (_imageFileList != null) {
-      return Image.file(
-        File(_imageFileList!.path),
-        fit: BoxFit.cover,
-        width: 100,
-        height: 100,
+      return CircleAvatar(
+        radius: 60,
+        backgroundColor: Colors.red,
+        child: Padding(
+          padding: const EdgeInsets.all(8), // Border radius
+          child: ClipOval(
+            child: Image.file(
+              File(_imageFileList!.path),
+              fit: BoxFit.cover,
+              width: 100,
+              height: 100,
+            ),
+          ),
+        ),
       );
     } else {
       return Image.asset("assets/images/profile.png");

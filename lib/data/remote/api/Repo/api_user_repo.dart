@@ -31,8 +31,9 @@ abstract class UserAPIRepo {
   Future<bool?> deleteResultHWNotDo(
       String resultID);
   Future<List<ResultQuizHWAPIModel>?> getALlResultQuizHWByUserID(String uid);
+  Future<ResultQuizHWAPIModel?> getResultQuizHWByUserIDAndWeek(String uid,String week);
   Future<List<PreQuizHWResAPIModel>?> getALlPreQuizHW();
-  Future<PreQuizHWResAPIModel?> getLatestPreQuizHW();
+  Future<PreQuizHWResAPIModel?> getOnGoingPreHWandNotDO(String uid);
   Future<bool?> saveQuizDetailHW(DetailQuizHWAPIReq model);
   Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByResultID(
       String resultID);

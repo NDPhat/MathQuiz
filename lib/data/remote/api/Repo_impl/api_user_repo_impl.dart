@@ -229,7 +229,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
   Future<List<ResultQuizHWAPIModel>?> getALlResultQuizHWByUserID(
       String uid) async {
     try {
-      final url = "${endpoint}getAllReultQuizHWByUId?userID=$uid";
+      final url = "${endpoint}getAllResultQuizHWByUId?userID=$uid";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(req.body);
@@ -275,14 +275,20 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<PreQuizHWResAPIModel?> getLatestPreQuizHW() async {
+  Future<PreQuizHWResAPIModel?> getOnGoingPreHWandNotDO(String uid) async {
     try {
-      const url = "${endpoint}getLatestPreQuizHW";
+      const url = "${endpoint}getLatestPreQuizHWAndOnGoing";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       Map<String, dynamic> parsed = json.decode(req.body);
       PreQuizHWResAPIModel? result =
           PreQuizHWAPIResponse.fromJson(parsed).lItems!.first;
-      return result;
+      ResultQuizHWAPIModel? data =
+          await getResultQuizHWByUserIDAndWeek(uid, result.week!);
+      if (data == null) {
+        return result;
+      } else {
+        return null;
+      }
     } on SocketException catch (_) {
       return null;
     } catch (_) {
@@ -363,7 +369,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
   Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByUserIDAndWeek(
       String userID, String week) async {
     try {
-      final url = "${endpoint}getAllReultQuizHWByUId?userID=$userID";
+      final url = "${endpoint}getAllResultQuizHWByUId?userID=$userID";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(req.body);
@@ -550,7 +556,6 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final req = await http.post(Uri.parse(url),
           headers: requestHeaders, body: jsonEncode(preQuizReq.toJson()));
       Map<String, dynamic> parsed = json.decode(req.body);
-      print(parsed);
       PreTestAPIRes? result = GetPreTestAPIRes.fromJson(parsed).lItems!.first;
       return result;
     } on SocketException catch (_) {
@@ -642,11 +647,10 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<bool?> deleteResultHWNotDo(String resultID) async{
+  Future<bool?> deleteResultHWNotDo(String resultID) async {
     try {
       final url = "${endpoint}deleteResultQHWResultId?resultID=$resultID";
-      final req = await http.delete(Uri.parse(url),
-          headers: requestHeaders);
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         return true;
       }
@@ -658,11 +662,10 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<bool?> deleteTestingNotDoByPreTestId(String preID) async{
+  Future<bool?> deleteTestingNotDoByPreTestId(String preID) async {
     try {
       final url = "${endpoint}deletePreTestByID?id=$preID";
-      final req = await http.delete(Uri.parse(url),
-          headers: requestHeaders);
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         return true;
       }
@@ -670,6 +673,34 @@ class UserAPIRepoImpl extends UserAPIRepo {
       return false;
     } catch (_) {
       return false;
+    }
+  }
+
+  @override
+  Future<ResultQuizHWAPIModel?> getResultQuizHWByUserIDAndWeek(
+      String uid, String week) async {
+    try {
+      final url =
+          "${endpoint}getResultQuizHWByUIdAndWeek?userID=$uid&week=$week";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        int count = ResultQuizHWAPIResponse.fromJson(parsed).iCount!;
+        if (count == 0) {
+          return null;
+        } else {
+          return ResultQuizHWAPIResponse.fromJson(parsed).lItems!.first;
+        }
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(req.body);
+        ResultQuizHWAPIModel? result = ResultQuizHWAPIModel.fromJson(parsed);
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
     }
   }
 }

@@ -32,8 +32,19 @@ class HomeProfileUserScreen extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(60)),
                           border: Border.all(color: colorSystemYeloow),
                           color: colorSystemWhite),
-                      child: Image.asset(
-                        "assets/images/profile.png",
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.red,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8), // Border radius
+                          child: ClipOval(
+                              child: Image.asset(
+                            "assets/images/profile.png",
+                            fit: BoxFit.cover,
+                            height: 100,
+                            width: 100,
+                          )),
+                        ),
                       )),
                   Positioned(
                     bottom: 0,
