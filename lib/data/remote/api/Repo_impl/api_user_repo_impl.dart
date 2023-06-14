@@ -34,6 +34,12 @@ class UserAPIRepoImpl extends UserAPIRepo {
       if (res.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(res.body);
         final userModel = UserAPIRes.fromJson(parsed).lItems!.first;
+        if (userModel!.role == "user") {
+          UserEventLocal.updateUserGlobal(userModel);
+          return userModel;
+        } else {
+          return null;
+        }
         UserEventLocal.updateUserGlobal(userModel);
         return userModel;
       } else {
@@ -277,7 +283,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
   @override
   Future<PreQuizHWResAPIModel?> getOnGoingPreHWandNotDO(String uid) async {
     try {
-      const url = "${endpoint}getLatestPreQuizHWAndOnGoing";
+      const url = "${endpoint}getPreWStatusOnGoing";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       Map<String, dynamic> parsed = json.decode(req.body);
       PreQuizHWResAPIModel? result =
@@ -417,13 +423,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
         Map<String, dynamic> parsed = json.decode(req.body);
         PreQuizGameAPIModel? result =
             PreQuizGameAPIResponse.fromJson(parsed).lItems!.first;
-        return result;
-      } else {
-        // log(req.body);
-        Map<String, dynamic> parsed = json.decode(req.body);
-        PreQuizGameAPIModel? result =
-            PreQuizGameAPIResponse.fromJson(parsed).lItems!.first;
-
+        print(result);
         return result;
       }
     } on SocketException catch (_) {

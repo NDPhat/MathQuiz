@@ -7,6 +7,7 @@ import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/data/remote/model/quiz_test_req.dart';
 import 'package:math/main.dart';
+import 'package:math/presentation/widget/app_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/logic.dart';
@@ -48,7 +49,6 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
       _quizBrain.makeQuizTest();
     });
     _score = 0;
-    _totalNumberOfQuizzes = 1;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     _highScore = preferences.getInt('highscore') ?? 0;
   }
@@ -85,8 +85,8 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               textAlign: TextAlign.center, style: kContentTS),
           actions: [
             TextButton(
-              onPressed: ()async  {
-                 await instance.get<UserAPIRepo>().updatePreQuizTestByID(
+              onPressed: () async {
+                await instance.get<UserAPIRepo>().updatePreQuizTestByID(
                     PreTestReq(
                         sumQ: _totalNumberOfQuizzes,
                         trueQ: _score,
@@ -195,13 +195,14 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: kGradientColors,
-            ),
+      body: Column(
+        children: [
+          AppBarWidget(
+            size: data,
+            onBack: () {},
+            textTitle: "Testing",
           ),
-          child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+          BlocBuilder<GameCubit, GameState>(builder: (context, state) {
             return PortraitModeGame(
               highscore: _highScore,
               score: _score,
@@ -217,7 +218,6 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
                 _quizBrain.makeQuizTest();
                 context.read<GameCubit>().changeDataAfterDoneQ(
                     _score, falseChoose, _score, _totalNumberOfQuizzes);
-
               },
               trueQ: _score,
               falseQ: falseChoose,
@@ -233,7 +233,9 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
                 showOutDialog();
               },
             );
-          })),
+          }),
+        ],
+      ),
     );
   }
 }

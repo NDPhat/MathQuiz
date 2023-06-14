@@ -2,12 +2,14 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:math/presentation/widget/answer_table.dart';
 import 'package:math/presentation/widget/quiz_body.dart';
+import 'package:math/presentation/widget/quiz_body_hw.dart';
 import 'package:math/presentation/widget/table_user_score.dart';
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
 
 import '../../application/utils/make_quiz.dart';
 
+import 'answer_table_hw.dart';
 import 'app_bar.dart';
 import 'button_custom.dart';
 
@@ -47,46 +49,50 @@ class PortraitModeGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        AppBarWidget(
-          size: size,
-          onBack: onBack,
-          textTitle: 'PRACTICE TESTING',
-        ),
-        Container(
-          color: colorSystemWhite,
-          padding: EdgeInsets.only(
-            top: size.height * 0.005,
-            bottom: size.height * 0.05,
+    return Padding(
+      padding:
+          EdgeInsets.only(bottom: size.height * 0.02),
+      child: Column(
+        children: [
+          Container(
+            color: colorSystemWhite,
+            child: Column(
+              children: [
+                UserTableScore(
+                  size: size,
+                  percentTime: percentValue,
+                  timeNow: timeNow,
+                  trueQ: trueQ,
+                  controller: controller,
+                  falseQ: falseQ,
+                  totalQuiz: totalQ,
+                  onFinished: onFinished,
+                  typeOfGame: typeOfGame,
+                  quizNow: quizNow,
+                ),
+                Stack(
+                  children: [
+                    Image.asset(
+                      "assets/images/table_quiz.png",
+                      fit: BoxFit.fill,
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(
+                          top: size.height * 0.2, left: size.width * 0.2),
+                      child: QuizBodyHW(
+                          quizBrainObject: quizBrainObject, size: size),
+                    ),
+                  ],
+                ),
+                SizedBox(height: size.height * 0.03),
+                AnswerTable(
+                    size: size, quizBrainObject: quizBrainObject, onTap: onTap)
+              ],
+            ),
           ),
-          child: Column(
-            children: [
-              UserTableScore(
-                size: size,
-                percentTime: percentValue,
-                timeNow: timeNow,
-                trueQ: trueQ,
-                controller: controller,
-                falseQ: falseQ,
-                totalQuiz: totalQ,
-                onFinished: onFinished,
-                typeOfGame: typeOfGame,
-                quizNow: quizNow,
-              ),
-              QuizBody(
-                size: size,
-                quizBrainObject: quizBrainObject,
-              ),
-              SizedBox(
-                height: size.height * 0.1,
-              ),
-              AnswerTable(
-                  size: size, quizBrainObject: quizBrainObject, onTap: onTap)
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

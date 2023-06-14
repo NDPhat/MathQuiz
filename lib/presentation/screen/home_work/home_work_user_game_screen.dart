@@ -52,7 +52,7 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
     _totalNumberOfQuizzes = 1;
   }
 
-  void _makeNewQuiz()  {
+  void _makeNewQuiz() {
     _quizBrain.makeQuizHomeWork(_preQuiz);
   }
 
@@ -86,12 +86,14 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
           actions: [
             TextButton(
               onPressed: () async {
-               await  instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
+                await instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
                     ResultQuizHWAPIReq(
                         week: _preQuiz.week,
                         numQ: _preQuiz.numQ,
                         trueQ: _score,
+                        lop: instance.get<UserGlobal>().lop.toString(),
                         falseQ: falseChoose,
+                        name: instance.get<UserGlobal>().fullName,
                         score: _score,
                         userId: instance.get<UserGlobal>().id),
                     _preQuiz.resultID.toString());
@@ -166,7 +168,9 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
                         week: _preQuiz.week,
                         numQ: _preQuiz.numQ,
                         trueQ: _score,
+                        lop: instance.get<UserGlobal>().lop.toString(),
                         falseQ: falseChoose,
+                        name: instance.get<UserGlobal>().fullName,
                         score: _score,
                         userId: instance.get<UserGlobal>().id),
                     _preQuiz.resultID.toString());
@@ -251,7 +255,7 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
                     answer: _quizBrain.quizAnswer,
                     infoQuiz: userAnswer,
                     resultHWID: _preQuiz.resultID));
-                _makeNewQuiz();
+                  _makeNewQuiz();
                 context.read<GameCubit>().changeDataAfterDoneQ(
                     _score, falseChoose, _score, _totalNumberOfQuizzes);
               },

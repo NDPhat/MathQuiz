@@ -41,15 +41,15 @@ class PreQuizGameAPIModel {
 
   PreQuizGameAPIModel(
       {this.dateSave,
-        this.eNum,
-        this.key,
-        this.numQ,
-        this.optionGame,
-        this.sNum,
-        this.score,
-        this.sign,
-        this.timePerQuiz,
-        this.userID});
+      this.eNum,
+      this.key,
+      this.numQ,
+      this.optionGame,
+      this.sNum,
+      this.score,
+      this.sign,
+      this.timePerQuiz,
+      this.userID});
 
   PreQuizGameAPIModel.fromJson(Map<String, dynamic> json) {
     dateSave = json['dateSave'];

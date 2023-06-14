@@ -54,6 +54,8 @@ class HomeHWorkUserScreen extends StatelessWidget {
                           numQ: dataPre.numQ,
                           trueQ: 0,
                           falseQ: 0,
+                          lop: instance.get<UserGlobal>().lop.toString(),
+                          name: instance.get<UserGlobal>().fullName,
                           score: 0,
                           userId: instance.get<UserGlobal>().id));
                   PreJoinQuizHW preJoinHW = PreJoinQuizHW(
@@ -131,9 +133,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
               Column(
                 children: [
                   LineContentItem(
-                      size: size,
-                      title: 'DONE',
-                      icon: const Icon(Icons.check)),
+                      size: size, title: 'DONE', icon: const Icon(Icons.check)),
                   SingleChildScrollView(
                     child: SizedBox(
                       height: size.height * 0.4,
@@ -207,7 +207,8 @@ class HomeHWorkUserScreen extends StatelessWidget {
                         child: FutureBuilder<PreQuizHWResAPIModel?>(
                             future: instance
                                 .get<UserAPIRepo>()
-                                .getOnGoingPreHWandNotDO(instance.get<UserGlobal>().id.toString()),
+                                .getOnGoingPreHWandNotDO(
+                                    instance.get<UserGlobal>().id.toString()),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {

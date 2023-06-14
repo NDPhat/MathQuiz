@@ -175,7 +175,6 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
   }
 
   final List<String> genders = ['Male', 'Female'];
-  String? selectedValue;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

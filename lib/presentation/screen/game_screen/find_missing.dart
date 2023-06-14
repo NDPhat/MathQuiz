@@ -55,7 +55,7 @@ class _FindMissingState extends State<FindMissing> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
-      _preIdServerNow=_preQuiz.idServer!;
+      _preIdServerNow = _preQuiz.idServer!;
       _startGame(_preQuiz);
     });
   }
@@ -115,7 +115,7 @@ class _FindMissingState extends State<FindMissing> {
         });
       } else {
         // luu lai cau hoi va dap an da khong chon
-        userAnswer=false;
+        userAnswer = false;
         _saveData(context);
         setState(() {
           falseChoose++;
@@ -140,13 +140,13 @@ class _FindMissingState extends State<FindMissing> {
 
   void _saveData(BuildContext context) {
     context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
-    prequizGameID: _preIdServerNow,
-    sign: _preQuiz.sign!,
-    quiz: _quizBrain.quiz,
-    infoQuiz: userAnswer,
-    userId: instance.get<UserGlobal>().id!,
-    answer: _quizBrain.getQuizMissing,
-    answerSelect: userChoose));
+        prequizGameID: _preIdServerNow,
+        sign: _preQuiz.sign!,
+        quiz: _quizBrain.quiz,
+        infoQuiz: userAnswer,
+        userId: instance.get<UserGlobal>().id!,
+        answer: _quizBrain.getQuizMissing,
+        answerSelect: userChoose));
     context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
         preId: Value(_preIdNow),
         num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
@@ -158,15 +158,18 @@ class _FindMissingState extends State<FindMissing> {
         answerSelect: Value(userChoose.toString())));
   }
 
-
   _updateScore() {
-    PreQuizCubit(preQuizLocalRepo: instance.get<PreQuizGameRepo>(), userAPIRepo: instance.get<UserAPIRepo>())
+    PreQuizCubit(
+            preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+            userAPIRepo: instance.get<UserAPIRepo>())
         .updateScoreQuizGame(_score, _preIdNow);
   }
+
   void _endGame() {
     _timer.cancel();
     showMyDialog();
   }
+
   Future<void> showReadyDialog() {
     return showDialog<void>(
       context: context,
@@ -175,8 +178,8 @@ class _FindMissingState extends State<FindMissing> {
         return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-                25,
-              )),
+            25,
+          )),
           backgroundColor: const Color(0xff1542bf),
           title: const FittedBox(
             child: Text('ARE YOU GUYS READY ?',
