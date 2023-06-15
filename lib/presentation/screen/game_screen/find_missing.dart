@@ -1,12 +1,8 @@
 import 'dart:async';
-
-import 'package:audioplayers/audioplayers.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' as driff;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/utils/logic.dart';
-
-import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/cons/text_style.dart';
 import '../../../application/utils/format.dart';
@@ -16,12 +12,14 @@ import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../data/model/make_quiz.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/pre_quiz_game_req.dart';
+import '../../../data/remote/model/pre_quiz_game_response.dart';
 import '../../../data/remote/model/quiz_game_req.dart';
 import '../../../domain/bloc/game/game_cubit.dart';
 import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../main.dart';
-
 import '../../routers/navigation.dart';
+import '../../widget/app_bar.dart';
 import '../../widget/portrait_mode_game.dart';
 import '../../widget/show_end_dialog.dart';
 
@@ -56,7 +54,7 @@ class _FindMissingState extends State<FindMissing> {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
       _preIdServerNow = _preQuiz.idServer!;
-      _startGame(_preQuiz);
+      showReadyDialog();
     });
   }
 
@@ -70,7 +68,6 @@ class _FindMissingState extends State<FindMissing> {
 
   void _makeNewQuiz() async {
     _quizBrain.makeQuizFindMissing(_preQuiz);
-    print(_quizBrain.getQuizMissing);
     _value = 0;
     _startTimer();
     _value = 1;
@@ -80,27 +77,46 @@ class _FindMissingState extends State<FindMissing> {
     setState(() {
       _value = 0;
       _totalTime = 0;
+      _preIdNow++;
       falseChoose = 0;
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
+    if (instance.get<UserGlobal>().onLogin == true) {
+      PreQuizGameAPIModel? newData =
+      await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
+          sNum: _preQuiz.startNum,
+          eNum: _preQuiz.endNum,
+          numQ: _preQuiz.numQ,
+          status: "GOING",
+          sign: _preQuiz.sign,
+          score: 0,
+          optionGame: _preQuiz.option,
+          timePerQuiz: _preQuiz.timePer,
+          userID: instance
+              .get<UserGlobal>()
+              .id,
+          dateSave: formatDateInput.format(
+            DateTime.now(),
+          )));
+      _preIdServerNow = newData!.key!;
+
+    }
     instance.get<PreQuizGameRepo>().insertPreQuizGame(
         PreQuizGameEntityCompanion(
-            sNum: Value(_preQuiz.startNum!),
-            eNum: Value(_preQuiz.endNum!),
-            numQ: Value(_preQuiz.numQ!),
-            sign: Value(_preQuiz.sign!),
-            option: Value(_preQuiz.option!),
-            timePer: Value(_preQuiz.timePer!),
-            dateSave: Value(formatDateInput.format(DateTime.now()))));
+            sNum: driff.Value(_preQuiz.startNum!),
+            eNum: driff.Value(_preQuiz.endNum!),
+            numQ: driff.Value(_preQuiz.numQ!),
+            sign: driff.Value(_preQuiz.sign!),
+            option: driff.Value(_preQuiz.option!),
+            timePer: driff.Value(_preQuiz.timePer!),
+            dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
     final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
+
     // cap nhap lai id
     _preIdNow = data.id;
-    _quizBrain.makeQuizFindMissing(_preQuiz);
+    _quizBrain.makeQuizTrueFalse(_preQuiz);
     _startTimer();
-    _value = 1;
-    _score = 0;
-    _totalNumberOfQuizzes = 1;
   }
 
   void _startTimer() {
@@ -139,23 +155,27 @@ class _FindMissingState extends State<FindMissing> {
   }
 
   void _saveData(BuildContext context) {
-    context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
-        prequizGameID: _preIdServerNow,
-        sign: _preQuiz.sign!,
-        quiz: _quizBrain.quiz,
-        infoQuiz: userAnswer,
-        userId: instance.get<UserGlobal>().id!,
-        answer: _quizBrain.getQuizMissing,
-        answerSelect: userChoose));
+    if (instance.get<UserGlobal>().onLogin == true) {
+      context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
+          prequizGameID: _preIdServerNow,
+          sign: _preQuiz.sign!,
+          quiz: _quizBrain.quiz,
+          infoQuiz: userAnswer,
+          userId: instance
+              .get<UserGlobal>()
+              .id!,
+          answer: _quizBrain.getQuizMissing,
+          answerSelect: userChoose));
+    }
     context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
-        preId: Value(_preIdNow),
-        num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
-        sign: Value(_preQuiz.sign!),
-        infoQuiz: Value(userAnswer),
-        quiz: Value(_quizBrain.quiz.toString()),
-        num2: Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
-        answer: Value(_quizBrain.getQuizMissing.toString()),
-        answerSelect: Value(userChoose.toString())));
+        preId: driff.Value(_preIdNow),
+        num1: driff.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
+        sign: driff.Value(_preQuiz.sign!),
+        infoQuiz: driff.Value(userAnswer),
+        quiz: driff.Value(_quizBrain.quiz.toString()),
+        num2: driff.Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
+        answer: driff.Value(_quizBrain.getQuizMissing.toString()),
+        answerSelect: driff.Value(userChoose.toString())));
   }
 
   _updateScore() {
@@ -167,44 +187,58 @@ class _FindMissingState extends State<FindMissing> {
 
   void _endGame() {
     _timer.cancel();
-    showMyDialog();
+    if (instance.get<UserGlobal>().onLogin == true) {
+      instance.get<UserAPIRepo>().updatePreQuizGameByID(
+          PreQuizGameAPIReq(score: _score, status: "DONE"), _preIdServerNow);
+    }
+    showEndDiaLog();
   }
 
   Future<void> showReadyDialog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('ARE YOU GUYS READY ?',
-                textAlign: TextAlign.center, style: kTitleTS),
+      builder: (BuildContext contextBui) {
+        return BlocProvider.value(
+          value: BlocProvider.of<GameCubit>(context),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+              25,
+            )),
+            backgroundColor: const Color(0xff1542bf),
+            title: const FittedBox(
+              child: Text('ARE YOU GUYS READY ?',
+                  textAlign: TextAlign.center, style: kTitleTS),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _startGame(_preQuiz);
+                },
+                child: const Text('GO', style: kDialogButtonsTS),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  if (instance.get<UserGlobal>().onLogin == true) {
+                    context
+                        .read<GameCubit>()
+                        .deletePreGameNow(_preIdServerNow.toString());
+                    Navigator.pushNamed(context, Routers.homeUser);
+                  } else {
+                    PreQuizCubit(
+                            preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+                            userAPIRepo: instance.get<UserAPIRepo>())
+                        .deletePreQuizGame(_preIdNow);
+                    Navigator.pushNamed(context, Routers.homeGuest);
+                  }
+                },
+                child: const Text('BACK', style: kDialogButtonsTS),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _startGame(_preQuiz);
-              },
-              child: const Text('GO', style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child: const Text('BACK', style: kDialogButtonsTS),
-            ),
-          ],
         );
       },
     );
@@ -283,7 +317,7 @@ class _FindMissingState extends State<FindMissing> {
     );
   }
 
-  Future<void> showMyDialog() {
+  Future<void> showEndDiaLog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -306,13 +340,16 @@ class _FindMissingState extends State<FindMissing> {
     var data = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: kGradientColors,
-            ),
+      body: Column(
+        children: [
+          AppBarWidget(
+            size: data,
+            onBack: () {
+              showOutDialog();
+            },
+            textTitle: "Testing",
           ),
-          child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+          BlocBuilder<GameCubit, GameState>(builder: (context, state) {
             return PortraitModeGame(
               highscore: _highScore,
               score: _score,
@@ -333,11 +370,10 @@ class _FindMissingState extends State<FindMissing> {
               totalQ: _preQuiz.numQ ?? 1,
               quizNow: _totalNumberOfQuizzes,
               size: data,
-              onBack: () {
-                showOutDialog();
-              },
             );
-          })),
+          }),
+        ],
+      ),
     );
   }
 

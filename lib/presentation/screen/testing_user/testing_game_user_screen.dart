@@ -199,7 +199,10 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
         children: [
           AppBarWidget(
             size: data,
-            onBack: () {},
+            onBack: () {
+              _controller.pause();
+              showOutDialog();
+            },
             textTitle: "Testing",
           ),
           BlocBuilder<GameCubit, GameState>(builder: (context, state) {
@@ -228,10 +231,6 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
                 showMyDialog();
               },
               size: data,
-              onBack: () {
-                _controller.pause();
-                showOutDialog();
-              },
             );
           }),
         ],

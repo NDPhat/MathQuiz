@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/presentation/widget/quiz_body.dart';
+import 'package:math/presentation/widget/quiz_body_hw.dart';
 import 'package:math/presentation/widget/table_user_score.dart';
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
@@ -19,9 +20,9 @@ class PortraitModeTF extends StatelessWidget {
   final int quizNow;
   final QuizBrain quizBrainObject;
   final sign;
+  final Size size;
   final onTap;
   final percentValue;
-  VoidCallback onBack;
   int timeNow;
   PortraitModeTF({
     required this.score,
@@ -29,9 +30,9 @@ class PortraitModeTF extends StatelessWidget {
     required this.falseQ,
     required this.totalQ,
     required this.quizNow,
+    required this.size,
     required this.quizBrainObject,
     required this.onTap,
-    required this.onBack,
     required this.timeNow,
     required this.percentValue,
     this.sign,
@@ -39,17 +40,14 @@ class PortraitModeTF extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        AppBarWidget(size: size, onBack: onBack),
         Container(
           color: colorSystemWhite,
           padding: EdgeInsets.only(
               top: size.height * 0.005,
               bottom: size.height * 0.05,
-              left: size.width * 0.05,
-              right: size.width * 0.05),
+           ),
           child: Column(
             children: [
               UserTableScore(
@@ -62,12 +60,23 @@ class PortraitModeTF extends StatelessWidget {
                 typeOfGame: "TF",
                 quizNow: quizNow,
               ),
-              QuizBody(
-                size: size,
-                quizBrainObject: quizBrainObject,
+              Stack(
+                children: [
+                  Image.asset(
+                    "assets/images/table_quiz.png",
+                    fit: BoxFit.fill,
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.only(
+                        top: size.height * 0.2, left: size.width * 0.2),
+                    child: QuizBodyHW(
+                        quizBrainObject: quizBrainObject, size: size),
+                  ),
+                ],
               ),
               SizedBox(
-                height: size.height * 0.15,
+                height: size.height * 0.08,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,7 +87,7 @@ class PortraitModeTF extends StatelessWidget {
                     },
                     color: colorSystemWhite,
                     width: size.width * 0.4,
-                    height: size.height * 0.1,
+                    height: size.height * 0.08,
                     child: Image.asset('assets/images/true.jpg'),
                   ),
                   SizedBox(
@@ -90,7 +99,7 @@ class PortraitModeTF extends StatelessWidget {
                     },
                     color: colorSystemWhite,
                     width: size.width * 0.4,
-                    height: size.height * 0.1,
+                    height: size.height * 0.08,
                     child: Image.asset('assets/images/false.jpg'),
                   ),
                 ],

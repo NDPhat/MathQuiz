@@ -16,11 +16,13 @@ import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
 import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_hw.dart';
+import 'package:math/presentation/screen/check_answer/check_answer_prac_screen.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/home/home_user.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
+import 'package:math/presentation/screen/pratice_game_user/practice_game_user_main_screen.dart';
 import 'package:math/presentation/screen/testing_user/test_main_user_screen.dart';
 import 'package:math/presentation/screen/update_pass_word/update_pass_screen.dart';
 
@@ -88,8 +90,11 @@ class Routers {
   static const String testingUser = '/testingUser';
   static const String checkAnswer = '/checkAnswer';
   static const String checkAnswerHW = '/checkAnswerHW';
+  static const String checkAnswerPracUserGame = '/checkAnswerPracUserGame';
   static const String detailQuizGame = '/detailQuizGame';
   static const String homeworkGame = '/homeworkGame';
+  static const String practiceMainScreenUserGame =
+      '/practiceMainScreenUserGame';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
@@ -102,8 +107,12 @@ class Routers {
     switch (settings.name) {
       case welcome:
         return WelcomeScreen();
+      case checkAnswerPracUserGame:
+        return CheckAnswerPracUserGameScreen();
       case hwcardDetail:
         return DetailItemCardHomeWork();
+      case practiceMainScreenUserGame:
+        return PracticeGameUserMainScreen();
       case testDetail:
         return DetailTestHomeWork();
       case mainTestUser:

@@ -14,6 +14,7 @@ import '../../../application/utils/format.dart';
 import '../../../application/utils/logic.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/pre_quiz_game_req.dart';
 import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../routers/navigation.dart';
@@ -50,7 +51,7 @@ class _GameScreenState extends State<GameScreen> {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
       _preIdServerNow = _preQuiz.idServer!;
-      _startGame(_preQuiz);
+      showReadyDialog();
     });
   }
 
@@ -58,39 +59,48 @@ class _GameScreenState extends State<GameScreen> {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('ARE YOU GUYS READY ?',
-                textAlign: TextAlign.center, style: kTitleTS),
+      builder: (BuildContext contextBui) {
+        return BlocProvider.value(
+          value: BlocProvider.of<GameCubit>(context),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+              25,
+            )),
+            backgroundColor: const Color(0xff1542bf),
+            title: const FittedBox(
+              child: Text('ARE YOU GUYS READY ?',
+                  textAlign: TextAlign.center, style: kTitleTS),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _startGame(_preQuiz);
+                },
+                child: const Text('GO', style: kDialogButtonsTS),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (instance.get<UserGlobal>().onLogin == true) {
+                    context
+                        .read<GameCubit>()
+                        .deletePreGameNow(_preIdServerNow.toString());
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, Routers.homeUser);
+                  } else {
+                    PreQuizCubit(
+                            preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+                            userAPIRepo: instance.get<UserAPIRepo>())
+                        .deletePreQuizGame(_preIdNow);
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, Routers.homeGuest);
+                  }
+                },
+                child: const Text('BACK', style: kDialogButtonsTS),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                } else {}
-                Navigator.pop(context);
-                _startGame(_preQuiz);
-              },
-              child: const Text('GO', style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child: const Text('BACK', style: kDialogButtonsTS),
-            ),
-          ],
         );
       },
     );
@@ -178,14 +188,16 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _saveData(BuildContext context) {
-    context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
-        prequizGameID: _preIdServerNow,
-        sign: _preQuiz.sign!,
-        quiz: _quizBrain.quiz,
-        infoQuiz: userAnswer,
-        userId: instance.get<UserGlobal>().id!,
-        answer: _quizBrain.quizAnswer,
-        answerSelect: userChoose));
+    if (instance.get<UserGlobal>().onLogin == true) {
+      context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
+          prequizGameID: _preIdServerNow,
+          sign: _preQuiz.sign!,
+          quiz: _quizBrain.quiz,
+          infoQuiz: userAnswer,
+          userId: instance.get<UserGlobal>().id!,
+          answer: _quizBrain.quizAnswer,
+          answerSelect: userChoose));
+    }
     context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
         preId: driff.Value(_preIdNow),
         num1: driff.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
@@ -206,7 +218,11 @@ class _GameScreenState extends State<GameScreen> {
 
   void _endGame() {
     _timer.cancel();
-    showEndDialog();
+    if (instance.get<UserGlobal>().onLogin == true) {
+      instance.get<UserAPIRepo>().updatePreQuizGameByID(
+          PreQuizGameAPIReq(score: _score, status: "DONE"), _preIdServerNow);
+    }
+    showEndDiaLog();
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
@@ -248,7 +264,7 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  Future<void> showEndDialog() {
+  Future<void> showEndDiaLog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -270,40 +286,37 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: [
-            AppBarWidget(
+      body: Column(
+        children: [
+          AppBarWidget(
+            size: data,
+            onBack: () {},
+            textTitle: "Game",
+          ),
+          BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+            return PortraitModeGame(
+              highscore: _highScore,
+              score: _score,
+              quizBrainObject: _quizBrain,
+              percentValue: _value,
+              timeNow: _totalTime,
+              typeOfGame: "Game",
+              onTap: (int value) {
+                setState(() {
+                  userChoose = value;
+                });
+                _checkAnswer(value, context);
+                context.read<GameCubit>().changeDataAfterDoneQ(
+                    _score, falseChoose, _score, _totalNumberOfQuizzes);
+              },
+              trueQ: state.trueQ,
+              falseQ: falseChoose,
+              totalQ: _preQuiz.numQ ?? 1,
+              quizNow: _totalNumberOfQuizzes,
               size: data,
-              onBack: () {},
-              textTitle: "Game",
-            ),
-            BlocBuilder<GameCubit, GameState>(builder: (context, state) {
-              return PortraitModeGame(
-                highscore: _highScore,
-                score: _score,
-                quizBrainObject: _quizBrain,
-                percentValue: _value,
-                timeNow: _totalTime,
-                typeOfGame: "Game",
-                onTap: (int value) {
-                  setState(() {
-                    userChoose = value;
-                  });
-                  _checkAnswer(value, context);
-                  context.read<GameCubit>().changeDataAfterDoneQ(
-                      _score, falseChoose, _score, _totalNumberOfQuizzes);
-                },
-                trueQ: state.trueQ,
-                falseQ: falseChoose,
-                totalQ: _preQuiz.numQ ?? 1,
-                quizNow: _totalNumberOfQuizzes,
-                size: data,
-                onBack: () {},
-              );
-            }),
-          ],
-        ),
+            );
+          }),
+        ],
       ),
     );
   }

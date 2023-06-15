@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' as driff;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/data/remote/model/pre_quiz_game_req.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/format.dart';
@@ -11,6 +12,7 @@ import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../data/model/make_quiz.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/pre_quiz_game_response.dart';
 import '../../../data/remote/model/quiz_game_req.dart';
 import '../../../domain/bloc/game/game_cubit.dart';
 import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
@@ -18,6 +20,7 @@ import '../../../application/utils/make_quiz.dart';
 import '../../../main.dart';
 
 import '../../routers/navigation.dart';
+import '../../widget/app_bar.dart';
 import '../../widget/portrait_mode_tf.dart';
 import '../../widget/show_end_dialog.dart';
 
@@ -51,7 +54,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
       _preIdServerNow = _preQuiz.idServer!;
-      _startGame(_preQuiz);
+      showReadyDialog();
     });
   }
 
@@ -80,23 +83,38 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
+    if (instance.get<UserGlobal>().onLogin == true) {
+      PreQuizGameAPIModel? newData =
+          await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
+              sNum: _preQuiz.startNum,
+              eNum: _preQuiz.endNum,
+              numQ: _preQuiz.numQ,
+              status: "GOING",
+              sign: _preQuiz.sign,
+              score: 0,
+              optionGame: _preQuiz.option,
+              timePerQuiz: _preQuiz.timePer,
+              userID: instance.get<UserGlobal>().id,
+              dateSave: formatDateInput.format(
+                DateTime.now(),
+              )));
+      _preIdServerNow = newData!.key!;
+    }
     instance.get<PreQuizGameRepo>().insertPreQuizGame(
         PreQuizGameEntityCompanion(
-            sNum: Value(_preQuiz.startNum!),
-            eNum: Value(_preQuiz.endNum!),
-            numQ: Value(_preQuiz.numQ!),
-            sign: Value(_preQuiz.sign!),
-            option: Value(_preQuiz.option!),
-            timePer: Value(_preQuiz.timePer!),
-            dateSave: Value(formatDateInput.format(DateTime.now()))));
+            sNum: driff.Value(_preQuiz.startNum!),
+            eNum: driff.Value(_preQuiz.endNum!),
+            numQ: driff.Value(_preQuiz.numQ!),
+            sign: driff.Value(_preQuiz.sign!),
+            option: driff.Value(_preQuiz.option!),
+            timePer: driff.Value(_preQuiz.timePer!),
+            dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
     final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
+
     // cap nhap lai id
     _preIdNow = data.id;
     _quizBrain.makeQuizTrueFalse(_preQuiz);
     _startTimer();
-    _value = 1;
-    _score = 0;
-    _totalNumberOfQuizzes = 1;
   }
 
   void _startTimer() {
@@ -136,23 +154,25 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   }
 
   void _saveData(BuildContext context) {
-    context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
-        prequizGameID: _preIdServerNow,
-        sign: _preQuiz.sign!,
-        quiz: _quizBrain.quiz,
-        infoQuiz: userAnswer,
-        userId: instance.get<UserGlobal>().id!,
-        answer: _quizBrain.quizTrueFalse == "TRUE" ? 1 : 0,
-        answerSelect: userChoose == _quizBrain.quizTrueFalse ? 1 : 0));
+    if (instance.get<UserGlobal>().onLogin == true) {
+      context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
+          prequizGameID: _preIdServerNow,
+          sign: _preQuiz.sign!,
+          quiz: _quizBrain.quiz,
+          infoQuiz: userAnswer,
+          userId: instance.get<UserGlobal>().id!,
+          answer: _quizBrain.quizTrueFalse == "TRUE" ? 1 : 0,
+          answerSelect: userChoose == _quizBrain.quizTrueFalse ? 1 : 0));
+    }
     context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
-        preId: Value(_preIdNow),
-        num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
-        sign: Value(_preQuiz.sign!),
-        quiz: Value(_quizBrain.quiz.toString()),
-        infoQuiz: Value(userAnswer),
-        num2: Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
-        answer: Value(_quizBrain.quizTrueFalse),
-        answerSelect: Value(userChoose.toString())));
+        preId: driff.Value(_preIdNow),
+        num1: driff.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
+        sign: driff.Value(_preQuiz.sign!),
+        quiz: driff.Value(_quizBrain.quiz.toString()),
+        infoQuiz: driff.Value(userAnswer),
+        num2: driff.Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
+        answer: driff.Value(_quizBrain.quizTrueFalse),
+        answerSelect: driff.Value(userChoose.toString())));
   }
 
   _updateScore() {
@@ -164,44 +184,58 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
 
   void _endGame() {
     _timer.cancel();
-    showMyDialog();
+    if (instance.get<UserGlobal>().onLogin == true) {
+      instance.get<UserAPIRepo>().updatePreQuizGameByID(
+          PreQuizGameAPIReq(score: _score, status: "DONE"), _preIdServerNow);
+    }
+    showEndDiaLog();
   }
 
   Future<void> showReadyDialog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('ARE YOU GUYS READY ?',
-                textAlign: TextAlign.center, style: kTitleTS),
+      builder: (BuildContext contextBui) {
+        return BlocProvider.value(
+          value: BlocProvider.of<GameCubit>(context),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+              25,
+            )),
+            backgroundColor: const Color(0xff1542bf),
+            title: const FittedBox(
+              child: Text('ARE YOU GUYS READY ?',
+                  textAlign: TextAlign.center, style: kTitleTS),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _startGame(_preQuiz);
+                },
+                child: const Text('GO', style: kDialogButtonsTS),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  if (instance.get<UserGlobal>().onLogin == true) {
+                    context
+                        .read<GameCubit>()
+                        .deletePreGameNow(_preIdServerNow.toString());
+                    Navigator.pushNamed(context, Routers.homeUser);
+                  } else {
+                    PreQuizCubit(
+                            preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+                            userAPIRepo: instance.get<UserAPIRepo>())
+                        .deletePreQuizGame(_preIdNow);
+                    Navigator.pushNamed(context, Routers.homeGuest);
+                  }
+                },
+                child: const Text('BACK', style: kDialogButtonsTS),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _startGame(_preQuiz);
-              },
-              child: const Text('GO', style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child: const Text('BACK', style: kDialogButtonsTS),
-            ),
-          ],
         );
       },
     );
@@ -249,7 +283,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
     }
   }
 
-  Future<void> showMyDialog() {
+  Future<void> showEndDiaLog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -306,19 +340,21 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var data = MediaQuery.of(context).size;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: kGradientColors,
-            ),
+      body: Column(
+        children: [
+          AppBarWidget(
+            size: data,
+            onBack: () {},
+            textTitle: "Game",
           ),
-          child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+          BlocBuilder<GameCubit, GameState>(builder: (context, state) {
             return PortraitModeTF(
               score: state.score,
               quizBrainObject: _quizBrain,
-              onBack: () {},
               percentValue: _value,
               timeNow: _totalTime,
               onTap: (String value) {
@@ -330,8 +366,11 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
               falseQ: falseChoose,
               totalQ: _preQuiz.numQ ?? 1,
               quizNow: _totalNumberOfQuizzes,
+              size: data,
             );
-          })),
+          }),
+        ],
+      ),
     );
   }
 

@@ -23,7 +23,8 @@ class HomeGameUserScreen extends StatelessWidget {
                 children: [
                   ItemMenuGame(
                     onPress: () {
-                      Navigator.pushNamed(context, Routers.chooseSign);
+                      Navigator.pushNamed(
+                          context, Routers.practiceMainScreenUserGame);
                     },
                     size: size,
                     linkGif:
@@ -48,11 +49,10 @@ class HomeGameUserScreen extends StatelessWidget {
                   ItemMenuGame(
                     size: size,
                     linkGif:
-                        "https://media.tenor.com/kVRWeTAwcfoAAAAM/muji-confused.gif",
+                        "https://media.tenor.com/zneUg_xrUMwAAAAM/time-pass-time-out.gif",
                     textTitle: 'TESTING',
                     onPress: () {
                       Navigator.pushNamed(context, Routers.mainTestUser);
-
                     },
                   )
                 ],

@@ -21,7 +21,6 @@ class PortraitModeGame extends StatelessWidget {
   final int quizNow;
   final QuizBrain quizBrainObject;
   final onTap;
-  VoidCallback onBack;
   double? percentValue;
   final Size size;
   String? typeOfGame;
@@ -40,7 +39,6 @@ class PortraitModeGame extends StatelessWidget {
       required this.onTap,
       this.percentValue,
       required this.size,
-      required this.onBack,
       this.controller,
       this.onFinished,
       this.typeOfGame,
