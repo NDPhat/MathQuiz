@@ -1,21 +1,17 @@
 import 'dart:async';
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/cons/text_style.dart';
 import '../../../application/utils/logic.dart';
 import '../../../application/utils/make_quiz.dart';
+import '../../../data/model/user_global.dart';
+import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/bot_dua_screen.dart';
-import '../../widget/cir_per_indicator.dart';
 import '../../widget/divider_line.dart';
 import '../../widget/line_info_player.dart';
 import '../../widget/playey_dual_screen.dart';
-import '../../widget/show_alert_test.dart';
 import '../../widget/time_runner.dart';
 
 class BotDual extends StatefulWidget {
@@ -209,7 +205,19 @@ class _BOTBattleScreenState extends State<BotDual> {
                 Navigator.pop(context);
                 _startGame();
               },
-              child: const Center(child: Text('GO', style: kTitleTS)),
+              child: Text('GO', style: kTitleTSReadyDL),
+            ),
+            TextButton(
+              onPressed: () {
+                if (instance.get<UserGlobal>().onLogin == true) {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeUser);
+                } else {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeGuest);
+                }
+              },
+              child: Text('BACK', style: kTitleTSReadyDL),
             ),
           ],
         );

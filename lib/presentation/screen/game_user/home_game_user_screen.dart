@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:math/application/cons/text_style.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/widget/home_user_bg.dart';
-
-import '../../../application/cons/color.dart';
 import '../../widget/item_menu_game_widget.dart';
 
 class HomeGameUserScreen extends StatelessWidget {
@@ -28,7 +25,7 @@ class HomeGameUserScreen extends StatelessWidget {
                     },
                     size: size,
                     linkGif:
-                        "https://media0.giphy.com/media/ENbpTeFYVEoSSj4A55/giphy.gif?cid=ecf05e47pw691f4r7okmg0nj5tg31gldwg9h1p5y7aj6wna1&ep=v1_gifs_related&rid=giphy.gif&ct=g",
+                        "https://media.tenor.com/4LriXOMbMi8AAAAi/study-santosh-dawar.gif",
                     textTitle: 'PRACTICE',
                   ),
                   SizedBox(
@@ -49,7 +46,7 @@ class HomeGameUserScreen extends StatelessWidget {
                   ItemMenuGame(
                     size: size,
                     linkGif:
-                        "https://media.tenor.com/zneUg_xrUMwAAAAM/time-pass-time-out.gif",
+                        "https://media.tenor.com/dpNZDEnuPGYAAAAj/study-focused.gif",
                     textTitle: 'TESTING',
                     onPress: () {
                       Navigator.pushNamed(context, Routers.mainTestUser);
