@@ -97,6 +97,22 @@ class OptionGameModeScreen extends StatelessWidget {
                                   arguments: OptionQuiz(
                                       sign: sign, optionQuiz: 'missing'));
                             },
+                          ),
+                          SizedBox(
+                            height: size.height * 0.05,
+                          ),
+                          ItemMenuGameMode(
+                            size: size,
+                            icon:  const Icon(
+                              LineAwesomeIcons.question,
+                              size: 40,
+                            ),
+                            textTitle: 'SENTENCES',
+                            onPress: () {
+                              Navigator.pushNamed(context, Routers.premake,
+                                  arguments: OptionQuiz(
+                                      sign: sign, optionQuiz: 'sentences'));
+                            },
                           )
                         ],
                       ),
@@ -123,7 +139,7 @@ class ItemMenuGameMode extends StatelessWidget {
 
   final Size size;
   final String textTitle;
-  final Icon icon;
+  final Widget icon;
   final VoidCallback onPress;
 
   @override

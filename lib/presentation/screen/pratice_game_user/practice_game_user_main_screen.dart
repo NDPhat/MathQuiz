@@ -141,56 +141,54 @@ class PracticeGameUserMainScreen extends StatelessWidget {
               style: s20f700ColorErrorPro,
             )),
           ),
-          Container(
-            child: SingleChildScrollView(
-              child: SizedBox(
-                height: size.height * 0.6,
-                width: size.width * 0.9,
-                child: FutureBuilder<List<PreQuizGameAPIModel>?>(
-                    future: instance
-                        .get<UserAPIRepo>()
-                        .getALlPreQuizGameByUidandStatus(
-                            instance.get<UserGlobal>().id.toString()),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SizedBox(
-                          height: size.height * 0.3,
-                          width: size.width * 0.3,
-                          child: const Center(
-                            child: CircularProgressIndicator(
-                              color: colorMainBlue,
-                              strokeWidth: 5,
-                            ),
+          SingleChildScrollView(
+            child: SizedBox(
+              height: size.height * 0.6,
+              width: size.width * 0.9,
+              child: FutureBuilder<List<PreQuizGameAPIModel>?>(
+                  future: instance
+                      .get<UserAPIRepo>()
+                      .getALlPreQuizGameByUidandStatus(
+                          instance.get<UserGlobal>().id.toString()),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SizedBox(
+                        height: size.height * 0.3,
+                        width: size.width * 0.3,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: colorMainBlue,
+                            strokeWidth: 5,
                           ),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return ItemCardHW(
-                              onTap: () {
-                                showDoneDialog(snapshot.data![index].key!);
-                              },
-                              size: size,
-                              backgroundColor: colorMainBlue,
-                              childRight: const Center(
-                                  child: Text(
-                                'DONE',
-                                style: s20f700ColorSysWhite,
-                              )),
-                              childLeft: PracticeMainScreenItemCard(
-                                  size: size,
-                                  index: index + 1,
-                                  dataResult: snapshot.data![index]),
-                            );
-                          },
-                        );
-                      }
+                        ),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return ItemCardHW(
+                            onTap: () {
+                              showDoneDialog(snapshot.data![index].key!);
+                            },
+                            size: size,
+                            backgroundColor: colorMainBlue,
+                            childRight: const Center(
+                                child: Text(
+                              'DONE',
+                              style: s20f700ColorSysWhite,
+                            )),
+                            childLeft: PracticeMainScreenItemCard(
+                                size: size,
+                                index: index + 1,
+                                dataResult: snapshot.data![index]),
+                          );
+                        },
+                      );
+                    }
 
-                      return Container();
-                    }),
-              ),
+                    return Container();
+                  }),
             ),
           )
         ],
