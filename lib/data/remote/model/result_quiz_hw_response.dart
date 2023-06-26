@@ -34,6 +34,7 @@ class ResultQuizHWAPIModel {
   int? score;
   int? trueQ;
   String? userId;
+  String? name;
   String? week;
 
   ResultQuizHWAPIModel(
@@ -42,6 +43,7 @@ class ResultQuizHWAPIModel {
       this.numQ,
       this.score,
       this.trueQ,
+        this.name,
       this.userId,
       this.week});
 
@@ -49,6 +51,7 @@ class ResultQuizHWAPIModel {
     falseQ = json['falseQ'];
     key = json['key'];
     numQ = json['numQ'];
+    name = json['name'];
     score = json['score'];
     trueQ = json['trueQ'];
     userId = json['userId'];
@@ -61,6 +64,7 @@ class ResultQuizHWAPIModel {
     data['key'] = this.key;
     data['numQ'] = this.numQ;
     data['score'] = this.score;
+    data['name'] = this.name;
     data['trueQ'] = this.trueQ;
     data['userId'] = this.userId;
     data['week'] = this.week;

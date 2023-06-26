@@ -1,8 +1,6 @@
 import 'dart:async';
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' as driff;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
@@ -10,19 +8,15 @@ import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/domain/home_repo.dart';
 import 'package:math/main.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/cons/text_style.dart';
 import '../../../application/utils/logic.dart';
 import '../../../data/model/pre_test_model.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../application/utils/make_quiz.dart';
-import '../../../domain/bloc/game/game_cubit.dart';
 import '../../routers/navigation.dart';
 
+import '../../widget/app_bar.dart';
 import '../../widget/portrait_mode_game.dart';
 import '../../widget/show_alert_test.dart';
 
@@ -71,13 +65,13 @@ class _TestScreenState extends State<TestScreen> {
 
   void _addData(BuildContext context) {
     context.read<TestCubit>().addDataToLocal(QuizTestEntityCompanion(
-        preId: Value(preTest.id!),
-        num1: Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
-        quiz: Value(_quizBrain.quiz),
-        infoQuiz: Value(userAnswer),
-        num2: Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
-        answer: Value(_quizBrain.quizAnswer.toString()),
-        answerSelect: Value(userChoose.toString())));
+        preId: driff.Value(preTest.id!),
+        num1: driff.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
+        quiz: driff.Value(_quizBrain.quiz),
+        infoQuiz: driff.Value(userAnswer),
+        num2: driff.Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
+        answer: driff.Value(_quizBrain.quizAnswer.toString()),
+        answerSelect: driff.Value(userChoose.toString())));
   }
 
   _updateScoreAndNumQ() {
@@ -190,13 +184,17 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: kGradientColors,
-            ),
+      body: Column(
+        children: [
+          AppBarWidget(
+            size: data,
+            onBack: () {
+              _controller.pause();
+              showOutDialog();
+            },
+            textTitle: "Testing",
           ),
-          child: BlocBuilder<TestCubit, TestState>(builder: (context, state) {
+          BlocBuilder<TestCubit, TestState>(builder: (context, state) {
             return PortraitModeGame(
               highscore: _highScore,
               score: _score,
@@ -219,12 +217,10 @@ class _TestScreenState extends State<TestScreen> {
                 });
               },
               size: data,
-              onBack: () {
-                _controller.pause();
-                showOutDialog();
-              },
             );
-          })),
+          }),
+        ],
+      ),
     );
   }
 }

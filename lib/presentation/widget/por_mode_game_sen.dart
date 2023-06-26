@@ -13,7 +13,7 @@ import 'answer_table_hw.dart';
 import 'app_bar.dart';
 import 'button_custom.dart';
 
-class PortraitModeGame extends StatelessWidget {
+class PortraitModeGameSen extends StatelessWidget {
   final highscore;
   final int score;
   final int trueQ, falseQ;
@@ -24,32 +24,31 @@ class PortraitModeGame extends StatelessWidget {
   double? percentValue;
   final Size size;
   String? typeOfGame;
-  double? percentTime;
   int? timeNow;
   CountDownController? controller;
   VoidCallback? onFinished;
-  PortraitModeGame(
+  PortraitModeGameSen(
       {required this.highscore,
-      required this.score,
-      required this.trueQ,
-      required this.falseQ,
-      this.totalQ,
-      required this.quizNow,
-      required this.quizBrainObject,
-      required this.onTap,
-      this.percentValue,
-      required this.size,
-      this.controller,
-      this.onFinished,
-      this.typeOfGame,
-      this.timeNow});
+        required this.score,
+        required this.trueQ,
+        required this.falseQ,
+        this.totalQ,
+        required this.quizNow,
+        required this.quizBrainObject,
+        required this.onTap,
+        this.percentValue,
+        required this.size,
+        this.controller,
+        this.onFinished,
+        this.typeOfGame,
+        this.timeNow});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding:
-          EdgeInsets.only(bottom: size.height * 0.02),
+      EdgeInsets.only(bottom: size.height * 0.02),
       child: Column(
         children: [
           Container(

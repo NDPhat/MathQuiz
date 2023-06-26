@@ -8,17 +8,19 @@ class PreQuizGameAPIReq {
   int? numQ;
   int? timePerQuiz;
   int? score;
+  String? status;
 
   PreQuizGameAPIReq(
       {this.userID,
-        this.sign,
-        this.optionGame,
-        this.dateSave,
-        this.sNum,
-        this.eNum,
-        this.numQ,
-        this.timePerQuiz,
-        this.score});
+      this.sign,
+      this.optionGame,
+      this.dateSave,
+      this.sNum,
+      this.eNum,
+      this.numQ,
+      this.timePerQuiz,
+      this.score,
+      this.status});
 
   PreQuizGameAPIReq.fromJson(Map<String, dynamic> json) {
     userID = json['userID'];
@@ -30,6 +32,7 @@ class PreQuizGameAPIReq {
     numQ = json['numQ'];
     timePerQuiz = json['timePerQuiz'];
     score = json['score'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class PreQuizGameAPIReq {
     data['numQ'] = this.numQ;
     data['timePerQuiz'] = this.timePerQuiz;
     data['score'] = this.score;
+    data['status'] = this.status;
     return data;
   }
 }

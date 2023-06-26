@@ -245,7 +245,7 @@ class DetailItemCardHomeWork extends StatelessWidget {
                                         }),
                                   ),
                                   timeHW:
-                                      "${snapshot.data![index].dstart} To ${snapshot.data![index].dstart}", type: "hw",
+                                      "${snapshot.data![index].dstart} To ${snapshot.data![index].dend}", type: "hw",
                                 );
                               },
                             );

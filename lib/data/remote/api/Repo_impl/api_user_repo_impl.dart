@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
-
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
+import 'package:math/data/remote/model/pre_quiz_game_sen_req.dart';
 import 'package:math/data/remote/model/pre_test_req.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/data/remote/model/quiz_game_req.dart';
@@ -11,17 +10,16 @@ import 'package:math/data/remote/model/quiz_test_req.dart';
 import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/data/remote/model/result_quiz_hw_req.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
+import 'package:math/data/remote/model/sentences_quiz_res.dart';
 import 'package:math/data/remote/model/user_api_res.dart';
-
 import '../../../../application/cons/endpoint.dart';
 import '../../../../application/di/event_local.dart';
 import '../../model/detail_quiz_hw_req.dart';
 import '../../model/detail_quiz_hw_response.dart';
 import '../../model/pre_quiz_game_req.dart';
+import '../../model/pre_quiz_game_sen_res.dart';
 import '../../model/pre_quiz_hw_response.dart';
-
 import 'package:http/http.dart' as http;
-
 import '../Repo/api_user_repo.dart';
 
 class UserAPIRepoImpl extends UserAPIRepo {
@@ -34,8 +32,12 @@ class UserAPIRepoImpl extends UserAPIRepo {
       if (res.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(res.body);
         final userModel = UserAPIRes.fromJson(parsed).lItems!.first;
-        UserEventLocal.updateUserGlobal(userModel);
-        return userModel;
+        if (userModel.role == "user") {
+          UserEventLocal.updateUserGlobal(userModel);
+          return userModel;
+        } else {
+          return null;
+        }
       } else {
         // log(req.body);
         Map<String, dynamic> parsed = json.decode(res.body);
@@ -207,11 +209,11 @@ class UserAPIRepoImpl extends UserAPIRepo {
 
   @override
   Future<bool?> updateInfoHomeWorkWeek(
-      ResultQuizHWAPIReq requestBody, String resultID) async {
+      ResultQuizHWAPIReq resultQuizHWReq, String resultID) async {
     try {
       final url = "${endpoint}updateResultQuizHWById?id=$resultID";
       final req = await http.patch(Uri.parse(url),
-          headers: requestHeaders, body: jsonEncode(requestBody.toJson()));
+          headers: requestHeaders, body: jsonEncode(resultQuizHWReq.toJson()));
       if (req.statusCode == 200) {
         return true;
       } else {
@@ -229,7 +231,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
   Future<List<ResultQuizHWAPIModel>?> getALlResultQuizHWByUserID(
       String uid) async {
     try {
-      final url = "${endpoint}getAllReultQuizHWByUId?userID=$uid";
+      final url = "${endpoint}getAllResultQuizHWByUId?userID=$uid";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(req.body);
@@ -275,14 +277,20 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<PreQuizHWResAPIModel?> getLatestPreQuizHW() async {
+  Future<PreQuizHWResAPIModel?> getOnGoingPreHWandNotDO(String uid) async {
     try {
-      const url = "${endpoint}getLatestPreQuizHW";
+      const url = "${endpoint}getPreWStatusOnGoing";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       Map<String, dynamic> parsed = json.decode(req.body);
       PreQuizHWResAPIModel? result =
           PreQuizHWAPIResponse.fromJson(parsed).lItems!.first;
-      return result;
+      ResultQuizHWAPIModel? data =
+          await getResultQuizHWByUserIDAndWeek(uid, result.week!);
+      if (data == null) {
+        return result;
+      } else {
+        return null;
+      }
     } on SocketException catch (_) {
       return null;
     } catch (_) {
@@ -326,11 +334,12 @@ class UserAPIRepoImpl extends UserAPIRepo {
         Map<String, dynamic> parsed = json.decode(req.body);
         ResultQuizHWAPIModel? result =
             ResultQuizHWAPIResponse.fromJson(parsed).lItems!.first;
+        return result;
       }
     } on SocketException catch (_) {
-      return Future.error('No network found');
+      return null;
     } catch (_) {
-      return Future.error('Something occurred');
+      return null;
     }
   }
 
@@ -363,7 +372,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
   Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByUserIDAndWeek(
       String userID, String week) async {
     try {
-      final url = "${endpoint}getAllReultQuizHWByUId?userID=$userID";
+      final url = "${endpoint}getAllResultQuizHWByUId?userID=$userID";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(req.body);
@@ -373,30 +382,18 @@ class UserAPIRepoImpl extends UserAPIRepo {
         List<DetailQuizHWAPIModel>? listDetailQuiz;
         result?.forEach((element) {
           if (element.week == week) {
-            resultID = element!.key;
+            resultID = element.key;
           }
         });
         listDetailQuiz = await getALlQuizDetailByResultID(resultID!);
         return listDetailQuiz;
       } else {
-        Map<String, dynamic> parsed = json.decode(req.body);
-        List<ResultQuizHWAPIModel>? result =
-            ResultQuizHWAPIResponse.fromJson(parsed).lItems;
-        List<String> resultID = [];
-        List<DetailQuizHWAPIModel>? listDetailQuiz;
-        result?.forEach((element) {
-          resultID.add(element!.key.toString());
-        });
-        for (String element in resultID) {
-          List<DetailQuizHWAPIModel>? newList =
-              await getALlQuizDetailByResultID(element);
-          listDetailQuiz!.addAll(newList!);
-        }
+        return null;
       }
     } on SocketException catch (_) {
-      return Future.error('No network found');
+      return null;
     } catch (_) {
-      return Future.error('Something occurred');
+      return null;
     }
   }
 
@@ -413,12 +410,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
             PreQuizGameAPIResponse.fromJson(parsed).lItems!.first;
         return result;
       } else {
-        // log(req.body);
-        Map<String, dynamic> parsed = json.decode(req.body);
-        PreQuizGameAPIModel? result =
-            PreQuizGameAPIResponse.fromJson(parsed).lItems!.first;
-
-        return result;
+        return null;
       }
     } on SocketException catch (_) {
       return Future.error('No network found');
@@ -435,6 +427,8 @@ class UserAPIRepoImpl extends UserAPIRepo {
           headers: requestHeaders, body: jsonEncode(quizReq.toJson()));
       if (req.statusCode == 200) {
         return true;
+      } else {
+        return false;
       }
     } on SocketException catch (_) {
       return false;
@@ -550,7 +544,6 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final req = await http.post(Uri.parse(url),
           headers: requestHeaders, body: jsonEncode(preQuizReq.toJson()));
       Map<String, dynamic> parsed = json.decode(req.body);
-      print(parsed);
       PreTestAPIRes? result = GetPreTestAPIRes.fromJson(parsed).lItems!.first;
       return result;
     } on SocketException catch (_) {
@@ -588,6 +581,8 @@ class UserAPIRepoImpl extends UserAPIRepo {
           headers: requestHeaders, body: jsonEncode(preQuizReq.toJson()));
       if (req.statusCode == 200) {
         return true;
+      } else {
+        return false;
       }
     } on SocketException catch (_) {
       return false;
@@ -642,13 +637,14 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<bool?> deleteResultHWNotDo(String resultID) async{
+  Future<bool?> deleteResultHWNotDo(String resultID) async {
     try {
       final url = "${endpoint}deleteResultQHWResultId?resultID=$resultID";
-      final req = await http.delete(Uri.parse(url),
-          headers: requestHeaders);
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         return true;
+      } else {
+        return false;
       }
     } on SocketException catch (_) {
       return false;
@@ -658,18 +654,178 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<bool?> deleteTestingNotDoByPreTestId(String preID) async{
+  Future<bool?> deleteTestingNotDoByPreTestId(String preID) async {
     try {
       final url = "${endpoint}deletePreTestByID?id=$preID";
-      final req = await http.delete(Uri.parse(url),
-          headers: requestHeaders);
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         return true;
+      } else {
+        return false;
       }
     } on SocketException catch (_) {
       return false;
     } catch (_) {
       return false;
+    }
+  }
+
+  @override
+  Future<ResultQuizHWAPIModel?> getResultQuizHWByUserIDAndWeek(
+      String uid, String week) async {
+    try {
+      final url =
+          "${endpoint}getResultQuizHWByUIdAndWeek?userID=$uid&week=$week";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        int count = ResultQuizHWAPIResponse.fromJson(parsed).iCount!;
+        if (count == 0) {
+          return null;
+        } else {
+          return ResultQuizHWAPIResponse.fromJson(parsed).lItems!.first;
+        }
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(req.body);
+        ResultQuizHWAPIModel? result = ResultQuizHWAPIModel.fromJson(parsed);
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<bool?> deletePreQuizGame(String id) async {
+    try {
+      final url = "${endpoint}deletePreGameByID?id=$id";
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<List<PreQuizGameAPIModel>?> getALlPreQuizGameByUidandStatus(
+      String uid) async {
+    try {
+      final url = "${endpoint}getAllPreQuizGameByUIdAndStatus?uid=$uid";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<PreQuizGameAPIModel>? result =
+            PreQuizGameAPIResponse.fromJson(parsed).lItems;
+        return result;
+      } else {
+        Map<String, dynamic> parsed = json.decode(req.body);
+
+        // log(req.body);
+        List<PreQuizGameAPIModel>? result =
+            PreQuizGameAPIResponse.fromJson(parsed).lItems;
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<PreQuizGameSenModelRes?> createPreQuizSenGame(
+      PreQuizGameSenReq preQuizSenReq) async {
+    try {
+      const url = "${endpoint}create_prequiz_sen_game";
+      final req = await http.post(Uri.parse(url),
+          headers: requestHeaders, body: jsonEncode(preQuizSenReq.toJson()));
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreQuizGameSenModelRes? result =
+            PreQuizGameSenAPIRes.fromJson(parsed).lItems!.first;
+        return result;
+      } else {
+        return null;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<bool?> deletePreQuizSenGame(String id) async {
+    try {
+      final url = "${endpoint}deletePreGameSenByID?id=$id";
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<PreQuizGameSenModelRes?> updatePreQuizSenGameByID(
+      PreQuizGameSenReq preQuizSenReq, String preID) async {
+    try {
+      final url = "${endpoint}updatePreQuizSenGameById?id=$preID";
+      final req = await http.patch(Uri.parse(url),
+          headers: requestHeaders, body: jsonEncode(preQuizSenReq.toJson()));
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreQuizGameSenModelRes? result =
+            PreQuizGameSenModelRes.fromJson(parsed);
+        return result;
+      } else {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreQuizGameSenModelRes? result =
+            PreQuizGameSenModelRes.fromJson(parsed);
+        return result;
+      }
+    } on SocketException catch (_) {
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Future<List<SentencesQuizRes>?> getRandomeListQuiz() async {
+    try {
+      const url = "${endpoint}getRandomListQuizSen";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        List<SentencesQuizRes>? result = [];
+        String array = req.body;
+        List<dynamic> list = json.decode(array);
+        for (int i = 0; i < 10; i++) {
+          SentencesQuizRes data = SentencesQuizRes.fromJson(list[i]);
+          result!.add(data);
+        }
+        return result;
+      } else {
+        return null;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
     }
   }
 }

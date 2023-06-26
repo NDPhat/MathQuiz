@@ -8,7 +8,9 @@ class UserGlobal {
   String? address;
   bool? onLogin;
   String? lop;
-  String ? password;
+  String? password;
+  String? role;
+  String? linkImage;
 
   UserGlobal({
     this.id,
@@ -18,6 +20,8 @@ class UserGlobal {
     this.dateOfBirth,
     this.gender,
     this.address,
+    this.linkImage,
+    this.role,
     this.phone,
     this.lop,
     this.password,

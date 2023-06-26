@@ -36,19 +36,23 @@ class UserAPIModel {
   String? name;
   String? otp;
   String? password;
+  String? linkImage;
   String? phone;
   String? sex;
+  String? role;
 
   UserAPIModel(
       {this.add,
       this.birthDate,
       this.email,
       this.key,
+      this.linkImage,
       this.lop,
       this.name,
       this.otp,
       this.password,
       this.phone,
+      this.role,
       this.sex});
 
   UserAPIModel.fromJson(Map<String, dynamic> json) {
@@ -57,6 +61,8 @@ class UserAPIModel {
     email = json['email'];
     key = json['key'];
     lop = json['lop'];
+    role = json['role'];
+    linkImage = json['linkImage'];
     name = json['name'];
     otp = json['otp'];
     password = json['password'];
@@ -70,6 +76,8 @@ class UserAPIModel {
     data['email'] = this.email;
     data['key'] = this.key;
     data['lop'] = this.lop;
+    data['role'] = this.role;
+    data['linkImage'] = this.linkImage;
     data['name'] = this.name;
     data['otp'] = this.otp;
     data['password'] = this.password;

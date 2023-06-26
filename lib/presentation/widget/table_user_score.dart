@@ -36,7 +36,7 @@ class UserTableScore extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           Container(
-            height: size.height * 0.2,
+            height: size.height * 0.15,
             decoration: const BoxDecoration(
                 color: colorBlueQuaternery,
                 borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -64,7 +64,7 @@ class UserTableScore extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 80),
+                  padding: EdgeInsets.only(top: size.height * 0.1),
                   child: Row(
                     children: [
                       const Text(
@@ -128,7 +128,7 @@ class UserTableScore extends StatelessWidget {
           ),
           typeOfGame == "Test"
               ? Padding(
-                  padding: EdgeInsets.only(bottom: 150),
+                  padding: EdgeInsets.only(bottom: size.height * 0.1),
                   child: CircleAvatar(
                       radius: 40,
                       backgroundColor: colorSystemWhite,
@@ -157,16 +157,17 @@ class UserTableScore extends StatelessWidget {
                       )),
                 )
               : Padding(
-                padding: EdgeInsets.only(bottom: size.height*0.15),child: CircleAvatar(
-                  radius: 60,
-                  backgroundColor: colorSystemWhite,
-                  child: CirPerIndicator(
-                    percentValue: percentTime,
-                    size: size,
-                    totalTime: timeNow,
+                  padding: EdgeInsets.only(bottom: size.height * 0.1),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: colorSystemWhite,
+                    child: CirPerIndicator(
+                      percentValue: percentTime,
+                      size: size,
+                      totalTime: timeNow,
+                    ),
                   ),
                 ),
-              ),
         ],
       ),
     );

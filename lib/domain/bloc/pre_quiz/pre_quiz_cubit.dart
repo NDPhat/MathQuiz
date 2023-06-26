@@ -102,6 +102,14 @@ class PreQuizCubit extends Cubit<PreQuizState> {
     }
   }
 
+  void deletePreQuizGame(int id) async {
+    try {
+      await preQuizLocalRepo.deletePreQuizGame(id);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
   void addPreQuizGame(String sign, String option) async {
     if (isFormValid() == true) {
       try {
@@ -111,6 +119,7 @@ class PreQuizCubit extends Cubit<PreQuizState> {
               sNum: state.sNum!,
               eNum: state.eNum!,
               numQ: state.numQ!,
+              status: "GOING",
               sign: sign,
               score: 0,
               optionGame: option,
@@ -134,12 +143,11 @@ class PreQuizCubit extends Cubit<PreQuizState> {
         emit(state.copyWith(
             numQMess: "",
             id: data.id,
-            idServer: dataServer!.key,
+            idServer: instance.get<UserGlobal>().onLogin! ? dataServer!.key : "0",
             sNumMess: "",
             eNumMess: "",
             status: PreQuizStatus.success));
       } on Exception catch (e) {
-        print(e.toString());
         emit(state.copyWith(
             numQMess: numQMEss,
             sNumMess: sNumMess,

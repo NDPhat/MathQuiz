@@ -15,15 +15,12 @@ class ShowEndDialog extends StatelessWidget {
   final score;
   final totalNumberOfQuizzes;
   final startGame;
-  final int preId;
-  final String preIdServer;
 
   ShowEndDialog(
       {required this.score,
       required this.totalNumberOfQuizzes,
       required this.startGame,
-      required this.preId,
-      required this.preIdServer});
+     });
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +40,7 @@ class ShowEndDialog extends StatelessWidget {
           return TextButton(
             onPressed: () {
               if (instance.get<UserGlobal>().onLogin == true) {
-                context.read<GameCubit>().updateScorePreQuizGameByID(
-                    preIdServer, PreQuizGameAPIReq(score: score));
+
                 Navigator.pushNamed(context, Routers.homeUser);
               } else {
                 Navigator.pushNamed(context, Routers.homeGuest);
