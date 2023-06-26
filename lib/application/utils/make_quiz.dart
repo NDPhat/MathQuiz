@@ -1,9 +1,12 @@
 import 'dart:math';
 
 import 'package:math/data/model/make_quiz.dart';
+import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/main.dart';
 
 import '../../data/model/pre_join_homework.dart';
 import '../../data/remote/model/pre_quiz_hw_response.dart';
+import '../../data/remote/model/sentences_quiz_res.dart';
 
 class QuizBrain {
   int _quizAnswer = 0;
@@ -11,6 +14,7 @@ class QuizBrain {
   int hiddenPositionNumber = 0;
   String quizTrueFalse = "TRUE";
   var listAnswer = [0, 0, 0, 0];
+  List<int> listPos = [];
   String _quiz = '';
   Random _random = Random();
   void makeQuiz(PreQuizGame preQuiz) {
@@ -437,6 +441,76 @@ class QuizBrain {
     listAnswer.add(_quizAnswer);
     listAnswer.shuffle();
     _quiz = '$firstNumber $signChoose $secondNumber =';
+  }
+
+  Future<List<SentencesQuizRes>?> getDataForFirstQuizSentences() async {
+    List<SentencesQuizRes>? listData =
+        await instance.get<UserAPIRepo>().getRandomeListQuiz();
+    return listData;
+  }
+
+  void makeFirstQuizSentences(List<SentencesQuizRes>? listData) {
+    int pos = _random.nextInt(9);
+    _quiz = listData![pos].quiz!;
+    _quizAnswer = int.parse(listData![pos].answer!);
+    int anwser1 = 0;
+    int anwser2 = 0;
+    int anwser3 = 0;
+    do {
+      anwser1 = _random.nextInt(_quizAnswer + 0) + 20;
+    } while (anwser1 == _quizAnswer);
+    do {
+      anwser2 = _random.nextInt(_quizAnswer + 0) + 20;
+    } while (anwser2 == _quizAnswer || anwser2 == anwser1);
+
+    do {
+      anwser3 = _random.nextInt(_quizAnswer + 0) + 20;
+    } while (
+        anwser3 == _quizAnswer || anwser3 == anwser1 || anwser3 == anwser2);
+    listAnswer = [];
+    listAnswer.add(anwser1);
+    listAnswer.add(anwser2);
+    listAnswer.add(anwser3);
+    listAnswer.add(_quizAnswer);
+    listAnswer.shuffle();
+  }
+
+  void makeOtherQuizSentences(
+      int posPast, String pastQuiz, List<SentencesQuizRes>? listData) {
+    List<String> listQuiz = [];
+    List<String> toRemove = [];
+    listData!.forEach((element) {
+      listQuiz.add(element.quiz!);
+    });
+    for (String e in listQuiz) {
+      if (e == pastQuiz) {
+        toRemove.add(e);
+      }
+    }
+    values.removeWhere((key, value) => toRemove.contains(key));
+    int pos = _random.nextInt(posPast);
+    _quiz = listData![pos].quiz!;
+    _quizAnswer = int.parse(listData![pos].answer!);
+    int anwser1 = 0;
+    int anwser2 = 0;
+    int anwser3 = 0;
+    do {
+      anwser1 = _random.nextInt(_quizAnswer + 0) + 20;
+    } while (anwser1 == _quizAnswer);
+    do {
+      anwser2 = _random.nextInt(_quizAnswer + 0) + 20;
+    } while (anwser2 == _quizAnswer || anwser2 == anwser1);
+
+    do {
+      anwser3 = _random.nextInt(_quizAnswer + 0) + 20;
+    } while (
+        anwser3 == _quizAnswer || anwser3 == anwser1 || anwser3 == anwser2);
+    listAnswer = [];
+    listAnswer.add(anwser1);
+    listAnswer.add(anwser2);
+    listAnswer.add(anwser3);
+    listAnswer.add(_quizAnswer);
+    listAnswer.shuffle();
   }
 
   get quizAnswer => _quizAnswer;

@@ -18,6 +18,7 @@ import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_hw.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_prac_screen.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
+import 'package:math/presentation/screen/game_screen/sentences_game_screen.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/home/home_user.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
@@ -49,6 +50,8 @@ import '../screen/home/home_guest.dart';
 import '../screen/home_work/home_work_user_game_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
 import '../screen/option_game_mode/option_sign_screen.dart';
+import '../screen/pratice_game_user/widget/practice_number_game_user_main_screen.dart';
+import '../screen/pratice_game_user/widget/practice_sentences_game_user_main_screen.dart';
 import '../screen/pre_quiz/pre_quiz_game.dart';
 import '../screen/profile_user/my_account/profile_myaccount.dart';
 import '../screen/test_screen/test_exam_screen.dart';
@@ -78,6 +81,7 @@ class Routers {
   static const String homeGuest = '/homeGuest';
   static const String homeUser = '/homeUser';
   static const String gameScreenUser = '/gameScreenUser';
+  static const String senGameScreen = '/senGameScreen';
   static const String historyPra = '/historyPra';
   static const String historyTest = '/historyTest';
   static const String historyHome = '/historyHome';
@@ -95,6 +99,9 @@ class Routers {
   static const String homeworkGame = '/homeworkGame';
   static const String practiceMainScreenUserGame =
       '/practiceMainScreenUserGame';
+  static const String practiceScreenUserGameNum = '/practiceScreenUserGameNum';
+  static const String practiceMainScreenUserGameSen =
+      '/practiceScreenUserGameSen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
@@ -111,6 +118,10 @@ class Routers {
         return CheckAnswerPracUserGameScreen();
       case hwcardDetail:
         return DetailItemCardHomeWork();
+      case practiceMainScreenUserGameSen:
+        return PracticeSenGameUserScreen();
+      case practiceScreenUserGameNum:
+        return PracticeNumberGameUserScreen();
       case practiceMainScreenUserGame:
         return PracticeGameUserMainScreen();
       case testDetail:
@@ -203,6 +214,12 @@ class Routers {
                 quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
                 userAPIRepo: instance.get<UserAPIRepo>()),
             child: const FindMissing());
+      case senGameScreen:
+        return BlocProvider(
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
+            child:  SentencesGameScreen());
       case doTestPra:
         return BlocProvider(
             create: (context) =>

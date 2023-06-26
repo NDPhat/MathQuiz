@@ -66,7 +66,7 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
     }
   }
 
-  Future<void> showMyDialog() {
+  Future<void> showFinishDialog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -170,7 +170,6 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               onPressed: () async {
                 Navigator.pop(context);
                 _controller.start();
-
                 _startGame();
               },
               child: const Text('GO', style: kDialogButtonsTS),
@@ -228,7 +227,7 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               controller: _controller,
               quizNow: _totalNumberOfQuizzes,
               onFinished: () {
-                showMyDialog();
+                showFinishDialog();
               },
               size: data,
             );

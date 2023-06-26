@@ -326,8 +326,7 @@ class _FindMissingState extends State<FindMissing> {
             value: BlocProvider.of<GameCubit>(context),
             child: ShowEndDialog(
               score: _score,
-              preIdServer: _preQuiz.idServer!,
-              preId: _preQuiz.id!,
+
               totalNumberOfQuizzes: _totalNumberOfQuizzes,
               startGame: _startGameAgain,
             ));

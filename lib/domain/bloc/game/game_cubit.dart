@@ -60,5 +60,8 @@ class GameCubit extends Cubit<GameState> {
   void deletePreGameNow(String id) async {
     await userAPIRepo.deletePreQuizGame(id);
   }
+  void deletePreGameSenNow(String id) async {
+    await userAPIRepo.deletePreQuizSenGame(id);
+  }
 
 }

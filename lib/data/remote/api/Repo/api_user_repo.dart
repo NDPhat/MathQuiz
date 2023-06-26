@@ -8,11 +8,14 @@ import '../../model/detail_quiz_hw_req.dart';
 import '../../model/detail_quiz_hw_response.dart';
 import '../../model/pre_quiz_game_req.dart';
 import '../../model/pre_quiz_game_response.dart';
+import '../../model/pre_quiz_game_sen_req.dart';
+import '../../model/pre_quiz_game_sen_res.dart';
 import '../../model/pre_quiz_hw_response.dart';
 import '../../model/pre_test_res.dart';
 import '../../model/quiz_game_req.dart';
 import '../../model/quiz_game_response.dart';
 import '../../model/result_quiz_hw_req.dart';
+import '../../model/sentences_quiz_res.dart';
 
 abstract class UserAPIRepo {
   Future<UserAPIModel?> getUserByEmailAndPass(String email, String pass);
@@ -45,14 +48,20 @@ abstract class UserAPIRepo {
   Future<List<PreQuizGameAPIModel>?> getALlPreQuizGameByUidandStatus(
       String uid);
   Future<PreQuizGameAPIModel?> createPreQuizGame(PreQuizGameAPIReq preQuizReq);
+  Future<PreQuizGameSenModelRes?> createPreQuizSenGame(
+      PreQuizGameSenReq preQuizSenReq);
   Future<bool?> deletePreQuizGame(String id);
+  Future<bool?> deletePreQuizSenGame(String id);
   Future<PreTestAPIRes?> createPreQuizTest(PreTestReq preQuizReq);
   Future<PreQuizGameAPIModel?> updatePreQuizGameByID(
       PreQuizGameAPIReq preQuizReq, String preID);
+  Future<PreQuizGameSenModelRes?> updatePreQuizSenGameByID(
+      PreQuizGameSenReq preQuizSenReq, String preID);
   Future<bool?> updatePreQuizTestByID(PreTestReq preQuizReq, String preID);
   Future<bool?> createQuizGame(QuizGameAPIReq quizReq);
   Future<bool?> createQuizTest(QuizTestReq quizReq);
   Future<List<QuizTestAPIRes>?> getALlQuizTestByPreTestID(String preID);
+  Future<List<SentencesQuizRes>?> getRandomeListQuiz();
   Future<List<PreTestAPIRes>?> getALlPreQuizTestByUid(String uid);
   Future<bool?> deleteTestingNotDoByPreTestId(String preID);
 }

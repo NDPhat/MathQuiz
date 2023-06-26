@@ -6,11 +6,11 @@ import '../../application/cons/text_style.dart';
 class ItemMenuGame extends StatelessWidget {
   const ItemMenuGame(
       {super.key,
-        required this.size,
-        required this.linkGif,
-        required this.textTitle,
-        required this.onPress});
-  final String linkGif;
+      required this.size,
+      required this.child,
+      required this.textTitle,
+      required this.onPress});
+  final Widget child;
   final String textTitle;
   final Size size;
   final VoidCallback onPress;
@@ -30,8 +30,7 @@ class ItemMenuGame extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(100)),
                   border: Border.all(color: colorErrorPrimary)),
-              child: Image(
-                  height: size.height * 0.4, image: NetworkImage(linkGif))),
+              child: child),
         ),
         Container(
             alignment: Alignment.center,

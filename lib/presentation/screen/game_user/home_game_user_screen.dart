@@ -16,44 +16,48 @@ class HomeGameUserScreen extends StatelessWidget {
             child: SingleChildScrollView(
           child: Column(
             children: [
-              Column(
-                children: [
-                  ItemMenuGame(
-                    onPress: () {
-                      Navigator.pushNamed(
-                          context, Routers.practiceMainScreenUserGame);
-                    },
-                    size: size,
-                    linkGif:
-                        "https://media.tenor.com/4LriXOMbMi8AAAAi/study-santosh-dawar.gif",
-                    textTitle: 'PRACTICE',
-                  ),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
-                  ItemMenuGame(
-                    onPress: () {
-                      Navigator.pushNamed(context, Routers.battleMainScreen);
-                    },
-                    size: size,
-                    linkGif:
-                        "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2VlN2EzMDc0YTg0OWQ2ZWE3MzFjNTVmM2UxN2UyNzM1ZmVkM2M5OCZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PXM/JmPabUqU22FAbQYkzN/giphy.gif",
-                    textTitle: 'GAME',
-                  ),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
-                  ItemMenuGame(
-                    size: size,
-                    linkGif:
-                        "https://media.tenor.com/dpNZDEnuPGYAAAAj/study-focused.gif",
-                    textTitle: 'TESTING',
-                    onPress: () {
-                      Navigator.pushNamed(context, Routers.mainTestUser);
-                    },
-                  )
-                ],
+              ItemMenuGame(
+                onPress: () {
+                  Navigator.pushNamed(
+                      context, Routers.practiceMainScreenUserGame);
+                },
+                size: size,
+                textTitle: 'PRACTICE',
+                child: Image(
+                    height: size.height * 0.4,
+                    image: const NetworkImage(
+                      "https://media.tenor.com/4LriXOMbMi8AAAAi/study-santosh-dawar.gif",
+                    )),
               ),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              ItemMenuGame(
+                onPress: () {
+                  Navigator.pushNamed(context, Routers.battleMainScreen);
+                },
+                size: size,
+                textTitle: 'GAME',
+                child: Image(
+                    height: size.height * 0.4,
+                    image: const NetworkImage(
+                      "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2VlN2EzMDc0YTg0OWQ2ZWE3MzFjNTVmM2UxN2UyNzM1ZmVkM2M5OCZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PXM/JmPabUqU22FAbQYkzN/giphy.gif",
+                    )),
+              ),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              ItemMenuGame(
+                size: size,
+                textTitle: 'TESTING',
+                onPress: () {
+                  Navigator.pushNamed(context, Routers.mainTestUser);
+                },
+                child: Image(
+                    height: size.height * 0.4,
+                    image: const NetworkImage(
+                        "https://media.tenor.com/dpNZDEnuPGYAAAAj/study-focused.gif")),
+              )
             ],
           ),
         )));
