@@ -59,7 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                   },
                   animatedTexts: [
                     ColorizeAnimatedText(
-                      'Tap to Start',
+                      'Xin Chào',
                       textAlign: TextAlign.center,
                       textStyle: kAnimationTextStyle,
                       colors: kColorizeAnimationColors,

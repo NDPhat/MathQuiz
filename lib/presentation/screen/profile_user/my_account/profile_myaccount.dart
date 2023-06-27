@@ -1,14 +1,10 @@
 import 'dart:io';
-import 'dart:ui' as ui;
 import 'dart:async';
-import 'dart:typed_data';
-import 'dart:math' as math;
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:math/application/enum/update_profile_status.dart';
 import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -21,6 +17,7 @@ import '../../../../../application/cons/color.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../../../widget/scroll_data_widget.dart';
+import 'package:http/http.dart' as http;
 
 class UpdateProfileUserScreen extends StatefulWidget {
   UpdateProfileUserScreen({
@@ -59,6 +56,23 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
     } else {
       return Image.asset("assets/images/profile.png");
     }
+  }
+
+  void uploadImageToServer(String title, File file) async {
+    var request = http.MultipartRequest(
+        "POST", Uri.parse("https://api.imgur.com/3/image"));
+    request.fields['title'] = "Dai Phat";
+    request.headers["Authorization"] = " Client-ID 123454fab2d41ee";
+    var pic = http.MultipartFile.fromBytes(
+        'image',
+        (await rootBundle.load(
+            "assets/images/profile.png"
+        )).buffer.asInt8List(),filename: "ava");
+    request.files.add(pic);
+    var res =await request.send();
+    var resData=await res.stream.toBytes();
+    var result=String.fromCharCodes(resData);
+    print(result);
   }
 
   Widget handlePreview() {
@@ -587,9 +601,10 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       }, builder: (context, state) {
                         return RoundedButton(
                             press: () {
-                              context
-                                  .read<UpdateProfileCubit>()
-                                  .updateProfileUser();
+                              // context
+                              //     .read<UpdateProfileCubit>()
+                              //     .updateProfileUser();
+                              uploadImageToServer("board",File( "assets/images/board.png"));
                             },
                             color: colorMainBlue,
                             width: size.width * 0.8,

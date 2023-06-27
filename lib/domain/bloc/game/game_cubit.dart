@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:math/application/utils/make_quiz.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/remote/model/pre_quiz_game_req.dart';
+import 'package:math/data/remote/model/pre_quiz_game_sen_req.dart';
 import 'package:math/data/remote/model/quiz_game_req.dart';
 import 'package:math/data/remote/model/quiz_test_req.dart';
 
@@ -35,6 +36,11 @@ class GameCubit extends Cubit<GameState> {
         trueQ: trueQ, falseQ: falseQ, qNow: quizNow, score: score, timeNow: 5));
   }
 
+  void changeDataSenAfterDoneQ(int score, int quizNow, int trueQ, int falseQ) {
+    emit(state.copyWith(
+        score: score, qNow: quizNow, trueQ: trueQ, falseQ: falseQ));
+  }
+
   void emitTimeNow(int time, int falseQ, int quizNow) {
     if (time == 1) {
       emit(state.copyWith(timeNow: 5, falseQ: falseQ++, qNow: quizNow++));
@@ -60,8 +66,12 @@ class GameCubit extends Cubit<GameState> {
   void deletePreGameNow(String id) async {
     await userAPIRepo.deletePreQuizGame(id);
   }
+
   void deletePreGameSenNow(String id) async {
     await userAPIRepo.deletePreQuizSenGame(id);
   }
 
+  void updatePreGameSenNowById(String id,PreQuizGameSenReq req) async {
+    await userAPIRepo.updatePreQuizSenGameByID(req,id);
+  }
 }

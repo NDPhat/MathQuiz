@@ -22,7 +22,7 @@ class HomeUserBG extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: size.width * 0.75,
+              width: size.width * 0.6,
               child: Row(children: [
                 Padding(
                   padding: EdgeInsets.only(right: size.width * 0.1),
@@ -33,7 +33,23 @@ class HomeUserBG extends StatelessWidget {
                 Text(textNow, style: s26f700ColorGreyPri),
               ]),
             ),
-
+            CircleAvatar(
+              backgroundColor: colorMainBlue,
+              radius: 30,
+              child: CircleAvatar(
+                backgroundColor: colorSystemWhite,
+                radius: 25,
+                child: Padding(
+                  padding: const EdgeInsets.all(8), // Border radius
+                  child: ClipOval(
+                    child: Image.asset(
+                      "assets/images/profile.png",
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
         child

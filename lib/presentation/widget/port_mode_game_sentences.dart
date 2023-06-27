@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:math/presentation/widget/answer_table.dart';
 import 'package:math/presentation/widget/quiz_body.dart';
 import 'package:math/presentation/widget/quiz_body_hw.dart';
+import 'package:math/presentation/widget/quiz_body_sen.dart';
 import 'package:math/presentation/widget/table_user_score.dart';
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
@@ -24,31 +25,31 @@ class PortraitModeGameSen extends StatelessWidget {
   double? percentValue;
   final Size size;
   String? typeOfGame;
+  double? percentTime;
   int? timeNow;
   CountDownController? controller;
   VoidCallback? onFinished;
   PortraitModeGameSen(
       {required this.highscore,
-        required this.score,
-        required this.trueQ,
-        required this.falseQ,
-        this.totalQ,
-        required this.quizNow,
-        required this.quizBrainObject,
-        required this.onTap,
-        this.percentValue,
-        required this.size,
-        this.controller,
-        this.onFinished,
-        this.typeOfGame,
-        this.timeNow});
+      required this.score,
+      required this.trueQ,
+      required this.falseQ,
+      this.totalQ,
+      required this.quizNow,
+      required this.quizBrainObject,
+      required this.onTap,
+      this.percentValue,
+      required this.size,
+      this.controller,
+      this.onFinished,
+      this.typeOfGame,
+      this.timeNow});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Padding(
-      padding:
-      EdgeInsets.only(bottom: size.height * 0.02),
+      padding: EdgeInsets.only(bottom: size.height * 0.02),
       child: Column(
         children: [
           Container(
@@ -69,20 +70,24 @@ class PortraitModeGameSen extends StatelessWidget {
                 ),
                 Stack(
                   children: [
-                    Image.asset(
-                      "assets/images/table_quiz.png",
-                      fit: BoxFit.fill,
+                    Container(
+                      width: size.width,
+                      height: size.height * 0.35,
+                      decoration: BoxDecoration(
+                          color: colorMainTealPri,
+                          border: Border.all(
+                            width: 10,
+                            color: colorSystemYeloow,
+                          )),
                     ),
                     Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(
-                          top: size.height * 0.2, left: size.width * 0.2),
-                      child: QuizBodyHW(
+                      padding: EdgeInsets.only(top: size.height * 0.03),
+                      child: QuizBodySen(
                           quizBrainObject: quizBrainObject, size: size),
                     ),
                   ],
                 ),
-                SizedBox(height: size.height * 0.03),
+                SizedBox(height: size.height * 0.05),
                 AnswerTable(
                     size: size, quizBrainObject: quizBrainObject, onTap: onTap)
               ],

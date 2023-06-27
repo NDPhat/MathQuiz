@@ -1,3 +1,4 @@
+import 'dart:convert' show utf8;
 import 'dart:convert';
 import 'dart:io';
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
@@ -812,8 +813,9 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         List<SentencesQuizRes>? result = [];
-        String array = req.body;
-        List<dynamic> list = json.decode(array);
+        // deocde utf8
+        List<dynamic> list = jsonDecode(utf8.decode(req.bodyBytes));
+        // List<dynamic> list = json.decode(array);
         for (int i = 0; i < 10; i++) {
           SentencesQuizRes data = SentencesQuizRes.fromJson(list[i]);
           result!.add(data);
