@@ -232,6 +232,49 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
     );
   }
 
+  Future<void> showOutDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+            25,
+          )),
+          backgroundColor: const Color(0xff1542bf),
+          title: const FittedBox(
+            child: Text('DO YOU WANT TO QUIT ?',
+                textAlign: TextAlign.center, style: kScoreLabelTextStyle),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                instance.get<UserAPIRepo>().updatePreQuizSenGameByID(
+                    PreQuizGameSenReq(
+                        status: "DONE",
+                        score: _score,
+                        dateSave: DateTime.now().toString(),
+                        userID: instance.get<UserGlobal>().id),
+                    _preQuiz.key.toString());
+                Navigator.pushNamed(context, Routers.homeUser);
+              },
+              child: const Center(child: Text('YES', style: kDialogButtonsTS)),
+            ),
+            TextButton(
+              onPressed: () {
+                _controller.resume();
+                Navigator.pop(context);
+              },
+              child: const Center(child: Text('NO', style: kDialogButtonsTS)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
@@ -240,7 +283,10 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
         children: [
           AppBarWidget(
             size: data,
-            onBack: () {},
+            onBack: () {
+              _controller.pause();
+              showOutDialog();
+            },
             textTitle: "Game",
           ),
           BlocBuilder<GameCubit, GameState>(builder: (context, state) {

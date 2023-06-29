@@ -38,30 +38,24 @@ class HomeProfileUserScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8), // Border radius
                           child: ClipOval(
-                              child: Image.asset(
-                            "assets/images/profile.png",
-                            fit: BoxFit.cover,
-                            height: 100,
-                            width: 100,
-                          )),
+                            child:
+                                instance.get<UserGlobal>().linkImage?.length !=
+                                        0
+                                    ? Image.network(
+                                        instance.get<UserGlobal>().linkImage!,
+                                        fit: BoxFit.cover,
+                                        height: 100,
+                                        width: 100,
+                                      )
+                                    : Image.asset(
+                                        "assets/images/profile.png",
+                                        fit: BoxFit.cover,
+                                        height: 100,
+                                        width: 100,
+                                      ),
+                          ),
                         ),
                       )),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: colorSystemYeloow),
-                      child: const Icon(
-                        LineAwesomeIcons.retro_camera,
-                        color: Colors.black,
-                        size: 20,
-                      ),
-                    ),
-                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.01),
@@ -86,15 +80,9 @@ class HomeProfileUserScreen extends StatelessWidget {
               ProfileMenuWidget(
                 title: "Setting",
                 icon: LineAwesomeIcons.cog,
-                onPress: () {},
-                size: size,
-              ),
-              SizedBox(height: size.height * 0.02),
-
-              ProfileMenuWidget(
-                title: "Local Notification",
-                icon: LineAwesomeIcons.bell,
-                onPress: () {},
+                onPress: () {
+                  Navigator.pushNamed(context, Routers.settingScreen);
+                },
                 size: size,
               ),
               SizedBox(height: size.height * 0.02),

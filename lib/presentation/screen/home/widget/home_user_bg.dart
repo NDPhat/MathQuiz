@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:math/application/cons/color.dart';
+import 'package:math/data/model/user_global.dart';
+import 'package:math/main.dart';
 
 import '../../../../application/cons/text_style.dart';
 
@@ -22,10 +24,10 @@ class HomeUserBG extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: size.width * 0.6,
+              width: size.width * 0.7,
               child: Row(children: [
                 Padding(
-                  padding: EdgeInsets.only(right: size.width * 0.1),
+                  padding: EdgeInsets.only(right: size.width * 0.08),
                   child: Image.asset(
                     "assets/images/icon_app.png",
                   ),
@@ -42,10 +44,12 @@ class HomeUserBG extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8), // Border radius
                   child: ClipOval(
-                    child: Image.asset(
-                      "assets/images/profile.png",
-                      fit: BoxFit.cover,
-                    ),
+                    child: instance.get<UserGlobal>().linkImage?.length!=0
+                        ? Image.network(
+                            instance.get<UserGlobal>().linkImage!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset("assets/images/profile.png"),
                   ),
                 ),
               ),

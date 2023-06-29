@@ -22,8 +22,10 @@ import 'package:math/presentation/screen/game_screen/sentences_game_screen.dart'
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/home/home_user.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
+import 'package:math/presentation/screen/notificaiton/notification_main_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
 import 'package:math/presentation/screen/pratice_game_user/practice_game_user_main_screen.dart';
+import 'package:math/presentation/screen/setting/setting_main_screen.dart';
 import 'package:math/presentation/screen/testing_user/test_main_user_screen.dart';
 import 'package:math/presentation/screen/update_pass_word/update_pass_screen.dart';
 
@@ -72,6 +74,7 @@ class Routers {
   static const String trueFalse = '/truefalse';
   static const String forgetPass = '/forgetPass';
   static const String battleMainScreen = '/battleMainScreen';
+  static const String settingScreen = '/settingScreen';
   static const String getOTP = '/getOTP';
   static const String updatePass = '/updatePass';
   static const String battleHuman = '/battleHuman';
@@ -94,6 +97,7 @@ class Routers {
   static const String testingUser = '/testingUser';
   static const String checkAnswer = '/checkAnswer';
   static const String checkAnswerHW = '/checkAnswerHW';
+  static const String notifiScreen = '/notifiScreen';
   static const String checkAnswerPracUserGame = '/checkAnswerPracUserGame';
   static const String detailQuizGame = '/detailQuizGame';
   static const String homeworkGame = '/homeworkGame';
@@ -116,6 +120,8 @@ class Routers {
         return WelcomeScreen();
       case checkAnswerPracUserGame:
         return CheckAnswerPracUserGameScreen();
+      case notifiScreen:
+        return LocalNotifiMainScreen();
       case hwcardDetail:
         return DetailItemCardHomeWork();
       case practiceMainScreenUserGameSen:
@@ -128,6 +134,8 @@ class Routers {
         return DetailTestHomeWork();
       case mainTestUser:
         return MainTestingUserScreen();
+      case settingScreen:
+        return SettingMainScreen();
       case practicecardDetail:
         return DetailItemCardPractices();
       case updateProfileUser:
@@ -219,7 +227,7 @@ class Routers {
             create: (context) => GameCubit(
                 quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
                 userAPIRepo: instance.get<UserAPIRepo>()),
-            child:  SentencesGameScreen());
+            child: SentencesGameScreen());
       case doTestPra:
         return BlocProvider(
             create: (context) =>

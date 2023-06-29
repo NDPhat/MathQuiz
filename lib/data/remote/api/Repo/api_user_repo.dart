@@ -16,6 +16,7 @@ import '../../model/quiz_game_req.dart';
 import '../../model/quiz_game_response.dart';
 import '../../model/result_quiz_hw_req.dart';
 import '../../model/sentences_quiz_res.dart';
+import '../../model/user_req.dart';
 
 abstract class UserAPIRepo {
   Future<UserAPIModel?> getUserByEmailAndPass(String email, String pass);
@@ -26,7 +27,7 @@ abstract class UserAPIRepo {
   Future<UserAPIModel?> reSendOTPMAIL(String email);
   Future<UserAPIModel?> checkOTPCode(String email, String otp);
   Future<bool> updatePasswordUser(String email, UserAPIModel user);
-  Future<bool?> updateProfileUser(String keyId, UserAPIModel user);
+  Future<bool?> updateProfileUser(String keyId, UserAPIReq user);
   Future<ResultQuizHWAPIModel?> createResultHomeWorkWeek(
       ResultQuizHWAPIReq resultQuizHWReq);
   Future<bool?> updateInfoHomeWorkWeek(

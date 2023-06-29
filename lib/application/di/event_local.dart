@@ -11,6 +11,8 @@ class UserEventLocal {
     instance.get<UserGlobal>().lop = a.lop;
     instance.get<UserGlobal>().gender = a.sex;
     instance.get<UserGlobal>().phone = a.phone;
+    instance.get<UserGlobal>().linkImage = a.linkImage;
+    instance.get<UserGlobal>().deleteHash = a.deleteHash;
     instance.get<UserGlobal>().address = a.add;
     instance.get<UserGlobal>().dateOfBirth = a.birthDate;
     instance.get<UserGlobal>().password = a.password;

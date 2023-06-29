@@ -6,6 +6,7 @@ import 'package:math/data/remote/model/user_api_res.dart';
 
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/user_req.dart';
 import '../../../main.dart';
 
 part 'update_profile_state.dart';
@@ -86,15 +87,27 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     emit(state.copyWith(birthDate: value));
   }
 
-  Future<void> updateProfileUser() async {
+  Future<void> updateProfileUser(String linkImage, String deleteHash) async {
     emit(state.copyWith(status: UpdateProfileStatus.onLoading));
     if (isFormValid()) {
-      UserAPIModel dataNew = UserAPIModel(
-          add: state.address,
-          phone: state.phone,
-          name: state.fullName,
-          birthDate: state.birthDate,
-          sex: state.sex);
+      late UserAPIReq dataNew;
+      if (linkImage.isNotEmpty) {
+        dataNew = UserAPIReq(
+            add: state.address,
+            phone: state.phone,
+            name: state.fullName,
+            birthDate: state.birthDate,
+            deleteHash: deleteHash,
+            linkImage: linkImage,
+            sex: state.sex);
+      } else {
+        dataNew = UserAPIReq(
+            add: state.address,
+            phone: state.phone,
+            name: state.fullName,
+            birthDate: state.birthDate,
+            sex: state.sex);
+      }
       bool? updateDone = await userAPIRepo.updateProfileUser(
           instance.get<UserGlobal>().id.toString(), dataNew);
       if (updateDone == true) {
