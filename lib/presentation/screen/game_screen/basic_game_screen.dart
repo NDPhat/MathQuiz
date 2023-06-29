@@ -15,6 +15,7 @@ import '../../../application/utils/logic.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../data/remote/model/pre_quiz_game_req.dart';
+import '../../../data/remote/model/pre_quiz_game_response.dart';
 import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../routers/navigation.dart';
@@ -131,6 +132,27 @@ class _GameScreenState extends State<GameScreen> {
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
+    // them tren server
+    if (instance.get<UserGlobal>().onLogin == true) {
+      PreQuizGameAPIModel? newData =
+      await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
+          sNum: _preQuiz.startNum,
+          eNum: _preQuiz.endNum,
+          numQ: _preQuiz.numQ,
+          status: "GOING",
+          sign: _preQuiz.sign,
+          score: 0,
+          optionGame: _preQuiz.option,
+          timePerQuiz: _preQuiz.timePer,
+          userID: instance
+              .get<UserGlobal>()
+              .id,
+          dateSave: formatDateInput.format(
+            DateTime.now(),
+          )));
+      _preIdServerNow = newData!.key!;
+
+    }
     // them 1 prequiz moi
     instance.get<PreQuizGameRepo>().insertPreQuizGame(
         PreQuizGameEntityCompanion(

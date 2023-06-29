@@ -4,6 +4,8 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
+  flutter_localization
+  permission_handler_windows
   sqlite3_flutter_libs
 )
 

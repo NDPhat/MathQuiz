@@ -1,3 +1,4 @@
+import 'dart:convert' show utf8;
 import 'dart:convert';
 import 'dart:io';
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
@@ -20,6 +21,7 @@ import '../../model/pre_quiz_game_req.dart';
 import '../../model/pre_quiz_game_sen_res.dart';
 import '../../model/pre_quiz_hw_response.dart';
 import 'package:http/http.dart' as http;
+import '../../model/user_req.dart';
 import '../Repo/api_user_repo.dart';
 
 class UserAPIRepoImpl extends UserAPIRepo {
@@ -140,7 +142,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<bool?> updateProfileUser(String keyId, UserAPIModel user) async {
+  Future<bool?> updateProfileUser(String keyId, UserAPIReq user) async {
     try {
       final url = "${endpoint}updateUserById?id=$keyId";
       final res = await http.patch(Uri.parse(url),
@@ -812,8 +814,9 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         List<SentencesQuizRes>? result = [];
-        String array = req.body;
-        List<dynamic> list = json.decode(array);
+        // deocde utf8
+        List<dynamic> list = jsonDecode(utf8.decode(req.bodyBytes));
+        // List<dynamic> list = json.decode(array);
         for (int i = 0; i < 10; i++) {
           SentencesQuizRes data = SentencesQuizRes.fromJson(list[i]);
           result!.add(data);

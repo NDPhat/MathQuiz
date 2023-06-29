@@ -457,14 +457,14 @@ class QuizBrain {
     int anwser2 = 0;
     int anwser3 = 0;
     do {
-      anwser1 = _random.nextInt(_quizAnswer + 0) + 20;
+      anwser1 = _random.nextInt(_quizAnswer + 20);
     } while (anwser1 == _quizAnswer);
     do {
-      anwser2 = _random.nextInt(_quizAnswer + 0) + 20;
+      anwser2 =_random.nextInt(_quizAnswer + 20);
     } while (anwser2 == _quizAnswer || anwser2 == anwser1);
 
     do {
-      anwser3 = _random.nextInt(_quizAnswer + 0) + 20;
+      anwser3 = _random.nextInt(_quizAnswer + 20);
     } while (
         anwser3 == _quizAnswer || anwser3 == anwser1 || anwser3 == anwser2);
     listAnswer = [];
@@ -487,7 +487,8 @@ class QuizBrain {
         toRemove.add(e);
       }
     }
-    values.removeWhere((key, value) => toRemove.contains(key));
+    // reomove quiz cu k de trung
+    listQuiz.removeWhere((value) => toRemove.contains(value));
     int pos = _random.nextInt(posPast);
     _quiz = listData![pos].quiz!;
     _quizAnswer = int.parse(listData![pos].answer!);
@@ -495,14 +496,14 @@ class QuizBrain {
     int anwser2 = 0;
     int anwser3 = 0;
     do {
-      anwser1 = _random.nextInt(_quizAnswer + 0) + 20;
+      anwser1 = _random.nextInt(_quizAnswer + 20);
     } while (anwser1 == _quizAnswer);
     do {
-      anwser2 = _random.nextInt(_quizAnswer + 0) + 20;
+      anwser2 =  _random.nextInt(_quizAnswer + 20);
     } while (anwser2 == _quizAnswer || anwser2 == anwser1);
 
     do {
-      anwser3 = _random.nextInt(_quizAnswer + 0) + 20;
+      anwser3 = _random.nextInt(_quizAnswer + 20);
     } while (
         anwser3 == _quizAnswer || anwser3 == anwser1 || anwser3 == anwser2);
     listAnswer = [];

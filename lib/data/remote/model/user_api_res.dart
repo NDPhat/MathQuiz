@@ -30,20 +30,22 @@ class UserAPIRes {
 class UserAPIModel {
   String? add;
   String? birthDate;
+  String? deleteHash;
   String? email;
   String? key;
+  String? linkImage;
   String? lop;
   String? name;
   String? otp;
   String? password;
-  String? linkImage;
   String? phone;
-  String? sex;
   String? role;
+  String? sex;
 
   UserAPIModel(
       {this.add,
       this.birthDate,
+      this.deleteHash,
       this.email,
       this.key,
       this.linkImage,
@@ -58,30 +60,33 @@ class UserAPIModel {
   UserAPIModel.fromJson(Map<String, dynamic> json) {
     add = json['add'];
     birthDate = json['birthDate'];
+    deleteHash = json['deleteHash'];
     email = json['email'];
     key = json['key'];
-    lop = json['lop'];
-    role = json['role'];
     linkImage = json['linkImage'];
+    lop = json['lop'];
     name = json['name'];
     otp = json['otp'];
     password = json['password'];
     phone = json['phone'];
+    role = json['role'];
     sex = json['sex'];
   }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['add'] = this.add;
     data['birthDate'] = this.birthDate;
+    data['deleteHash'] = this.deleteHash;
     data['email'] = this.email;
     data['key'] = this.key;
-    data['lop'] = this.lop;
-    data['role'] = this.role;
     data['linkImage'] = this.linkImage;
+    data['lop'] = this.lop;
     data['name'] = this.name;
     data['otp'] = this.otp;
     data['password'] = this.password;
     data['phone'] = this.phone;
+    data['role'] = this.role;
     data['sex'] = this.sex;
     return data;
   }

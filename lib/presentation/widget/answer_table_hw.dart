@@ -24,12 +24,11 @@ class _AnswerTableState extends State<AnswerTableHW> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Center(child: Image.asset("assets/images/board_hw.png")),
         Padding(
           padding: EdgeInsets.only(
               top: widget.size.height * 0.04,
-              left: widget.size.width * 0.15,
-              right: widget.size.width * 0.15),
+              left: widget.size.width * 0.1,
+              right: widget.size.width * 0.1),
           child: Column(
             children: [
               Row(
@@ -39,9 +38,9 @@ class _AnswerTableState extends State<AnswerTableHW> {
                     press: () {
                       widget.onTap(widget.quizBrainObject.listAnswer[0]);
                     },
-                    color: colorGrayBG,
-                    width: widget.size.width * 0.25,
-                    height: widget.size.height * 0.05,
+                    color: colorMainTealPri,
+                    width: widget.size.width * 0.3,
+                    height: widget.size.height * 0.08,
                     child: Text(
                       widget.quizBrainObject.listAnswer[0].toString(),
                       style: s16f700ColorSysWhite,
@@ -54,9 +53,9 @@ class _AnswerTableState extends State<AnswerTableHW> {
                     press: () {
                       widget.onTap(widget.quizBrainObject.listAnswer[1]);
                     },
-                    color: colorGrayBG,
-                    width: widget.size.width * 0.25,
-                    height: widget.size.height * 0.05,
+                    color: colorMainTealPri,
+                    width: widget.size.width * 0.3,
+                    height: widget.size.height * 0.08,
                     child: Text(
                       widget.quizBrainObject.listAnswer[1].toString(),
                       style: s16f700ColorSysWhite,
@@ -74,9 +73,9 @@ class _AnswerTableState extends State<AnswerTableHW> {
                     press: () {
                       widget.onTap(widget.quizBrainObject.listAnswer[2]);
                     },
-                    color: colorGrayBG,
-                    width: widget.size.width * 0.25,
-                    height: widget.size.height * 0.05,
+                    color: colorMainTealPri,
+                    width: widget.size.width * 0.3,
+                    height: widget.size.height * 0.08,
                     child: Text(
                       widget.quizBrainObject.listAnswer[2].toString(),
                       style: s16f700ColorSysWhite,
@@ -89,9 +88,9 @@ class _AnswerTableState extends State<AnswerTableHW> {
                     press: () {
                       widget.onTap(widget.quizBrainObject.listAnswer[3]);
                     },
-                    color: colorGrayBG,
-                    width: widget.size.width * 0.25,
-                    height: widget.size.height * 0.05,
+                    color: colorMainTealPri,
+                    width: widget.size.width * 0.3,
+                    height: widget.size.height * 0.08,
                     child: Text(
                       widget.quizBrainObject.listAnswer[3].toString(),
                       style: s16f700ColorSysWhite,

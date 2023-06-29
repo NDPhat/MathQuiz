@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/remote/model/pre_quiz_game_sen_req.dart';
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../application/cons/constants.dart';
+import '../../../application/utils/format.dart';
 import '../../../application/utils/logic.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
@@ -16,6 +16,7 @@ import '../../../application/utils/make_quiz.dart';
 import '../../../data/remote/model/sentences_quiz_res.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
+import '../../widget/port_mode_game_sentences.dart';
 import '../../widget/portrait_mode_game.dart';
 import '../../widget/show_end_dialog.dart';
 
@@ -36,7 +37,6 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = false;
   final CountDownController _controller = CountDownController();
-
   @override
   void initState() {
     super.initState();
@@ -70,7 +70,7 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.of(context, rootNavigator: true).pop();
                   _controller.start();
                   _startGame();
                 },
@@ -95,7 +95,6 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
 
   void _startGame() async {
     listData = await _quizBrain.getDataForFirstQuizSentences();
-
     setState(() {
       _quizBrain.makeFirstQuizSentences(listData);
     });
@@ -114,8 +113,17 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
-    _score = 0;
-    _totalNumberOfQuizzes = 1;
+    // them data moi
+    PreQuizGameSenModelRes? newData = await instance
+        .get<UserAPIRepo>()
+        .createPreQuizSenGame(PreQuizGameSenReq(
+            status: "GOING",
+            score: 0,
+            userID: instance.get<UserGlobal>().id,
+            dateSave: formatDateInput.format(
+              DateTime.now(),
+            )));
+    _preIdServerNow = newData!.key!;
   }
 
   void _resetScreen() {
@@ -127,18 +135,16 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
 
   void _saveData(BuildContext context) {}
   void _endGame() {
-    if (instance.get<UserGlobal>().onLogin == true) {
-      instance.get<UserAPIRepo>().updatePreQuizGameByID(
-          PreQuizGameAPIReq(score: _score, status: "DONE"), _preIdServerNow);
-    }
+    instance.get<UserAPIRepo>().updatePreQuizSenGameByID(
+        PreQuizGameSenReq(score: _score, status: "DONE"), _preIdServerNow);
     showEndDiaLog();
   }
 
-  void _checkAnswer(int userChoice, BuildContext context) async {
-    if (userChoice.toString().isNotEmpty) {
-      if (userChoice == _quizBrain.quizAnswer) {
+  void _checkAnswer(int answerOfUser) async {
+    if (answerOfUser.toString().isNotEmpty) {
+      if (answerOfUser == _quizBrain.quizAnswer) {
         userAnswer = true;
-        _saveData(context);
+        //_saveData(context);
         playSound('correct-choice.wav');
         _score++;
         if (_totalNumberOfQuizzes == 10) {
@@ -148,14 +154,12 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
         }
       } else {
         userAnswer = false;
+        playSound('wrong-choice.wav');
+        falseChoose++;
         _saveData(context);
         if (_totalNumberOfQuizzes == 10) {
-          playSound('wrong-choice.wav');
-          falseChoose++;
           _endGame();
         } else {
-          playSound('wrong-choice.wav');
-          falseChoose++;
           _resetScreen();
         }
       }
@@ -192,6 +196,47 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext contextBuild) {
+        return BlocProvider.value(
+          value: BlocProvider.of<GameCubit>(context),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+              25,
+            )),
+            backgroundColor: const Color(0xff1542bf),
+            title: const FittedBox(
+              child: Text('GAME OVER',
+                  textAlign: TextAlign.center, style: kTitleTS),
+            ),
+            content: Text('Score: $_score | $_totalNumberOfQuizzes',
+                textAlign: TextAlign.center, style: kContentTS),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  context.read<GameCubit>().updatePreGameSenNowById(
+                      _preIdServerNow,
+                      PreQuizGameSenReq(
+                          score: _score,
+                          status: "DONE",
+                          dateSave: DateTime.now().toString(),
+                          userID: instance.get<UserGlobal>().id));
+                  Navigator.pushNamed(context, Routers.homeUser);
+                },
+                child:
+                    const Center(child: Text('EXIT', style: kDialogButtonsTS)),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> showOutDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
@@ -199,23 +244,30 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
           )),
           backgroundColor: const Color(0xff1542bf),
           title: const FittedBox(
-            child:
-                Text('GAME OVER', textAlign: TextAlign.center, style: kTitleTS),
+            child: Text('DO YOU WANT TO QUIT ?',
+                textAlign: TextAlign.center, style: kScoreLabelTextStyle),
           ),
-          content: Text('Score: $_score | $_totalNumberOfQuizzes',
-              textAlign: TextAlign.center, style: kContentTS),
           actions: [
             TextButton(
-              onPressed: () async {
-                await instance.get<UserAPIRepo>().updatePreQuizSenGameByID(
+              onPressed: () {
+                Navigator.pop(context);
+                instance.get<UserAPIRepo>().updatePreQuizSenGameByID(
                     PreQuizGameSenReq(
+                        status: "DONE",
                         score: _score,
                         dateSave: DateTime.now().toString(),
                         userID: instance.get<UserGlobal>().id),
                     _preQuiz.key.toString());
                 Navigator.pushNamed(context, Routers.homeUser);
               },
-              child: const Center(child: Text('EXIT', style: kDialogButtonsTS)),
+              child: const Center(child: Text('YES', style: kDialogButtonsTS)),
+            ),
+            TextButton(
+              onPressed: () {
+                _controller.resume();
+                Navigator.pop(context);
+              },
+              child: const Center(child: Text('NO', style: kDialogButtonsTS)),
             ),
           ],
         );
@@ -231,19 +283,22 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
         children: [
           AppBarWidget(
             size: data,
-            onBack: () {},
+            onBack: () {
+              _controller.pause();
+              showOutDialog();
+            },
             textTitle: "Game",
           ),
           BlocBuilder<GameCubit, GameState>(builder: (context, state) {
-            return PortraitModeGame(
+            return PortraitModeGameSen(
               highscore: 0,
               score: _score,
               quizBrainObject: _quizBrain,
               onTap: (int value) {
-                _checkAnswer(value, context);
+                _checkAnswer(value);
                 //add quiz to server
-                context.read<GameCubit>().changeDataAfterDoneQ(
-                    _score, falseChoose, _score, _totalNumberOfQuizzes);
+                context.read<GameCubit>().changeDataSenAfterDoneQ(
+                    _score, _totalNumberOfQuizzes, _score, falseChoose);
               },
               trueQ: _score,
               falseQ: falseChoose,

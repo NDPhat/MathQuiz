@@ -1,18 +1,18 @@
+import 'dart:convert';
 import 'dart:io';
-import 'dart:ui' as ui;
 import 'dart:async';
-import 'dart:typed_data';
-import 'dart:math' as math;
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:math/application/enum/update_profile_status.dart';
+import 'package:math/data/model/user_global.dart';
+import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:math/application/cons/text_style.dart';
+import 'package:math/main.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/button_custom.dart';
 import 'package:math/presentation/widget/login_input_field.dart';
@@ -21,6 +21,7 @@ import '../../../../../application/cons/color.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../../../widget/scroll_data_widget.dart';
+import 'package:http/http.dart' as http;
 
 class UpdateProfileUserScreen extends StatefulWidget {
   UpdateProfileUserScreen({
@@ -32,15 +33,21 @@ class UpdateProfileUserScreen extends StatefulWidget {
 }
 
 class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
-  File? _imageFileList;
+  File? _imageFile;
+  String linkImage = "";
+  late String deleteHash = "";
   void _setImageFileListFromFile(File? value) {
-    _imageFileList = value == null ? null : value;
+    _imageFile = value == null ? null : value;
   }
 
   final ImagePicker _picker = ImagePicker();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
 
   Widget _previewImages() {
-    if (_imageFileList != null) {
+    if (_imageFile != null) {
       return CircleAvatar(
         radius: 60,
         backgroundColor: Colors.red,
@@ -48,7 +55,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
           padding: const EdgeInsets.all(8), // Border radius
           child: ClipOval(
             child: Image.file(
-              File(_imageFileList!.path),
+              File(_imageFile!.path),
               fit: BoxFit.cover,
               width: 100,
               height: 100,
@@ -59,6 +66,27 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
     } else {
       return Image.asset("assets/images/profile.png");
     }
+  }
+
+  Future<void> uploadImageToServer(String title) async {
+    if (instance.get<UserGlobal>().deleteHash != null) {
+      deletePastImage(instance.get<UserGlobal>().deleteHash!);
+    }
+    var request = http.MultipartRequest(
+        "POST", Uri.parse("https://api.imgur.com/3/image"));
+    request.fields['title'] = title;
+    request.headers["Authorization"] = " Client-ID 123454fab2d41ee";
+    var pic = http.MultipartFile.fromBytes('image',
+        (await File(_imageFile!.path).readAsBytes()).buffer.asInt8List(),
+        filename: "ava");
+    request.files.add(pic);
+    var res = await request.send();
+    var resData = await res.stream.toBytes();
+    // lay ra link cua image de update
+    String result = String.fromCharCodes(resData);
+    final jsonData = json.decode(result);
+    deleteHash = jsonData["data"]["deletehash"];
+    linkImage = jsonData["data"]["link"];
   }
 
   Widget handlePreview() {
@@ -158,6 +186,12 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
     }
   }
 
+  void deletePastImage(String hashDelete) async {
+    var request = http.MultipartRequest(
+        "DELETE", Uri.parse("https://api.imgur.com/3/image/$hashDelete"));
+    request.headers["Authorization"] = " Client-ID 123454fab2d41ee";
+  }
+
   Future<void> retrieveLostData() async {
     final LostDataResponse response = await _picker.retrieveLostData();
     if (response.isEmpty) {
@@ -168,7 +202,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
         if (response.files == null) {
           _setImageFileListFromFile(File(response.file!.path));
         } else {
-          _imageFileList = File(response.file!.path);
+          _imageFile = File(response.file!.path);
         }
       });
     }
@@ -391,6 +425,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           controller: TextEditingController(text: state.phone),
                           width: size.width * 0.9,
                           height: size.height * 0.1,
+                          typeText: TextInputType.number,
                           hintText: 'Your phone',
                           icon: const Icon(
                             LineAwesomeIcons.phone,
@@ -579,17 +614,22 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                               )),
                                           onPressed: () {
                                             Navigator.pop(context);
-                                            Navigator.pop(context);
                                           }),
                                     ],
                                   )));
                         }
                       }, builder: (context, state) {
                         return RoundedButton(
-                            press: () {
+                            press: () async {
+                              if(linkImage.isNotEmpty ) {
+                                await uploadImageToServer(
+                                    instance
+                                        .get<UserGlobal>()
+                                        .fullName!);
+                              }
                               context
                                   .read<UpdateProfileCubit>()
-                                  .updateProfileUser();
+                                  .updateProfileUser(linkImage, deleteHash);
                             },
                             color: colorMainBlue,
                             width: size.width * 0.8,

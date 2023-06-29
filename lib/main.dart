@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:device_preview/device_preview.dart';
+import 'application/di/language.dart';
 import 'application/di/setupProject.dart';
 
 GetIt instance = GetIt.instance;
