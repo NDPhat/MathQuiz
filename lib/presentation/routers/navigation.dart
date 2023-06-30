@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/data/local/repo/notifi_local/notifi_local_repo.dart';
+import 'package:math/data/local/repo/notifi_local/notifi_local_repo_impl.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/authen/authen.dart';
+import 'package:math/domain/bloc/add_notifi/add_notifi_cubit.dart';
 import 'package:math/domain/bloc/forget_pass/forget_pass_cubit.dart';
 
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
 import 'package:math/domain/bloc/history/history_test_cubit.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
+import 'package:math/domain/bloc/notifi_local/notifi_cubit.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
@@ -29,6 +33,7 @@ import 'package:math/presentation/screen/setting/setting_main_screen.dart';
 import 'package:math/presentation/screen/testing_user/test_main_user_screen.dart';
 import 'package:math/presentation/screen/update_pass_word/update_pass_screen.dart';
 
+import '../../data/local/repo/detail_notifi/detail_notifi_repo.dart';
 import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../domain/bloc/history/history_pra_cubit.dart';
 import '../../main.dart';
@@ -50,6 +55,7 @@ import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
 import '../screen/home/home_guest.dart';
 import '../screen/home_work/home_work_user_game_screen.dart';
+import '../screen/notificaiton/widget/add_notifi_local_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
 import '../screen/option_game_mode/option_sign_screen.dart';
 import '../screen/pratice_game_user/widget/practice_number_game_user_main_screen.dart';
@@ -98,6 +104,7 @@ class Routers {
   static const String checkAnswer = '/checkAnswer';
   static const String checkAnswerHW = '/checkAnswerHW';
   static const String notifiScreen = '/notifiScreen';
+  static const String addNotifiScreen = '/addNotifiScreen';
   static const String checkAnswerPracUserGame = '/checkAnswerPracUserGame';
   static const String detailQuizGame = '/detailQuizGame';
   static const String homeworkGame = '/homeworkGame';
@@ -121,7 +128,16 @@ class Routers {
       case checkAnswerPracUserGame:
         return CheckAnswerPracUserGameScreen();
       case notifiScreen:
-        return LocalNotifiMainScreen();
+        return BlocProvider(
+            create: (context) =>
+                NotifiCubit(notifiLocalRepo: instance.get<NotifiLocalRepo>()),
+            child: LocalNotifiMainScreen());
+      case addNotifiScreen:
+        return BlocProvider(
+            create: (context) => AddNotifiCubit(
+                  detailNotifiLocalRepo: instance.get<DetailNotifiLocalRepo>(),
+                ),
+            child: AddNotifiScreen());
       case hwcardDetail:
         return DetailItemCardHomeWork();
       case practiceMainScreenUserGameSen:

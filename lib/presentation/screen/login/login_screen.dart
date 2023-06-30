@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/application/enum/login_status.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/widget/app_bar.dart';
-import 'package:math/presentation/widget/login_input_field.dart';
-
-import '../../../main.dart';
-import '../../widget/input_field.dart';
+import '../../widget/input_field_widget.dart';
 
 class LoginUserApp extends StatefulWidget {
   const LoginUserApp({Key? key}) : super(key: key);
@@ -75,17 +71,18 @@ class _LoginUserApp extends State<LoginUserApp> {
                           height: size.height * 0.025,
                         ),
                         SizedBox(
-                          height: size.height * 0.23,
+                          height: size.height * 0.28,
                           child: Column(
                             children: [
                               BlocBuilder<LoginCubit, LoginState>(
                                   buildWhen: (pre, now) {
                                 return pre.emailError != now.emailError;
                               }, builder: (BuildContext context, state) {
-                                return LoginInputField(
+                                return InputFieldWidget(
                                   hintText: 'Email your email',
+                                  nameTitle: 'Your email',
                                   width: size.width * 0.8,
-                                  height: size.height * 0.1,
+                                  height: size.height * 0.12,
                                   onChanged: (value) {
                                     context
                                         .read<LoginCubit>()
@@ -103,10 +100,11 @@ class _LoginUserApp extends State<LoginUserApp> {
                                   buildWhen: (pre, now) {
                                 return pre.passError != now.passError;
                               }, builder: (BuildContext context, state) {
-                                return LoginInputField(
+                                return InputFieldWidget(
                                   hintText: 'Email your password',
+                                  nameTitle: 'Your password',
                                   width: size.width * 0.8,
-                                  height: size.height * 0.1,
+                                  height: size.height * 0.12,
                                   onChanged: (value) {
                                     context
                                         .read<LoginCubit>()
@@ -149,7 +147,7 @@ class _LoginUserApp extends State<LoginUserApp> {
                                 if (state.status == LoginStatus.success) {
                                   Navigator.pushNamed(
                                       context, Routers.homeUser);
-                                } else  if (state.status == LoginStatus.error){
+                                } else if (state.status == LoginStatus.error) {
                                   showDialog(
                                       context: context,
                                       builder: (ctx) => Center(
@@ -210,6 +208,8 @@ class _LoginUserApp extends State<LoginUserApp> {
                                       : IconButton(
                                           color: Colors.white,
                                           onPressed: () async {
+                                            context
+                                                .read<LoginCubit>().clearData();
                                             await context
                                                 .read<LoginCubit>()
                                                 .loginAppWithEmailAndPass();

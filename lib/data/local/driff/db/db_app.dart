@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-
-
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-
+import '../entities/detail_notifi.dart';
+import '../entities/notifi_local.dart';
 import '../entities/pre_quiz_game.dart';
 import '../entities/pre_test.dart';
 import '../entities/quiz_game.dart';
@@ -21,11 +20,16 @@ LazyDatabase _openConnection() {
   });
 }
 
-@DriftDatabase(
-    tables: [PreQuizGameEntity, PreTestEntity, QuizGameEntity, QuizTestEntity])
+@DriftDatabase(tables: [
+  PreQuizGameEntity,
+  PreTestEntity,
+  QuizGameEntity,
+  QuizTestEntity,
+  NotifiLocalEntity,
+  DetailNotifiEntity
+])
 class AppDb extends _$AppDb {
   AppDb() : super(_openConnection());
-
 
   // you should bump this number whenever you change or add a table definition.
   // Migrations are covered later in the documentation.

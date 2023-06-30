@@ -5,10 +5,9 @@ import 'package:math/domain/bloc/forget_pass/forget_pass_cubit.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/button_custom.dart';
-import 'package:math/presentation/widget/login_input_field.dart';
-
 import '../../../application/cons/text_style.dart';
 import '../../../application/enum/foget_pass_status.dart';
+import '../../widget/input_field_widget.dart';
 
 class ForgetPassScreen extends StatelessWidget {
   const ForgetPassScreen({Key? key}) : super(key: key);
@@ -58,7 +57,7 @@ class ForgetPassScreen extends StatelessWidget {
                       return previousState.emailErrorMessage !=
                           state.emailErrorMessage;
                     }, builder: (context, state) {
-                      return LoginInputField(
+                      return InputFieldWidget(
                         hintText: 'Enter your email',
                         icon: const Icon(Icons.email_outlined),
                         onChanged: (value) {

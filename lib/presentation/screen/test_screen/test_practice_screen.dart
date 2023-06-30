@@ -36,7 +36,7 @@ class _TestScreenState extends State<TestScreen> {
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = false;
-  late HomeRepo homeRepo;
+  late PreTestRepo homeRepo;
   final CountDownController _controller = CountDownController();
 
   @override
@@ -44,9 +44,9 @@ class _TestScreenState extends State<TestScreen> {
     super.initState();
     _quizBrain = QuizBrain();
     preTest = PreTest();
-    homeRepo = HomeRepo(
+    homeRepo = PreTestRepo(
         preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-        userLocalAPIRepo: instance.get<UserAPIRepo>());
+        );
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       preTest = await ModalRoute.of(context)!.settings.arguments as PreTest;
       showReadyDialog();

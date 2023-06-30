@@ -15,11 +15,11 @@ import 'package:math/application/cons/text_style.dart';
 import 'package:math/main.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/button_custom.dart';
-import 'package:math/presentation/widget/login_input_field.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import '../../../../../application/cons/color.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import '../../../widget/input_field_widget.dart';
 import '../../../widget/scroll_data_widget.dart';
 import 'package:http/http.dart' as http;
 
@@ -287,12 +287,13 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           buildWhen: (pre, now) {
                         return pre.nameError != now.nameError;
                       }, builder: (context, state) {
-                        return LoginInputField(
+                        return InputFieldWidget(
                           width: size.width * 0.9,
                           height: size.height * 0.1,
                           controller:
                               TextEditingController(text: state.fullName),
                           hintText: 'Your name',
+                          nameTitle: "Your name",
                           onChanged: (value) {
                             context
                                 .read<UpdateProfileCubit>()
@@ -310,10 +311,11 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       SizedBox(height: size.height * 0.01),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           builder: (context, state) {
-                        return LoginInputField(
+                        return InputFieldWidget(
                           controller: TextEditingController(text: state.lop),
                           width: size.width * 0.9,
                           readOnly: true,
+                          nameTitle: "Your class",
                           height: size.height * 0.1,
                           hintText: 'Class',
                           icon: const Icon(
@@ -323,7 +325,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           ),
                         );
                       }),
-                      SizedBox(height: size.height * 0.01),
+                      SizedBox(height: size.height * 0.02),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           buildWhen: (pre, now) {
                         return pre.sex != now.sex;
@@ -411,12 +413,11 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           ),
                         );
                       }),
-                      SizedBox(height: size.height * 0.01),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           buildWhen: (pre, now) {
                         return pre.phoneError != now.phoneError;
                       }, builder: (context, state) {
-                        return LoginInputField(
+                        return InputFieldWidget(
                           onChanged: (value) {
                             context
                                 .read<UpdateProfileCubit>()
@@ -427,6 +428,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           height: size.height * 0.1,
                           typeText: TextInputType.number,
                           hintText: 'Your phone',
+                          nameTitle: "Your phone",
                           icon: const Icon(
                             LineAwesomeIcons.phone,
                             color: Colors.black,
@@ -442,11 +444,12 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         return pre.birthDateError != now.birthDateError ||
                             pre.birthDate != now.birthDate;
                       }, builder: (context, state) {
-                        return LoginInputField(
+                        return InputFieldWidget(
                           readOnly: true,
                           width: size.width * 0.9,
                           height: size.height * 0.1,
                           hintText: 'Your birthDate',
+                          nameTitle: 'Your birthDate',
                           isHidden: state.birthDateError != "",
                           validateText: state.birthDateError,
                           icon: const Icon(
@@ -537,12 +540,13 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       SizedBox(height: size.height * 0.01),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           builder: (context, state) {
-                        return LoginInputField(
+                        return InputFieldWidget(
                           readOnly: true,
                           controller: TextEditingController(text: state.email),
                           width: size.width * 0.9,
                           height: size.height * 0.1,
                           hintText: 'Your email',
+                          nameTitle: 'Your email',
                           icon: const Icon(
                             LineAwesomeIcons.mail_bulk,
                             color: Colors.black,
@@ -555,10 +559,11 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           buildWhen: (pre, now) {
                         return pre.addError != now.addError;
                       }, builder: (context, state) {
-                        return LoginInputField(
+                        return InputFieldWidget(
                           width: size.width * 0.9,
                           height: size.height * 0.1,
                           hintText: 'Your address',
+                          nameTitle: 'Your address',
                           isHidden: state.addError != "",
                           validateText: state.addError,
                           onChanged: (value) {
@@ -621,11 +626,9 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       }, builder: (context, state) {
                         return RoundedButton(
                             press: () async {
-                              if(linkImage.isNotEmpty ) {
+                              if (linkImage.isNotEmpty) {
                                 await uploadImageToServer(
-                                    instance
-                                        .get<UserGlobal>()
-                                        .fullName!);
+                                    instance.get<UserGlobal>().fullName!);
                               }
                               context
                                   .read<UpdateProfileCubit>()

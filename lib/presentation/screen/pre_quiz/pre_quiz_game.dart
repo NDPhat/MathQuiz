@@ -12,7 +12,7 @@ import '../../../data/utils/find_time_per.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/button_custom.dart';
-import '../../widget/input_field.dart';
+import '../../widget/input_field_widget.dart';
 
 class PreMakeQuizGame extends StatelessWidget {
   PreMakeQuizGame({Key? key}) : super(key: key);
@@ -59,10 +59,11 @@ class PreMakeQuizGame extends StatelessWidget {
                           buildWhen: (pre, now) {
                         return pre.numQMess != now.numQMess;
                       }, builder: (BuildContext context, state) {
-                        return InputField(
+                        return InputFieldWidget(
+                          nameTitle: "Number of question",
                           hintText: 'How many question',
                           width: size.width * 0.8,
-                          height: size.height * 0.08,
+                          height: size.height * 0.1,
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               context
@@ -70,7 +71,6 @@ class PreMakeQuizGame extends StatelessWidget {
                                   .numQChanged(int.parse(value));
                             }
                           },
-                          hasError: state.numQMess != "",
                           isHidden: state.numQMess != "",
                           validateText: state.numQMess,
                         );
@@ -82,10 +82,11 @@ class PreMakeQuizGame extends StatelessWidget {
                           buildWhen: (pre, now) {
                         return pre.sNumMess != now.sNumMess;
                       }, builder: (BuildContext context, state) {
-                        return InputField(
+                        return InputFieldWidget(
                           hintText: 'Start Value',
+                          nameTitle: "Start Value",
                           width: size.width * 0.8,
-                          height: size.height * 0.08,
+                          height: size.height * 0.1,
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               context
@@ -93,7 +94,6 @@ class PreMakeQuizGame extends StatelessWidget {
                                   .sNumChanged(int.parse(value ?? "1"));
                             }
                           },
-                          hasError: state.sNumMess != "",
                           isHidden: state.sNumMess != "",
                           validateText: state.sNumMess,
                         );
@@ -105,10 +105,11 @@ class PreMakeQuizGame extends StatelessWidget {
                           buildWhen: (pre, now) {
                         return pre.eNumMess != now.eNumMess;
                       }, builder: (BuildContext context, state) {
-                        return InputField(
+                        return InputFieldWidget(
                           hintText: 'End Value',
+                          nameTitle: "End Value",
                           width: size.width * 0.8,
-                          height: size.height * 0.08,
+                          height: size.height * 0.1,
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               context
@@ -116,7 +117,6 @@ class PreMakeQuizGame extends StatelessWidget {
                                   .eNumChanged(int.parse(value ?? "1"));
                             }
                           },
-                          hasError: state.eNumMess != "",
                           isHidden: state.eNumMess != "",
                           validateText: state.eNumMess,
                         );

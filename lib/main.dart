@@ -8,7 +8,6 @@ import 'application/di/language.dart';
 import 'application/di/setupProject.dart';
 
 GetIt instance = GetIt.instance;
-
 void main() {
   setUpProject();
   runApp(DevicePreview(
