@@ -69,7 +69,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
   }
 
   Future<void> uploadImageToServer(String title) async {
-    if (instance.get<UserGlobal>().deleteHash != null) {
+    if (instance.get<UserGlobal>().deleteHash!.isNotEmpty) {
       deletePastImage(instance.get<UserGlobal>().deleteHash!);
     }
     var request = http.MultipartRequest(
@@ -190,6 +190,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
     var request = http.MultipartRequest(
         "DELETE", Uri.parse("https://api.imgur.com/3/image/$hashDelete"));
     request.headers["Authorization"] = " Client-ID 123454fab2d41ee";
+    request.send();
   }
 
   Future<void> retrieveLostData() async {
@@ -626,13 +627,17 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       }, builder: (context, state) {
                         return RoundedButton(
                             press: () async {
-                              if (linkImage.isNotEmpty) {
+                              if (_imageFile != null) {
                                 await uploadImageToServer(
                                     instance.get<UserGlobal>().fullName!);
+                                context
+                                    .read<UpdateProfileCubit>()
+                                    .updateProfileUser(linkImage, deleteHash);
+                              } else {
+                                context
+                                    .read<UpdateProfileCubit>()
+                                    .updateProfileUser(linkImage, deleteHash);
                               }
-                              context
-                                  .read<UpdateProfileCubit>()
-                                  .updateProfileUser(linkImage, deleteHash);
                             },
                             color: colorMainBlue,
                             width: size.width * 0.8,

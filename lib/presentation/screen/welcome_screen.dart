@@ -1,10 +1,11 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/model/user_api_res.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../application/cons/constants.dart';
 import '../../data/model/user_global.dart';
@@ -59,7 +60,7 @@ class WelcomeScreen extends StatelessWidget {
                   },
                   animatedTexts: [
                     ColorizeAnimatedText(
-                      'Xin Chào',
+                      'hello'.tr().toString(),
                       textAlign: TextAlign.center,
                       textStyle: kAnimationTextStyle,
                       colors: kColorizeAnimationColors,

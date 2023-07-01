@@ -91,7 +91,7 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     emit(state.copyWith(status: UpdateProfileStatus.onLoading));
     if (isFormValid()) {
       late UserAPIReq dataNew;
-      if (linkImage.isNotEmpty) {
+      if (linkImage != null) {
         dataNew = UserAPIReq(
             add: state.address,
             phone: state.phone,

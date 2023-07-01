@@ -25,6 +25,7 @@ import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_gam
 import 'package:math/presentation/screen/game_screen/sentences_game_screen.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/home/home_user.dart';
+import 'package:math/presentation/screen/language_screen/language_screen.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
 import 'package:math/presentation/screen/notificaiton/notification_main_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
@@ -108,6 +109,7 @@ class Routers {
   static const String checkAnswerPracUserGame = '/checkAnswerPracUserGame';
   static const String detailQuizGame = '/detailQuizGame';
   static const String homeworkGame = '/homeworkGame';
+  static const String languageScreen = '/languageScreen';
   static const String practiceMainScreenUserGame =
       '/practiceMainScreenUserGame';
   static const String practiceScreenUserGameNum = '/practiceScreenUserGameNum';
@@ -125,6 +127,8 @@ class Routers {
     switch (settings.name) {
       case welcome:
         return WelcomeScreen();
+      case languageScreen:
+        return LanguageScreen();
       case checkAnswerPracUserGame:
         return CheckAnswerPracUserGameScreen();
       case notifiScreen:
