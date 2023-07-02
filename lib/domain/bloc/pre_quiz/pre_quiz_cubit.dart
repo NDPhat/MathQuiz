@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:math/application/utils/format.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
@@ -17,7 +18,6 @@ part 'pre_quiz_state.dart';
 class PreQuizCubit extends Cubit<PreQuizState> {
   final PreQuizGameRepo preQuizLocalRepo;
   final UserAPIRepo userAPIRepo;
-  String numQMEss = "";
   String sNumMess = "";
   String eNumMess = "";
   PreQuizCubit(
@@ -26,40 +26,11 @@ class PreQuizCubit extends Cubit<PreQuizState> {
       : preQuizLocalRepo = preQuizLocalRepo,
         userAPIRepo = userAPIRepo,
         super(PreQuizState.initial());
-  void numQChanged(int value) {
-    state.numQ = value;
-    if (state.numQMess.isNotEmpty) {
-      emit(state.copyWith(numQMess: ""));
-    }
+
+  void seNumChanged(RangeValues values) {
+    emit(state.copyWith(sNum: values.start.round(), eNum: values.end.round()));
   }
 
-  void sNumChanged(int value) {
-    state.sNum = value;
-    if (state.sNumMess.isNotEmpty) {
-      emit(state.copyWith(sNumMess: ""));
-    }
-  }
-
-  void eNumChanged(int value) {
-    state.eNum = value;
-    if (state.eNumMess.isNotEmpty) {
-      emit(state.copyWith(eNumMess: ""));
-    }
-  }
-
-  void timeChanged(int value) {
-    emit(state.copyWith(time: value));
-  }
-
-  bool nuMQValidator(int numQ) {
-    if (numQ <= 0) {
-      numQMEss = 'This field is not correct';
-      return false;
-    } else {
-      numQMEss = "";
-      return true;
-    }
-  }
 
   bool sNumValidator(int sNum) {
     if (sNum <= 0) {
@@ -86,9 +57,9 @@ class PreQuizCubit extends Cubit<PreQuizState> {
   }
 
   bool isFormValid() {
-    if (nuMQValidator(state.numQ ?? 0) &
-        sNumValidator(state.sNum ?? 0) &
-        eNumValidator(state.eNum ?? 0)) {
+    if (
+        sNumValidator(state.sNum!) &
+        eNumValidator(state.eNum!)) {
       return true;
     }
     return false;
@@ -118,12 +89,11 @@ class PreQuizCubit extends Cubit<PreQuizState> {
           dataServer = await userAPIRepo.createPreQuizGame(PreQuizGameAPIReq(
               sNum: state.sNum!,
               eNum: state.eNum!,
-              numQ: state.numQ!,
+              numQ: 0,
               status: "GOING",
               sign: sign,
               score: 0,
               optionGame: option,
-              timePerQuiz: state.time,
               userID: instance.get<UserGlobal>().id,
               dateSave: formatDateInput.format(
                 DateTime.now(),
@@ -132,31 +102,28 @@ class PreQuizCubit extends Cubit<PreQuizState> {
         final entity = PreQuizGameEntityCompanion(
             sNum: Value(state.sNum!),
             eNum: Value(state.eNum!),
-            numQ: Value(state.numQ!),
+            numQ: const Value(0),
             sign: Value(sign),
             option: Value(option),
-            timePer: Value(state.time),
             dateSave: Value(formatDateInput.format(DateTime.now())));
         //insert task
         await preQuizLocalRepo.insertPreQuizGame(entity);
         final data = await preQuizLocalRepo.getLatestPreQuizGame();
         emit(state.copyWith(
-            numQMess: "",
             id: data.id,
-            idServer: instance.get<UserGlobal>().onLogin! ? dataServer!.key : "0",
+            idServer:
+                instance.get<UserGlobal>().onLogin! ? dataServer!.key : "0",
             sNumMess: "",
             eNumMess: "",
             status: PreQuizStatus.success));
       } on Exception catch (e) {
         emit(state.copyWith(
-            numQMess: numQMEss,
             sNumMess: sNumMess,
             eNumMess: eNumMess,
             status: PreQuizStatus.error));
       }
     } else {
       emit(state.copyWith(
-          numQMess: numQMEss,
           sNumMess: sNumMess,
           eNumMess: eNumMess,
           status: PreQuizStatus.error));

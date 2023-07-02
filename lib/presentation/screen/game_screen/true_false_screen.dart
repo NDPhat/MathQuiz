@@ -18,7 +18,6 @@ import '../../../domain/bloc/game/game_cubit.dart';
 import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../../main.dart';
-
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/portrait_mode_tf.dart';
@@ -32,15 +31,12 @@ class TrueFalseScreen extends StatefulWidget {
 }
 
 class _TrueFalseScreenState extends State<TrueFalseScreen> {
-  late Timer _timer;
-  int _totalTime = 0;
   late QuizBrain _quizBrain;
   int _score = 0;
   late PreQuizGame _preQuiz;
   int _preIdNow = 0;
   String userChoose = "TRUE";
   String _preIdServerNow = "";
-  double _value = 0;
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = true;
@@ -60,8 +56,6 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
 
   void _startGame(PreQuizGame _preQuiz) async {
     _quizBrain.makeQuizTrueFalse(_preQuiz);
-    _startTimer();
-    _value = 1;
     _score = 0;
     _totalNumberOfQuizzes = 1;
     SharedPreferences _preferences = await SharedPreferences.getInstance();
@@ -69,15 +63,10 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
 
   void _makeNewQuiz() async {
     _quizBrain.makeQuizTrueFalse(_preQuiz);
-    _value = 0;
-    _startTimer();
-    _value = 1;
   }
 
   void _startGameAgain() async {
     setState(() {
-      _value = 0;
-      _totalTime = 0;
       _preIdNow++;
       falseChoose = 0;
       _score = 0;
@@ -93,7 +82,6 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
               sign: _preQuiz.sign,
               score: 0,
               optionGame: _preQuiz.option,
-              timePerQuiz: _preQuiz.timePer,
               userID: instance.get<UserGlobal>().id,
               dateSave: formatDateInput.format(
                 DateTime.now(),
@@ -107,46 +95,15 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
             numQ: driff.Value(_preQuiz.numQ!),
             sign: driff.Value(_preQuiz.sign!),
             option: driff.Value(_preQuiz.option!),
-            timePer: driff.Value(_preQuiz.timePer!),
             dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
     final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
 
     // cap nhap lai id
     _preIdNow = data.id;
     _quizBrain.makeQuizTrueFalse(_preQuiz);
-    _startTimer();
-  }
-
-  void _startTimer() {
-    const speed = Duration(milliseconds: 100);
-    _timer = Timer.periodic(speed, (timer) {
-      if (_value > 0) {
-        setState(() {
-          _value > 1 / (_preQuiz.timePer! * 10)
-              ? _value -= 1 / (_preQuiz.timePer! * 10)
-              : _value = 0;
-          _totalTime = (_value * (_preQuiz.timePer!) + 1).toInt();
-        });
-      } else {
-        // luu lai cau hoi va dap an da khong chon
-
-        _saveData(context);
-        userAnswer = false;
-        setState(() {
-          falseChoose++;
-        });
-        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _updateScore();
-          _endGame();
-        } else {
-          _resetScreen();
-        }
-      }
-    });
   }
 
   void _resetScreen() {
-    _timer.cancel();
     setState(() {
       _totalNumberOfQuizzes++;
     });
@@ -183,10 +140,11 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   }
 
   void _endGame() {
-    _timer.cancel();
     if (instance.get<UserGlobal>().onLogin == true) {
       instance.get<UserAPIRepo>().updatePreQuizGameByID(
-          PreQuizGameAPIReq(score: _score, status: "DONE"), _preIdServerNow);
+          PreQuizGameAPIReq(
+              score: _score, status: "DONE", numQ: _totalNumberOfQuizzes),
+          _preIdServerNow);
     }
     showEndDiaLog();
   }
@@ -318,7 +276,6 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                _timer.cancel();
                 Navigator.pushNamed(context, Routers.homeGuest);
               },
               child:
@@ -353,8 +310,8 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
             return PortraitModeTF(
               score: state.score,
               quizBrainObject: _quizBrain,
-              percentValue: _value,
-              timeNow: _totalTime,
+              percentValue: 1,
+              timeNow: 60,
               onTap: (String value) {
                 _checkAnswer(value, context);
                 context.read<GameCubit>().changeDataAfterDoneQ(
@@ -362,7 +319,6 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
               },
               trueQ: state.trueQ,
               falseQ: falseChoose,
-              totalQ: _preQuiz.numQ ?? 1,
               quizNow: _totalNumberOfQuizzes,
               size: data,
             );
@@ -370,11 +326,5 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
   }
 }

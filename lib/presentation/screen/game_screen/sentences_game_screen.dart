@@ -302,7 +302,6 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
               },
               trueQ: _score,
               falseQ: falseChoose,
-              typeOfGame: "Test",
               controller: _controller,
               quizNow: _totalNumberOfQuizzes,
               onFinished: () {

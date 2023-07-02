@@ -1,4 +1,20 @@
 {
   "hello": "Xin chào",
-  "language": "Ngôn ngữ"
+  "language": "Ngôn ngữ",
+  "taptostart": "Chạm để bắt đầu",
+  "welcomeback": "Mừng trở lại",
+  "home" :"Trang chủ",
+  "game": "Trò chơi",
+  "homework":"Bài tập",
+  "profile": "Cá nhân",
+  "practice":"Luyện tập",
+  "test": "Kiểm tra",
+  "number": "Dạng số",
+  "sentences":"Dạng câu",
+  "join": "Tham gia",
+  "history": "Lịch sử",
+  "done": "Xong",
+  "input answer": "Nhập liệu",
+  "truefalse": "Đúng/Sai",
+  "findmissing": "Điền"
 }

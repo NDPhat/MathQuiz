@@ -16,7 +16,7 @@ import 'package:circular_countdown/circular_countdown.dart';
 
 class PortraitModeTF extends StatelessWidget {
   final int score;
-  final int trueQ, falseQ, totalQ;
+  final int trueQ, falseQ;
   final int quizNow;
   final QuizBrain quizBrainObject;
   final sign;
@@ -28,7 +28,6 @@ class PortraitModeTF extends StatelessWidget {
     required this.score,
     required this.trueQ,
     required this.falseQ,
-    required this.totalQ,
     required this.quizNow,
     required this.size,
     required this.quizBrainObject,
@@ -45,9 +44,9 @@ class PortraitModeTF extends StatelessWidget {
         Container(
           color: colorSystemWhite,
           padding: EdgeInsets.only(
-              top: size.height * 0.005,
-              bottom: size.height * 0.05,
-           ),
+            top: size.height * 0.005,
+            bottom: size.height * 0.05,
+          ),
           child: Column(
             children: [
               UserTableScore(
@@ -56,8 +55,6 @@ class PortraitModeTF extends StatelessWidget {
                 timeNow: timeNow,
                 trueQ: trueQ,
                 falseQ: falseQ,
-                totalQuiz: totalQ,
-                typeOfGame: "TF",
                 quizNow: quizNow,
               ),
               Stack(

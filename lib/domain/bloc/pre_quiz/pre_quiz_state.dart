@@ -2,11 +2,9 @@ part of 'pre_quiz_cubit.dart';
 
 class PreQuizState extends Equatable {
   int id;
-  int? numQ;
   int? eNum;
   int? sNum;
   String? idServer;
-  String numQMess;
   String sNumMess;
   String eNumMess;
   int time;
@@ -14,11 +12,9 @@ class PreQuizState extends Equatable {
 
   PreQuizState({
     required this.id,
-    this.numQ,
     this.sNum,
     this.eNum,
     this.idServer,
-    required this.numQMess,
     required this.eNumMess,
     required this.sNumMess,
     required this.time,
@@ -28,9 +24,10 @@ class PreQuizState extends Equatable {
   factory PreQuizState.initial() {
     return PreQuizState(
       idServer: '',
-      numQMess: "",
       sNumMess: "",
       eNumMess: "",
+      sNum: 1,
+      eNum: 20,
       status: PreQuizStatus.initial, id: 1, time: 5,
       //user: null,
     );
@@ -42,8 +39,7 @@ class PreQuizState extends Equatable {
   List<Object?> get props => [
         sNum,
         eNum,
-        numQ,
-        numQMess,
+
         id,
         sNumMess,
         eNumMess,
@@ -53,12 +49,10 @@ class PreQuizState extends Equatable {
       ];
 
   PreQuizState copyWith({
-    int? numQ,
     int? sNum,
     int? eNum,
     int? id,
     String? idServer,
-    String? numQMess,
     String? sNumMess,
     String? eNumMess,
     int? time,
@@ -66,10 +60,8 @@ class PreQuizState extends Equatable {
   }) {
     return PreQuizState(
       id: id ?? this.id,
-      numQ: numQ ?? this.numQ,
       sNum: sNum ?? this.sNum,
       eNum: eNum ?? this.eNum,
-      numQMess: numQMess ?? this.numQMess,
       sNumMess: sNumMess ?? this.sNumMess,
       eNumMess: eNumMess ?? this.eNumMess,
       idServer: idServer ?? this.idServer,

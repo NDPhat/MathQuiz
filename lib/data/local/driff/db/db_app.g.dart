@@ -49,12 +49,6 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
   late final GeneratedColumn<int> sNum = GeneratedColumn<int>(
       'sNum', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _timePerMeta =
-      const VerificationMeta('timePer');
-  @override
-  late final GeneratedColumn<int> timePer = GeneratedColumn<int>(
-      'timePer', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _scoreMeta = const VerificationMeta('score');
   @override
   late final GeneratedColumn<int> score = GeneratedColumn<int>(
@@ -62,7 +56,7 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
       type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, sign, option, dateSave, numQ, eNum, sNum, timePer, score];
+      [id, sign, option, dateSave, numQ, eNum, sNum, score];
   @override
   String get aliasedName => _alias ?? 'pre_quiz_game_entity';
   @override
@@ -112,12 +106,6 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
     } else if (isInserting) {
       context.missing(_sNumMeta);
     }
-    if (data.containsKey('timePer')) {
-      context.handle(_timePerMeta,
-          timePer.isAcceptableOrUnknown(data['timePer']!, _timePerMeta));
-    } else if (isInserting) {
-      context.missing(_timePerMeta);
-    }
     if (data.containsKey('score')) {
       context.handle(
           _scoreMeta, score.isAcceptableOrUnknown(data['score']!, _scoreMeta));
@@ -145,8 +133,6 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
           .read(DriftSqlType.int, data['${effectivePrefix}eNum'])!,
       sNum: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}sNum'])!,
-      timePer: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}timePer'])!,
       score: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}score']),
     );
@@ -167,7 +153,6 @@ class PreQuizGameEntityData extends DataClass
   final int numQ;
   final int eNum;
   final int sNum;
-  final int timePer;
   final int? score;
   const PreQuizGameEntityData(
       {required this.id,
@@ -177,7 +162,6 @@ class PreQuizGameEntityData extends DataClass
       required this.numQ,
       required this.eNum,
       required this.sNum,
-      required this.timePer,
       this.score});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -189,7 +173,6 @@ class PreQuizGameEntityData extends DataClass
     map['numQ'] = Variable<int>(numQ);
     map['eNum'] = Variable<int>(eNum);
     map['sNum'] = Variable<int>(sNum);
-    map['timePer'] = Variable<int>(timePer);
     if (!nullToAbsent || score != null) {
       map['score'] = Variable<int>(score);
     }
@@ -205,7 +188,6 @@ class PreQuizGameEntityData extends DataClass
       numQ: Value(numQ),
       eNum: Value(eNum),
       sNum: Value(sNum),
-      timePer: Value(timePer),
       score:
           score == null && nullToAbsent ? const Value.absent() : Value(score),
     );
@@ -222,7 +204,6 @@ class PreQuizGameEntityData extends DataClass
       numQ: serializer.fromJson<int>(json['numQ']),
       eNum: serializer.fromJson<int>(json['eNum']),
       sNum: serializer.fromJson<int>(json['sNum']),
-      timePer: serializer.fromJson<int>(json['timePer']),
       score: serializer.fromJson<int?>(json['score']),
     );
   }
@@ -237,7 +218,6 @@ class PreQuizGameEntityData extends DataClass
       'numQ': serializer.toJson<int>(numQ),
       'eNum': serializer.toJson<int>(eNum),
       'sNum': serializer.toJson<int>(sNum),
-      'timePer': serializer.toJson<int>(timePer),
       'score': serializer.toJson<int?>(score),
     };
   }
@@ -250,7 +230,6 @@ class PreQuizGameEntityData extends DataClass
           int? numQ,
           int? eNum,
           int? sNum,
-          int? timePer,
           Value<int?> score = const Value.absent()}) =>
       PreQuizGameEntityData(
         id: id ?? this.id,
@@ -260,7 +239,6 @@ class PreQuizGameEntityData extends DataClass
         numQ: numQ ?? this.numQ,
         eNum: eNum ?? this.eNum,
         sNum: sNum ?? this.sNum,
-        timePer: timePer ?? this.timePer,
         score: score.present ? score.value : this.score,
       );
   @override
@@ -273,7 +251,6 @@ class PreQuizGameEntityData extends DataClass
           ..write('numQ: $numQ, ')
           ..write('eNum: $eNum, ')
           ..write('sNum: $sNum, ')
-          ..write('timePer: $timePer, ')
           ..write('score: $score')
           ..write(')'))
         .toString();
@@ -281,7 +258,7 @@ class PreQuizGameEntityData extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, sign, option, dateSave, numQ, eNum, sNum, timePer, score);
+      Object.hash(id, sign, option, dateSave, numQ, eNum, sNum, score);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -293,7 +270,6 @@ class PreQuizGameEntityData extends DataClass
           other.numQ == this.numQ &&
           other.eNum == this.eNum &&
           other.sNum == this.sNum &&
-          other.timePer == this.timePer &&
           other.score == this.score);
 }
 
@@ -306,7 +282,6 @@ class PreQuizGameEntityCompanion
   final Value<int> numQ;
   final Value<int> eNum;
   final Value<int> sNum;
-  final Value<int> timePer;
   final Value<int?> score;
   const PreQuizGameEntityCompanion({
     this.id = const Value.absent(),
@@ -316,7 +291,6 @@ class PreQuizGameEntityCompanion
     this.numQ = const Value.absent(),
     this.eNum = const Value.absent(),
     this.sNum = const Value.absent(),
-    this.timePer = const Value.absent(),
     this.score = const Value.absent(),
   });
   PreQuizGameEntityCompanion.insert({
@@ -327,15 +301,13 @@ class PreQuizGameEntityCompanion
     required int numQ,
     required int eNum,
     required int sNum,
-    required int timePer,
     this.score = const Value.absent(),
   })  : sign = Value(sign),
         option = Value(option),
         dateSave = Value(dateSave),
         numQ = Value(numQ),
         eNum = Value(eNum),
-        sNum = Value(sNum),
-        timePer = Value(timePer);
+        sNum = Value(sNum);
   static Insertable<PreQuizGameEntityData> custom({
     Expression<int>? id,
     Expression<String>? sign,
@@ -344,7 +316,6 @@ class PreQuizGameEntityCompanion
     Expression<int>? numQ,
     Expression<int>? eNum,
     Expression<int>? sNum,
-    Expression<int>? timePer,
     Expression<int>? score,
   }) {
     return RawValuesInsertable({
@@ -355,7 +326,6 @@ class PreQuizGameEntityCompanion
       if (numQ != null) 'numQ': numQ,
       if (eNum != null) 'eNum': eNum,
       if (sNum != null) 'sNum': sNum,
-      if (timePer != null) 'timePer': timePer,
       if (score != null) 'score': score,
     });
   }
@@ -368,7 +338,6 @@ class PreQuizGameEntityCompanion
       Value<int>? numQ,
       Value<int>? eNum,
       Value<int>? sNum,
-      Value<int>? timePer,
       Value<int?>? score}) {
     return PreQuizGameEntityCompanion(
       id: id ?? this.id,
@@ -378,7 +347,6 @@ class PreQuizGameEntityCompanion
       numQ: numQ ?? this.numQ,
       eNum: eNum ?? this.eNum,
       sNum: sNum ?? this.sNum,
-      timePer: timePer ?? this.timePer,
       score: score ?? this.score,
     );
   }
@@ -407,9 +375,6 @@ class PreQuizGameEntityCompanion
     if (sNum.present) {
       map['sNum'] = Variable<int>(sNum.value);
     }
-    if (timePer.present) {
-      map['timePer'] = Variable<int>(timePer.value);
-    }
     if (score.present) {
       map['score'] = Variable<int>(score.value);
     }
@@ -426,7 +391,6 @@ class PreQuizGameEntityCompanion
           ..write('numQ: $numQ, ')
           ..write('eNum: $eNum, ')
           ..write('sNum: $sNum, ')
-          ..write('timePer: $timePer, ')
           ..write('score: $score')
           ..write(')'))
         .toString();

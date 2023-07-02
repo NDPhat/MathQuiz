@@ -207,7 +207,6 @@ class _TestScreenState extends State<TestScreen> {
               },
               trueQ: _score,
               falseQ: falseChoose,
-              typeOfGame: "Test",
               controller: _controller,
               quizNow: _totalNumberOfQuizzes,
               onFinished: () {

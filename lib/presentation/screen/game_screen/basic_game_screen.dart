@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:drift/drift.dart' as driff;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,8 +30,6 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late Timer _timer;
-  int _totalTime = 0;
   late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
@@ -38,10 +37,10 @@ class _GameScreenState extends State<GameScreen> {
   int _preIdNow = 0;
   String _preIdServerNow = "";
   int userChoose = 1;
-  double _value = 0;
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = false;
+  final CountDownController _controller = CountDownController();
 
   @override
   void initState() {
@@ -77,6 +76,7 @@ class _GameScreenState extends State<GameScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
+                  _controller.start();
                   _startGame(_preQuiz);
                 },
                 child: const Text('GO', style: kDialogButtonsTS),
@@ -109,8 +109,6 @@ class _GameScreenState extends State<GameScreen> {
 
   void _startGame(PreQuizGame _preQuiz) async {
     _quizBrain.makeQuiz(_preQuiz);
-    _startTimer();
-    _value = 1;
     _score = 0;
     _totalNumberOfQuizzes = 1;
     SharedPreferences _preferences = await SharedPreferences.getInstance();
@@ -119,15 +117,10 @@ class _GameScreenState extends State<GameScreen> {
 
   void _makeNewQuiz() async {
     _quizBrain.makeQuiz(_preQuiz);
-    _value = 0;
-    _startTimer();
-    _value = 1;
   }
 
   void _startGameAgain() async {
     setState(() {
-      _value = 0;
-      _totalTime = 0;
       falseChoose = 0;
       _score = 0;
       _totalNumberOfQuizzes = 0;
@@ -135,74 +128,38 @@ class _GameScreenState extends State<GameScreen> {
     // them tren server
     if (instance.get<UserGlobal>().onLogin == true) {
       PreQuizGameAPIModel? newData =
-      await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
-          sNum: _preQuiz.startNum,
-          eNum: _preQuiz.endNum,
-          numQ: _preQuiz.numQ,
-          status: "GOING",
-          sign: _preQuiz.sign,
-          score: 0,
-          optionGame: _preQuiz.option,
-          timePerQuiz: _preQuiz.timePer,
-          userID: instance
-              .get<UserGlobal>()
-              .id,
-          dateSave: formatDateInput.format(
-            DateTime.now(),
-          )));
+          await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
+              sNum: _preQuiz.startNum,
+              eNum: _preQuiz.endNum,
+              numQ: 0,
+              status: "GOING",
+              sign: _preQuiz.sign,
+              score: 0,
+              optionGame: _preQuiz.option,
+              userID: instance.get<UserGlobal>().id,
+              dateSave: formatDateInput.format(
+                DateTime.now(),
+              )));
       _preIdServerNow = newData!.key!;
-
     }
     // them 1 prequiz moi
     instance.get<PreQuizGameRepo>().insertPreQuizGame(
         PreQuizGameEntityCompanion(
             sNum: driff.Value(_preQuiz.startNum!),
             eNum: driff.Value(_preQuiz.endNum!),
-            numQ: driff.Value(_preQuiz.numQ!),
+            numQ: driff.Value(0),
             sign: driff.Value(_preQuiz.sign!),
             option: driff.Value(_preQuiz.option!),
-            timePer: driff.Value(_preQuiz.timePer!),
             dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
     final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
     // cap nhap lai id
     _preIdNow = data.id;
     _quizBrain.makeQuiz(_preQuiz);
-    _startTimer();
-    _value = 1;
     _score = 0;
     _totalNumberOfQuizzes = 1;
   }
 
-  void _startTimer() {
-    const speed = Duration(milliseconds: 100);
-    _timer = Timer.periodic(speed, (timer) {
-      if (_value > 0) {
-        setState(() {
-          _value > 1 / (_preQuiz.timePer! * 10)
-              ? _value -= 1 / (_preQuiz.timePer! * 10)
-              : _value = 0;
-          _totalTime = (_value * (_preQuiz.timePer!) + 1).toInt();
-        });
-      } else {
-        // luu lai cau hoi va dap an da khong chon
-
-        userAnswer = false;
-        _saveData(context);
-        setState(() {
-          falseChoose++;
-        });
-        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _updateScore();
-          _endGame();
-        } else {
-          _resetScreen();
-        }
-      }
-    });
-  }
-
   void _resetScreen() {
-    _timer.cancel();
     setState(() {
       _totalNumberOfQuizzes++;
     });
@@ -239,10 +196,11 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _endGame() {
-    _timer.cancel();
     if (instance.get<UserGlobal>().onLogin == true) {
       instance.get<UserAPIRepo>().updatePreQuizGameByID(
-          PreQuizGameAPIReq(score: _score, status: "DONE"), _preIdServerNow);
+          PreQuizGameAPIReq(
+              score: _score, status: "DONE", numQ: _totalNumberOfQuizzes),
+          _preIdServerNow);
     }
     showEndDiaLog();
   }
@@ -254,35 +212,22 @@ class _GameScreenState extends State<GameScreen> {
         _saveData(context);
         playSound('correct-choice.wav');
         _score++;
-        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _updateScore();
-          _endGame();
-        } else {
-          _resetScreen();
-        }
+
+        _resetScreen();
       } else {
         userAnswer = false;
         _saveData(context);
-        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _updateScore();
-          playSound('wrong-choice.wav');
-          falseChoose++;
-          _endGame();
-        } else {
-          playSound('wrong-choice.wav');
-          falseChoose++;
-          _resetScreen();
-        }
+
+        playSound('wrong-choice.wav');
+        falseChoose++;
+        _resetScreen();
       }
     } else {
       userAnswer = false;
       _saveData(context);
-      if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-        _endGame();
-      } else {
-        falseChoose++;
-        _resetScreen();
-      }
+
+      falseChoose++;
+      _resetScreen();
     }
   }
 
@@ -302,6 +247,42 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 
+  Future<void> showOutDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+            25,
+          )),
+          backgroundColor: const Color(0xff1542bf),
+          title: const FittedBox(
+            child: Text('DO YOU WANT TO QUIT ?',
+                textAlign: TextAlign.center, style: kScoreLabelTextStyle),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, Routers.homeUser);
+              },
+              child: const Center(child: Text('YES', style: kDialogButtonsTS)),
+            ),
+            TextButton(
+              onPressed: () {
+                _controller.resume();
+                Navigator.pop(context);
+              },
+              child: const Center(child: Text('NO', style: kDialogButtonsTS)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
@@ -310,7 +291,10 @@ class _GameScreenState extends State<GameScreen> {
         children: [
           AppBarWidget(
             size: data,
-            onBack: () {},
+            onBack: () {
+              _controller.pause();
+              showOutDialog();
+            },
             textTitle: "Game",
           ),
           BlocBuilder<GameCubit, GameState>(builder: (context, state) {
@@ -318,9 +302,6 @@ class _GameScreenState extends State<GameScreen> {
               highscore: _highScore,
               score: _score,
               quizBrainObject: _quizBrain,
-              percentValue: _value,
-              timeNow: _totalTime,
-              typeOfGame: "Game",
               onTap: (int value) {
                 setState(() {
                   userChoose = value;
@@ -331,7 +312,9 @@ class _GameScreenState extends State<GameScreen> {
               },
               trueQ: state.trueQ,
               falseQ: falseChoose,
-              totalQ: _preQuiz.numQ ?? 1,
+              timeNow: 60,
+              percentValue: 1,
+              controller: _controller,
               quizNow: _totalNumberOfQuizzes,
               size: data,
             );
@@ -339,11 +322,5 @@ class _GameScreenState extends State<GameScreen> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
   }
 }

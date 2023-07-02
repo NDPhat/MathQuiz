@@ -8,6 +8,5 @@ class PreQuizGameEntity extends Table {
   IntColumn get numQ => integer().named("numQ")();
   IntColumn get eNum => integer().named("eNum")();
   IntColumn get sNum => integer().named("sNum")();
-  IntColumn get timePer => integer().named("timePer")();
   IntColumn get score => integer().nullable().named("score")();
 }

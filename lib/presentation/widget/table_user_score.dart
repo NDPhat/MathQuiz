@@ -12,9 +12,7 @@ class UserTableScore extends StatelessWidget {
       this.trueQ,
       this.falseQ,
       this.timeNow,
-      this.typeOfGame,
       this.percentTime,
-      this.totalQuiz,
       this.quizNow,
       this.onFinished,
       this.controller})
@@ -23,8 +21,6 @@ class UserTableScore extends StatelessWidget {
   int? trueQ;
   int? falseQ;
   int? quizNow;
-  int? totalQuiz;
-  String? typeOfGame;
   double? percentTime;
   int? timeNow;
   CountDownController? controller;
@@ -51,15 +47,10 @@ class UserTableScore extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      typeOfGame == "Test"
-                          ? (Text(
-                              'Quiz : $quizNow',
-                              style: s16f700ColorGreyTe,
-                            ))
-                          : Text(
-                              '$quizNow/$totalQuiz',
-                              style: s16f700ColorGreyTe,
-                            )
+                      (Text(
+                        'Quiz : $quizNow',
+                        style: s16f700ColorGreyTe,
+                      ))
                     ],
                   ),
                 ),
@@ -126,48 +117,18 @@ class UserTableScore extends StatelessWidget {
               ],
             ),
           ),
-          typeOfGame == "Test"
-              ? Padding(
-                  padding: EdgeInsets.only(bottom: size.height * 0.1),
-                  child: CircleAvatar(
-                      radius: 40,
-                      backgroundColor: colorSystemWhite,
-                      child: CircularCountDownTimer(
-                        duration: 60,
-                        initialDuration: 0,
-                        controller: controller,
-                        width: 50,
-                        height: 50,
-                        ringColor: Colors.grey[300]!,
-                        fillColor: Colors.purpleAccent[100]!,
-                        backgroundColor: Colors.purple[500],
-                        backgroundGradient: null,
-                        strokeWidth: 20.0,
-                        strokeCap: StrokeCap.round,
-                        textStyle: const TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        textFormat: CountdownTextFormat.S,
-                        autoStart: false,
-                        onStart: () {
-                          debugPrint('Countdown Started');
-                        },
-                        onComplete: onFinished,
-                      )),
-                )
-              : Padding(
-                  padding: EdgeInsets.only(bottom: size.height * 0.1),
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: colorSystemWhite,
-                    child: CirPerIndicator(
-                      percentValue: percentTime,
-                      size: size,
-                      totalTime: timeNow,
-                    ),
-                  ),
-                ),
+          Padding(
+            padding: EdgeInsets.only(bottom: size.height * 0.1),
+            child: CircleAvatar(
+              radius: 40,
+              backgroundColor: colorSystemWhite,
+              child: CirPerIndicator(
+                percentValue: percentTime,
+                size: size,
+                timeNow: timeNow,
+              ),
+            ),
+          ),
         ],
       ),
     );

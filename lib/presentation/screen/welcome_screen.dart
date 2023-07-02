@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../application/cons/constants.dart';
 import '../../data/model/user_global.dart';
 import '../../data/remote/authen/authen.dart';

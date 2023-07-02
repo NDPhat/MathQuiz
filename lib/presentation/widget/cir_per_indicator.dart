@@ -12,10 +12,10 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class CirPerIndicator extends StatelessWidget {
   final percentValue;
-  final totalTime;
+  final timeNow;
   final Size size;
 
-  CirPerIndicator({@required this.totalTime, @required this.percentValue,required this.size});
+  CirPerIndicator({@required this.timeNow, @required this.percentValue,required this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class CirPerIndicator extends StatelessWidget {
       percent: percentValue,
       circularStrokeCap: CircularStrokeCap.round,
       center: Text(
-        '$totalTime',
+        '$timeNow',
         style: kTimerTextStyle,
       ),
       progressColor: percentValue > 0.6

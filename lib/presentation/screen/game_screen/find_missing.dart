@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/utils/logic.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/cons/text_style.dart';
 import '../../../application/utils/format.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../../data/local/driff/db/db_app.dart';
@@ -31,15 +30,12 @@ class FindMissing extends StatefulWidget {
 }
 
 class _FindMissingState extends State<FindMissing> {
-  late Timer _timer;
-  int _totalTime = 0;
   late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
   late PreQuizGame _preQuiz;
   int _preIdNow = 0;
   int userChoose = 1;
-  double _value = 0;
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = true;
@@ -60,23 +56,16 @@ class _FindMissingState extends State<FindMissing> {
 
   void _startGame(PreQuizGame _preQuiz) async {
     _quizBrain.makeQuizFindMissing(_preQuiz);
-    _startTimer();
-    _value = 1;
     _score = 0;
     _totalNumberOfQuizzes = 1;
   }
 
   void _makeNewQuiz() async {
     _quizBrain.makeQuizFindMissing(_preQuiz);
-    _value = 0;
-    _startTimer();
-    _value = 1;
   }
 
   void _startGameAgain() async {
     setState(() {
-      _value = 0;
-      _totalTime = 0;
       _preIdNow++;
       falseChoose = 0;
       _score = 0;
@@ -87,12 +76,11 @@ class _FindMissingState extends State<FindMissing> {
       await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
           sNum: _preQuiz.startNum,
           eNum: _preQuiz.endNum,
-          numQ: _preQuiz.numQ,
+          numQ: 0,
           status: "GOING",
           sign: _preQuiz.sign,
           score: 0,
           optionGame: _preQuiz.option,
-          timePerQuiz: _preQuiz.timePer,
           userID: instance
               .get<UserGlobal>()
               .id,
@@ -106,48 +94,19 @@ class _FindMissingState extends State<FindMissing> {
         PreQuizGameEntityCompanion(
             sNum: driff.Value(_preQuiz.startNum!),
             eNum: driff.Value(_preQuiz.endNum!),
-            numQ: driff.Value(_preQuiz.numQ!),
+            numQ: const driff.Value(0),
             sign: driff.Value(_preQuiz.sign!),
             option: driff.Value(_preQuiz.option!),
-            timePer: driff.Value(_preQuiz.timePer!),
             dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
     final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
 
     // cap nhap lai id
     _preIdNow = data.id;
     _quizBrain.makeQuizTrueFalse(_preQuiz);
-    _startTimer();
   }
 
-  void _startTimer() {
-    const speed = Duration(milliseconds: 100);
-    _timer = Timer.periodic(speed, (timer) {
-      if (_value > 0) {
-        setState(() {
-          _value > 1 / (_preQuiz.timePer! * 10)
-              ? _value -= 1 / (_preQuiz.timePer! * 10)
-              : _value = 0;
-          _totalTime = (_value * (_preQuiz.timePer!) + 1).toInt();
-        });
-      } else {
-        // luu lai cau hoi va dap an da khong chon
-        userAnswer = false;
-        _saveData(context);
-        setState(() {
-          falseChoose++;
-        });
-        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _updateScore();
-          _endGame();
-        } else {
-          _resetScreen();
-        }
-      }
-    });
-  }
 
   void _resetScreen() {
-    _timer.cancel();
     setState(() {
       _totalNumberOfQuizzes++;
     });
@@ -186,10 +145,9 @@ class _FindMissingState extends State<FindMissing> {
   }
 
   void _endGame() {
-    _timer.cancel();
     if (instance.get<UserGlobal>().onLogin == true) {
       instance.get<UserAPIRepo>().updatePreQuizGameByID(
-          PreQuizGameAPIReq(score: _score, status: "DONE"), _preIdServerNow);
+          PreQuizGameAPIReq(score: _score, status: "DONE",numQ: _totalNumberOfQuizzes), _preIdServerNow);
     }
     showEndDiaLog();
   }
@@ -300,7 +258,6 @@ class _FindMissingState extends State<FindMissing> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                _timer.cancel();
                 Navigator.pushNamed(context, Routers.homeGuest);
               },
               child: const Center(child: Text('YES', style: kDialogButtonsTS)),
@@ -353,9 +310,8 @@ class _FindMissingState extends State<FindMissing> {
               highscore: _highScore,
               score: _score,
               quizBrainObject: _quizBrain,
-              percentValue: _value,
-              timeNow: _totalTime,
-              typeOfGame: "Find",
+              percentValue: 1,
+              timeNow: 60,
               onTap: (int value) {
                 setState(() {
                   userChoose = value;
@@ -366,7 +322,6 @@ class _FindMissingState extends State<FindMissing> {
               },
               trueQ: state.trueQ,
               falseQ: falseChoose,
-              totalQ: _preQuiz.numQ ?? 1,
               quizNow: _totalNumberOfQuizzes,
               size: data,
             );
@@ -376,9 +331,5 @@ class _FindMissingState extends State<FindMissing> {
     );
   }
 
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
+
 }

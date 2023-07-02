@@ -209,6 +209,8 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               highscore: _highScore,
               score: _score,
               quizBrainObject: _quizBrain,
+              percentValue: 1,
+              timeNow: 60,
               onTap: (int value) {
                 _checkAnswer(value, context);
                 context.read<GameCubit>().addQuizTesttoServer(QuizTestReq(
@@ -223,7 +225,6 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               },
               trueQ: _score,
               falseQ: falseChoose,
-              typeOfGame: "Test",
               controller: _controller,
               quizNow: _totalNumberOfQuizzes,
               onFinished: () {

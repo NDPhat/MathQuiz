@@ -11,7 +11,6 @@ extension PreQuizModel on PreQuizGameEntityData {
         score: score,
         startNum: sNum,
         endNum: eNum,
-        timePer: timePer,
         dateSave: dateSave);
   }
 }

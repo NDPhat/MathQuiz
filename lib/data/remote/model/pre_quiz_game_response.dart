@@ -28,30 +28,28 @@ class PreQuizGameAPIResponse {
 }
 
 class PreQuizGameAPIModel {
-  String? key;
-  String? userID;
-  String? sign;
-  String? optionGame;
   String? dateSave;
-  int? sNum;
   int? eNum;
+  String? key;
   int? numQ;
-  int? timePerQuiz;
+  String? optionGame;
+  int? sNum;
   int? score;
+  String? sign;
   String? status;
+  String? userID;
 
   PreQuizGameAPIModel(
       {this.dateSave,
-      this.eNum,
-      this.key,
-      this.numQ,
-      this.status,
-      this.optionGame,
-      this.sNum,
-      this.score,
-      this.sign,
-      this.timePerQuiz,
-      this.userID});
+        this.eNum,
+        this.key,
+        this.numQ,
+        this.optionGame,
+        this.sNum,
+        this.score,
+        this.sign,
+        this.status,
+        this.userID});
 
   PreQuizGameAPIModel.fromJson(Map<String, dynamic> json) {
     dateSave = json['dateSave'];
@@ -61,9 +59,8 @@ class PreQuizGameAPIModel {
     optionGame = json['optionGame'];
     sNum = json['sNum'];
     score = json['score'];
-    status = json['status'];
     sign = json['sign'];
-    timePerQuiz = json['timePerQuiz'];
+    status = json['status'];
     userID = json['userID'];
   }
 
@@ -73,12 +70,11 @@ class PreQuizGameAPIModel {
     data['eNum'] = this.eNum;
     data['key'] = this.key;
     data['numQ'] = this.numQ;
-    data['status'] = this.status;
     data['optionGame'] = this.optionGame;
     data['sNum'] = this.sNum;
     data['score'] = this.score;
     data['sign'] = this.sign;
-    data['timePerQuiz'] = this.timePerQuiz;
+    data['status'] = this.status;
     data['userID'] = this.userID;
     return data;
   }

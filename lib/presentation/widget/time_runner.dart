@@ -24,7 +24,7 @@ class Time_Runner extends StatelessWidget {
       child: CirPerIndicator(
         size: size,
         percentValue: _value,
-        totalTime: _totalTime,
+        timeNow: _totalTime,
       ),
     );
   }

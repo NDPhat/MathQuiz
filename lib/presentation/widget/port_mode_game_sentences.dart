@@ -18,13 +18,11 @@ class PortraitModeGameSen extends StatelessWidget {
   final highscore;
   final int score;
   final int trueQ, falseQ;
-  int? totalQ;
   final int quizNow;
   final QuizBrain quizBrainObject;
   final onTap;
   double? percentValue;
   final Size size;
-  String? typeOfGame;
   double? percentTime;
   int? timeNow;
   CountDownController? controller;
@@ -34,7 +32,6 @@ class PortraitModeGameSen extends StatelessWidget {
       required this.score,
       required this.trueQ,
       required this.falseQ,
-      this.totalQ,
       required this.quizNow,
       required this.quizBrainObject,
       required this.onTap,
@@ -42,7 +39,6 @@ class PortraitModeGameSen extends StatelessWidget {
       required this.size,
       this.controller,
       this.onFinished,
-      this.typeOfGame,
       this.timeNow});
 
   @override
@@ -63,9 +59,7 @@ class PortraitModeGameSen extends StatelessWidget {
                   trueQ: trueQ,
                   controller: controller,
                   falseQ: falseQ,
-                  totalQuiz: totalQ,
                   onFinished: onFinished,
-                  typeOfGame: typeOfGame,
                   quizNow: quizNow,
                 ),
                 Stack(
