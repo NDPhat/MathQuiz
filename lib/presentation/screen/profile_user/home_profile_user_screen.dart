@@ -38,22 +38,14 @@ class HomeProfileUserScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8), // Border radius
                           child: ClipOval(
-                            child:
-                                instance.get<UserGlobal>().linkImage?.length !=
-                                        0
-                                    ? Image.network(
-                                        instance.get<UserGlobal>().linkImage!,
-                                        fit: BoxFit.cover,
-                                        height: 100,
-                                        width: 100,
-                                      )
-                                    : Image.asset(
-                                        "assets/images/profile.png",
-                                        fit: BoxFit.cover,
-                                        height: 100,
-                                        width: 100,
-                                      ),
-                          ),
+                              child: Image.network(
+                            instance.get<UserGlobal>().linkImage != null
+                                ? instance.get<UserGlobal>().linkImage!
+                                : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          )),
                         ),
                       )),
                 ],

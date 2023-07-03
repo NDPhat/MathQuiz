@@ -69,7 +69,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
   }
 
   Future<void> uploadImageToServer(String title) async {
-    if (instance.get<UserGlobal>().deleteHash!.isNotEmpty) {
+    String? dataHash = instance.get<UserGlobal>().deleteHash;
+    if (dataHash != null) {
       deletePastImage(instance.get<UserGlobal>().deleteHash!);
     }
     var request = http.MultipartRequest(
@@ -230,7 +231,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                 padding: EdgeInsets.only(
                     top: size.height * 0.05,
                     left: size.width * 0.02,
-                    right: size.width * 0.0),
+                    right: size.width * 0.02),
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   child: Column(
@@ -290,7 +291,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       }, builder: (context, state) {
                         return InputFieldWidget(
                           width: size.width * 0.9,
-                          height: size.height * 0.1,
+                          height: size.height * 0.12,
                           controller:
                               TextEditingController(text: state.fullName),
                           hintText: 'Your name',
@@ -317,7 +318,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           width: size.width * 0.9,
                           readOnly: true,
                           nameTitle: "Your class",
-                          height: size.height * 0.1,
+                          height: size.height * 0.12,
                           hintText: 'Class',
                           icon: const Icon(
                             LineAwesomeIcons.restroom,
@@ -426,7 +427,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           },
                           controller: TextEditingController(text: state.phone),
                           width: size.width * 0.9,
-                          height: size.height * 0.1,
+                          height: size.height * 0.12,
                           typeText: TextInputType.number,
                           hintText: 'Your phone',
                           nameTitle: "Your phone",
@@ -448,7 +449,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         return InputFieldWidget(
                           readOnly: true,
                           width: size.width * 0.9,
-                          height: size.height * 0.1,
+                          height: size.height * 0.12,
                           hintText: 'Your birthDate',
                           nameTitle: 'Your birthDate',
                           isHidden: state.birthDateError != "",
@@ -545,7 +546,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           readOnly: true,
                           controller: TextEditingController(text: state.email),
                           width: size.width * 0.9,
-                          height: size.height * 0.1,
+                          height: size.height * 0.12,
                           hintText: 'Your email',
                           nameTitle: 'Your email',
                           icon: const Icon(
@@ -562,7 +563,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       }, builder: (context, state) {
                         return InputFieldWidget(
                           width: size.width * 0.9,
-                          height: size.height * 0.1,
+                          height: size.height * 0.12,
                           hintText: 'Your address',
                           nameTitle: 'Your address',
                           isHidden: state.addError != "",
@@ -630,14 +631,10 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                               if (_imageFile != null) {
                                 await uploadImageToServer(
                                     instance.get<UserGlobal>().fullName!);
-                                context
-                                    .read<UpdateProfileCubit>()
-                                    .updateProfileUser(linkImage, deleteHash);
-                              } else {
-                                context
-                                    .read<UpdateProfileCubit>()
-                                    .updateProfileUser(linkImage, deleteHash);
                               }
+                              context
+                                  .read<UpdateProfileCubit>()
+                                  .updateProfileUser(linkImage, deleteHash,_imageFile);
                             },
                             color: colorMainBlue,
                             width: size.width * 0.8,

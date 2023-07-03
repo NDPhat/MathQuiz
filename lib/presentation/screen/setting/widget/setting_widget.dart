@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class SettingMenuWidget extends StatelessWidget {
@@ -19,8 +20,9 @@ class SettingMenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPress,
+    return Bounce(
+      duration: const Duration(milliseconds: 200),
+      onPressed: onPress,
       child: Container(
         padding: EdgeInsets.all(size.width * 0.02),
         height: size.height * 0.08,

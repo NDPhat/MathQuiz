@@ -36,7 +36,6 @@ class DetailItemCardPractices extends StatelessWidget {
               onBack: () {
                 Navigator.pop(context);
               },
-              textTitle: 'Detail Input',
             ),
             Container(
               height: size.height * 0.9,

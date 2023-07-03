@@ -73,7 +73,7 @@ class QuizBrain {
     listAnswer.add(anwser3);
     listAnswer.add(_quizAnswer);
     listAnswer.shuffle();
-    _quiz = '$firstNumber ${preQuiz.sign} $secondNumber';
+    _quiz = '$firstNumber ${preQuiz.sign} $secondNumber =';
   }
 
   void makeQuizFindMissing(PreQuizGame preQuiz) {

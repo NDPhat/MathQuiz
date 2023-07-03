@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
@@ -21,18 +22,17 @@ class BotDual extends StatefulWidget {
 }
 
 class _BOTBattleScreenState extends State<BotDual> {
-  late Timer _timer, timer, timerNew;
-  int _totalTime = 0;
+  late Timer timer;
   late QuizBrain _quizBrain;
   String level = "easy";
   int _scoreBot = 0;
   bool userClick = false;
   int _scoreHM = 0;
+  double _value = 1;
   int _falsePlayer = 3;
-  late int timeSave;
-  double _value = 0;
   int userChoose = 1;
   int _start = 5;
+  CountDownController controller = CountDownController();
   @override
   void initState() {
     super.initState();
@@ -47,119 +47,93 @@ class _BOTBattleScreenState extends State<BotDual> {
   void _startGame() async {
     _quizBrain.makeQuizBOT(level);
     _startTimer();
-    _checkAnswer();
-    _value = 1;
     _scoreBot = 0;
     _scoreHM = 0;
   }
 
   void _startAgainGame() async {
     setState(() {
-      _value = 1;
       _scoreBot = 0;
       _scoreHM = 0;
       _falsePlayer = 3;
     });
     _quizBrain.makeQuizBOT(level);
+  }
+
+  void doNext() {
+    _value = 1;
+    _quizBrain.makeQuizBOT(level);
     _startTimer();
   }
 
   void _startTimer() {
-    const speed = Duration(seconds: 1);
-    _timer = Timer.periodic(speed, (timer) {
-      if (_value > 0) {
+    const speed = Duration(milliseconds: 100);
+    timer = Timer.periodic(speed, (timer) {
+      print(_value);
+      print(1 / (_start! * 10) * 4 / 3);
+      if (_value > (1 / (_start! * 10) * 4 / 3)) {
         setState(() {
-          _value > 1 / 60 ? _value -= 1 / 60 : _value = 0;
-          _totalTime = (_value * 60 + 1).toInt();
+          _value > 1 / (_start! * 10)
+              ? _value -= 1 / (_start! * 10)
+              : _value = 0;
         });
       } else {
+        _checkAnswerBot();
         setState(() {
-          _totalTime = 0;
           timer.cancel();
-          _timer.cancel();
-          if (_scoreBot > _scoreHM) {
-            showEndDialog("BOT Winning");
-          } else if (_scoreHM > _scoreBot) {
-            showEndDialog("Player Winning");
-          } else {
-            showEndDialog("No One Winning");
-          }
         });
+        doNext();
       }
     });
   }
 
-  void _checkAnswer() {
-    const oneSec = const Duration(seconds: 1);
-    timer = Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (_start <= 1) {
-          _checkAnswerBot();
-          findTimeForBotNextTime();
-          _quizBrain.makeQuizBOT(level);
-          setState(() {
-            timer.cancel();
-          });
-
-          if (_totalTime >= _start) {
-            _checkAnswer();
-            setState(() {
-              timer.cancel();
-            });
-          }
-        } else {
-          if (userClick == true) {
-            _checkAnswerPlayer(userChoose);
-            setState(() {
-              timer.cancel();
-              userClick = false;
-            });
-            _quizBrain.makeQuizBOT(level);
-            findTimeForBotNextTime();
-            _checkAnswer();
-          } else {
-            setState(() {
-              _start--;
-            });
-          }
-        }
-      },
-    );
-  }
+  // void checkTheQuiz() {
+  //   const oneSec = const Duration(seconds: 1);
+  //   timer = Timer.periodic(
+  //     oneSec,
+  //     (Timer timer) {
+  //       if (_start <= 1) {
+  //         _checkAnswerBot();
+  //         setState(() {
+  //           timer.cancel();
+  //         });
+  //         doNext();
+  //       } else {
+  //         if (userClick == true) {
+  //           _checkAnswerPlayer(userChoose);
+  //           setState(() {
+  //             timer.cancel();
+  //             userClick = false;
+  //           });
+  //           doNext();
+  //         } else {
+  //           setState(() {
+  //             _start--;
+  //           });
+  //         }
+  //       }
+  //     },
+  //   );
+  // }
 
   void findTimeForBot() {
     switch (level) {
       case "easy":
-        setState(() {
-          _start = 5;
-          timeSave = 5;
-        });
+        _start = 5;
         break;
       case "medium":
-        setState(() {
-          _start = 4;
-          timeSave = 5;
-        });
+        _start = 4;
 
         break;
       case "hard":
-        setState(() {
-          _start = 3;
-          timeSave = 5;
-        });
+        _start = 3;
 
         break;
     }
   }
 
-  void findTimeForBotNextTime() {
-    setState(() {
-      _start = timeSave;
-    });
-  }
-
   void _checkAnswerPlayer(int userChoice) async {
+    print("click");
     if (userChoice == _quizBrain.quizAnswer) {
       playSound('correct-choice.wav');
       setState(() {
@@ -168,13 +142,16 @@ class _BOTBattleScreenState extends State<BotDual> {
     } else {
       setState(() {
         _falsePlayer--;
-        if (_falsePlayer == 0) {
-          _timer.cancel();
-          showEndDialog("BOT Winning");
-        }
       });
+      if (_falsePlayer == 0) {
+        showFinishDialog("BOT Winning");
+      }
       playSound('wrong-choice.wav');
     }
+    setState(() {
+      timer.cancel();
+    });
+    doNext();
   }
 
   void _checkAnswerBot() async {
@@ -203,6 +180,7 @@ class _BOTBattleScreenState extends State<BotDual> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                controller.start();
                 _startGame();
               },
               child: Text('GO', style: kTitleTSReadyDL),
@@ -245,8 +223,14 @@ class _BOTBattleScreenState extends State<BotDual> {
               onPressed: () {
                 Navigator.pop(context);
                 timer.cancel();
-                _timer.cancel();
-                Navigator.pushNamed(context, Routers.homeGuest);
+                controller.resume();
+                if (instance.get<UserGlobal>().onLogin == true) {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeUser);
+                } else {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeGuest);
+                }
               },
               child:
                   const Center(child: Text('YES', style: kScoreLabelTextStyle)),
@@ -263,7 +247,7 @@ class _BOTBattleScreenState extends State<BotDual> {
     );
   }
 
-  Future<void> showEndDialog(String player) {
+  Future<void> showFinishDialog(String player) {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -305,6 +289,7 @@ class _BOTBattleScreenState extends State<BotDual> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: colorSystemWhite,
       body: Center(
         child: Column(
@@ -312,82 +297,81 @@ class _BOTBattleScreenState extends State<BotDual> {
             AppBarWidget(
                 size: size,
                 onBack: () {
+                  controller.pause();
                   showOutDialog();
                 }),
-            Padding(
-              padding: EdgeInsets.only(
-                  left: size.width * 0.025,
-                  right: size.width * 0.025,
-                  top: size.height * 0.025,
-                  bottom: size.height * 0.025),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.32,
-                    child: RotatedBox(
-                      quarterTurns: -2,
-                      child: BotDualScreen(
-                        size: size,
-                        quizBrain: _quizBrain,
-                        answerBot: _quizBrain.quizAnswer,
-                        level: level,
-                        useClick: userClick,
-                        timePerQuiz: _start,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
-                  SizedBox(
-                    height: size.height * 0.025,
-                    child: RotatedBox(
+            Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.35,
+                  child: Column(
+                    children: [
+                      RotatedBox(
                         quarterTurns: -2,
-                        child: Info_Player_Line(
-                            size: size,
-                            falsePlayer: 0,
-                            score: _scoreBot,
-                            namePlayer: "BOT")),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.1,
-                    child: Row(children: <Widget>[
-                      DivideLine(size: size),
-                      Time_Runner(
-                        percentTimer: _value,
-                        totalTime: _totalTime,
-                        size: size,
+                        child: BotDualScreen(
+                          size: size,
+                          quizBrain: _quizBrain,
+                          answerBot: _quizBrain.quizAnswer,
+                          level: level,
+                          useClick: userClick,
+                          timePerQuizNow: _start,
+                        ),
                       ),
-                      DivideLine(size: size)
-                    ]),
+                    ],
                   ),
-                  SizedBox(
-                    height: size.height * 0.025,
-                    child: Info_Player_Line(
-                      size: size,
-                      falsePlayer: _falsePlayer,
-                      score: _scoreHM,
-                      namePlayer: 'Player',
-                    ),
+                ),
+                SizedBox(
+                  height: size.height * 0.2,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        child: RotatedBox(
+                            quarterTurns: -2,
+                            child: Info_Player_Line(
+                                size: size,
+                                falsePlayer: 0,
+                                score: _scoreBot,
+                                namePlayer: "BOT")),
+                      ),
+                      Row(children: <Widget>[
+                        DivideLine(size: size),
+                        Time_Runner(
+                          onFinish: () {},
+                          size: size,
+                          controller: controller,
+                        ),
+                        DivideLine(size: size)
+                      ]),
+                      Info_Player_Line(
+                        size: size,
+                        falsePlayer: _falsePlayer,
+                        score: _scoreHM,
+                        namePlayer: 'Player',
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: size.height * 0.03,
+                ),
+                SizedBox(
+                  height: size.height * 0.35,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        child: PlayerDualScreen(
+                          size: size,
+                          quizBrain: _quizBrain,
+                          onTap: (int value) {
+                            setState(() {
+                              userClick = true;
+                              userChoose = value;
+                            });
+                            _checkAnswerPlayer(value);
+                          },
+                        ),
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    height: size.height * 0.32,
-                    child: PlayerDualScreen(
-                      size: size,
-                      quizBrain: _quizBrain,
-                      onTap: (int value) {
-                        setState(() {
-                          userClick = true;
-                          userChoose = value;
-                        });
-                      },
-                    ),
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

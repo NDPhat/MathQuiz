@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:drift/drift.dart' as driff;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +41,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = true;
+  final CountDownController _controller = CountDownController();
 
   @override
   void initState() {
@@ -55,7 +57,9 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
   }
 
   void _startGame(PreQuizGame _preQuiz) async {
-    _quizBrain.makeQuizTrueFalse(_preQuiz);
+    setState(() {
+      _quizBrain.makeQuizTrueFalse(_preQuiz);
+    });
     _score = 0;
     _totalNumberOfQuizzes = 1;
     SharedPreferences _preferences = await SharedPreferences.getInstance();
@@ -136,7 +140,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
     PreQuizCubit(
             preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
             userAPIRepo: instance.get<UserAPIRepo>())
-        .updateScoreQuizGame(_score, _preIdNow);
+        .updateScoreQuizGame(_score, _preIdNow, _totalNumberOfQuizzes);
   }
 
   void _endGame() {
@@ -146,7 +150,8 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
               score: _score, status: "DONE", numQ: _totalNumberOfQuizzes),
           _preIdServerNow);
     }
-    showEndDiaLog();
+    _updateScore();
+    showFinishDiaLog();
   }
 
   Future<void> showReadyDialog() {
@@ -170,6 +175,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
+                  _controller.start();
                   _startGame(_preQuiz);
                 },
                 child: const Text('GO', style: kDialogButtonsTS),
@@ -208,25 +214,14 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
         _saveData(context);
         playSound('correct-choice.wav');
         _score++;
-        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _updateScore();
-          _endGame();
-        } else {
-          _resetScreen();
-        }
+        _resetScreen();
       } else {
         userAnswer = false;
         _saveData(context);
 
         playSound('wrong-choice.wav');
         falseChoose++;
-
-        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          _updateScore();
-          _endGame();
-        } else {
-          _resetScreen();
-        }
+        _resetScreen();
       }
     } else {
       userAnswer = false;
@@ -241,7 +236,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
     }
   }
 
-  Future<void> showEndDiaLog() {
+  Future<void> showFinishDiaLog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -284,6 +279,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                _controller.resume();
               },
               child: const Center(child: Text('NO', style: kTitleTS)),
             ),
@@ -303,15 +299,20 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
         children: [
           AppBarWidget(
             size: data,
-            onBack: () {},
-            textTitle: "Game",
+            onBack: () {
+              _controller.pause();
+              showOutDialog();
+            },
           ),
           BlocBuilder<GameCubit, GameState>(builder: (context, state) {
             return PortraitModeTF(
               score: state.score,
+              controller: _controller,
+              onFinished: () {
+                _endGame();
+                showFinishDiaLog();
+              },
               quizBrainObject: _quizBrain,
-              percentValue: 1,
-              timeNow: 60,
               onTap: (String value) {
                 _checkAnswer(value, context);
                 context.read<GameCubit>().changeDataAfterDoneQ(

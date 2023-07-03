@@ -22,7 +22,6 @@ class DetailTestScreen extends StatelessWidget {
         children: [
           AppBarWidget(
               size: size,
-              textTitle: 'DETAIL TEST $preId',
               onBack: () {
                 Navigator.pop(context);
               }),

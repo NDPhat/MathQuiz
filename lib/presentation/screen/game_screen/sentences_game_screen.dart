@@ -287,7 +287,6 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
               _controller.pause();
               showOutDialog();
             },
-            textTitle: "Game",
           ),
           BlocBuilder<GameCubit, GameState>(builder: (context, state) {
             return PortraitModeGameSen(

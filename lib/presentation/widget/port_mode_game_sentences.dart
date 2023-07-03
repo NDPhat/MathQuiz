@@ -1,19 +1,10 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:math/presentation/widget/answer_table.dart';
-import 'package:math/presentation/widget/quiz_body.dart';
-import 'package:math/presentation/widget/quiz_body_hw.dart';
 import 'package:math/presentation/widget/quiz_body_sen.dart';
 import 'package:math/presentation/widget/table_user_score.dart';
 import '../../application/cons/color.dart';
-import '../../application/cons/text_style.dart';
-
 import '../../application/utils/make_quiz.dart';
-
-import 'answer_table_hw.dart';
-import 'app_bar.dart';
-import 'button_custom.dart';
-
 class PortraitModeGameSen extends StatelessWidget {
   final highscore;
   final int score;
@@ -21,25 +12,21 @@ class PortraitModeGameSen extends StatelessWidget {
   final int quizNow;
   final QuizBrain quizBrainObject;
   final onTap;
-  double? percentValue;
   final Size size;
-  double? percentTime;
-  int? timeNow;
   CountDownController? controller;
   VoidCallback? onFinished;
-  PortraitModeGameSen(
-      {required this.highscore,
-      required this.score,
-      required this.trueQ,
-      required this.falseQ,
-      required this.quizNow,
-      required this.quizBrainObject,
-      required this.onTap,
-      this.percentValue,
-      required this.size,
-      this.controller,
-      this.onFinished,
-      this.timeNow});
+  PortraitModeGameSen({
+    required this.highscore,
+    required this.score,
+    required this.trueQ,
+    required this.falseQ,
+    required this.quizNow,
+    required this.quizBrainObject,
+    required this.onTap,
+    required this.size,
+    this.controller,
+    this.onFinished,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +41,6 @@ class PortraitModeGameSen extends StatelessWidget {
               children: [
                 UserTableScore(
                   size: size,
-                  percentTime: percentValue,
-                  timeNow: timeNow,
                   trueQ: trueQ,
                   controller: controller,
                   falseQ: falseQ,
@@ -83,7 +68,7 @@ class PortraitModeGameSen extends StatelessWidget {
                 ),
                 SizedBox(height: size.height * 0.05),
                 AnswerTable(
-                    size: size, quizBrainObject: quizBrainObject, onTap: onTap)
+                    size: size, quizBrainObject: quizBrainObject, onTap: onTap,  colorBG: colorMainBlue,)
               ],
             ),
           ),

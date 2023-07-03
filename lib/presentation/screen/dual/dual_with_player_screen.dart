@@ -1,18 +1,14 @@
 import 'dart:async';
-
-import 'package:audioplayers/audioplayers.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/cons/text_style.dart';
 import '../../../application/utils/logic.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../../data/model/user_global.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
-import '../../widget/cir_per_indicator.dart';
 import '../../widget/divider_line.dart';
 import '../../widget/line_info_player.dart';
 import '../../widget/playey_dual_screen.dart';
@@ -34,6 +30,7 @@ class _HumanBattleScreenState extends State<PlayerDual> {
   int _falsePlayer2 = 3;
   double _value = 0;
   int userChoose = 1;
+  CountDownController controller = CountDownController();
   @override
   void initState() {
     super.initState();
@@ -258,17 +255,13 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                 onBack: () {
                   showOutDialog();
                 }),
-            Padding(
-                padding: EdgeInsets.only(
-                    left: size.width * 0.025,
-                    right: size.width * 0.025,
-                    top: size.height * 0.025,
-                    bottom: size.height * 0.025),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.32,
-                      child: RotatedBox(
+            Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.4,
+                  child: Column(
+                    children: [
+                      RotatedBox(
                         quarterTurns: -2,
                         child: PlayerDualScreen(
                           size: size,
@@ -278,60 +271,63 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                           },
                         ),
                       ),
+                      SizedBox(
+                        height: size.height * 0.025,
+                        child: RotatedBox(
+                            quarterTurns: -2,
+                            child: Info_Player_Line(
+                                size: size,
+                                falsePlayer: _falsePlayer1,
+                                score: _score1,
+                                namePlayer: "Player 1")),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.1,
+                  child: Row(children: <Widget>[
+                    DivideLine(
+                      size: size,
                     ),
-                    SizedBox(
-                      height: size.height * 0.03,
+                    Time_Runner(
+                      onFinish: () {},
+                      controller: controller,
+                      size: size,
                     ),
-                    SizedBox(
-                      height: size.height * 0.025,
-                      child: RotatedBox(
-                          quarterTurns: -2,
-                          child: Info_Player_Line(
-                              size: size,
-                              falsePlayer: _falsePlayer1,
-                              score: _score1,
-                              namePlayer: "Player 1")),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.1,
-                      child: Row(children: <Widget>[
-                        DivideLine(
-                          size: size,
-                        ),
-                        Time_Runner(
-                          percentTimer: _value,
-                          totalTime: _totalTime,
-                          size: size,
-                        ),
-                        DivideLine(
-                          size: size,
-                        )
-                      ]),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.025,
-                      child: Info_Player_Line(
+                    DivideLine(
+                      size: size,
+                    )
+                  ]),
+                ),
+                SizedBox(
+                  height: size.height * 0.4,
+                  child: Column(
+                    children: [
+                      Info_Player_Line(
                         size: size,
                         falsePlayer: _falsePlayer2,
                         score: _score2,
                         namePlayer: 'Player 2',
                       ),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    SizedBox(
-                      height: size.height * 0.32,
-                      child: PlayerDualScreen(
-                        size: size,
-                        quizBrain: _quizBrain,
-                        onTap: (int value) {
-                          _checkAnswerPlayer2(value);
-                        },
+                      SizedBox(
+                        height: size.height * 0.03,
                       ),
-                    ),
-                  ],
-                ))
+                      SizedBox(
+                        height: size.height * 0.32,
+                        child: PlayerDualScreen(
+                          size: size,
+                          quizBrain: _quizBrain,
+                          onTap: (int value) {
+                            _checkAnswerPlayer2(value);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

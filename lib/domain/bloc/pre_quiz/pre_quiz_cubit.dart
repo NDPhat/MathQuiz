@@ -31,7 +31,6 @@ class PreQuizCubit extends Cubit<PreQuizState> {
     emit(state.copyWith(sNum: values.start.round(), eNum: values.end.round()));
   }
 
-
   bool sNumValidator(int sNum) {
     if (sNum <= 0) {
       sNumMess = 'This field is not correct';
@@ -57,17 +56,15 @@ class PreQuizCubit extends Cubit<PreQuizState> {
   }
 
   bool isFormValid() {
-    if (
-        sNumValidator(state.sNum!) &
-        eNumValidator(state.eNum!)) {
+    if (sNumValidator(state.sNum!) & eNumValidator(state.eNum!)) {
       return true;
     }
     return false;
   }
 
-  void updateScoreQuizGame(int score, int id) async {
+  void updateScoreQuizGame(int score, int id, int numQ) async {
     try {
-      await preQuizLocalRepo.updatePreQuizGame(id, score);
+      await preQuizLocalRepo.updatePreQuizGame(id, score, numQ);
     } on Exception catch (e) {
       print(e.toString());
     }
@@ -124,9 +121,7 @@ class PreQuizCubit extends Cubit<PreQuizState> {
       }
     } else {
       emit(state.copyWith(
-          sNumMess: sNumMess,
-          eNumMess: eNumMess,
-          status: PreQuizStatus.error));
+          sNumMess: sNumMess, eNumMess: eNumMess, status: PreQuizStatus.error));
     }
   }
 }

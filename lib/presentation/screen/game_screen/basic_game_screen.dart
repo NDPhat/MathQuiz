@@ -3,6 +3,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:drift/drift.dart' as driff;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/application/cons/color.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import 'package:math/data/model/make_quiz.dart';
@@ -108,7 +109,9 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _startGame(PreQuizGame _preQuiz) async {
-    _quizBrain.makeQuiz(_preQuiz);
+    setState(() {
+      _quizBrain.makeQuiz(_preQuiz);
+    });
     _score = 0;
     _totalNumberOfQuizzes = 1;
     SharedPreferences _preferences = await SharedPreferences.getInstance();
@@ -188,11 +191,11 @@ class _GameScreenState extends State<GameScreen> {
         answerSelect: driff.Value(userChoose.toString())));
   }
 
-  _updateScore() {
+  _updateScoreLoCal() {
     PreQuizCubit(
             preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
             userAPIRepo: instance.get<UserAPIRepo>())
-        .updateScoreQuizGame(_score, _preIdNow);
+        .updateScoreQuizGame(_score, _preIdNow, _totalNumberOfQuizzes);
   }
 
   void _endGame() {
@@ -202,7 +205,8 @@ class _GameScreenState extends State<GameScreen> {
               score: _score, status: "DONE", numQ: _totalNumberOfQuizzes),
           _preIdServerNow);
     }
-    showEndDiaLog();
+    _updateScoreLoCal();
+    showFinishDiaLog();
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
@@ -212,12 +216,10 @@ class _GameScreenState extends State<GameScreen> {
         _saveData(context);
         playSound('correct-choice.wav');
         _score++;
-
         _resetScreen();
       } else {
         userAnswer = false;
         _saveData(context);
-
         playSound('wrong-choice.wav');
         falseChoose++;
         _resetScreen();
@@ -225,13 +227,12 @@ class _GameScreenState extends State<GameScreen> {
     } else {
       userAnswer = false;
       _saveData(context);
-
       falseChoose++;
       _resetScreen();
     }
   }
 
-  Future<void> showEndDiaLog() {
+  Future<void> showFinishDiaLog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -287,6 +288,7 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: colorMainBlue,
       body: Column(
         children: [
           AppBarWidget(
@@ -295,7 +297,6 @@ class _GameScreenState extends State<GameScreen> {
               _controller.pause();
               showOutDialog();
             },
-            textTitle: "Game",
           ),
           BlocBuilder<GameCubit, GameState>(builder: (context, state) {
             return PortraitModeGame(
@@ -312,8 +313,10 @@ class _GameScreenState extends State<GameScreen> {
               },
               trueQ: state.trueQ,
               falseQ: falseChoose,
-              timeNow: 60,
-              percentValue: 1,
+              onFinished: () {
+                _endGame();
+                showFinishDiaLog();
+              },
               controller: _controller,
               quizNow: _totalNumberOfQuizzes,
               size: data,

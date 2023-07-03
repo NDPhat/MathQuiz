@@ -16,14 +16,14 @@ class BotDualScreen extends StatefulWidget {
     required this.answerBot,
     required this.level,
     required this.useClick,
-    required this.timePerQuiz,
+    required this.timePerQuizNow,
   }) : super(key: key);
   final Size size;
   final QuizBrain quizBrain;
   final String level;
   final bool useClick;
   final int answerBot;
-  int timePerQuiz;
+  int timePerQuizNow;
   @override
   State<BotDualScreen> createState() => _BotDualScreenState();
 }
@@ -31,59 +31,58 @@ class BotDualScreen extends StatefulWidget {
 class _BotDualScreenState extends State<BotDualScreen> {
   int answerNeed = -100;
   late Timer timer;
-  int count = 0;
-  late int save = 1;
+  late int timeNow = 1;
 
   @override
   void initState() {
+    // timeNow = widget.timePerQuizNow;
     super.initState();
-    save = widget.timePerQuiz;
-    _checkAnswer();
+    // _checkAnswer();
   }
 
-  void _checkAnswer() {
-    const oneSec = const Duration(seconds: 1);
-    timer = Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (widget.timePerQuiz == 1) {
-          setState(() {
-            answerNeed = widget.answerBot;
-            timer.cancel();
-            count++;
-          });
-          if (count != 60 / save) {
-            _checkAnswer();
-          }
-        } else {
-          if (widget.useClick == true) {
-            setState(() {
-              timer.cancel();
-            });
-            _checkAnswer();
-          } else {
-            setState(() {
-              widget.timePerQuiz--;
-            });
-          }
-        }
-      },
-    );
-  }
+  // void _checkAnswer() {
+  //   const oneSec = const Duration(seconds: 1);
+  //   timer = Timer.periodic(
+  //     oneSec,
+  //     (Timer timer) {
+  //       if (widget.timePerQuizNow == 1) {
+  //         setState(() {
+  //           answerNeed = widget.answerBot;
+  //           timer.cancel();
+  //         });
+  //       } else {
+  //         if (widget.useClick == true) {
+  //           setState(() {
+  //             timer.cancel();
+  //           });
+  //           _checkAnswer();
+  //         } else {
+  //           setState(() {
+  //             timeNow--;
+  //           });
+  //         }
+  //       }
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        children: [
-          QuizBody(
-            size: widget.size,
-            quizBrainObject: widget.quizBrain,
-          ),
-          SizedBox(
-            height: widget.size.height * 0.05,
-          ),
-          Column(
+    return Column(
+      children: [
+        QuizBody(
+          size: widget.size,
+          quizBrainObject: widget.quizBrain,
+        ),
+        SizedBox(
+          height: widget.size.height * 0.05,
+        ),
+        Container(
+          padding: EdgeInsets.only(
+              left: widget.size.width * 0.05,
+              right: widget.size.width * 0.05,
+              bottom: widget.size.height * 0.02),
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,7 +100,7 @@ class _BotDualScreenState extends State<BotDualScreen> {
                     ),
                   ),
                   SizedBox(
-                    width: widget.size.width * 0.05,
+                    width: widget.size.width * 0.02,
                   ),
                   RoundedButton(
                     press: () {},
@@ -118,7 +117,7 @@ class _BotDualScreenState extends State<BotDualScreen> {
                 ],
               ),
               SizedBox(
-                height: widget.size.height * 0.05,
+                height: widget.size.height * 0.02,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,7 +135,7 @@ class _BotDualScreenState extends State<BotDualScreen> {
                     ),
                   ),
                   SizedBox(
-                    width: widget.size.width * 0.05,
+                    width: widget.size.width * 0.02,
                   ),
                   RoundedButton(
                     press: () {},
@@ -154,8 +153,8 @@ class _BotDualScreenState extends State<BotDualScreen> {
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

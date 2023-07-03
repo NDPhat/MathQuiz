@@ -33,7 +33,6 @@ class DetailItemCardHomeWork extends StatelessWidget {
               onBack: () {
                 Navigator.pop(context);
               },
-              textTitle: 'Detail Home works',
             ),
             Container(
               height: size.height * 0.9,

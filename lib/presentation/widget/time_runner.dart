@@ -1,19 +1,16 @@
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
-
 import '../../application/cons/color.dart';
-import 'cir_per_indicator.dart';
 
 class Time_Runner extends StatelessWidget {
   const Time_Runner({
     super.key,
-    required double percentTimer,
-    required int totalTime,
     required this.size,
-  })  : _value = percentTimer,
-        _totalTime = totalTime;
-
-  final double _value;
-  final int _totalTime;
+    required this.controller,
+    this.onFinish,
+  });
+  final CountDownController controller;
+  final onFinish;
   final Size size;
 
   @override
@@ -21,11 +18,28 @@ class Time_Runner extends StatelessWidget {
     return CircleAvatar(
       radius: 60,
       backgroundColor: colorSystemWhite,
-      child: CirPerIndicator(
-        size: size,
-        percentValue: _value,
-        timeNow: _totalTime,
-      ),
+      child: CircleAvatar(
+          radius: 40,
+          backgroundColor: colorSystemWhite,
+          child: CircularCountDownTimer(
+            duration: 60,
+            initialDuration: 0,
+            controller: controller,
+            width: 50,
+            height: 50,
+            ringColor: colorSystemWhite,
+            fillColor: colorSystemWhite,
+            backgroundColor: colorGrayBG,
+            backgroundGradient: null,
+            strokeWidth: 20.0,
+            strokeCap: StrokeCap.round,
+            textStyle: const TextStyle(
+                fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
+            textFormat: CountdownTextFormat.S,
+            autoStart: false,
+            onStart: () {},
+            onComplete: onFinish,
+          )),
     );
   }
 }

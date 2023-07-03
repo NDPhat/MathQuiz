@@ -35,7 +35,6 @@ class DetailTestHomeWork extends StatelessWidget {
               onBack: () {
                 Navigator.pop(context);
               },
-              textTitle: 'Detail Tests',
             ),
             Container(
               height: size.height * 0.9,

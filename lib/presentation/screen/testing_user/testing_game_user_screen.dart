@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/application/cons/color.dart';
 import 'package:math/data/model/user_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
@@ -193,7 +194,7 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
-    return Scaffold(
+    return Scaffold(backgroundColor: colorMainBlue,
       body: Column(
         children: [
           AppBarWidget(
@@ -202,15 +203,12 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               _controller.pause();
               showOutDialog();
             },
-            textTitle: "Testing",
           ),
           BlocBuilder<GameCubit, GameState>(builder: (context, state) {
             return PortraitModeGame(
               highscore: _highScore,
               score: _score,
               quizBrainObject: _quizBrain,
-              percentValue: 1,
-              timeNow: 60,
               onTap: (int value) {
                 _checkAnswer(value, context);
                 context.read<GameCubit>().addQuizTesttoServer(QuizTestReq(

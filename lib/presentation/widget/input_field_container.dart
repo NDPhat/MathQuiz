@@ -35,11 +35,11 @@ class InputFieldContainer extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: height * 0.03,
+            height: height * 0.02,
           ),
           child,
           SizedBox(
-            height: height * 0.03,
+            height: height * 0.01,
           ),
           Visibility(
             visible: isHidden == null ? false : isHidden!,
