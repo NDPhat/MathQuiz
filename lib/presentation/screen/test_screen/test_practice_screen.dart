@@ -3,6 +3,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:drift/drift.dart' as driff;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/application/cons/color.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
@@ -184,6 +185,7 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: colorMainBlue,
       body: Column(
         children: [
           AppBarWidget(

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/enum/get_otp_status.dart';
@@ -270,8 +271,8 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                       ),
                                     ),
                                   )
-                                : const Text(
-                                    'GO',
+                                :  Text(
+                                    'go'.tr().toString(),
                                     style: s20f700ColorSysWhite,
                                   ));
                       })

@@ -23,11 +23,11 @@ class SettingMainScreen extends StatelessWidget {
             onBack: () {
               Navigator.pop(context);
             },
-            textTitle: 'Setting',
+            textTitle: 'setting'.tr().toString(),
           ),
           SizedBox(height: size.height * 0.1),
           SettingMenuWidget(
-            title: "Mode",
+            title: "mode".tr().toString(),
             widget: const Icon(
               LineAwesomeIcons.modx,
               size: 30,
@@ -39,7 +39,7 @@ class SettingMainScreen extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.03),
           SettingMenuWidget(
-            title: "Local Notification",
+            title: "localnotifi".tr().toString(),
             widget: const Icon(
               LineAwesomeIcons.bell,
               size: 30,

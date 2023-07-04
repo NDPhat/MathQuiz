@@ -29,7 +29,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             textTitle: "Language",
           ),
           SettingMenuWidget(
-            title: "Việt Nam",
+            title: "vietnamese".tr().toString(),
             widget: const Icon(
               LineAwesomeIcons.language,
               size: 30,
@@ -44,7 +44,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             },
           ),
           SettingMenuWidget(
-            title: "English",
+            title: "english".tr().toString(),
             widget: const Icon(
               LineAwesomeIcons.language,
               size: 30,

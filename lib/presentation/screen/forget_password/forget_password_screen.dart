@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/cons/color.dart';
@@ -24,7 +25,7 @@ class ForgetPassScreen extends StatelessWidget {
             onBack: () {
               Navigator.pop(context);
             },
-            textTitle: 'Forget password',
+            textTitle: 'forget pass'.tr().toString(),
           ),
           Container(
             padding: EdgeInsets.only(
@@ -98,8 +99,8 @@ class ForgetPassScreen extends StatelessWidget {
                                     ),
                                   ),
                                 )
-                              : const Text(
-                                  'GO',
+                              :  Text(
+                                  'go'.tr().toString(),
                                   style: s20f700ColorSysWhite,
                                 ));
                     })

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/remote/authen/authen.dart';
@@ -59,7 +60,7 @@ class HomeProfileUserScreen extends StatelessWidget {
               /// -- MENU
               SingleChildScrollView(
                 child: ProfileMenuWidget(
-                  title: "My account",
+                  title: 'myacc'.tr().toString(),
                   icon: LineAwesomeIcons.user_check,
                   onPress: () {
                     Navigator.pushNamed(context, Routers.updateProfileUser);
@@ -70,7 +71,7 @@ class HomeProfileUserScreen extends StatelessWidget {
               SizedBox(height: size.height * 0.02),
 
               ProfileMenuWidget(
-                title: "Setting",
+                title: "setting".tr().toString(),
                 icon: LineAwesomeIcons.cog,
                 onPress: () {
                   Navigator.pushNamed(context, Routers.settingScreen);
@@ -79,14 +80,14 @@ class HomeProfileUserScreen extends StatelessWidget {
               ),
               SizedBox(height: size.height * 0.02),
               ProfileMenuWidget(
-                title: "Record",
+                title: "record".tr().toString(),
                 icon: LineAwesomeIcons.record_vinyl,
                 onPress: () {},
                 size: size,
               ),
               SizedBox(height: size.height * 0.02),
               ProfileMenuWidget(
-                title: "Logout",
+                title: "logout".tr().toString(),
                 icon: LineAwesomeIcons.alternate_sign_out,
                 onPress: () {
                   instance.get<AuthenRepository>().handleAutoLoginApp(false);

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -59,7 +60,7 @@ class OptionGameModeScreen extends StatelessWidget {
                               LineAwesomeIcons.keyboard,
                               size: 30,
                             ),
-                            textTitle: 'INPUT ANSWER',
+                            textTitle: 'input answer'.tr().toString(),
                             onPress: () {
                               Navigator.pushNamed(context, Routers.premake,
                                   arguments: OptionQuiz(
@@ -75,7 +76,7 @@ class OptionGameModeScreen extends StatelessWidget {
                               LineAwesomeIcons.question,
                               size: 30,
                             ),
-                            textTitle: 'TRUE/FALSE',
+                            textTitle: 'truefalse'.tr().toString(),
                             onPress: () {
                               Navigator.pushNamed(context, Routers.premake,
                                   arguments: OptionQuiz(
@@ -91,7 +92,7 @@ class OptionGameModeScreen extends StatelessWidget {
                               Icons.youtube_searched_for,
                               size: 40,
                             ),
-                            textTitle: 'FIND MISSING',
+                            textTitle: 'findmissing'.tr().toString(),
                             onPress: () {
                               Navigator.pushNamed(context, Routers.premake,
                                   arguments: OptionQuiz(
@@ -103,11 +104,11 @@ class OptionGameModeScreen extends StatelessWidget {
                           ),
                           ItemMenuGameMode(
                             size: size,
-                            icon:  const Icon(
+                            icon: const Icon(
                               LineAwesomeIcons.question,
                               size: 40,
                             ),
-                            textTitle: 'SENTENCES',
+                            textTitle: 'sentences'.tr().toString(),
                             onPress: () {
                               Navigator.pushNamed(context, Routers.premake,
                                   arguments: OptionQuiz(

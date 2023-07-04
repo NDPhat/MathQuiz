@@ -5,11 +5,11 @@ import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/logic.dart';
 import '../../../application/utils/make_quiz.dart';
+import '../../../data/model/level_game_bot.dart';
 import '../../../data/model/user_global.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
-import '../../widget/bot_dua_screen.dart';
 import '../../widget/divider_line.dart';
 import '../../widget/line_info_player.dart';
 import '../../widget/playey_dual_screen.dart';
@@ -24,59 +24,61 @@ class BotDual extends StatefulWidget {
 class _BOTBattleScreenState extends State<BotDual> {
   late Timer timer;
   late QuizBrain _quizBrain;
-  String level = "easy";
   int _scoreBot = 0;
-  bool userClick = false;
   int _scoreHM = 0;
+  late LevelGameBot levelGame;
   double _value = 1;
   int _falsePlayer = 3;
   int userChoose = 1;
-  int _start = 5;
+  bool playerAgain = false;
   CountDownController controller = CountDownController();
   @override
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      level = ModalRoute.of(context)!.settings.arguments as String;
-      findTimeForBot();
+      levelGame = ModalRoute.of(context)!.settings.arguments as LevelGameBot;
       showReadyDialog();
     });
   }
 
   void _startGame() async {
-    _quizBrain.makeQuizBOT(level);
+    _quizBrain.makeQuizBOT(levelGame.level);
     _startTimer();
     _scoreBot = 0;
     _scoreHM = 0;
   }
 
-  void _startAgainGame() async {
-    setState(() {
-      _scoreBot = 0;
-      _scoreHM = 0;
-      _falsePlayer = 3;
-    });
-    _quizBrain.makeQuizBOT(level);
+  void _startAgainGame() {
+    _scoreBot = 0;
+    _scoreHM = 0;
+    _value = 1;
+    _falsePlayer = 3;
+    playerAgain = true;
+    controller.reset();
+    controller.start();
+    _quizBrain.makeQuizBOT(levelGame.level);
+    _startTimer();
   }
 
   void doNext() {
     _value = 1;
-    _quizBrain.makeQuizBOT(level);
+    _quizBrain.makeQuizBOT(levelGame.level);
     _startTimer();
   }
 
   void _startTimer() {
     const speed = Duration(milliseconds: 100);
     timer = Timer.periodic(speed, (timer) {
-      print(_value);
-      print(1 / (_start! * 10) * 4 / 3);
-      if (_value > (1 / (_start! * 10) * 4 / 3)) {
+      // check xem da het thoi gian chua tren 1 cau hoi chua
+
+      if (_value > (1 / (levelGame.time! * 10) * 4 / 3)) {
         setState(() {
-          _value > 1 / (_start! * 10)
-              ? _value -= 1 / (_start! * 10)
+          _value > 1 / (levelGame.time! * 10)
+              ? _value -= 1 / (levelGame.time! * 10)
               : _value = 0;
         });
+        // nguoi choi k dua ra cau tra loi thi bot dua ra
       } else {
         _checkAnswerBot();
         setState(() {
@@ -87,71 +89,29 @@ class _BOTBattleScreenState extends State<BotDual> {
     });
   }
 
-  // void checkTheQuiz() {
-  //   const oneSec = const Duration(seconds: 1);
-  //   timer = Timer.periodic(
-  //     oneSec,
-  //     (Timer timer) {
-  //       if (_start <= 1) {
-  //         _checkAnswerBot();
-  //         setState(() {
-  //           timer.cancel();
-  //         });
-  //         doNext();
-  //       } else {
-  //         if (userClick == true) {
-  //           _checkAnswerPlayer(userChoose);
-  //           setState(() {
-  //             timer.cancel();
-  //             userClick = false;
-  //           });
-  //           doNext();
-  //         } else {
-  //           setState(() {
-  //             _start--;
-  //           });
-  //         }
-  //       }
-  //     },
-  //   );
-  // }
-
-  void findTimeForBot() {
-    switch (level) {
-      case "easy":
-        _start = 5;
-        break;
-      case "medium":
-        _start = 4;
-
-        break;
-      case "hard":
-        _start = 3;
-
-        break;
-    }
-  }
-
   void _checkAnswerPlayer(int userChoice) async {
-    print("click");
     if (userChoice == _quizBrain.quizAnswer) {
       playSound('correct-choice.wav');
       setState(() {
         _scoreHM++;
       });
+      setState(() {
+        timer.cancel();
+      });
+      doNext();
     } else {
+      playSound('wrong-choice.wav');
       setState(() {
         _falsePlayer--;
+        timer.cancel();
       });
       if (_falsePlayer == 0) {
+        controller.pause();
         showFinishDialog("BOT Winning");
+      } else {
+        doNext();
       }
-      playSound('wrong-choice.wav');
     }
-    setState(() {
-      timer.cancel();
-    });
-    doNext();
   }
 
   void _checkAnswerBot() async {
@@ -223,7 +183,7 @@ class _BOTBattleScreenState extends State<BotDual> {
               onPressed: () {
                 Navigator.pop(context);
                 timer.cancel();
-                controller.resume();
+                controller.reset();
                 if (instance.get<UserGlobal>().onLogin == true) {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, Routers.homeUser);
@@ -237,6 +197,7 @@ class _BOTBattleScreenState extends State<BotDual> {
             ),
             TextButton(
               onPressed: () {
+                controller.resume();
                 Navigator.pop(context);
               },
               child: const Center(child: Text('NO', style: kTitleTS)),
@@ -265,10 +226,13 @@ class _BOTBattleScreenState extends State<BotDual> {
           actions: [
             TextButton(
               onPressed: () {
-                setState(() {
-                  _start = 0;
-                });
-                Navigator.pushNamed(context, Routers.homeGuest);
+                if (instance.get<UserGlobal>().onLogin == true) {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeUser);
+                } else {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeGuest);
+                }
               },
               child: const Text('EXIT', style: kDialogButtonsTS),
             ),
@@ -276,6 +240,7 @@ class _BOTBattleScreenState extends State<BotDual> {
               onPressed: () {
                 Navigator.pop(context);
                 _startAgainGame();
+                playerAgain = false;
               },
               child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
             ),
@@ -283,6 +248,22 @@ class _BOTBattleScreenState extends State<BotDual> {
         );
       },
     );
+  }
+
+  void showEndGame() {
+    timer.cancel();
+    if (_scoreBot > _scoreHM) {
+      showFinishDialog("BOT Wining");
+    } else if (_scoreHM > _scoreBot) {
+      showFinishDialog("PLayer Wining");
+    } else {
+      showFinishDialog("DRAW");
+    }
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
   }
 
   @override
@@ -295,6 +276,7 @@ class _BOTBattleScreenState extends State<BotDual> {
         child: Column(
           children: [
             AppBarWidget(
+                bgColor: colorSystemWhite,
                 size: size,
                 onBack: () {
                   controller.pause();
@@ -304,21 +286,9 @@ class _BOTBattleScreenState extends State<BotDual> {
               children: [
                 SizedBox(
                   height: size.height * 0.35,
-                  child: Column(
-                    children: [
-                      RotatedBox(
-                        quarterTurns: -2,
-                        child: BotDualScreen(
-                          size: size,
-                          quizBrain: _quizBrain,
-                          answerBot: _quizBrain.quizAnswer,
-                          level: level,
-                          useClick: userClick,
-                          timePerQuizNow: _start,
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: const Image(
+                      image: NetworkImage(
+                          "https://media3.giphy.com/media/bU2xOiv6LlSyB75szf/giphy.gif?cid=ecf05e47uylbzn7cuj96pgnqnjyt5tvkqvlfzwg6c2lm9okz&ep=v1_gifs_search&rid=giphy.gif&ct=g")),
                 ),
                 SizedBox(
                   height: size.height * 0.2,
@@ -336,7 +306,11 @@ class _BOTBattleScreenState extends State<BotDual> {
                       Row(children: <Widget>[
                         DivideLine(size: size),
                         Time_Runner(
-                          onFinish: () {},
+                          onFinish: () {
+                            if (playerAgain == false) {
+                              showEndGame();
+                            }
+                          },
                           size: size,
                           controller: controller,
                         ),
@@ -361,7 +335,6 @@ class _BOTBattleScreenState extends State<BotDual> {
                           quizBrain: _quizBrain,
                           onTap: (int value) {
                             setState(() {
-                              userClick = true;
                               userChoose = value;
                             });
                             _checkAnswerPlayer(value);

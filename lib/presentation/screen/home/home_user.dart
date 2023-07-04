@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/presentation/screen/home/widget/body_home_user.dart';
 import 'package:math/presentation/screen/home/widget/bottom_navi_home_user.dart';
@@ -38,7 +39,7 @@ class _HomeScreentState extends State<HomeUserScreen> {
             GestureDetector(
               child: BottomAppIcon(
                 pathImage: "assets/images/home.png",
-                text: 'Home',
+                text: 'home'.tr().toString(),
                 size: size,
                 color: _selectedIndex == 0 ? colorMainBlue : colorGrayBG,
               ),
@@ -50,7 +51,7 @@ class _HomeScreentState extends State<HomeUserScreen> {
             GestureDetector(
               child: BottomAppIcon(
                   pathImage: "assets/images/icons_game_home.png",
-                  text: 'Game',
+                  text: 'game'.tr().toString(),
                   size: size,
                   color: _selectedIndex == 1 ? colorMainBlue : colorGrayBG),
               onTap: () {
@@ -61,7 +62,7 @@ class _HomeScreentState extends State<HomeUserScreen> {
             GestureDetector(
               child: BottomAppIcon(
                   pathImage: "assets/images/icons_homework_home.png",
-                  text: 'Home work',
+                  text: 'homework'.tr().toString(),
                   size: size,
                   color: _selectedIndex == 2 ? colorMainBlue : colorGrayBG),
               onTap: () {
@@ -72,7 +73,7 @@ class _HomeScreentState extends State<HomeUserScreen> {
             GestureDetector(
               child: BottomAppIcon(
                   pathImage: "assets/images/profile.png",
-                  text: 'Profile',
+                  text: 'profile'.tr().toString(),
                   size: size,
                   color: _selectedIndex == 3 ? colorMainBlue : colorGrayBG),
               onTap: () {

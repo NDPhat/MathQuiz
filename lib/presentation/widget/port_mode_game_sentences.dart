@@ -68,7 +68,7 @@ class PortraitModeGameSen extends StatelessWidget {
                 ),
                 SizedBox(height: size.height * 0.05),
                 AnswerTable(
-                    size: size, quizBrainObject: quizBrainObject, onTap: onTap,  colorBG: colorMainBlue,)
+                    size: size, quizBrainObject: quizBrainObject, onTap: onTap,)
               ],
             ),
           ),

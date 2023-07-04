@@ -16,5 +16,21 @@
   "done": "Xong",
   "input answer": "Nhập liệu",
   "truefalse": "Đúng/Sai",
-  "findmissing": "Điền"
+  "findmissing": "Điền",
+  "on schedule": "Trong thời hạn",
+  "myacc": "Tài khoản",
+  "setting": "Cài đặt",
+  "record": "Kỉ lục",
+  "logout": "Đăng xuất",
+  "mode": "Chế độ",
+  "localnotifi": "Thông báo",
+  "vietnamese": "Việt Nam",
+  "english": "Tiếng Anh",
+  "go" : "OK",
+  "exit": "Thoát",
+  "review your answer" : "Xem lại đáp án",
+  "ready for your examination" : "Sẵn sàng cho bài kiểm tra",
+  "join your game" : "Sẵn sàng tham gia",
+  "ready hw": "Sẵn sàng cho bài tập",
+  "forget pass": "Quên mật khẩu"
 }

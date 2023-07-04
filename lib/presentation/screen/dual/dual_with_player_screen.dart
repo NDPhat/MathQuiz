@@ -21,14 +21,12 @@ class PlayerDual extends StatefulWidget {
 }
 
 class _HumanBattleScreenState extends State<PlayerDual> {
-  late Timer _timer;
-  int _totalTime = 0;
   late QuizBrain _quizBrain;
   int _score1 = 0;
   int _score2 = 0;
   int _falsePlayer1 = 3;
   int _falsePlayer2 = 3;
-  double _value = 0;
+  bool startAgain = false;
   int userChoose = 1;
   CountDownController controller = CountDownController();
   @override
@@ -41,54 +39,22 @@ class _HumanBattleScreenState extends State<PlayerDual> {
   }
 
   void _startGame() async {
-    _quizBrain.makeQuizTest();
-    _startTimer();
-    _value = 1;
-    _score1 = 0;
-    _score2 = 0;
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) {
-      super.setState(fn);
-    }
+    setState(() {
+      _quizBrain.makeQuizTest();
+    });
   }
 
   void _startAgainGame() async {
     setState(() {
-      _value = 1;
       _score1 = 0;
       _score2 = 0;
       _falsePlayer1 = 3;
       _falsePlayer2 = 3;
     });
+    startAgain = true;
+    controller.reset();
+    controller.start();
     _quizBrain.makeQuizTest();
-    _startTimer();
-  }
-
-  void _startTimer() {
-    const speed = Duration(milliseconds: 100);
-    _timer = Timer.periodic(speed, (timer) {
-      if (_value > 0) {
-        setState(() {
-          _value > 1 / 600 ? _value -= 1 / 600 : _value = 0;
-          _totalTime = (_value * 60 + 1).toInt();
-        });
-      } else {
-        setState(() {
-          _totalTime = 0;
-          _timer.cancel();
-          if (_score1 > _score2) {
-            showEndDialog("Player2 Winning");
-          } else if (_score2 > _score1) {
-            showEndDialog("Player1 Winning");
-          } else {
-            showEndDialog("No One Winning");
-          }
-        });
-      }
-    });
   }
 
   void _checkAnswerPlayer1(int userChoice) async {
@@ -97,17 +63,20 @@ class _HumanBattleScreenState extends State<PlayerDual> {
       setState(() {
         _score1++;
       });
+      _quizBrain.makeQuizTest();
     } else {
+      playSound('wrong-choice.wav');
+
       setState(() {
         _falsePlayer1--;
         if (_falsePlayer1 == 0) {
-          _timer.cancel();
+          controller.pause();
           showEndDialog("Player2 Winning");
+        } else {
+          _quizBrain.makeQuizTest();
         }
       });
-      playSound('wrong-choice.wav');
     }
-    _quizBrain.makeQuizTest();
   }
 
   void _checkAnswerPlayer2(int userChoice) async {
@@ -116,17 +85,19 @@ class _HumanBattleScreenState extends State<PlayerDual> {
       setState(() {
         _score2++;
       });
+      _quizBrain.makeQuizTest();
     } else {
+      playSound('wrong-choice.wav');
       setState(() {
         _falsePlayer2--;
         if (_falsePlayer2 == 0) {
-          _timer.cancel();
+          controller.pause();
           showEndDialog("Player1 Winning");
+        } else {
+          _quizBrain.makeQuizTest();
         }
       });
-      playSound('wrong-choice.wav');
     }
-    _quizBrain.makeQuizTest();
   }
 
   Future<void> showReadyDialog() {
@@ -148,6 +119,7 @@ class _HumanBattleScreenState extends State<PlayerDual> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                controller.start();
                 _startGame();
               },
               child: const Text('GO', style: kTitleTSReadyDL),
@@ -188,14 +160,22 @@ class _HumanBattleScreenState extends State<PlayerDual> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, Routers.homeGuest);
+                if (instance.get<UserGlobal>().onLogin == true) {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeUser);
+                } else {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeGuest);
+                }
               },
               child: const Text('EXIT', style: kDialogButtonsTS),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                controller.pause();
                 _startAgainGame();
+                startAgain = false;
               },
               child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
             ),
@@ -203,6 +183,16 @@ class _HumanBattleScreenState extends State<PlayerDual> {
         );
       },
     );
+  }
+
+  void showEndGame() {
+    if (_score2 > _score1) {
+      showEndDialog("Player2 Wining");
+    } else if (_score2 < _score1) {
+      showEndDialog("PLayer1 Wining");
+    } else {
+      showEndDialog("DRAW");
+    }
   }
 
   Future<void> showOutDialog() {
@@ -223,15 +213,20 @@ class _HumanBattleScreenState extends State<PlayerDual> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                _timer.cancel();
-                Navigator.pushNamed(context, Routers.homeGuest);
+                if (instance.get<UserGlobal>().onLogin == true) {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeUser);
+                } else {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeGuest);
+                }
               },
               child:
                   const Center(child: Text('YES', style: kScoreLabelTextStyle)),
             ),
             TextButton(
               onPressed: () {
+                controller.resume();
                 Navigator.pop(context);
               },
               child: const Center(child: Text('NO', style: kTitleTS)),
@@ -253,12 +248,13 @@ class _HumanBattleScreenState extends State<PlayerDual> {
             AppBarWidget(
                 size: size,
                 onBack: () {
+                  controller.pause();
                   showOutDialog();
                 }),
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.4,
+                  height: size.height * 0.35,
                   child: Column(
                     children: [
                       RotatedBox(
@@ -271,8 +267,14 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                           },
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.2,
+                  child: Column(
+                    children: [
                       SizedBox(
-                        height: size.height * 0.025,
                         child: RotatedBox(
                             quarterTurns: -2,
                             child: Info_Player_Line(
@@ -281,47 +283,38 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                                 score: _score1,
                                 namePlayer: "Player 1")),
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: size.height * 0.1,
-                  child: Row(children: <Widget>[
-                    DivideLine(
-                      size: size,
-                    ),
-                    Time_Runner(
-                      onFinish: () {},
-                      controller: controller,
-                      size: size,
-                    ),
-                    DivideLine(
-                      size: size,
-                    )
-                  ]),
-                ),
-                SizedBox(
-                  height: size.height * 0.4,
-                  child: Column(
-                    children: [
+                      Row(children: <Widget>[
+                        DivideLine(size: size),
+                        Time_Runner(
+                          onFinish: () {
+                            if (startAgain == false) {
+                              showEndGame();
+                            }
+                          },
+                          size: size,
+                          controller: controller,
+                        ),
+                        DivideLine(size: size)
+                      ]),
                       Info_Player_Line(
                         size: size,
                         falsePlayer: _falsePlayer2,
                         score: _score2,
                         namePlayer: 'Player 2',
                       ),
-                      SizedBox(
-                        height: size.height * 0.03,
-                      ),
-                      SizedBox(
-                        height: size.height * 0.32,
-                        child: PlayerDualScreen(
-                          size: size,
-                          quizBrain: _quizBrain,
-                          onTap: (int value) {
-                            _checkAnswerPlayer2(value);
-                          },
-                        ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.35,
+                  child: Column(
+                    children: [
+                      PlayerDualScreen(
+                        size: size,
+                        quizBrain: _quizBrain,
+                        onTap: (int value) {
+                          _checkAnswerPlayer2(value);
+                        },
                       ),
                     ],
                   ),

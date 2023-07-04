@@ -11,12 +11,11 @@ class AnswerTable extends StatefulWidget {
       required this.size,
       required this.quizBrainObject,
       required this.onTap,
-      required this.colorBG})
+      })
       : super(key: key);
   final Size size;
   final QuizBrain quizBrainObject;
   final onTap;
-  final Color colorBG;
   @override
   State<AnswerTable> createState() => _AnswerTableState();
 }
@@ -26,7 +25,6 @@ class _AnswerTableState extends State<AnswerTable> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: widget.colorBG,
       padding: EdgeInsets.only(
           left: widget.size.width * 0.05,
           right: widget.size.width * 0.05,

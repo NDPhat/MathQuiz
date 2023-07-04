@@ -194,7 +194,8 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
-    return Scaffold(backgroundColor: colorMainBlue,
+    return Scaffold(
+      backgroundColor: colorMainBlue,
       body: Column(
         children: [
           AppBarWidget(

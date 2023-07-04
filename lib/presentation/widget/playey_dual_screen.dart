@@ -31,7 +31,6 @@ class PlayerDualScreen extends StatelessWidget {
               size: size,
               quizBrainObject: quizBrain,
               onTap: onTap,
-              colorBG: colorSystemWhite,
             ),
           ],
         ),

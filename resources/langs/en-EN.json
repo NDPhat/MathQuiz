@@ -16,5 +16,23 @@
   "done": "Done",
   "input answer": "Input Answer",
   "truefalse": "True/False",
-  "findmissing": "FindMissing"
+  "findmissing": "FindMissing",
+  "on schedule": "ON SCHEDULE",
+  "myacc": "My account",
+  "setting": "Setting",
+  "record": "Record",
+  "logout": "Logout",
+  "mode": "Mode",
+  "localnotifi": "Local Notification",
+  "on schedule": "ON SCHEDULE",
+  "vietnamese": "Vietnamese",
+  "english": "English",
+  "go": "GO",
+  "exit": "EXIT",
+  "review your answer" : "REVIEW YOUR ANSWER",
+  "ready for your examination" : "READY FOR YOUR TESTING",
+  "join your game" : "JOIN YOUR PRACTICE GAME",
+  "ready hw": "READY FOR YOUR HOME WORK",
+  "forget pass": "Forget password"
+
 }

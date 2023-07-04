@@ -81,7 +81,6 @@ class PortraitModeGame extends StatelessWidget {
                       size: size,
                       quizBrainObject: quizBrainObject,
                       onTap: onTap,
-                      colorBG: colorMainBlue,
                     )
                   ],
                 ),
