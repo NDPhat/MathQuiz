@@ -27,7 +27,7 @@ class OptionGameModeScreen extends StatelessWidget {
         children: [
           AppBarWidget(
               size: size,
-              textTitle: 'CHOOSE GAME MODE',
+              textTitle: 'choose mode'.tr().toString(),
               onBack: () {
                 Navigator.pop(context);
               }),
@@ -40,16 +40,8 @@ class OptionGameModeScreen extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  Image.asset(
-                    "assets/images/gamemode.png",
-                    width: size.width * 0.5,
-                    height: size.height * 0.2,
-                  ),
                   SizedBox(
-                    height: size.height * 0.05,
-                  ),
-                  SizedBox(
-                    height: size.height * 0.6,
+                    height: size.height * 0.8,
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -104,15 +96,27 @@ class OptionGameModeScreen extends StatelessWidget {
                           ),
                           ItemMenuGameMode(
                             size: size,
-                            icon: const Icon(
-                              LineAwesomeIcons.question,
-                              size: 40,
-                            ),
-                            textTitle: 'sentences'.tr().toString(),
+                            icon: Image.asset("assets/images/icon_puzzle.png"),
+                            textTitle: 'puzzle'.tr().toString(),
                             onPress: () {
                               Navigator.pushNamed(context, Routers.premake,
                                   arguments: OptionQuiz(
-                                      sign: sign, optionQuiz: 'sentences'));
+                                      sign: sign, optionQuiz: 'puzzle'));
+                            },
+                          ),
+                          SizedBox(
+                            height: size.height * 0.05,
+                          ),
+                          ItemMenuGameMode(
+                            size: size,
+                            icon: Image.asset(
+                              "assets/images/icon_line.png",
+                            ),
+                            textTitle: 'connect'.tr().toString(),
+                            onPress: () {
+                              Navigator.pushNamed(context, Routers.premake,
+                                  arguments: OptionQuiz(
+                                      sign: sign, optionQuiz: 'connect'));
                             },
                           )
                         ],

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
@@ -27,7 +28,7 @@ class PracticeMainScreenItemCard extends StatelessWidget {
         Container(
           alignment: Alignment.center,
           child: Text(
-            'TASK $index',
+            "${'task'.tr()} $index",
             style: s15f700ColorYellow,
           ),
         ),
@@ -35,7 +36,7 @@ class PracticeMainScreenItemCard extends StatelessWidget {
         Container(
           alignment: Alignment.center,
           child: (Text(
-            'SCORE : ${dataResult!.score!} / ${dataResult!.numQ!}',
+            '${'score'.tr()} : ${dataResult!.score!} / ${dataResult!.numQ!}',
             style: s14f500ColorMainTe,
           )),
         )

@@ -62,7 +62,7 @@ class _HomeScreentState extends State<HomeUserScreen> {
             GestureDetector(
               child: BottomAppIcon(
                   pathImage: "assets/images/icons_homework_home.png",
-                  text: 'homework'.tr().toString(),
+                  text: 'home work'.tr().toString(),
                   size: size,
                   color: _selectedIndex == 2 ? colorMainBlue : colorGrayBG),
               onTap: () {

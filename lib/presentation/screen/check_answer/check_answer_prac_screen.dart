@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
@@ -20,9 +21,9 @@ class CheckAnswerPracUserGameScreen extends StatelessWidget {
         children: [
           AppBarWidget(
               size: size,
-              textTitle: 'CHECK ANSWER',
+              textTitle: 'check answer'.tr().toString(),
               onBack: () {
-                Navigator.pushNamed(context, Routers.homeUser);
+                Navigator.pop(context);
               }),
           Container(
             padding: EdgeInsets.only(

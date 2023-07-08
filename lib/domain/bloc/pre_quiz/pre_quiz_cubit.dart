@@ -77,6 +77,9 @@ class PreQuizCubit extends Cubit<PreQuizState> {
       print(e.toString());
     }
   }
+  void addPuzzle(){
+    emit(state.copyWith(status: PreQuizStatus.success));
+  }
 
   void addPreQuizGame(String sign, String option) async {
     if (isFormValid() == true) {

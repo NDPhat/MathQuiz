@@ -15,6 +15,11 @@ class QuizBrain {
   String quizTrueFalse = "TRUE";
   var listAnswer = [0, 0, 0, 0];
   List<int> listPos = [];
+  List<int> columnTarget1 = [];
+  List<int> listNumPuzzle1 = [];
+  List<int> columnTarget2 = [];
+  List<int> listNumPuzzle2 = [];
+  List<int> listAnswerPuzzle = [];
   String _quiz = '';
   Random _random = Random();
   void makeQuiz(PreQuizGame preQuiz) {
@@ -460,7 +465,7 @@ class QuizBrain {
       anwser1 = _random.nextInt(_quizAnswer + 20);
     } while (anwser1 == _quizAnswer);
     do {
-      anwser2 =_random.nextInt(_quizAnswer + 20);
+      anwser2 = _random.nextInt(_quizAnswer + 20);
     } while (anwser2 == _quizAnswer || anwser2 == anwser1);
 
     do {
@@ -499,7 +504,7 @@ class QuizBrain {
       anwser1 = _random.nextInt(_quizAnswer + 20);
     } while (anwser1 == _quizAnswer);
     do {
-      anwser2 =  _random.nextInt(_quizAnswer + 20);
+      anwser2 = _random.nextInt(_quizAnswer + 20);
     } while (anwser2 == _quizAnswer || anwser2 == anwser1);
 
     do {
@@ -514,9 +519,65 @@ class QuizBrain {
     listAnswer.shuffle();
   }
 
+  void makeQuizPuzzle(PreQuizGame preQuizGame) {
+    listNumPuzzle1 = [];
+    listNumPuzzle2 = [];
+    listAnswerPuzzle = [];
+    int count = 0;
+    do {
+      int firstNumber =
+          _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
+      int secondNumber =
+          _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
+      switch (preQuizGame.sign) {
+        case '+':
+          _quizAnswer = firstNumber + secondNumber;
+          break;
+        case '-':
+          secondNumber =
+              _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
+          _quizAnswer = firstNumber - secondNumber;
+          break;
+        case 'x':
+          _quizAnswer = firstNumber * secondNumber;
+          break;
+        case '/':
+          {
+            var listNumber2 = [];
+            if (firstNumber % secondNumber != 0) {
+              for (int i = preQuizGame.startNum!; i <= secondNumber; i++) {
+                if (firstNumber % i == 0) {
+                  listNumber2.add(i);
+                }
+              }
+            }
+            if (listNumber2.isEmpty) {
+              secondNumber = firstNumber;
+            } else {
+              secondNumber = listNumber2[_random.nextInt(listNumber2.length)];
+            }
+            _quizAnswer = (firstNumber ~/ secondNumber);
+          }
+      }
+      listNumPuzzle1.add(firstNumber);
+      columnTarget1.add(firstNumber);
+      listNumPuzzle2.add(secondNumber);
+      columnTarget2.add(secondNumber);
+      listAnswerPuzzle.add(_quizAnswer);
+      count++;
+    } while (count != 5);
+    listNumPuzzle1.shuffle();
+    listNumPuzzle2.shuffle();
+  }
+
   get quizAnswer => _quizAnswer;
   get getQuizTrueFalse => quizTrueFalse;
   get getQuizMissing => hiddenNum;
   get quiz => _quiz;
   get listAWS => listAnswer;
+  get getListAnswerPuzzle => listAnswerPuzzle;
+  get getListNumPuzzle1 => listNumPuzzle1;
+  get getListNumPuzzle2 => listNumPuzzle2;
+  get getColumnTarget1 => columnTarget1;
+  get getColumnTarget2 => columnTarget2;
 }

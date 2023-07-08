@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/repo/notifi_local/notifi_local_repo.dart';
-import 'package:math/data/local/repo/notifi_local/notifi_local_repo_impl.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
@@ -9,7 +8,6 @@ import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/authen/authen.dart';
 import 'package:math/domain/bloc/add_notifi/add_notifi_cubit.dart';
 import 'package:math/domain/bloc/forget_pass/forget_pass_cubit.dart';
-
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
 import 'package:math/domain/bloc/history/history_test_cubit.dart';
@@ -22,6 +20,7 @@ import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_hw.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_prac_screen.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
+import 'package:math/presentation/screen/game_screen/puzzle_game_screen.dart';
 import 'package:math/presentation/screen/game_screen/sentences_game_screen.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/home/home_user.dart';
@@ -33,7 +32,6 @@ import 'package:math/presentation/screen/pratice_game_user/practice_game_user_ma
 import 'package:math/presentation/screen/setting/setting_main_screen.dart';
 import 'package:math/presentation/screen/testing_user/test_main_user_screen.dart';
 import 'package:math/presentation/screen/update_pass_word/update_pass_screen.dart';
-
 import '../../data/local/repo/detail_notifi/detail_notifi_repo.dart';
 import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../domain/bloc/history/history_pra_cubit.dart';
@@ -46,7 +44,6 @@ import '../screen/detail_test/detail_test_screen.dart';
 import '../screen/dual/dual_main_screen.dart';
 import '../screen/dual/dual_with_bot_screen.dart';
 import '../screen/dual/dual_with_player_screen.dart';
-
 import '../screen/dual/option_bot_dual.dart';
 import '../screen/forget_password/forget_password_screen.dart';
 import '../screen/game_screen/basic_game_screen.dart';
@@ -108,6 +105,7 @@ class Routers {
   static const String addNotifiScreen = '/addNotifiScreen';
   static const String checkAnswerPracUserGame = '/checkAnswerPracUserGame';
   static const String detailQuizGame = '/detailQuizGame';
+  static const String puzzleGame = '/puzzleGame';
   static const String homeworkGame = '/homeworkGame';
   static const String languageScreen = '/languageScreen';
   static const String practiceMainScreenUserGame =
@@ -129,6 +127,8 @@ class Routers {
         return WelcomeScreen();
       case languageScreen:
         return LanguageScreen();
+      case puzzleGame:
+        return PuzzleGameScreen();
       case checkAnswerPracUserGame:
         return CheckAnswerPracUserGameScreen();
       case notifiScreen:

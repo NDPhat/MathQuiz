@@ -36,7 +36,7 @@ class MainTestingUserScreen extends StatelessWidget {
             backgroundColor: const Color(0xff1542bf),
             title: FittedBox(
               child: Text("${'review your answer'.tr()}?",
-                  textAlign: TextAlign.center, style: s30f700colorSysWhite),
+                  textAlign: TextAlign.center, style: kTitleTS),
             ),
             actions: [
               TextButton(
@@ -45,13 +45,13 @@ class MainTestingUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.checkAnswerHW,
                       arguments: CheckAnswerModel(id: idResult, type: "test"));
                 },
-                child: Text('go'.tr().toString(), style: s16f700ColorError),
+                child: Text('go'.tr().toString(), style: kTitleTSSmall),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('exit'.tr().toString(), style: s15f700ColorYellow),
+                child: Text('exit'.tr().toString(), style: kTitleTSSmall),
               ),
             ],
           );
@@ -90,13 +90,13 @@ class MainTestingUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.testingUser,
                       arguments: preTest);
                 },
-                child: const Text('GO', style: s16f700ColorError),
+                child: const Text('GO', style: kTitleTSSmall),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('EXIT', style: s15f700ColorYellow),
+                child: const Text('EXIT', style: kTitleTSSmall),
               ),
             ],
           );

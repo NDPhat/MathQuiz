@@ -5,9 +5,9 @@
   "welcomeback": "Mừng trở lại",
   "home" :"Trang chủ",
   "game": "Trò chơi",
-  "homework":"Bài tập",
+  "home work":"Bài Tập",
   "profile": "Cá nhân",
-  "practice":"Luyện tập",
+  "practice":"Luyện Tập",
   "test": "Kiểm tra",
   "number": "Dạng số",
   "sentences":"Dạng câu",
@@ -32,5 +32,20 @@
   "ready for your examination" : "Sẵn sàng cho bài kiểm tra",
   "join your game" : "Sẵn sàng tham gia",
   "ready hw": "Sẵn sàng cho bài tập",
-  "forget pass": "Quên mật khẩu"
+  "forget pass": "Quên mật khẩu",
+  "data season": "Dữ liệu kỳ",
+  "data week": "Dữ liệu tuần",
+  "data detail" : "Dữ liệu chi tiết",
+  "update profile": "Thông tin cá nhân",
+  "check answer": "Kiểm tra đáp án",
+  "task": "Bài",
+  "score": "Điểm",
+  "choose sign": "Chọn phép tính",
+  "choose mode": "Chọn bài toán",
+  "puzzle": "Mảnh ghép",
+  "connect": "Nối"
+
+
+
+
 }

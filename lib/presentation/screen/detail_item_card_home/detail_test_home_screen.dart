@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/chart_data_week.dart';
@@ -27,11 +28,13 @@ class DetailTestHomeWork extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: colorSystemWhite,
       body: SingleChildScrollView(
         child: Column(
           children: [
             AppBarWidget(
               size: size,
+              bgColor: colorSystemWhite,
               onBack: () {
                 Navigator.pop(context);
               },
@@ -44,7 +47,7 @@ class DetailTestHomeWork extends StatelessWidget {
                 children: [
                   LineContentItem(
                       size: size,
-                      title: 'DATA SESSION',
+                      title: 'data season'.tr().toString(),
                       icon: const Icon(Icons.calendar_month)),
                   Column(
                     children: [
@@ -76,7 +79,7 @@ class DetailTestHomeWork extends StatelessWidget {
                   ),
                   LineContentItem(
                       size: size,
-                      title: 'DATA DETAILED',
+                      title: 'data detail'.tr().toString(),
                       icon: const Icon(Icons.calendar_view_week)),
                   SizedBox(
                     height: size.height * 0.4,

@@ -26,7 +26,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             onBack: () {
               Navigator.pop(context);
             },
-            textTitle: "Language",
+            textTitle: "language".tr().toString(),
           ),
           SettingMenuWidget(
             title: "vietnamese".tr().toString(),

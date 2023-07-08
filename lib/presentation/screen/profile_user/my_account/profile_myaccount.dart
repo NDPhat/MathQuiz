@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -222,7 +223,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
             onBack: () {
               Navigator.pop(context);
             },
-            textTitle: 'Update Profile',
+            textTitle: 'update profile'.tr().toString(),
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -634,7 +635,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                               }
                               context
                                   .read<UpdateProfileCubit>()
-                                  .updateProfileUser(linkImage, deleteHash,_imageFile);
+                                  .updateProfileUser(
+                                      linkImage, deleteHash, _imageFile);
                             },
                             color: colorMainBlue,
                             width: size.width * 0.8,
@@ -649,8 +651,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                       ),
                                     ),
                                   )
-                                : const Text(
-                                    'GO',
+                                : Text(
+                                    'go'.tr().toString(),
                                     style: s16f700ColorSysWhite,
                                   ));
                       })

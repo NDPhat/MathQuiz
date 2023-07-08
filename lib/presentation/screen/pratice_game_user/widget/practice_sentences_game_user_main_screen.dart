@@ -87,13 +87,13 @@ class PracticeSenGameUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.senGameScreen,
                       arguments: data);
                 },
-                child: Text('go'.tr().toString(), style: s16f700ColorError),
+                child: Text('go'.tr().toString(), style: kTitleTSSmall),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('exit'.tr().toString(), style: s15f700ColorYellow),
+                child: Text('exit'.tr().toString(), style: kTitleTSSmall),
               ),
             ],
           );
@@ -110,7 +110,7 @@ class PracticeSenGameUserScreen extends StatelessWidget {
             onBack: () {
               Navigator.pop(context);
             },
-            textTitle: 'practice'.tr().toString(),
+            textTitle: 'sentences'.tr().toString(),
           ),
           SizedBox(
             height: size.height * 0.15,

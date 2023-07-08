@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/chart_data_week.dart';
@@ -5,14 +6,11 @@ import 'package:math/data/remote/model/detail_quiz_hw_response.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../application/utils/count_sign.dart';
-import '../../../data/model/chart_data.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../data/remote/model/pre_quiz_hw_response.dart';
-import '../../../data/remote/model/result_quiz_hw_response.dart';
 import '../../../main.dart';
 import '../../widget/async_data_detail_hw.dart';
 import '../../widget/card_data_item_home.dart';
@@ -25,11 +23,13 @@ class DetailItemCardHomeWork extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: colorSystemWhite,
       body: SingleChildScrollView(
         child: Column(
           children: [
             AppBarWidget(
               size: size,
+              bgColor: colorSystemWhite,
               onBack: () {
                 Navigator.pop(context);
               },
@@ -42,7 +42,7 @@ class DetailItemCardHomeWork extends StatelessWidget {
                 children: [
                   LineContentItem(
                       size: size,
-                      title: 'DATA SESSION',
+                      title: 'data season'.tr().toString(),
                       icon: const Icon(Icons.calendar_month)),
                   Column(
                     children: [
@@ -74,7 +74,7 @@ class DetailItemCardHomeWork extends StatelessWidget {
                   ),
                   LineContentItem(
                       size: size,
-                      title: 'DATA WEEKLY',
+                      title: 'data week'.tr().toString(),
                       icon: const Icon(Icons.calendar_view_week)),
                   SizedBox(
                     height: size.height * 0.4,
@@ -97,8 +97,8 @@ class DetailItemCardHomeWork extends StatelessWidget {
                             return ListView.builder(
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
-                                snapshot.data!.sort(
-                                        (a, b) => a.week!.compareTo(b.week!));
+                                snapshot.data!
+                                    .sort((a, b) => a.week!.compareTo(b.week!));
                                 return ItemAsyncDataDetailHW(
                                   size: size,
                                   textTitle:
@@ -244,7 +244,8 @@ class DetailItemCardHomeWork extends StatelessWidget {
                                         }),
                                   ),
                                   timeHW:
-                                      "${snapshot.data![index].dstart} To ${snapshot.data![index].dend}", type: "hw",
+                                      "${snapshot.data![index].dstart} To ${snapshot.data![index].dend}",
+                                  type: "hw",
                                 );
                               },
                             );

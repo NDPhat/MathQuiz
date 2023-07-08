@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:math/data/model/option_quiz.dart';
@@ -22,27 +23,20 @@ class OptionSignScreen extends StatelessWidget {
         children: [
           AppBarWidget(
               size: size,
-              textTitle: 'CHOOSE SIGN',
+              textTitle: 'choose sign'.tr().toString(),
               onBack: () {
                 Navigator.pop(context);
               }),
           Padding(
             padding: EdgeInsets.only(
-              top:   size.height * 0.05,
+              top: size.height * 0.05,
               left: size.width * 0.02,
               right: size.width * 0.02,
-              bottom:  size.height * 0.05,
+              bottom: size.height * 0.05,
             ),
             child: Center(
               child: Column(
                 children: [
-                  Image.asset(
-                    "assets/images/choose.jpg",
-                    width: size.width * 0.6,
-                  ),
-                  SizedBox(
-                    height: size.height * 0.05,
-                  ),
                   SingleChildScrollView(
                     child: Column(
                       children: [
@@ -69,8 +63,13 @@ class OptionSignScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: size.height * 0.02,
+                        ItemMenuSign(
+                          size: size,
+                          onPress: () {
+                            Navigator.pushNamed(context, Routers.chooseOption,
+                                arguments: 'mix');
+                          },
+                          imageLink: "assets/images/mix.png",
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +91,7 @@ class OptionSignScreen extends StatelessWidget {
                                     arguments: '/');
                               },
                               imageLink: "assets/images/chia.png",
-                            )
+                            ),
                           ],
                         ),
                       ],

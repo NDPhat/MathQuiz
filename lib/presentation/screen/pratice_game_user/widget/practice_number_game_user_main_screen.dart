@@ -4,6 +4,7 @@ import 'package:math/data/remote/model/pre_quiz_game_response.dart';
 import 'package:math/presentation/screen/pratice_game_user/widget/item_history_screen.dart';
 
 import '../../../../application/cons/color.dart';
+import '../../../../application/cons/constants.dart';
 import '../../../../application/cons/text_style.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../data/remote/api/Repo/api_user_repo.dart';
@@ -30,8 +31,8 @@ class PracticeNumberGameUserScreen extends StatelessWidget {
             )),
             backgroundColor: const Color(0xff1542bf),
             title: FittedBox(
-              child: Text("${'review your answer'.tr()}?",
-                  textAlign: TextAlign.center, style: s30f700colorSysWhite),
+              child: Text("${'review your answer'.tr()} ?",
+                  textAlign: TextAlign.center, style: kTitleTS),
             ),
             actions: [
               TextButton(
@@ -40,13 +41,13 @@ class PracticeNumberGameUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.checkAnswerPracUserGame,
                       arguments: idResult);
                 },
-                child:  Text('go'.tr().toString(), style: s16f700ColorError),
+                child:  Text('go'.tr().toString(), style: kTitleTSSmall),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child:  Text('exit'.tr().toString(), style: s15f700ColorYellow),
+                child:  Text('exit'.tr().toString(), style: kTitleTSSmall),
               ),
             ],
           );
@@ -63,7 +64,7 @@ class PracticeNumberGameUserScreen extends StatelessWidget {
             onBack: () {
               Navigator.pop(context);
             },
-            textTitle: 'practice'.tr().toString(),
+            textTitle: 'number'.tr().toString(),
           ),
           SizedBox(
             height: size.height * 0.15,

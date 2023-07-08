@@ -18,7 +18,7 @@ class HomeProfileUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HomeUserBG(
-        textNow: 'Profile',
+        textNow: 'profile'.tr().toString(),
         size: size,
         child: Expanded(
             child: SingleChildScrollView(

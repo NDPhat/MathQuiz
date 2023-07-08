@@ -85,7 +85,7 @@ class PreMakeQuizGame extends StatelessWidget {
                         width: size.width,
                         padding: EdgeInsets.only(
                           left: size.width * 0.05,
-                          right:  size.width * 0.03,
+                          right: size.width * 0.03,
                         ),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,7 +93,8 @@ class PreMakeQuizGame extends StatelessWidget {
                             Text(
                               "Start  ",
                               style: s16f700ColorGreyTe,
-                            ), Text(
+                            ),
+                            Text(
                               "End  ",
                               style: s16f700ColorGreyTe,
                             ),
@@ -138,7 +139,9 @@ class PreMakeQuizGame extends StatelessWidget {
                                       ? Routers.game
                                       : (option.optionQuiz! == "missing"
                                           ? Routers.findMissing
-                                          : Routers.trueFalse),
+                                          : (option.optionQuiz! == "truefalse"
+                                              ? Routers.trueFalse
+                                              : Routers.puzzleGame)),
                                   arguments: PreQuizGame(
                                       id: state.id,
                                       numQ: 0,
@@ -151,8 +154,9 @@ class PreMakeQuizGame extends StatelessWidget {
                           },
                           child: RoundedButton(
                             press: () {
-                              context.read<PreQuizCubit>().addPreQuizGame(
-                                  option.sign!, option.optionQuiz!);
+                              // context.read<PreQuizCubit>().addPreQuizGame(
+                              //     option.sign!, option.optionQuiz!);
+                              context.read<PreQuizCubit>().addPuzzle();
                             },
                             color: colorBlueQuaternery,
                             width: size.width * 0.8,

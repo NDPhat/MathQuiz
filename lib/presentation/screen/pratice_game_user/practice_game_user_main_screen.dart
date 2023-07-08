@@ -38,20 +38,17 @@ class PracticeGameUserMainScreen extends StatelessWidget {
                       textTitle: 'number'.tr().toString(),
                       child: Image.asset("assets/images/number.png",
                           height: size.height * 0.4),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    ItemMenuGame(
-                      size: size,
-                      textTitle: 'sentences'.tr().toString(),
+                    ), ItemMenuGame(
                       onPress: () {
                         Navigator.pushNamed(
                             context, Routers.practiceMainScreenUserGameSen);
                       },
+                      size: size,
+                      textTitle: 'sentences'.tr().toString(),
                       child: Image.asset("assets/images/sentences.png",
                           height: size.height * 0.4),
-                    )
+                    ),
+
                   ],
                 ),
               ),
