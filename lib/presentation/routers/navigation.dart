@@ -20,6 +20,7 @@ import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_hw.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_prac_screen.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
+import 'package:math/presentation/screen/game_screen/drag_drop_game_screen.dart';
 import 'package:math/presentation/screen/game_screen/puzzle_game_screen.dart';
 import 'package:math/presentation/screen/game_screen/sentences_game_screen.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
@@ -106,6 +107,7 @@ class Routers {
   static const String checkAnswerPracUserGame = '/checkAnswerPracUserGame';
   static const String detailQuizGame = '/detailQuizGame';
   static const String puzzleGame = '/puzzleGame';
+  static const String dragDropGame = '/dragDropGame';
   static const String homeworkGame = '/homeworkGame';
   static const String languageScreen = '/languageScreen';
   static const String practiceMainScreenUserGame =
@@ -129,6 +131,8 @@ class Routers {
         return LanguageScreen();
       case puzzleGame:
         return PuzzleGameScreen();
+      case dragDropGame:
+        return DragDropGameScreen();
       case checkAnswerPracUserGame:
         return CheckAnswerPracUserGameScreen();
       case notifiScreen:

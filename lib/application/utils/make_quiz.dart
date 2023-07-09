@@ -20,6 +20,8 @@ class QuizBrain {
   List<int> columnTarget2 = [];
   List<int> listNumPuzzle2 = [];
   List<int> listAnswerPuzzle = [];
+  List<int> listAnswerDD = [];
+  List<String> listQuizDD = [];
   String _quiz = '';
   Random _random = Random();
   void makeQuiz(PreQuizGame preQuiz) {
@@ -534,8 +536,7 @@ class QuizBrain {
           _quizAnswer = firstNumber + secondNumber;
           break;
         case '-':
-          secondNumber =
-              _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
+          secondNumber = preQuizGame.startNum! + _random.nextInt(firstNumber);
           _quizAnswer = firstNumber - secondNumber;
           break;
         case 'x':
@@ -566,8 +567,54 @@ class QuizBrain {
       listAnswerPuzzle.add(_quizAnswer);
       count++;
     } while (count != 5);
-    listNumPuzzle1.shuffle();
-    listNumPuzzle2.shuffle();
+  }
+
+  void makeQuizDragDrop(PreQuizGame preQuizGame) {
+    int count = 0;
+    do {
+      int firstNumber =
+          _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
+      int secondNumber =
+          _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
+      switch (preQuizGame.sign) {
+        case '+':
+          _quizAnswer = firstNumber + secondNumber;
+          listQuizDD.add("$firstNumber + $secondNumber");
+          break;
+        case '-':
+          secondNumber = preQuizGame.startNum! + _random.nextInt(firstNumber);
+          _quizAnswer = firstNumber - secondNumber;
+          listQuizDD.add("$firstNumber - $secondNumber");
+
+          break;
+        case 'x':
+          _quizAnswer = firstNumber * secondNumber;
+          listQuizDD.add("$firstNumber * $secondNumber");
+
+          break;
+        case '/':
+          {
+            var listNumber2 = [];
+            if (firstNumber % secondNumber != 0) {
+              for (int i = preQuizGame.startNum!; i <= secondNumber; i++) {
+                if (firstNumber % i == 0) {
+                  listNumber2.add(i);
+                }
+              }
+            }
+            if (listNumber2.isEmpty) {
+              secondNumber = firstNumber;
+            } else {
+              secondNumber = listNumber2[_random.nextInt(listNumber2.length)];
+            }
+            _quizAnswer = (firstNumber ~/ secondNumber);
+            listQuizDD.add("$firstNumber / $secondNumber");
+          }
+      }
+
+      listAnswerDD.add(_quizAnswer);
+      count++;
+    } while (count != 5);
   }
 
   get quizAnswer => _quizAnswer;
@@ -576,6 +623,8 @@ class QuizBrain {
   get quiz => _quiz;
   get listAWS => listAnswer;
   get getListAnswerPuzzle => listAnswerPuzzle;
+  get getListAnswerDD => listAnswerDD;
+  get getListQuizDD => listQuizDD;
   get getListNumPuzzle1 => listNumPuzzle1;
   get getListNumPuzzle2 => listNumPuzzle2;
   get getColumnTarget1 => columnTarget1;

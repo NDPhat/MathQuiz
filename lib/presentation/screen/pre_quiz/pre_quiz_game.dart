@@ -141,7 +141,9 @@ class PreMakeQuizGame extends StatelessWidget {
                                           ? Routers.findMissing
                                           : (option.optionQuiz! == "truefalse"
                                               ? Routers.trueFalse
-                                              : Routers.puzzleGame)),
+                                              : (option.optionQuiz! == "puzzle"
+                                                  ? Routers.puzzleGame
+                                                  : Routers.dragDropGame))),
                                   arguments: PreQuizGame(
                                       id: state.id,
                                       numQ: 0,
