@@ -287,7 +287,6 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
               _controller.pause();
               showOutDialog();
             },
-            textTitle: "Game",
           ),
           BlocBuilder<GameCubit, GameState>(builder: (context, state) {
             return PortraitModeGameSen(
@@ -302,7 +301,6 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
               },
               trueQ: _score,
               falseQ: falseChoose,
-              typeOfGame: "Test",
               controller: _controller,
               quizNow: _totalNumberOfQuizzes,
               onFinished: () {

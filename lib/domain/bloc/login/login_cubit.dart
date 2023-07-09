@@ -35,6 +35,13 @@ class LoginCubit extends Cubit<LoginState> {
   void passChanged(String value) {
     state.pass = value;
   }
+  void clearData(){
+    emit(state.copyWith(
+      emailError: "",
+      passError: "",
+      status: LoginStatus.clear
+    ));
+  }
 
   Future<void> loginAppWithEmailAndPass() async {
     emit(state.copyWith(status: LoginStatus.onLoading));

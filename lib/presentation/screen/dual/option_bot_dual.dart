@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math/data/model/level_game_bot.dart';
 
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
@@ -30,6 +31,7 @@ class OptionModeBotDual extends StatelessWidget {
                 children: [
                   Level_Box(
                     size: size,
+                    time: 5,
                     level: "easy",
                     style: kTitleTSBold,
                   ),
@@ -39,6 +41,7 @@ class OptionModeBotDual extends StatelessWidget {
                   Level_Box(
                     size: size,
                     level: "medium",
+                    time: 4,
                     style: kTitleTSBold1,
                   ),
                   SizedBox(
@@ -47,6 +50,7 @@ class OptionModeBotDual extends StatelessWidget {
                   Level_Box(
                     size: size,
                     level: "hard",
+                    time: 3,
                     style: kTitleTSBold2,
                   ),
                 ],
@@ -64,17 +68,20 @@ class Level_Box extends StatelessWidget {
       {super.key,
       required this.size,
       required this.level,
-      required this.style});
+      required this.style,
+      required this.time});
 
   final Size size;
   final String level;
+  final int time;
   final TextStyle style;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, Routers.battleBOT, arguments: level);
+          Navigator.pushNamed(context, Routers.battleBOT,
+              arguments: LevelGameBot(level: level, time: time));
         },
         child: Container(
             height: size.height * 0.17,

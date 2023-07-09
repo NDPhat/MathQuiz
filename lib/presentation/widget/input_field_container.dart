@@ -7,6 +7,7 @@ class InputFieldContainer extends StatelessWidget {
   final double width, height;
   final String? validateText;
   final bool? isHidden;
+  final String? nameTitle;
 
   const InputFieldContainer({
     Key? key,
@@ -14,6 +15,7 @@ class InputFieldContainer extends StatelessWidget {
     required this.width,
     required this.height,
     this.validateText,
+    this.nameTitle,
     this.isHidden,
   }) : super(key: key);
 
@@ -24,26 +26,34 @@ class InputFieldContainer extends StatelessWidget {
       height: height,
       child: Column(
         children: [
-          SizedBox(height: height * 0.75, child: child),
           SizedBox(
-            height: height * 0.05,
+            width: width,
+            child: Text(
+              nameTitle ?? "",
+              style: s15f700ColorBlueMa,
+              textAlign: TextAlign.left,
+            ),
           ),
           SizedBox(
-            height: height * 0.2,
-            child: Visibility(
-              visible: isHidden == null ? false : isHidden!,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      alignment: Alignment.topLeft,
-                      child: Image.asset("assets/images/error_validate.png")),
-                  Text(
-                    validateText ?? "",
-                    style: s14f400ColorErrorPro,
-                  )
-                ],
-              ),
+            height: height * 0.02,
+          ),
+          child,
+          SizedBox(
+            height: height * 0.01,
+          ),
+          Visibility(
+            visible: isHidden == null ? false : isHidden!,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    alignment: Alignment.topLeft,
+                    child: Image.asset("assets/images/error_validate.png")),
+                Text(
+                  validateText ?? "",
+                  style: s14f400ColorErrorPro,
+                )
+              ],
             ),
           )
         ],

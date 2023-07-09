@@ -19,13 +19,13 @@ class HomeGuestScreen extends StatefulWidget {
 class _HomeGuestScreenState extends State<HomeGuestScreen> {
   bool clickingGame = false;
   bool clickingHis = false;
-  late HomeRepo homeRepo;
+  late PreTestRepo homeRepo;
   @override
   void initState() {
     super.initState();
-    homeRepo = HomeRepo(
+    homeRepo = PreTestRepo(
         preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-        userLocalAPIRepo: instance.get<UserAPIRepo>());
+        );
   }
 
   @override

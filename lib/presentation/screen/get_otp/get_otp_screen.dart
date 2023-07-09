@@ -1,21 +1,16 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/enum/get_otp_status.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
-import 'package:math/main.dart';
 import 'package:math/presentation/widget/app_bar.dart';
-import 'package:math/presentation/widget/login_input_field.dart';
-import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
-import '../../../application/enum/foget_pass_status.dart';
 import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
+import '../../widget/input_field_widget.dart';
 
 class GetOTPScreen extends StatefulWidget {
   GetOTPScreen({Key? key}) : super(key: key);
@@ -126,7 +121,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                LoginInputField(
+                                InputFieldWidget(
                                   onChanged: (value) {
                                     context
                                         .read<GetOTPCubit>()
@@ -137,7 +132,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   width: size.width * 0.15,
                                   height: size.height * 0.1,
                                 ),
-                                LoginInputField(
+                                InputFieldWidget(
                                   onChanged: (value) {
                                     context
                                         .read<GetOTPCubit>()
@@ -148,7 +143,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   width: size.width * 0.15,
                                   height: size.height * 0.1,
                                 ),
-                                LoginInputField(
+                                InputFieldWidget(
                                   onChanged: (value) {
                                     context
                                         .read<GetOTPCubit>()
@@ -159,7 +154,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   width: size.width * 0.15,
                                   height: size.height * 0.1,
                                 ),
-                                LoginInputField(
+                                InputFieldWidget(
                                   onChanged: (value) {
                                     context
                                         .read<GetOTPCubit>()
@@ -170,7 +165,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   width: size.width * 0.15,
                                   height: size.height * 0.1,
                                 ),
-                                LoginInputField(
+                                InputFieldWidget(
                                   maxLength: 1,
                                   onChanged: (value) {
                                     context
@@ -276,8 +271,8 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                       ),
                                     ),
                                   )
-                                : const Text(
-                                    'GO',
+                                :  Text(
+                                    'go'.tr().toString(),
                                     style: s20f700ColorSysWhite,
                                   ));
                       })

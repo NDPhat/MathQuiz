@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math/application/cons/color.dart';
 import 'package:math/presentation/widget/answer_table.dart';
 import '../../application/utils/make_quiz.dart';
 import 'package:math/presentation/widget/quiz_body.dart';
@@ -17,7 +18,8 @@ class PlayerDualScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      padding: EdgeInsets.only(top: size.height * 0.05),
       child: Center(
         child: Column(
           children: [
@@ -25,10 +27,11 @@ class PlayerDualScreen extends StatelessWidget {
               size: size,
               quizBrainObject: quizBrain,
             ),
-            SizedBox(
-              height: size.height * 0.05,
+            AnswerTable(
+              size: size,
+              quizBrainObject: quizBrain,
+              onTap: onTap,
             ),
-            AnswerTable(size: size, quizBrainObject: quizBrain, onTap: onTap),
           ],
         ),
       ),

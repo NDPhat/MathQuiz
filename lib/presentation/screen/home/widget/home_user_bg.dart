@@ -32,7 +32,7 @@ class HomeUserBG extends StatelessWidget {
                     "assets/images/icon_app.png",
                   ),
                 ),
-                Text(textNow, style: s26f700ColorGreyPri),
+                Text(textNow.toUpperCase(), style: s20f700ColorMBlue),
               ]),
             ),
             CircleAvatar(
@@ -44,13 +44,12 @@ class HomeUserBG extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8), // Border radius
                   child: ClipOval(
-                    child: instance.get<UserGlobal>().linkImage?.length!=0
-                        ? Image.network(
-                            instance.get<UserGlobal>().linkImage!,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset("assets/images/profile.png"),
-                  ),
+                      child: Image.network(
+                    instance.get<UserGlobal>().linkImage != null
+                        ? instance.get<UserGlobal>().linkImage!
+                        : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                    fit: BoxFit.cover,
+                  )),
                 ),
               ),
             ),

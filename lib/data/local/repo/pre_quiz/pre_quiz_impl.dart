@@ -31,9 +31,10 @@ class PreQuizLocalRepoImpl extends PreQuizGameRepo {
   }
 
   @override
-  Future<void> updatePreQuizGame(int id, int score) async {
+  Future<void> updatePreQuizGame(int id, int score, int numQ) async {
     (appDb.update(appDb.preQuizGameEntity)..where((tbl) => tbl.id.equals(id)))
-        .write(PreQuizGameEntityCompanion(score: Value(score)));
+        .write(
+            PreQuizGameEntityCompanion(score: Value(score), numQ: Value(numQ)));
   }
 
   @override

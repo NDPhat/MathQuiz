@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/remote/authen/authen.dart';
@@ -17,7 +18,7 @@ class HomeProfileUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HomeUserBG(
-        textNow: 'Profile',
+        textNow: 'profile'.tr().toString(),
         size: size,
         child: Expanded(
             child: SingleChildScrollView(
@@ -38,22 +39,14 @@ class HomeProfileUserScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8), // Border radius
                           child: ClipOval(
-                            child:
-                                instance.get<UserGlobal>().linkImage?.length !=
-                                        0
-                                    ? Image.network(
-                                        instance.get<UserGlobal>().linkImage!,
-                                        fit: BoxFit.cover,
-                                        height: 100,
-                                        width: 100,
-                                      )
-                                    : Image.asset(
-                                        "assets/images/profile.png",
-                                        fit: BoxFit.cover,
-                                        height: 100,
-                                        width: 100,
-                                      ),
-                          ),
+                              child: Image.network(
+                            instance.get<UserGlobal>().linkImage != null
+                                ? instance.get<UserGlobal>().linkImage!
+                                : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          )),
                         ),
                       )),
                 ],
@@ -67,7 +60,7 @@ class HomeProfileUserScreen extends StatelessWidget {
               /// -- MENU
               SingleChildScrollView(
                 child: ProfileMenuWidget(
-                  title: "My account",
+                  title: 'myacc'.tr().toString(),
                   icon: LineAwesomeIcons.user_check,
                   onPress: () {
                     Navigator.pushNamed(context, Routers.updateProfileUser);
@@ -78,7 +71,7 @@ class HomeProfileUserScreen extends StatelessWidget {
               SizedBox(height: size.height * 0.02),
 
               ProfileMenuWidget(
-                title: "Setting",
+                title: "setting".tr().toString(),
                 icon: LineAwesomeIcons.cog,
                 onPress: () {
                   Navigator.pushNamed(context, Routers.settingScreen);
@@ -87,14 +80,14 @@ class HomeProfileUserScreen extends StatelessWidget {
               ),
               SizedBox(height: size.height * 0.02),
               ProfileMenuWidget(
-                title: "Record",
+                title: "record".tr().toString(),
                 icon: LineAwesomeIcons.record_vinyl,
                 onPress: () {},
                 size: size,
               ),
               SizedBox(height: size.height * 0.02),
               ProfileMenuWidget(
-                title: "Logout",
+                title: "logout".tr().toString(),
                 icon: LineAwesomeIcons.alternate_sign_out,
                 onPress: () {
                   instance.get<AuthenRepository>().handleAutoLoginApp(false);

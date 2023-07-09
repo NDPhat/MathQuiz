@@ -3,6 +3,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:drift/drift.dart' as driff;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/application/cons/color.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/domain/bloc/test/test_cubit.dart';
@@ -36,7 +37,7 @@ class _TestScreenState extends State<TestScreen> {
   int falseChoose = 0;
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = false;
-  late HomeRepo homeRepo;
+  late PreTestRepo homeRepo;
   final CountDownController _controller = CountDownController();
 
   @override
@@ -44,9 +45,9 @@ class _TestScreenState extends State<TestScreen> {
     super.initState();
     _quizBrain = QuizBrain();
     preTest = PreTest();
-    homeRepo = HomeRepo(
+    homeRepo = PreTestRepo(
         preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-        userLocalAPIRepo: instance.get<UserAPIRepo>());
+        );
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       preTest = await ModalRoute.of(context)!.settings.arguments as PreTest;
       showReadyDialog();
@@ -184,6 +185,7 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: colorMainBlue,
       body: Column(
         children: [
           AppBarWidget(
@@ -207,7 +209,6 @@ class _TestScreenState extends State<TestScreen> {
               },
               trueQ: _score,
               falseQ: falseChoose,
-              typeOfGame: "Test",
               controller: _controller,
               quizNow: _totalNumberOfQuizzes,
               onFinished: () {

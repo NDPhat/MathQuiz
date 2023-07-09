@@ -64,7 +64,6 @@ class UserHWScore extends StatelessWidget {
                 textFormat: CountdownTextFormat.S,
                 autoStart: false,
                 onStart: () {
-                  debugPrint('Countdown Started');
                 },
                 onComplete: onFinished,
               ))

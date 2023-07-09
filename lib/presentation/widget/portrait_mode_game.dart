@@ -17,80 +17,78 @@ class PortraitModeGame extends StatelessWidget {
   final highscore;
   final int score;
   final int trueQ, falseQ;
-  int? totalQ;
   final int quizNow;
   final QuizBrain quizBrainObject;
   final onTap;
-  double? percentValue;
   final Size size;
-  String? typeOfGame;
-  double? percentTime;
-  int? timeNow;
   CountDownController? controller;
   VoidCallback? onFinished;
-  PortraitModeGame(
-      {required this.highscore,
-      required this.score,
-      required this.trueQ,
-      required this.falseQ,
-      this.totalQ,
-      required this.quizNow,
-      required this.quizBrainObject,
-      required this.onTap,
-      this.percentValue,
-      required this.size,
-      this.controller,
-      this.onFinished,
-      this.typeOfGame,
-      this.timeNow});
+  PortraitModeGame({
+    required this.highscore,
+    required this.score,
+    required this.trueQ,
+    required this.falseQ,
+    required this.quizNow,
+    required this.quizBrainObject,
+    required this.onTap,
+    required this.size,
+    this.controller,
+    this.onFinished,
+  });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding:
-          EdgeInsets.only(bottom: size.height * 0.02),
-      child: Column(
-        children: [
-          Container(
-            color: colorSystemWhite,
-            child: Column(
-              children: [
-                UserTableScore(
-                  size: size,
-                  percentTime: percentValue,
-                  timeNow: timeNow,
-                  trueQ: trueQ,
-                  controller: controller,
-                  falseQ: falseQ,
-                  totalQuiz: totalQ,
-                  onFinished: onFinished,
-                  typeOfGame: typeOfGame,
-                  quizNow: quizNow,
-                ),
-                Stack(
+    return Column(
+      children: [
+        Container(
+          height: size.height * 0.9,
+          child: Column(
+            children: [
+              UserTableScore(
+                size: size,
+                trueQ: trueQ,
+                controller: controller,
+                falseQ: falseQ,
+                onFinished: onFinished,
+                quizNow: quizNow,
+              ),
+              Container(
+                padding: EdgeInsets.only(top: size.height * 0.02),
+                height: size.height * 0.73,
+                color: colorMainTealPri,
+                child: Column(
                   children: [
-                    Image.asset(
-                      "assets/images/table_quiz.png",
-                      fit: BoxFit.fill,
-                    ),
                     Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(
-                          top: size.height * 0.2, left: size.width * 0.2),
-                      child: QuizBodyHW(
-                          quizBrainObject: quizBrainObject, size: size),
+                      color: colorMainTealPri,
+                      child: Stack(
+                        children: [
+                          Image.asset(
+                            "assets/images/table_quiz.png",
+                            fit: BoxFit.fill,
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(
+                                top: size.height * 0.2, left: size.width * 0.2),
+                            child: QuizBodyHW(
+                                quizBrainObject: quizBrainObject, size: size),
+                          ),
+                        ],
+                      ),
                     ),
+                    AnswerTable(
+                      size: size,
+                      quizBrainObject: quizBrainObject,
+                      onTap: onTap,
+                    )
                   ],
                 ),
-                SizedBox(height: size.height * 0.03),
-                AnswerTable(
-                    size: size, quizBrainObject: quizBrainObject, onTap: onTap)
-              ],
-            ),
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

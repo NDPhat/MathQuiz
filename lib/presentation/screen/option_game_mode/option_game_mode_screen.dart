@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -26,7 +27,7 @@ class OptionGameModeScreen extends StatelessWidget {
         children: [
           AppBarWidget(
               size: size,
-              textTitle: 'CHOOSE GAME MODE',
+              textTitle: 'choose mode'.tr().toString(),
               onBack: () {
                 Navigator.pop(context);
               }),
@@ -39,16 +40,8 @@ class OptionGameModeScreen extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  Image.asset(
-                    "assets/images/gamemode.png",
-                    width: size.width * 0.5,
-                    height: size.height * 0.2,
-                  ),
                   SizedBox(
-                    height: size.height * 0.05,
-                  ),
-                  SizedBox(
-                    height: size.height * 0.6,
+                    height: size.height * 0.8,
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +52,7 @@ class OptionGameModeScreen extends StatelessWidget {
                               LineAwesomeIcons.keyboard,
                               size: 30,
                             ),
-                            textTitle: 'INPUT ANSWER',
+                            textTitle: 'input answer'.tr().toString(),
                             onPress: () {
                               Navigator.pushNamed(context, Routers.premake,
                                   arguments: OptionQuiz(
@@ -75,7 +68,7 @@ class OptionGameModeScreen extends StatelessWidget {
                               LineAwesomeIcons.question,
                               size: 30,
                             ),
-                            textTitle: 'TRUE/FALSE',
+                            textTitle: 'truefalse'.tr().toString(),
                             onPress: () {
                               Navigator.pushNamed(context, Routers.premake,
                                   arguments: OptionQuiz(
@@ -91,7 +84,7 @@ class OptionGameModeScreen extends StatelessWidget {
                               Icons.youtube_searched_for,
                               size: 40,
                             ),
-                            textTitle: 'FIND MISSING',
+                            textTitle: 'findmissing'.tr().toString(),
                             onPress: () {
                               Navigator.pushNamed(context, Routers.premake,
                                   arguments: OptionQuiz(
@@ -103,15 +96,27 @@ class OptionGameModeScreen extends StatelessWidget {
                           ),
                           ItemMenuGameMode(
                             size: size,
-                            icon:  const Icon(
-                              LineAwesomeIcons.question,
-                              size: 40,
-                            ),
-                            textTitle: 'SENTENCES',
+                            icon: Image.asset("assets/images/icon_puzzle.png"),
+                            textTitle: 'puzzle'.tr().toString(),
                             onPress: () {
                               Navigator.pushNamed(context, Routers.premake,
                                   arguments: OptionQuiz(
-                                      sign: sign, optionQuiz: 'sentences'));
+                                      sign: sign, optionQuiz: 'puzzle'));
+                            },
+                          ),
+                          SizedBox(
+                            height: size.height * 0.05,
+                          ),
+                          ItemMenuGameMode(
+                            size: size,
+                            icon: Image.asset(
+                              "assets/images/icon_line.png",
+                            ),
+                            textTitle: 'connect'.tr().toString(),
+                            onPress: () {
+                              Navigator.pushNamed(context, Routers.premake,
+                                  arguments: OptionQuiz(
+                                      sign: sign, optionQuiz: 'connect'));
                             },
                           )
                         ],

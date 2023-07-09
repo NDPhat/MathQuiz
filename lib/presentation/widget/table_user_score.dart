@@ -11,10 +11,6 @@ class UserTableScore extends StatelessWidget {
       required this.size,
       this.trueQ,
       this.falseQ,
-      this.timeNow,
-      this.typeOfGame,
-      this.percentTime,
-      this.totalQuiz,
       this.quizNow,
       this.onFinished,
       this.controller})
@@ -23,48 +19,41 @@ class UserTableScore extends StatelessWidget {
   int? trueQ;
   int? falseQ;
   int? quizNow;
-  int? totalQuiz;
-  String? typeOfGame;
-  double? percentTime;
-  int? timeNow;
   CountDownController? controller;
   VoidCallback? onFinished;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
+      height: size.height*0.17,
       child: Stack(
         alignment: Alignment.center,
         children: [
           Container(
+            margin: EdgeInsets.only(top: size.height * 0.02),
+            padding:  EdgeInsets.only(top: size.height*0.01, left: size.width*0.05, right: size.width*0.05),
             height: size.height * 0.15,
             decoration: const BoxDecoration(
                 color: colorBlueQuaternery,
-                borderRadius: BorderRadius.all(Radius.circular(20))),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 10),
-                  child: Column(
-                    children: [
-                      const Icon(Icons.update),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      typeOfGame == "Test"
-                          ? (Text(
-                              'Quiz : $quizNow',
-                              style: s16f700ColorGreyTe,
-                            ))
-                          : Text(
-                              '$quizNow/$totalQuiz',
-                              style: s16f700ColorGreyTe,
-                            )
-                    ],
-                  ),
+                Column(
+                  children: [
+                    const Icon(Icons.update),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    (Text(
+                      'Quiz : $quizNow',
+                      style: s16f700ColorGreyTe,
+                    ))
+                  ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.1),
+                  padding: EdgeInsets.only(top: size.height * 0.08),
                   child: Row(
                     children: [
                       const Text(
@@ -78,96 +67,78 @@ class UserTableScore extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, right: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                              radius: 8,
-                              child: Icon(
-                                Icons.check,
-                                size: 8,
-                              )),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            trueQ.toString(),
-                            style: s16f700ColorBlueMa,
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                              backgroundColor: colorErrorPrimary,
-                              radius: 8,
-                              child: Icon(
-                                Icons.close,
-                                size: 8,
-                              )),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            falseQ.toString(),
-                            style: s16f700ColorError,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        const CircleAvatar(
+                            radius: 8,
+                            child: Icon(
+                              Icons.check,
+                              size: 8,
+                            )),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          trueQ.toString(),
+                          style: s16f700ColorBlueMa,
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        const CircleAvatar(
+                            backgroundColor: colorErrorPrimary,
+                            radius: 8,
+                            child: Icon(
+                              Icons.close,
+                              size: 8,
+                            )),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          falseQ.toString(),
+                          style: s16f700ColorError,
+                        )
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          typeOfGame == "Test"
-              ? Padding(
-                  padding: EdgeInsets.only(bottom: size.height * 0.1),
-                  child: CircleAvatar(
-                      radius: 40,
-                      backgroundColor: colorSystemWhite,
-                      child: CircularCountDownTimer(
-                        duration: 60,
-                        initialDuration: 0,
-                        controller: controller,
-                        width: 50,
-                        height: 50,
-                        ringColor: Colors.grey[300]!,
-                        fillColor: Colors.purpleAccent[100]!,
-                        backgroundColor: Colors.purple[500],
-                        backgroundGradient: null,
-                        strokeWidth: 20.0,
-                        strokeCap: StrokeCap.round,
-                        textStyle: const TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        textFormat: CountdownTextFormat.S,
-                        autoStart: false,
-                        onStart: () {
-                          debugPrint('Countdown Started');
-                        },
-                        onComplete: onFinished,
-                      )),
-                )
-              : Padding(
-                  padding: EdgeInsets.only(bottom: size.height * 0.1),
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: colorSystemWhite,
-                    child: CirPerIndicator(
-                      percentValue: percentTime,
-                      size: size,
-                      totalTime: timeNow,
-                    ),
-                  ),
-                ),
+          Container(
+            margin: EdgeInsets.only(bottom: size.height * 0.08),
+            child: CircleAvatar(
+                radius: 40,
+                backgroundColor: colorSystemWhite,
+                child: CircularCountDownTimer(
+                  duration: 60,
+                  initialDuration: 0,
+                  controller: controller,
+                  width: 50,
+                  height: 50,
+                  ringColor: colorSystemWhite,
+                  fillColor: colorSystemWhite,
+                  backgroundColor: colorGrayBG,
+                  backgroundGradient: null,
+                  strokeWidth: 20.0,
+                  strokeCap: StrokeCap.round,
+                  textStyle: const TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                  textFormat: CountdownTextFormat.S,
+                  autoStart: false,
+                  onStart: () {},
+                  onComplete: onFinished,
+                )),
+          )
         ],
       ),
     );

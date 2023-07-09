@@ -53,6 +53,11 @@ const kTitleTS = TextStyle(
   color: Colors.orangeAccent,
   fontFamily: 'Press_Start_2P',
 );
+const kTitleTSSmall = TextStyle(
+  fontSize: 15,
+  color: Colors.white,
+  fontFamily: 'Press_Start_2P',
+);
 const kTitleTSReadyDL = TextStyle(
   fontSize: 20,
   color: Colors.orangeAccent,

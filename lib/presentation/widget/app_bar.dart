@@ -9,19 +9,21 @@ class AppBarWidget extends StatelessWidget {
       required this.size,
       required this.onBack,
       this.textTitle,
+      this.bgColor,
       this.onSetting,
       this.childSetting})
       : super(key: key);
   final Size size;
   String? textTitle;
   final VoidCallback onBack;
+  final Color? bgColor;
   VoidCallback? onSetting;
   Widget? childSetting;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: colorMainBlue,
+      color: bgColor == null ? colorMainBlue : bgColor,
       width: size.width,
       height: size.height * 0.1,
       padding: EdgeInsets.only(top: size.height * 0.02),
@@ -42,7 +44,7 @@ class AppBarWidget extends StatelessWidget {
                 onTap: onBack,
                 child: const Icon(
                   Icons.keyboard_backspace,
-                  color: colorSystemWhite,
+                  color: colorSystemYeloow,
                   size: 30,
                 )),
           ),

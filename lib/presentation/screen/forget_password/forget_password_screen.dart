@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/cons/color.dart';
@@ -5,10 +6,9 @@ import 'package:math/domain/bloc/forget_pass/forget_pass_cubit.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/button_custom.dart';
-import 'package:math/presentation/widget/login_input_field.dart';
-
 import '../../../application/cons/text_style.dart';
 import '../../../application/enum/foget_pass_status.dart';
+import '../../widget/input_field_widget.dart';
 
 class ForgetPassScreen extends StatelessWidget {
   const ForgetPassScreen({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class ForgetPassScreen extends StatelessWidget {
             onBack: () {
               Navigator.pop(context);
             },
-            textTitle: 'Forget password',
+            textTitle: 'forget pass'.tr().toString(),
           ),
           Container(
             padding: EdgeInsets.only(
@@ -58,7 +58,7 @@ class ForgetPassScreen extends StatelessWidget {
                       return previousState.emailErrorMessage !=
                           state.emailErrorMessage;
                     }, builder: (context, state) {
-                      return LoginInputField(
+                      return InputFieldWidget(
                         hintText: 'Enter your email',
                         icon: const Icon(Icons.email_outlined),
                         onChanged: (value) {
@@ -99,8 +99,8 @@ class ForgetPassScreen extends StatelessWidget {
                                     ),
                                   ),
                                 )
-                              : const Text(
-                                  'GO',
+                              :  Text(
+                                  'go'.tr().toString(),
                                   style: s20f700ColorSysWhite,
                                 ));
                     })

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
@@ -33,9 +34,9 @@ class MainTestingUserScreen extends StatelessWidget {
               25,
             )),
             backgroundColor: const Color(0xff1542bf),
-            title: const FittedBox(
-              child: Text('REVIEW YOUR ANSWER?',
-                  textAlign: TextAlign.center, style: s30f700colorSysWhite),
+            title: FittedBox(
+              child: Text("${'review your answer'.tr()}?",
+                  textAlign: TextAlign.center, style: kTitleTS),
             ),
             actions: [
               TextButton(
@@ -44,13 +45,13 @@ class MainTestingUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.checkAnswerHW,
                       arguments: CheckAnswerModel(id: idResult, type: "test"));
                 },
-                child: const Text('GO', style: s16f700ColorError),
+                child: Text('go'.tr().toString(), style: kTitleTSSmall),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('EXIT', style: s15f700ColorYellow),
+                child: Text('exit'.tr().toString(), style: kTitleTSSmall),
               ),
             ],
           );
@@ -89,13 +90,13 @@ class MainTestingUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.testingUser,
                       arguments: preTest);
                 },
-                child: const Text('GO', style: s16f700ColorError),
+                child: const Text('GO', style: kTitleTSSmall),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('EXIT', style: s15f700ColorYellow),
+                child: const Text('EXIT', style: kTitleTSSmall),
               ),
             ],
           );
@@ -124,8 +125,8 @@ class MainTestingUserScreen extends StatelessWidget {
                   color: colorMainBlue,
                   width: size.width * 0.8,
                   height: size.height * 0.1,
-                  child: const Text(
-                    'TESTING',
+                  child: Text(
+                    'test'.tr().toString(),
                     style: s30f500colorSysWhite,
                   )),
             ),
@@ -143,9 +144,9 @@ class MainTestingUserScreen extends StatelessWidget {
           ),
           SizedBox(
             height: size.height * 0.025,
-            child: const Center(
+            child: Center(
                 child: Text(
-              'HISTORY',
+              'history'.tr().toString(),
               style: s20f700ColorErrorPro,
             )),
           ),
@@ -180,9 +181,9 @@ class MainTestingUserScreen extends StatelessWidget {
                               },
                               size: size,
                               backgroundColor: colorMainBlue,
-                              childRight: const Center(
+                              childRight: Center(
                                   child: Text(
-                                'DONE',
+                                'done'.tr().toString(),
                                 style: s20f700ColorSysWhite,
                               )),
                               childLeft: TestmainScreenItemCard(

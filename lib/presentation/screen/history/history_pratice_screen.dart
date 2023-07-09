@@ -23,10 +23,11 @@ class HistoryPractice extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: colorSystemWhite,
       body: SizedBox(
         child: Column(
           children: [
-            AppBarWidget(
+            AppBarWidget(bgColor: colorSystemWhite,
               size: size,
               textTitle: 'HISTORY',
               onBack: () {
@@ -34,7 +35,7 @@ class HistoryPractice extends StatelessWidget {
               },
               childSetting: const Icon(
                 Icons.settings,
-                color: colorSystemWhite,
+                color: colorSystemYeloow,
                 size: 30,
               ),
               onSetting: () {

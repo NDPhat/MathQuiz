@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/di/event_local.dart';
@@ -87,11 +89,17 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     emit(state.copyWith(birthDate: value));
   }
 
-  Future<void> updateProfileUser(String linkImage, String deleteHash) async {
-    emit(state.copyWith(status: UpdateProfileStatus.onLoading));
+  Future<void> updateProfileUser(
+      String linkImage, String deleteHash, File? _imageFile) async {
+    emit(state.copyWith(
+        nameError: "",
+        addError: "",
+        phoneError: "",
+        birthError: "",
+        status: UpdateProfileStatus.onLoading));
     if (isFormValid()) {
       late UserAPIReq dataNew;
-      if (linkImage.isNotEmpty) {
+      if (_imageFile != null) {
         dataNew = UserAPIReq(
             add: state.address,
             phone: state.phone,

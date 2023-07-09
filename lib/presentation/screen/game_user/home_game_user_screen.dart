@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/widget/home_user_bg.dart';
@@ -10,7 +11,7 @@ class HomeGameUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HomeUserBG(
-        textNow: 'Game',
+        textNow: 'game'.tr().toString(),
         size: size,
         child: Expanded(
             child: SingleChildScrollView(
@@ -22,7 +23,7 @@ class HomeGameUserScreen extends StatelessWidget {
                       context, Routers.practiceMainScreenUserGame);
                 },
                 size: size,
-                textTitle: 'PRACTICE',
+                textTitle: 'practice'.tr().toString(),
                 child: Image(
                     height: size.height * 0.4,
                     image: const NetworkImage(
@@ -37,7 +38,7 @@ class HomeGameUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.battleMainScreen);
                 },
                 size: size,
-                textTitle: 'GAME',
+                textTitle: 'game'.tr().toString(),
                 child: Image(
                     height: size.height * 0.4,
                     image: const NetworkImage(
@@ -49,7 +50,7 @@ class HomeGameUserScreen extends StatelessWidget {
               ),
               ItemMenuGame(
                 size: size,
-                textTitle: 'TESTING',
+                textTitle: 'test'.tr().toString(),
                 onPress: () {
                   Navigator.pushNamed(context, Routers.mainTestUser);
                 },

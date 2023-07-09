@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/chart_data_week.dart';
@@ -28,15 +29,16 @@ class DetailItemCardPractices extends StatelessWidget {
     String type = ModalRoute.of(context)!.settings.arguments as String;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: colorSystemWhite,
       body: SingleChildScrollView(
         child: Column(
           children: [
             AppBarWidget(
+              bgColor: colorSystemWhite,
               size: size,
               onBack: () {
                 Navigator.pop(context);
               },
-              textTitle: 'Detail Input',
             ),
             Container(
               height: size.height * 0.9,
@@ -46,7 +48,7 @@ class DetailItemCardPractices extends StatelessWidget {
                 children: [
                   LineContentItem(
                       size: size,
-                      title: 'DATA SESSION',
+                      title: 'data season'.tr().toString(),
                       icon: const Icon(Icons.calendar_month)),
                   Column(
                     children: [
@@ -78,7 +80,7 @@ class DetailItemCardPractices extends StatelessWidget {
                   ),
                   LineContentItem(
                       size: size,
-                      title: 'DATA WEEKLY',
+                      title: 'data week'.tr().toString(),
                       icon: const Icon(Icons.calendar_view_week)),
                   SizedBox(
                     height: size.height * 0.4,

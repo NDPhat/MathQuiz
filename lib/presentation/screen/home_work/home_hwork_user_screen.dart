@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/user_global.dart';
@@ -37,8 +38,8 @@ class HomeHWorkUserScreen extends StatelessWidget {
               25,
             )),
             backgroundColor: const Color(0xff1542bf),
-            title: const FittedBox(
-              child: Text('READY FOR YOUR HOME WORK ?',
+            title:  FittedBox(
+              child: Text("${'ready hw'.tr()}?",
                   textAlign: TextAlign.center, style: kTitleTS),
             ),
             actions: [
@@ -72,13 +73,13 @@ class HomeHWorkUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.homeworkGame,
                       arguments: preJoinHW);
                 },
-                child: const Text('GO', style: s16f700ColorError),
+                child:  Text('go'.tr().toString(), style: s16f700ColorError),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('EXIT', style: s15f700ColorYellow),
+                child:  Text('exit'.tr().toString(), style: s15f700ColorYellow),
               ),
             ],
           );
@@ -97,8 +98,8 @@ class HomeHWorkUserScreen extends StatelessWidget {
               25,
             )),
             backgroundColor: const Color(0xff1542bf),
-            title: const FittedBox(
-              child: Text('REVIEW YOUR ANSWER?',
+            title:  FittedBox(
+              child: Text("${'review your answer'.tr()}?",
                   textAlign: TextAlign.center, style: s30f700colorSysWhite),
             ),
             actions: [
@@ -108,13 +109,13 @@ class HomeHWorkUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.checkAnswerHW,
                       arguments: CheckAnswerModel(id: idResult, type: "hw"));
                 },
-                child: const Text('GO', style: s16f700ColorError),
+                child:  Text('go'.tr().toString(), style: s16f700ColorError),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('EXIT', style: s15f700ColorYellow),
+                child:  Text('exit'.tr().toString(), style: s15f700ColorYellow),
               ),
             ],
           );
@@ -123,7 +124,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
     }
 
     return HomeUserBG(
-        textNow: 'Home work',
+        textNow: 'home work'.tr().toString(),
         size: size,
         child: Padding(
           padding: EdgeInsets.only(
@@ -133,7 +134,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
               Column(
                 children: [
                   LineContentItem(
-                      size: size, title: 'DONE', icon: const Icon(Icons.check)),
+                      size: size, title: 'done'.tr().toString(), icon: const Icon(Icons.check)),
                   SingleChildScrollView(
                     child: SizedBox(
                       height: size.height * 0.4,
@@ -169,9 +170,9 @@ class HomeHWorkUserScreen extends StatelessWidget {
                                     },
                                     size: size,
                                     backgroundColor: colorMainBlue,
-                                    childRight: const Center(
+                                    childRight:  Center(
                                         child: Text(
-                                      'DONE',
+                                      'done'.tr().toString(),
                                       style: s20f700ColorSysWhite,
                                     )),
                                     childLeft: WeakWidget(
@@ -199,7 +200,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
                   ),
                   LineContentItem(
                       size: size,
-                      title: 'ON SCHEDULE',
+                      title: 'on schedule'.tr().toString(),
                       icon: const Icon(Icons.do_not_disturb)),
                   SingleChildScrollView(
                     child: SizedBox(
@@ -232,7 +233,7 @@ class HomeHWorkUserScreen extends StatelessWidget {
                                       backgroundColor: colorErrorPrimary,
                                       childRight: const Center(
                                           child: Text(
-                                        'DO',
+                                        "DO",
                                         style: s20f700ColorGreyte,
                                       )),
                                       childLeft: WeakWidget(

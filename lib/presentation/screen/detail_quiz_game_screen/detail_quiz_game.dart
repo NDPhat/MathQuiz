@@ -24,7 +24,6 @@ class DetailQuizGame extends StatelessWidget {
         children: [
           AppBarWidget(
             size: size,
-            textTitle: 'DETAIL QUIZ $preId',
             onBack: () {
               Navigator.pop(context);
             },

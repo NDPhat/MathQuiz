@@ -49,12 +49,6 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
   late final GeneratedColumn<int> sNum = GeneratedColumn<int>(
       'sNum', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _timePerMeta =
-      const VerificationMeta('timePer');
-  @override
-  late final GeneratedColumn<int> timePer = GeneratedColumn<int>(
-      'timePer', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _scoreMeta = const VerificationMeta('score');
   @override
   late final GeneratedColumn<int> score = GeneratedColumn<int>(
@@ -62,7 +56,7 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
       type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, sign, option, dateSave, numQ, eNum, sNum, timePer, score];
+      [id, sign, option, dateSave, numQ, eNum, sNum, score];
   @override
   String get aliasedName => _alias ?? 'pre_quiz_game_entity';
   @override
@@ -112,12 +106,6 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
     } else if (isInserting) {
       context.missing(_sNumMeta);
     }
-    if (data.containsKey('timePer')) {
-      context.handle(_timePerMeta,
-          timePer.isAcceptableOrUnknown(data['timePer']!, _timePerMeta));
-    } else if (isInserting) {
-      context.missing(_timePerMeta);
-    }
     if (data.containsKey('score')) {
       context.handle(
           _scoreMeta, score.isAcceptableOrUnknown(data['score']!, _scoreMeta));
@@ -145,8 +133,6 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
           .read(DriftSqlType.int, data['${effectivePrefix}eNum'])!,
       sNum: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}sNum'])!,
-      timePer: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}timePer'])!,
       score: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}score']),
     );
@@ -167,7 +153,6 @@ class PreQuizGameEntityData extends DataClass
   final int numQ;
   final int eNum;
   final int sNum;
-  final int timePer;
   final int? score;
   const PreQuizGameEntityData(
       {required this.id,
@@ -177,7 +162,6 @@ class PreQuizGameEntityData extends DataClass
       required this.numQ,
       required this.eNum,
       required this.sNum,
-      required this.timePer,
       this.score});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -189,7 +173,6 @@ class PreQuizGameEntityData extends DataClass
     map['numQ'] = Variable<int>(numQ);
     map['eNum'] = Variable<int>(eNum);
     map['sNum'] = Variable<int>(sNum);
-    map['timePer'] = Variable<int>(timePer);
     if (!nullToAbsent || score != null) {
       map['score'] = Variable<int>(score);
     }
@@ -205,7 +188,6 @@ class PreQuizGameEntityData extends DataClass
       numQ: Value(numQ),
       eNum: Value(eNum),
       sNum: Value(sNum),
-      timePer: Value(timePer),
       score:
           score == null && nullToAbsent ? const Value.absent() : Value(score),
     );
@@ -222,7 +204,6 @@ class PreQuizGameEntityData extends DataClass
       numQ: serializer.fromJson<int>(json['numQ']),
       eNum: serializer.fromJson<int>(json['eNum']),
       sNum: serializer.fromJson<int>(json['sNum']),
-      timePer: serializer.fromJson<int>(json['timePer']),
       score: serializer.fromJson<int?>(json['score']),
     );
   }
@@ -237,7 +218,6 @@ class PreQuizGameEntityData extends DataClass
       'numQ': serializer.toJson<int>(numQ),
       'eNum': serializer.toJson<int>(eNum),
       'sNum': serializer.toJson<int>(sNum),
-      'timePer': serializer.toJson<int>(timePer),
       'score': serializer.toJson<int?>(score),
     };
   }
@@ -250,7 +230,6 @@ class PreQuizGameEntityData extends DataClass
           int? numQ,
           int? eNum,
           int? sNum,
-          int? timePer,
           Value<int?> score = const Value.absent()}) =>
       PreQuizGameEntityData(
         id: id ?? this.id,
@@ -260,7 +239,6 @@ class PreQuizGameEntityData extends DataClass
         numQ: numQ ?? this.numQ,
         eNum: eNum ?? this.eNum,
         sNum: sNum ?? this.sNum,
-        timePer: timePer ?? this.timePer,
         score: score.present ? score.value : this.score,
       );
   @override
@@ -273,7 +251,6 @@ class PreQuizGameEntityData extends DataClass
           ..write('numQ: $numQ, ')
           ..write('eNum: $eNum, ')
           ..write('sNum: $sNum, ')
-          ..write('timePer: $timePer, ')
           ..write('score: $score')
           ..write(')'))
         .toString();
@@ -281,7 +258,7 @@ class PreQuizGameEntityData extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, sign, option, dateSave, numQ, eNum, sNum, timePer, score);
+      Object.hash(id, sign, option, dateSave, numQ, eNum, sNum, score);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -293,7 +270,6 @@ class PreQuizGameEntityData extends DataClass
           other.numQ == this.numQ &&
           other.eNum == this.eNum &&
           other.sNum == this.sNum &&
-          other.timePer == this.timePer &&
           other.score == this.score);
 }
 
@@ -306,7 +282,6 @@ class PreQuizGameEntityCompanion
   final Value<int> numQ;
   final Value<int> eNum;
   final Value<int> sNum;
-  final Value<int> timePer;
   final Value<int?> score;
   const PreQuizGameEntityCompanion({
     this.id = const Value.absent(),
@@ -316,7 +291,6 @@ class PreQuizGameEntityCompanion
     this.numQ = const Value.absent(),
     this.eNum = const Value.absent(),
     this.sNum = const Value.absent(),
-    this.timePer = const Value.absent(),
     this.score = const Value.absent(),
   });
   PreQuizGameEntityCompanion.insert({
@@ -327,15 +301,13 @@ class PreQuizGameEntityCompanion
     required int numQ,
     required int eNum,
     required int sNum,
-    required int timePer,
     this.score = const Value.absent(),
   })  : sign = Value(sign),
         option = Value(option),
         dateSave = Value(dateSave),
         numQ = Value(numQ),
         eNum = Value(eNum),
-        sNum = Value(sNum),
-        timePer = Value(timePer);
+        sNum = Value(sNum);
   static Insertable<PreQuizGameEntityData> custom({
     Expression<int>? id,
     Expression<String>? sign,
@@ -344,7 +316,6 @@ class PreQuizGameEntityCompanion
     Expression<int>? numQ,
     Expression<int>? eNum,
     Expression<int>? sNum,
-    Expression<int>? timePer,
     Expression<int>? score,
   }) {
     return RawValuesInsertable({
@@ -355,7 +326,6 @@ class PreQuizGameEntityCompanion
       if (numQ != null) 'numQ': numQ,
       if (eNum != null) 'eNum': eNum,
       if (sNum != null) 'sNum': sNum,
-      if (timePer != null) 'timePer': timePer,
       if (score != null) 'score': score,
     });
   }
@@ -368,7 +338,6 @@ class PreQuizGameEntityCompanion
       Value<int>? numQ,
       Value<int>? eNum,
       Value<int>? sNum,
-      Value<int>? timePer,
       Value<int?>? score}) {
     return PreQuizGameEntityCompanion(
       id: id ?? this.id,
@@ -378,7 +347,6 @@ class PreQuizGameEntityCompanion
       numQ: numQ ?? this.numQ,
       eNum: eNum ?? this.eNum,
       sNum: sNum ?? this.sNum,
-      timePer: timePer ?? this.timePer,
       score: score ?? this.score,
     );
   }
@@ -407,9 +375,6 @@ class PreQuizGameEntityCompanion
     if (sNum.present) {
       map['sNum'] = Variable<int>(sNum.value);
     }
-    if (timePer.present) {
-      map['timePer'] = Variable<int>(timePer.value);
-    }
     if (score.present) {
       map['score'] = Variable<int>(score.value);
     }
@@ -426,7 +391,6 @@ class PreQuizGameEntityCompanion
           ..write('numQ: $numQ, ')
           ..write('eNum: $eNum, ')
           ..write('sNum: $sNum, ')
-          ..write('timePer: $timePer, ')
           ..write('score: $score')
           ..write(')'))
         .toString();
@@ -1515,6 +1479,625 @@ class QuizTestEntityCompanion extends UpdateCompanion<QuizTestEntityData> {
   }
 }
 
+class $NotifiLocalEntityTable extends NotifiLocalEntity
+    with TableInfo<$NotifiLocalEntityTable, NotifiLocalEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NotifiLocalEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _isEnableMeta =
+      const VerificationMeta('isEnable');
+  @override
+  late final GeneratedColumn<int> isEnable = GeneratedColumn<int>(
+      'isEnable', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, isEnable];
+  @override
+  String get aliasedName => _alias ?? 'notifi_local_entity';
+  @override
+  String get actualTableName => 'notifi_local_entity';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<NotifiLocalEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('isEnable')) {
+      context.handle(_isEnableMeta,
+          isEnable.isAcceptableOrUnknown(data['isEnable']!, _isEnableMeta));
+    } else if (isInserting) {
+      context.missing(_isEnableMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  NotifiLocalEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NotifiLocalEntityData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      isEnable: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}isEnable'])!,
+    );
+  }
+
+  @override
+  $NotifiLocalEntityTable createAlias(String alias) {
+    return $NotifiLocalEntityTable(attachedDatabase, alias);
+  }
+}
+
+class NotifiLocalEntityData extends DataClass
+    implements Insertable<NotifiLocalEntityData> {
+  final int id;
+  final int isEnable;
+  const NotifiLocalEntityData({required this.id, required this.isEnable});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['isEnable'] = Variable<int>(isEnable);
+    return map;
+  }
+
+  NotifiLocalEntityCompanion toCompanion(bool nullToAbsent) {
+    return NotifiLocalEntityCompanion(
+      id: Value(id),
+      isEnable: Value(isEnable),
+    );
+  }
+
+  factory NotifiLocalEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NotifiLocalEntityData(
+      id: serializer.fromJson<int>(json['id']),
+      isEnable: serializer.fromJson<int>(json['isEnable']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'isEnable': serializer.toJson<int>(isEnable),
+    };
+  }
+
+  NotifiLocalEntityData copyWith({int? id, int? isEnable}) =>
+      NotifiLocalEntityData(
+        id: id ?? this.id,
+        isEnable: isEnable ?? this.isEnable,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NotifiLocalEntityData(')
+          ..write('id: $id, ')
+          ..write('isEnable: $isEnable')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, isEnable);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NotifiLocalEntityData &&
+          other.id == this.id &&
+          other.isEnable == this.isEnable);
+}
+
+class NotifiLocalEntityCompanion
+    extends UpdateCompanion<NotifiLocalEntityData> {
+  final Value<int> id;
+  final Value<int> isEnable;
+  const NotifiLocalEntityCompanion({
+    this.id = const Value.absent(),
+    this.isEnable = const Value.absent(),
+  });
+  NotifiLocalEntityCompanion.insert({
+    this.id = const Value.absent(),
+    required int isEnable,
+  }) : isEnable = Value(isEnable);
+  static Insertable<NotifiLocalEntityData> custom({
+    Expression<int>? id,
+    Expression<int>? isEnable,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (isEnable != null) 'isEnable': isEnable,
+    });
+  }
+
+  NotifiLocalEntityCompanion copyWith({Value<int>? id, Value<int>? isEnable}) {
+    return NotifiLocalEntityCompanion(
+      id: id ?? this.id,
+      isEnable: isEnable ?? this.isEnable,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (isEnable.present) {
+      map['isEnable'] = Variable<int>(isEnable.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotifiLocalEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('isEnable: $isEnable')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DetailNotifiEntityTable extends DetailNotifiEntity
+    with TableInfo<$DetailNotifiEntityTable, DetailNotifiEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DetailNotifiEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+      'title', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+      'note', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _isCompletedMeta =
+      const VerificationMeta('isCompleted');
+  @override
+  late final GeneratedColumn<int> isCompleted = GeneratedColumn<int>(
+      'isCompleted', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _dateSaveMeta =
+      const VerificationMeta('dateSave');
+  @override
+  late final GeneratedColumn<String> dateSave = GeneratedColumn<String>(
+      'dateSave', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _startTimeMeta =
+      const VerificationMeta('startTime');
+  @override
+  late final GeneratedColumn<String> startTime = GeneratedColumn<String>(
+      'startTime', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _endTimeMeta =
+      const VerificationMeta('endTime');
+  @override
+  late final GeneratedColumn<String> endTime = GeneratedColumn<String>(
+      'endTime', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _colorMeta = const VerificationMeta('color');
+  @override
+  late final GeneratedColumn<String> color = GeneratedColumn<String>(
+      'color', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _remindMeta = const VerificationMeta('remind');
+  @override
+  late final GeneratedColumn<String> remind = GeneratedColumn<String>(
+      'remind', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        title,
+        note,
+        isCompleted,
+        dateSave,
+        startTime,
+        endTime,
+        color,
+        remind
+      ];
+  @override
+  String get aliasedName => _alias ?? 'detail_notifi_entity';
+  @override
+  String get actualTableName => 'detail_notifi_entity';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<DetailNotifiEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+    } else if (isInserting) {
+      context.missing(_noteMeta);
+    }
+    if (data.containsKey('isCompleted')) {
+      context.handle(
+          _isCompletedMeta,
+          isCompleted.isAcceptableOrUnknown(
+              data['isCompleted']!, _isCompletedMeta));
+    } else if (isInserting) {
+      context.missing(_isCompletedMeta);
+    }
+    if (data.containsKey('dateSave')) {
+      context.handle(_dateSaveMeta,
+          dateSave.isAcceptableOrUnknown(data['dateSave']!, _dateSaveMeta));
+    } else if (isInserting) {
+      context.missing(_dateSaveMeta);
+    }
+    if (data.containsKey('startTime')) {
+      context.handle(_startTimeMeta,
+          startTime.isAcceptableOrUnknown(data['startTime']!, _startTimeMeta));
+    } else if (isInserting) {
+      context.missing(_startTimeMeta);
+    }
+    if (data.containsKey('endTime')) {
+      context.handle(_endTimeMeta,
+          endTime.isAcceptableOrUnknown(data['endTime']!, _endTimeMeta));
+    } else if (isInserting) {
+      context.missing(_endTimeMeta);
+    }
+    if (data.containsKey('color')) {
+      context.handle(
+          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+    } else if (isInserting) {
+      context.missing(_colorMeta);
+    }
+    if (data.containsKey('remind')) {
+      context.handle(_remindMeta,
+          remind.isAcceptableOrUnknown(data['remind']!, _remindMeta));
+    } else if (isInserting) {
+      context.missing(_remindMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DetailNotifiEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DetailNotifiEntityData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      title: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      note: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}note'])!,
+      isCompleted: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}isCompleted'])!,
+      dateSave: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}dateSave'])!,
+      startTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}startTime'])!,
+      endTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}endTime'])!,
+      color: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}color'])!,
+      remind: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}remind'])!,
+    );
+  }
+
+  @override
+  $DetailNotifiEntityTable createAlias(String alias) {
+    return $DetailNotifiEntityTable(attachedDatabase, alias);
+  }
+}
+
+class DetailNotifiEntityData extends DataClass
+    implements Insertable<DetailNotifiEntityData> {
+  final int id;
+  final String title;
+  final String note;
+  final int isCompleted;
+  final String dateSave;
+  final String startTime;
+  final String endTime;
+  final String color;
+  final String remind;
+  const DetailNotifiEntityData(
+      {required this.id,
+      required this.title,
+      required this.note,
+      required this.isCompleted,
+      required this.dateSave,
+      required this.startTime,
+      required this.endTime,
+      required this.color,
+      required this.remind});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['title'] = Variable<String>(title);
+    map['note'] = Variable<String>(note);
+    map['isCompleted'] = Variable<int>(isCompleted);
+    map['dateSave'] = Variable<String>(dateSave);
+    map['startTime'] = Variable<String>(startTime);
+    map['endTime'] = Variable<String>(endTime);
+    map['color'] = Variable<String>(color);
+    map['remind'] = Variable<String>(remind);
+    return map;
+  }
+
+  DetailNotifiEntityCompanion toCompanion(bool nullToAbsent) {
+    return DetailNotifiEntityCompanion(
+      id: Value(id),
+      title: Value(title),
+      note: Value(note),
+      isCompleted: Value(isCompleted),
+      dateSave: Value(dateSave),
+      startTime: Value(startTime),
+      endTime: Value(endTime),
+      color: Value(color),
+      remind: Value(remind),
+    );
+  }
+
+  factory DetailNotifiEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DetailNotifiEntityData(
+      id: serializer.fromJson<int>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      note: serializer.fromJson<String>(json['note']),
+      isCompleted: serializer.fromJson<int>(json['isCompleted']),
+      dateSave: serializer.fromJson<String>(json['dateSave']),
+      startTime: serializer.fromJson<String>(json['startTime']),
+      endTime: serializer.fromJson<String>(json['endTime']),
+      color: serializer.fromJson<String>(json['color']),
+      remind: serializer.fromJson<String>(json['remind']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'title': serializer.toJson<String>(title),
+      'note': serializer.toJson<String>(note),
+      'isCompleted': serializer.toJson<int>(isCompleted),
+      'dateSave': serializer.toJson<String>(dateSave),
+      'startTime': serializer.toJson<String>(startTime),
+      'endTime': serializer.toJson<String>(endTime),
+      'color': serializer.toJson<String>(color),
+      'remind': serializer.toJson<String>(remind),
+    };
+  }
+
+  DetailNotifiEntityData copyWith(
+          {int? id,
+          String? title,
+          String? note,
+          int? isCompleted,
+          String? dateSave,
+          String? startTime,
+          String? endTime,
+          String? color,
+          String? remind}) =>
+      DetailNotifiEntityData(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        note: note ?? this.note,
+        isCompleted: isCompleted ?? this.isCompleted,
+        dateSave: dateSave ?? this.dateSave,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
+        color: color ?? this.color,
+        remind: remind ?? this.remind,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DetailNotifiEntityData(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('note: $note, ')
+          ..write('isCompleted: $isCompleted, ')
+          ..write('dateSave: $dateSave, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('color: $color, ')
+          ..write('remind: $remind')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, title, note, isCompleted, dateSave,
+      startTime, endTime, color, remind);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DetailNotifiEntityData &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.note == this.note &&
+          other.isCompleted == this.isCompleted &&
+          other.dateSave == this.dateSave &&
+          other.startTime == this.startTime &&
+          other.endTime == this.endTime &&
+          other.color == this.color &&
+          other.remind == this.remind);
+}
+
+class DetailNotifiEntityCompanion
+    extends UpdateCompanion<DetailNotifiEntityData> {
+  final Value<int> id;
+  final Value<String> title;
+  final Value<String> note;
+  final Value<int> isCompleted;
+  final Value<String> dateSave;
+  final Value<String> startTime;
+  final Value<String> endTime;
+  final Value<String> color;
+  final Value<String> remind;
+  const DetailNotifiEntityCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.note = const Value.absent(),
+    this.isCompleted = const Value.absent(),
+    this.dateSave = const Value.absent(),
+    this.startTime = const Value.absent(),
+    this.endTime = const Value.absent(),
+    this.color = const Value.absent(),
+    this.remind = const Value.absent(),
+  });
+  DetailNotifiEntityCompanion.insert({
+    this.id = const Value.absent(),
+    required String title,
+    required String note,
+    required int isCompleted,
+    required String dateSave,
+    required String startTime,
+    required String endTime,
+    required String color,
+    required String remind,
+  })  : title = Value(title),
+        note = Value(note),
+        isCompleted = Value(isCompleted),
+        dateSave = Value(dateSave),
+        startTime = Value(startTime),
+        endTime = Value(endTime),
+        color = Value(color),
+        remind = Value(remind);
+  static Insertable<DetailNotifiEntityData> custom({
+    Expression<int>? id,
+    Expression<String>? title,
+    Expression<String>? note,
+    Expression<int>? isCompleted,
+    Expression<String>? dateSave,
+    Expression<String>? startTime,
+    Expression<String>? endTime,
+    Expression<String>? color,
+    Expression<String>? remind,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (note != null) 'note': note,
+      if (isCompleted != null) 'isCompleted': isCompleted,
+      if (dateSave != null) 'dateSave': dateSave,
+      if (startTime != null) 'startTime': startTime,
+      if (endTime != null) 'endTime': endTime,
+      if (color != null) 'color': color,
+      if (remind != null) 'remind': remind,
+    });
+  }
+
+  DetailNotifiEntityCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? title,
+      Value<String>? note,
+      Value<int>? isCompleted,
+      Value<String>? dateSave,
+      Value<String>? startTime,
+      Value<String>? endTime,
+      Value<String>? color,
+      Value<String>? remind}) {
+    return DetailNotifiEntityCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      note: note ?? this.note,
+      isCompleted: isCompleted ?? this.isCompleted,
+      dateSave: dateSave ?? this.dateSave,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      color: color ?? this.color,
+      remind: remind ?? this.remind,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (isCompleted.present) {
+      map['isCompleted'] = Variable<int>(isCompleted.value);
+    }
+    if (dateSave.present) {
+      map['dateSave'] = Variable<String>(dateSave.value);
+    }
+    if (startTime.present) {
+      map['startTime'] = Variable<String>(startTime.value);
+    }
+    if (endTime.present) {
+      map['endTime'] = Variable<String>(endTime.value);
+    }
+    if (color.present) {
+      map['color'] = Variable<String>(color.value);
+    }
+    if (remind.present) {
+      map['remind'] = Variable<String>(remind.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DetailNotifiEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('note: $note, ')
+          ..write('isCompleted: $isCompleted, ')
+          ..write('dateSave: $dateSave, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('color: $color, ')
+          ..write('remind: $remind')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDb extends GeneratedDatabase {
   _$AppDb(QueryExecutor e) : super(e);
   late final $PreQuizGameEntityTable preQuizGameEntity =
@@ -1522,10 +2105,20 @@ abstract class _$AppDb extends GeneratedDatabase {
   late final $PreTestEntityTable preTestEntity = $PreTestEntityTable(this);
   late final $QuizGameEntityTable quizGameEntity = $QuizGameEntityTable(this);
   late final $QuizTestEntityTable quizTestEntity = $QuizTestEntityTable(this);
+  late final $NotifiLocalEntityTable notifiLocalEntity =
+      $NotifiLocalEntityTable(this);
+  late final $DetailNotifiEntityTable detailNotifiEntity =
+      $DetailNotifiEntityTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [preQuizGameEntity, preTestEntity, quizGameEntity, quizTestEntity];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        preQuizGameEntity,
+        preTestEntity,
+        quizGameEntity,
+        quizTestEntity,
+        notifiLocalEntity,
+        detailNotifiEntity
+      ];
 }

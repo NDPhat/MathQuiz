@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:math/application/cons/color.dart';
@@ -22,11 +23,11 @@ class SettingMainScreen extends StatelessWidget {
             onBack: () {
               Navigator.pop(context);
             },
-            textTitle: 'Setting',
+            textTitle: 'setting'.tr().toString(),
           ),
           SizedBox(height: size.height * 0.1),
           SettingMenuWidget(
-            title: "Mode",
+            title: "mode".tr().toString(),
             widget: const Icon(
               LineAwesomeIcons.modx,
               size: 30,
@@ -38,7 +39,7 @@ class SettingMainScreen extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.03),
           SettingMenuWidget(
-            title: "Local Notification",
+            title: "localnotifi".tr().toString(),
             widget: const Icon(
               LineAwesomeIcons.bell,
               size: 30,
@@ -52,12 +53,15 @@ class SettingMainScreen extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.03),
           SettingMenuWidget(
-            title: "Language",
+            title: "language".tr().toString(),
             widget: const Icon(
               LineAwesomeIcons.language,
               size: 30,
               color: colorMainBlue,
-            ),            onPress: () {},
+            ),
+            onPress: () {
+              Navigator.pushNamed(context, Routers.languageScreen);
+            },
             size: size,
             textStyle: s16f700ColorGreyTe,
           )

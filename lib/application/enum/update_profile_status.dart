@@ -1,1 +1,1 @@
-enum UpdateProfileStatus { initial,success,save,error,onLoading}
+enum UpdateProfileStatus { initial,success,save,error,onLoading,clear}

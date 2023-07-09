@@ -1,8 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/item_menu_game_widget.dart';
-
 
 class PracticeGameUserMainScreen extends StatelessWidget {
   const PracticeGameUserMainScreen({Key? key}) : super(key: key);
@@ -17,12 +17,13 @@ class PracticeGameUserMainScreen extends StatelessWidget {
             onBack: () {
               Navigator.pop(context);
             },
-            textTitle: 'Practice',
+            textTitle: 'practice'.tr().toString(),
           ),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.only(left: size.width*0.05,right: size.width*0.05),
+                padding: EdgeInsets.only(
+                    left: size.width * 0.05, right: size.width * 0.05),
                 child: Column(
                   children: [
                     SizedBox(
@@ -34,23 +35,20 @@ class PracticeGameUserMainScreen extends StatelessWidget {
                             context, Routers.practiceScreenUserGameNum);
                       },
                       size: size,
-                      textTitle: 'NUMBER',
+                      textTitle: 'number'.tr().toString(),
                       child: Image.asset("assets/images/number.png",
                           height: size.height * 0.4),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    ItemMenuGame(
-                      size: size,
-                      textTitle: 'SENTENCES',
+                    ), ItemMenuGame(
                       onPress: () {
                         Navigator.pushNamed(
                             context, Routers.practiceMainScreenUserGameSen);
                       },
+                      size: size,
+                      textTitle: 'sentences'.tr().toString(),
                       child: Image.asset("assets/images/sentences.png",
                           height: size.height * 0.4),
-                    )
+                    ),
+
                   ],
                 ),
               ),

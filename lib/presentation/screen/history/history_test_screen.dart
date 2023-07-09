@@ -2,20 +2,16 @@ import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:math/application/extension/to_get_model.dart';
 import 'package:math/application/extension/to_get_test_model.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/domain/bloc/history/history_test_cubit.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/button_custom.dart';
-import '../../widget/pre_quiz_title.dart';
 import '../../widget/pre_test_widget.dart';
 
 class HistoryTest extends StatelessWidget {
@@ -25,17 +21,18 @@ class HistoryTest extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: colorSystemWhite,
       body: Column(
         children: [
           AppBarWidget(
             size: size,
-            textTitle: 'HISTORY TESTING',
+            bgColor: colorSystemWhite,
             onBack: () {
               Navigator.pop(context);
             },
             childSetting: const Icon(
               Icons.settings,
-              color: colorSystemWhite,
+              color: colorSystemYeloow,
               size: 30,
             ),
             onSetting: () {

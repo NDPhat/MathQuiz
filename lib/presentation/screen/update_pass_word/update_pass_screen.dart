@@ -1,20 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/application/enum/get_otp_status.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
-import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
-import 'package:math/main.dart';
-import 'package:math/presentation/widget/app_bar.dart';
-import 'package:math/presentation/widget/login_input_field.dart';
-import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
+import 'package:math/presentation/widget/app_bar.dart';
+import 'package:math/presentation/widget/input_field_widget.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
-import '../../../application/enum/foget_pass_status.dart';
 import '../../../application/enum/update_pass_status.dart';
 import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
@@ -71,7 +62,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                           buildWhen: (pre, now) {
                         return pre.passErrorMessage != now.passErrorMessage;
                       }, builder: (BuildContext context, state) {
-                        return LoginInputField(
+                        return InputFieldWidget(
                           hintText: 'Enter your password',
                           width: size.width * 0.8,
                           height: size.height * 0.1,
@@ -91,7 +82,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                         return pre.confirmPassErrorMessage !=
                             now.confirmPassErrorMessage;
                       }, builder: (BuildContext context, state) {
-                        return LoginInputField(
+                        return InputFieldWidget(
                           hintText: 'Re-enter your password',
                           width: size.width * 0.8,
                           height: size.height * 0.1,
