@@ -6,10 +6,8 @@ import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/model/pre_quiz_hw_response.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:math/main.dart';
-import 'package:math/presentation/screen/home/widget/home_user_bg.dart';
 import 'package:math/presentation/widget/item_card_hw.dart';
 import 'dart:math' as math;
-
 import '../../../application/cons/color.dart';
 
 import '../../../application/cons/constants.dart';
@@ -19,6 +17,7 @@ import '../../../data/remote/model/result_quiz_hw_req.dart';
 import '../../routers/navigation.dart';
 import '../../widget/line_item_content_card_home.dart';
 import '../../widget/weak_widget.dart';
+import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class HomeHWorkUserScreen extends StatelessWidget {
   HomeHWorkUserScreen({Key? key, required this.size});
@@ -123,9 +122,10 @@ class HomeHWorkUserScreen extends StatelessWidget {
       );
     }
 
-    return HomeUserBG(
+    return MainPageHomePG(
+        colorTextAndIcon: Colors.black,
         textNow: 'home work'.tr().toString(),
-        size: size,
+        onPressHome: () {  },
         child: Padding(
           padding: EdgeInsets.only(
               left: size.width * 0.02, right: size.width * 0.02),

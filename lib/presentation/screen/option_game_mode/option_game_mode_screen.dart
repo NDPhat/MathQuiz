@@ -10,7 +10,6 @@ import '../../../application/cons/text_style.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/button_custom.dart';
-import '../../widget/item_menu_game_widget.dart';
 
 class OptionGameModeScreen extends StatelessWidget {
   const OptionGameModeScreen({Key? key}) : super(key: key);

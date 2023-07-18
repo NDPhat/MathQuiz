@@ -5,7 +5,6 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/presentation/routers/navigation.dart';
-import 'package:math/presentation/screen/home/widget/home_user_bg.dart';
 import 'package:math/presentation/widget/card_data_item_home.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../data/model/user_global.dart';
@@ -16,16 +15,18 @@ import '../../../../main.dart';
 import '../../../widget/child_right_home_practices_input.dart';
 import '../../../widget/child_right_item_card_home.dart';
 import '../../../widget/line_item_content_card_home.dart';
+import 'widget/main_home_page_bg.dart';
 
-class HomeMainUserScreen extends StatelessWidget {
-  HomeMainUserScreen({Key? key, required this.size});
+class DataSheetUserScreen extends StatelessWidget {
+  DataSheetUserScreen({Key? key, required this.size});
   Size size;
 
   @override
   Widget build(BuildContext context) {
-    return HomeUserBG(
+    return MainPageHomePG(
+        colorTextAndIcon: Colors.black,
         textNow: 'home'.tr().toString(),
-        size: size,
+        onPressHome: () {},
         child: Expanded(
             child: SingleChildScrollView(
           child: Column(

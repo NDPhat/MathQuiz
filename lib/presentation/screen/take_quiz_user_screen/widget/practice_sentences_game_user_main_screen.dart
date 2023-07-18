@@ -1,10 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:math/data/remote/model/pre_quiz_game_response.dart';
 import 'package:math/data/remote/model/pre_quiz_game_sen_req.dart';
 import 'package:math/data/remote/model/pre_quiz_game_sen_res.dart';
-import 'package:math/presentation/screen/pratice_game_user/widget/item_history_screen.dart';
-
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
 import '../../../../application/cons/text_style.dart';

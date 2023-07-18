@@ -24,12 +24,10 @@ import 'package:math/presentation/screen/game_screen/drag_drop_game_screen.dart'
 import 'package:math/presentation/screen/game_screen/puzzle_game_screen.dart';
 import 'package:math/presentation/screen/game_screen/sentences_game_screen.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
-import 'package:math/presentation/screen/home/home_user.dart';
 import 'package:math/presentation/screen/language_screen/language_screen.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
 import 'package:math/presentation/screen/notificaiton/notification_main_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
-import 'package:math/presentation/screen/pratice_game_user/practice_game_user_main_screen.dart';
 import 'package:math/presentation/screen/setting/setting_main_screen.dart';
 import 'package:math/presentation/screen/testing_user/test_main_user_screen.dart';
 import 'package:math/presentation/screen/update_pass_word/update_pass_screen.dart';
@@ -52,16 +50,19 @@ import '../screen/game_screen/find_missing.dart';
 import '../screen/game_screen/true_false_screen.dart';
 import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
-import '../screen/home/home_guest.dart';
+import '../screen/home/guest_home_screen/home_guest.dart';
+import '../screen/home/user_home_screen/home_user_screen.dart';
 import '../screen/home_work/home_work_user_game_screen.dart';
 import '../screen/notificaiton/widget/add_notifi_local_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
 import '../screen/option_game_mode/option_sign_screen.dart';
-import '../screen/pratice_game_user/widget/practice_number_game_user_main_screen.dart';
-import '../screen/pratice_game_user/widget/practice_sentences_game_user_main_screen.dart';
 import '../screen/pre_quiz/pre_quiz_game.dart';
 import '../screen/profile_user/my_account/profile_myaccount.dart';
-import '../screen/test_screen/test_exam_screen.dart';
+import '../screen/take_quiz_user_screen/take_quiz_user_main_screen.dart';
+import '../screen/take_quiz_user_screen/widget/practice_number_game_user_main_screen.dart';
+import '../screen/take_quiz_user_screen/widget/practice_sentences_game_user_main_screen.dart';
+import '../screen/take_quiz_user_screen/widget/raw_screen.dart';
+import '../screen/take_quiz_user_screen/widget/take_quiz_easy_screen.dart';
 import '../screen/test_screen/test_practice_screen.dart';
 import '../screen/testing_user/testing_game_user_screen.dart';
 import '../screen/welcome_screen.dart';
@@ -75,6 +76,7 @@ class Routers {
   static const String doTestPra = '/doTestPra';
   static const String doTestExam = '/doTestExam';
   static const String game = '/game';
+  static const String raw = '/raw';
   static const String updateProfileUser = '/updateProfileUser';
   static const String trueFalse = '/truefalse';
   static const String forgetPass = '/forgetPass';
@@ -107,6 +109,7 @@ class Routers {
   static const String checkAnswerPracUserGame = '/checkAnswerPracUserGame';
   static const String detailQuizGame = '/detailQuizGame';
   static const String puzzleGame = '/puzzleGame';
+  static const String takeEasyQuiz = '/takeEasyQuiz';
   static const String dragDropGame = '/dragDropGame';
   static const String homeworkGame = '/homeworkGame';
   static const String languageScreen = '/languageScreen';
@@ -127,10 +130,14 @@ class Routers {
     switch (settings.name) {
       case welcome:
         return WelcomeScreen();
+      case raw:
+        return DrawingNumberBoardGame();
       case languageScreen:
         return LanguageScreen();
       case puzzleGame:
         return PuzzleGameScreen();
+      case takeEasyQuiz:
+        return TakeQuizEasyScreen();
       case dragDropGame:
         return DragDropGameScreen();
       case checkAnswerPracUserGame:
@@ -208,8 +215,6 @@ class Routers {
         return HomeUserScreen();
       case checkAnswerHW:
         return CheckAnswerHWScreen();
-      case doTestExam:
-        return TestExamScreen();
       case battleBOT:
         return const BotDual();
       case optionBot:

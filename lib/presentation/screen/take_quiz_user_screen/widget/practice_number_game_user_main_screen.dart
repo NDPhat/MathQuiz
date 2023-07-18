@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
-import 'package:math/presentation/screen/pratice_game_user/widget/item_history_screen.dart';
-
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
 import '../../../../application/cons/text_style.dart';
@@ -13,6 +11,7 @@ import '../../../routers/navigation.dart';
 import '../../../widget/app_bar.dart';
 import '../../../widget/button_custom.dart';
 import '../../../widget/item_card_hw.dart';
+import 'item_history_screen.dart';
 
 class PracticeNumberGameUserScreen extends StatelessWidget {
   const PracticeNumberGameUserScreen({Key? key}) : super(key: key);

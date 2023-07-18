@@ -4,10 +4,10 @@ import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/domain/home_repo.dart';
 import 'package:math/main.dart';
 import 'dart:math' as math;
-import '../../../application/cons/color.dart';
-import '../../../application/cons/text_style.dart';
-import '../../routers/navigation.dart';
-import '../../widget/button_custom.dart';
+import '../../../../application/cons/color.dart';
+import '../../../../application/cons/text_style.dart';
+import '../../../routers/navigation.dart';
+import '../../../widget/button_custom.dart';
 
 class HomeGuestScreen extends StatefulWidget {
   HomeGuestScreen({Key? key}) : super(key: key);

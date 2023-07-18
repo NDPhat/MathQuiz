@@ -1,10 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
-import 'package:math/data/remote/model/pre_test_res.dart';
-import 'package:math/data/remote/model/result_quiz_hw_response.dart';
-
 import '../../../../application/cons/text_style.dart';
 
 class PracticeMainScreenItemCard extends StatelessWidget {
