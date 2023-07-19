@@ -1,18 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
-import 'package:math/data/remote/model/result_quiz_hw_response.dart';
-import '../../application/cons/color.dart';
-import '../../application/cons/constants.dart';
 import '../../application/cons/text_style.dart';
 
-import '../../data/model/pre_join_homework.dart';
-import '../../data/model/user_global.dart';
-import '../../data/remote/api/Repo/api_user_repo.dart';
-import '../../data/remote/model/pre_quiz_hw_response.dart';
-import '../../data/remote/model/result_quiz_hw_req.dart';
-import '../../main.dart';
-import '../routers/navigation.dart';
 
 class TestmainScreenItemCard extends StatelessWidget {
   const TestmainScreenItemCard(
@@ -40,7 +29,7 @@ class TestmainScreenItemCard extends StatelessWidget {
              Container(
           alignment: Alignment.center,
           child: (Text(
-            'SCORE : ${dataResult!.score!} / ${dataResult!.sumQ!}',
+            'SCORE : ${dataResult.score!} / ${dataResult.sumQ!}',
             style: s14f500ColorMainTe,
           )),
         )

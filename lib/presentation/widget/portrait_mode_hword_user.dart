@@ -47,7 +47,6 @@ class PortraitModeHomeWork extends StatelessWidget {
     return Column(
       children: [
         AppBarWidget(
-          size: size,
           onBack: onBack,
           textTitle: 'HOME WORK',
         ),

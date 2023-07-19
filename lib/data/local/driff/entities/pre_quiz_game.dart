@@ -6,7 +6,5 @@ class PreQuizGameEntity extends Table {
   TextColumn get option => text().named('option_game_mode')();
   TextColumn get dateSave => text().named('dateSave')();
   IntColumn get numQ => integer().named("numQ")();
-  IntColumn get eNum => integer().named("eNum")();
-  IntColumn get sNum => integer().named("sNum")();
   IntColumn get score => integer().nullable().named("score")();
 }

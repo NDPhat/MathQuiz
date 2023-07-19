@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import '../entities/detail_notifi.dart';
 import '../entities/notifi_local.dart';
+import '../entities/player.dart';
 import '../entities/pre_quiz_game.dart';
 import '../entities/pre_test.dart';
 import '../entities/quiz_game.dart';
@@ -26,7 +27,8 @@ LazyDatabase _openConnection() {
   QuizGameEntity,
   QuizTestEntity,
   NotifiLocalEntity,
-  DetailNotifiEntity
+  DetailNotifiEntity,
+  PlayerLocalEntity
 ])
 class AppDb extends _$AppDb {
   AppDb() : super(_openConnection());

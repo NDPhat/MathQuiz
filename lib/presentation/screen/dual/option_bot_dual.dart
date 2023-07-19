@@ -18,7 +18,6 @@ class OptionModeBotDual extends StatelessWidget {
       body: Column(
         children: [
           AppBarWidget(
-              size: size,
               textTitle: 'CHOOSE ONE',
               onBack: () {
                 Navigator.pop(context);

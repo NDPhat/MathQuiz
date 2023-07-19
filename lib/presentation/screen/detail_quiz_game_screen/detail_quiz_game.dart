@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
-import 'package:math/data/local/repo/test/quiz_test_repo.dart';
-
-import '../../../application/cons/color.dart';
-import '../../../application/cons/text_style.dart';
 import '../../../main.dart';
-import '../../routers/navigation.dart';
 import '../../widget/answer_widget.dart';
 import '../../widget/app_bar.dart';
-import '../../widget/button_custom.dart';
 
 class DetailQuizGame extends StatelessWidget {
   const DetailQuizGame({Key? key}) : super(key: key);
@@ -23,7 +16,6 @@ class DetailQuizGame extends StatelessWidget {
       body: Column(
         children: [
           AppBarWidget(
-            size: size,
             onBack: () {
               Navigator.pop(context);
             },

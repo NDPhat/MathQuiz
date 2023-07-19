@@ -246,7 +246,6 @@ class _HumanBattleScreenState extends State<PlayerDual> {
         child: Column(
           children: [
             AppBarWidget(
-                size: size,
                 onBack: () {
                   controller.pause();
                   showOutDialog();

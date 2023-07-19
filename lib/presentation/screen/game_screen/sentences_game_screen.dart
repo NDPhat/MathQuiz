@@ -282,7 +282,6 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
       body: Column(
         children: [
           AppBarWidget(
-            size: data,
             onBack: () {
               _controller.pause();
               showOutDialog();

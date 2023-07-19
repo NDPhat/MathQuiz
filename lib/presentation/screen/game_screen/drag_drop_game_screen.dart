@@ -247,7 +247,6 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
         children: [
           AppBarWidget(
             bgColor: colorSystemWhite,
-            size: size,
             onBack: () {
               _controller.pause();
               showOutDialog();

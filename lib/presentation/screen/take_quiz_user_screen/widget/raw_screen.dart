@@ -87,7 +87,6 @@ class _DrawingBoardState extends State<DrawingNumberBoardGame> {
         child: Column(
           children: [
             AppBarWidget(
-                size: size,
                 bgColor: colorSystemWhite,
                 onBack: () {
                   Navigator.pop(context);

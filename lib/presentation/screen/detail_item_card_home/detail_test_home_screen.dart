@@ -8,17 +8,12 @@ import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../application/utils/count_sign.dart';
-import '../../../data/model/chart_data.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../data/remote/model/pre_quiz_hw_response.dart';
-import '../../../data/remote/model/result_quiz_hw_response.dart';
 import '../../../main.dart';
 import '../../widget/async_data_detail_hw.dart';
-import '../../widget/card_data_item_home.dart';
 import '../../widget/child_right_item_card_home.dart';
 
 class DetailTestHomeWork extends StatelessWidget {
@@ -33,7 +28,6 @@ class DetailTestHomeWork extends StatelessWidget {
         child: Column(
           children: [
             AppBarWidget(
-              size: size,
               bgColor: colorSystemWhite,
               onBack: () {
                 Navigator.pop(context);

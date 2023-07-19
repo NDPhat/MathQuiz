@@ -7,6 +7,9 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
+import '../../../../data/model/user_global.dart';
+import '../../../../data/remote/authen/authen.dart';
+import '../../../../main.dart';
 
 class HomeUserScreen extends StatelessWidget {
   const HomeUserScreen({Key? key}) : super(key: key);
@@ -125,7 +128,11 @@ class HomeUserScreen extends StatelessWidget {
                           title: 'Events',
                         ),
                         HomeCard(
-                          onPress: () {},
+                          onPress: () {
+                            instance.get<AuthenRepository>().handleAutoLoginApp(false);
+                            instance.get<UserGlobal>().onLogin = false;
+                            Navigator.pushNamed(context, Routers.welcome);
+                          },
                           icon: 'assets/icons/logout.svg',
                           title: 'Logout',
                         ),

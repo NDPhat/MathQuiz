@@ -8,15 +8,12 @@ import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/cons/text_style.dart';
-import '../../../data/utils/find_time_per.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/button_custom.dart';
 
 class PreMakeQuizGame extends StatelessWidget {
   PreMakeQuizGame({Key? key}) : super(key: key);
-  final items = ['3s', '5s', '10s'];
-  String selectedValue = '5s';
   @override
   Widget build(BuildContext context) {
     OptionQuiz option =
@@ -26,11 +23,9 @@ class PreMakeQuizGame extends StatelessWidget {
       backgroundColor: colorMainBlue,
       body: Column(
         children: [
-          AppBarWidget(
-              size: size,
-              onBack: () {
-                Navigator.pop(context);
-              }),
+          AppBarWidget(onBack: () {
+            Navigator.pop(context);
+          }),
           Center(
             child: Column(
               children: [
@@ -79,48 +74,6 @@ class PreMakeQuizGame extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: size.height * 0.04,
-                      ),
-                      Container(
-                        width: size.width,
-                        padding: EdgeInsets.only(
-                          left: size.width * 0.05,
-                          right: size.width * 0.03,
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Start  ",
-                              style: s16f700ColorGreyTe,
-                            ),
-                            Text(
-                              "End  ",
-                              style: s16f700ColorGreyTe,
-                            ),
-                          ],
-                        ),
-                      ),
-                      BlocBuilder<PreQuizCubit, PreQuizState>(
-                          builder: (BuildContext context, state) {
-                        return RangeSlider(
-                          values: RangeValues(
-                              double.parse(state.sNum!.toString()),
-                              double.parse(state.eNum!.toString())),
-                          max: 20,
-                          activeColor: colorErrorPrimary,
-                          inactiveColor: colorSystemWhite,
-                          divisions: 20,
-                          labels: RangeLabels(
-                            state.sNum!.round().toString(),
-                            state.eNum!.round().toString(),
-                          ),
-                          onChanged: (RangeValues values) {
-                            context.read<PreQuizCubit>().seNumChanged(values);
-                          },
-                        );
-                      }),
-                      SizedBox(
                         height: size.height * 0.1,
                       ),
                       BlocListener<PreQuizCubit, PreQuizState>(
@@ -145,19 +98,18 @@ class PreMakeQuizGame extends StatelessWidget {
                                                   ? Routers.puzzleGame
                                                   : Routers.dragDropGame))),
                                   arguments: PreQuizGame(
-                                      id: state.id,
-                                      numQ: 0,
-                                      sign: option.sign!,
-                                      idServer: state.idServer,
-                                      option: option.optionQuiz!,
-                                      startNum: state.sNum,
-                                      endNum: state.eNum));
+                                    id: state.id,
+                                    numQ: 0,
+                                    sign: option.sign!,
+                                    idServer: state.idServer,
+                                    option: option.optionQuiz!,
+                                  ));
                             }
                           },
                           child: RoundedButton(
                             press: () {
-                              // context.read<PreQuizCubit>().addPreQuizGame(
-                              //     option.sign!, option.optionQuiz!);
+                              context.read<PreQuizCubit>().addPreQuizGame(
+                                  option.sign!, option.optionQuiz!);
                               context.read<PreQuizCubit>().addPuzzle();
                             },
                             color: colorBlueQuaternery,

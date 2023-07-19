@@ -25,7 +25,6 @@ class HistoryTest extends StatelessWidget {
       body: Column(
         children: [
           AppBarWidget(
-            size: size,
             bgColor: colorSystemWhite,
             onBack: () {
               Navigator.pop(context);

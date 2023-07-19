@@ -24,11 +24,15 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
     state.email = value;
   }
 
+  void clearData() {
+    emit(state.copyWith(emailErrorMessage: "", status: ForgetPassStatus.clear));
+  }
+
   Future<void> submitEmailForGetOTPResetPass(String email) async {
     emit(state.copyWith(status: ForgetPassStatus.onLoading));
     if (isEmailValid(email)) {
-      final userModel =
-          await userAPIRepo.submitEmailForGetOTPForgetPass(email);
+      print(email);
+      final userModel = await userAPIRepo.submitEmailForGetOTPForgetPass(email);
       if (userModel != null) {
         emailMessage = "";
         emit(state.copyWith(

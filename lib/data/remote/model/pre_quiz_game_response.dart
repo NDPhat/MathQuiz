@@ -29,11 +29,9 @@ class PreQuizGameAPIResponse {
 
 class PreQuizGameAPIModel {
   String? dateSave;
-  int? eNum;
   String? key;
   int? numQ;
   String? optionGame;
-  int? sNum;
   int? score;
   String? sign;
   String? status;
@@ -41,11 +39,9 @@ class PreQuizGameAPIModel {
 
   PreQuizGameAPIModel(
       {this.dateSave,
-        this.eNum,
         this.key,
         this.numQ,
         this.optionGame,
-        this.sNum,
         this.score,
         this.sign,
         this.status,
@@ -53,11 +49,9 @@ class PreQuizGameAPIModel {
 
   PreQuizGameAPIModel.fromJson(Map<String, dynamic> json) {
     dateSave = json['dateSave'];
-    eNum = json['eNum'];
     key = json['key'];
     numQ = json['numQ'];
     optionGame = json['optionGame'];
-    sNum = json['sNum'];
     score = json['score'];
     sign = json['sign'];
     status = json['status'];
@@ -67,11 +61,9 @@ class PreQuizGameAPIModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['dateSave'] = this.dateSave;
-    data['eNum'] = this.eNum;
     data['key'] = this.key;
     data['numQ'] = this.numQ;
     data['optionGame'] = this.optionGame;
-    data['sNum'] = this.sNum;
     data['score'] = this.score;
     data['sign'] = this.sign;
     data['status'] = this.status;

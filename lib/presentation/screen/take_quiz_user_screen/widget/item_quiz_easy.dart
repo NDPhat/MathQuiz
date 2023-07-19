@@ -21,32 +21,40 @@ class ItemTakeQuizEasy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 20.h,
-      width: 42.w,
-      decoration: BoxDecoration(
-          color: bgColor,
-          border: Border.all(color: colorErrorPrimary,width: 2),
-          borderRadius: const BorderRadius.all(Radius.circular(30))),
-      child: Column(
-        children: [
-          childTop,
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  textBot1,
-                  style: GoogleFonts.cabin(color: colorSystemWhite,fontSize: 16,fontWeight: FontWeight.w700),
-                ),
-                Text(
-                  textBot2,
-                  style: GoogleFonts.cabin(color: colorSystemWhite,fontSize: 16,fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
-          )
-        ],
+    return GestureDetector(
+      onTap: onPress,
+      child: Container(
+        height: 20.h,
+        width: 42.w,
+        decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: const BorderRadius.all(Radius.circular(30))),
+        child: Column(
+          children: [
+            childTop,
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    textBot1,
+                    style: GoogleFonts.cabin(
+                        color: colorSystemWhite,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    textBot2,
+                    style: GoogleFonts.cabin(
+                        color: colorSystemWhite,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

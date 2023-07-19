@@ -1,1 +1,1 @@
-enum ForgetPassStatus { initial,success,onLoading,error}
+enum ForgetPassStatus { initial,success,onLoading,error,clear}

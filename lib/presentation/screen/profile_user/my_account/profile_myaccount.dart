@@ -219,7 +219,6 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
       body: Column(
         children: [
           AppBarWidget(
-            size: size,
             onBack: () {
               Navigator.pop(context);
             },

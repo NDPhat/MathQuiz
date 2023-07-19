@@ -24,6 +24,13 @@ class UpdatePassCubit extends Cubit<UpdatePassState> {
     state.confirmPass = value;
   }
 
+  void clearData() {
+    emit(state.copyWith(
+        passErrorMessage: "",
+        confirmPassErrorMessage: "",
+        status: UpdatePassStatus.clear));
+  }
+
   bool passValidator(String pass) {
     if (pass.isEmpty || pass.length < 8) {
       passMessage = "Password must have least 8 characters";

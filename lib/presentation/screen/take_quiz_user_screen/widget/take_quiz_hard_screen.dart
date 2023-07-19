@@ -52,7 +52,7 @@ class TakeQuizHardScreen extends StatelessWidget {
                           ),
                         ),
                         textBot1: 'Puzzle',
-                        textBot2: 'quiz',
+                        textBot2: 'number',
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.purpleAccent,
@@ -68,7 +68,7 @@ class TakeQuizHardScreen extends StatelessWidget {
                           ),
                         ),
                         textBot1: 'Connect',
-                        textBot2: 'quiz',
+                        textBot2: 'number',
                       ),
                     ],
                   ),
@@ -84,8 +84,7 @@ class TakeQuizHardScreen extends StatelessWidget {
                           decoration: const BoxDecoration(
                             color: colorSystemWhite,
                             image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/write_missing.png"),
+                                image: AssetImage("assets/images/mix.png"),
                                 fit: BoxFit.scaleDown),
                           ),
                         ),

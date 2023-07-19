@@ -189,7 +189,6 @@ class _TestScreenState extends State<TestScreen> {
       body: Column(
         children: [
           AppBarWidget(
-            size: data,
             onBack: () {
               _controller.pause();
               showOutDialog();

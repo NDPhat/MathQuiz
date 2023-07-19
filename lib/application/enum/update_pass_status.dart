@@ -1,1 +1,1 @@
-enum UpdatePassStatus { initial,success,onLoading,error}
+enum UpdatePassStatus { initial,success,onLoading,error,clear}

@@ -25,15 +25,15 @@ class QuizBrain {
   String _quiz = '';
   Random _random = Random();
   void makeQuiz(PreQuizGame preQuiz) {
-    int firstNumber = _random.nextInt(preQuiz.endNum!) + preQuiz.startNum!;
-    int secondNumber = _random.nextInt(preQuiz.endNum!) + preQuiz.startNum!;
+    int firstNumber = Random().nextInt(10);
+    int secondNumber = Random().nextInt(10);
 
     switch (preQuiz.sign) {
       case '+':
         _quizAnswer = firstNumber + secondNumber;
         break;
       case '-':
-        secondNumber = _random.nextInt(firstNumber) + preQuiz.startNum!;
+        secondNumber = _random.nextInt(firstNumber);
         _quizAnswer = firstNumber - secondNumber;
         break;
       case 'x':
@@ -43,7 +43,7 @@ class QuizBrain {
         {
           var listNumber2 = [];
           if (firstNumber % secondNumber != 0) {
-            for (int i = preQuiz.startNum!; i <= secondNumber; i++) {
+            for (int i = 0; i <= secondNumber; i++) {
               if (firstNumber % i == 0) {
                 listNumber2.add(i);
               }
@@ -57,21 +57,18 @@ class QuizBrain {
           _quizAnswer = (firstNumber ~/ secondNumber);
         }
     }
-    int anwser1 = preQuiz.startNum!;
-    int anwser2 = preQuiz.startNum!;
-    int anwser3 = preQuiz.startNum!;
+    int anwser1 = 0;
+    int anwser2 = 0;
+    int anwser3 = 0;
     do {
-      anwser1 =
-          _random.nextInt(_quizAnswer + preQuiz.endNum!) + preQuiz.startNum!;
+      anwser1 = _random.nextInt(_quizAnswer + 10) + 0;
     } while (anwser1 == _quizAnswer);
     do {
-      anwser2 =
-          _random.nextInt(_quizAnswer + preQuiz.endNum!) + preQuiz.startNum!;
+      anwser2 = _random.nextInt(_quizAnswer + 10) + 0;
     } while (anwser2 == _quizAnswer || anwser2 == anwser1);
 
     do {
-      anwser3 =
-          _random.nextInt(_quizAnswer + preQuiz.endNum!) + preQuiz.startNum!;
+      anwser3 = _random.nextInt(_quizAnswer + 10) + 0;
     } while (
         anwser3 == _quizAnswer || anwser3 == anwser1 || anwser3 == anwser2);
     listAnswer = [];
@@ -84,15 +81,15 @@ class QuizBrain {
   }
 
   void makeQuizFindMissing(PreQuizGame preQuiz) {
-    int firstNumber = _random.nextInt(preQuiz.endNum!) + preQuiz.startNum!;
-    int secondNumber = _random.nextInt(preQuiz.endNum!) + preQuiz.startNum!;
+    int firstNumber = Random().nextInt(10);
+    int secondNumber = Random().nextInt(10);
 
     switch (preQuiz.sign) {
       case '+':
         _quizAnswer = firstNumber + secondNumber;
         break;
       case '-':
-        secondNumber = _random.nextInt(firstNumber) + preQuiz.startNum!;
+        secondNumber = _random.nextInt(firstNumber);
         _quizAnswer = firstNumber - secondNumber;
         break;
       case 'x':
@@ -102,7 +99,7 @@ class QuizBrain {
         {
           var listNumber2 = [];
           if (firstNumber % secondNumber != 0) {
-            for (int i = preQuiz.startNum!; i <= secondNumber; i++) {
+            for (int i = 0; i <= secondNumber; i++) {
               if (firstNumber % i == 0) {
                 listNumber2.add(i);
               }
@@ -116,21 +113,18 @@ class QuizBrain {
           _quizAnswer = (firstNumber ~/ secondNumber);
         }
     }
-    int fake1 = preQuiz.startNum!;
-    int fake2 = preQuiz.startNum!;
-    int fake3 = preQuiz.startNum!;
+    int fake1 = 0;
+    int fake2 = 0;
+    int fake3 = 0;
     do {
-      fake1 =
-          _random.nextInt(preQuiz.endNum! + _quizAnswer) + preQuiz.startNum!;
+      fake1 = _quizAnswer + 10 + 0;
     } while (fake1 == _quizAnswer);
     do {
-      fake2 =
-          _random.nextInt(preQuiz.endNum! + _quizAnswer) + preQuiz.startNum!;
+      fake2 = _quizAnswer + 10 + 0;
     } while (fake2 == _quizAnswer || fake2 == fake1);
 
     do {
-      fake3 =
-          _random.nextInt(preQuiz.endNum! + _quizAnswer) + preQuiz.startNum!;
+      fake3 = _quizAnswer + 10 + 0;
     } while (fake3 == _quizAnswer || fake3 == fake1 || fake3 == fake2);
     //0 hidden num1,1 hidden num2
     listAnswer = [];
@@ -344,15 +338,15 @@ class QuizBrain {
   }
 
   void makeQuizTrueFalse(PreQuizGame preQuiz) {
-    int firstNumber = _random.nextInt(preQuiz.endNum!) + preQuiz.startNum!;
-    int secondNumber = _random.nextInt(preQuiz.endNum!) + preQuiz.startNum!;
+    int firstNumber = Random().nextInt(10);
+    int secondNumber = Random().nextInt(10);
 
     switch (preQuiz.sign) {
       case '+':
         _quizAnswer = firstNumber + secondNumber;
         break;
       case '-':
-        secondNumber = _random.nextInt(firstNumber) + preQuiz.startNum!;
+        secondNumber = _random.nextInt(firstNumber);
         _quizAnswer = firstNumber - secondNumber;
         break;
       case 'x':
@@ -362,7 +356,7 @@ class QuizBrain {
         {
           var listNumber2 = [];
           if (firstNumber % secondNumber != 0) {
-            for (int i = preQuiz.startNum!; i <= secondNumber; i++) {
+            for (int i = 0; i <= secondNumber; i++) {
               if (firstNumber % i == 0) {
                 listNumber2.add(i);
               }
@@ -527,16 +521,14 @@ class QuizBrain {
     listAnswerPuzzle = [];
     int count = 0;
     do {
-      int firstNumber =
-          _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
-      int secondNumber =
-          _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
+      int firstNumber = Random().nextInt(10);
+      int secondNumber = Random().nextInt(10);
       switch (preQuizGame.sign) {
         case '+':
           _quizAnswer = firstNumber + secondNumber;
           break;
         case '-':
-          secondNumber = preQuizGame.startNum! + _random.nextInt(firstNumber);
+          secondNumber = _random.nextInt(firstNumber);
           _quizAnswer = firstNumber - secondNumber;
           break;
         case 'x':
@@ -546,7 +538,7 @@ class QuizBrain {
           {
             var listNumber2 = [];
             if (firstNumber % secondNumber != 0) {
-              for (int i = preQuizGame.startNum!; i <= secondNumber; i++) {
+              for (int i = 0; i <= secondNumber; i++) {
                 if (firstNumber % i == 0) {
                   listNumber2.add(i);
                 }
@@ -572,17 +564,15 @@ class QuizBrain {
   void makeQuizDragDrop(PreQuizGame preQuizGame) {
     int count = 0;
     do {
-      int firstNumber =
-          _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
-      int secondNumber =
-          _random.nextInt(preQuizGame.endNum!) + preQuizGame.startNum!;
+      int firstNumber = Random().nextInt(10);
+      int secondNumber = Random().nextInt(10);
       switch (preQuizGame.sign) {
         case '+':
           _quizAnswer = firstNumber + secondNumber;
           listQuizDD.add("$firstNumber + $secondNumber");
           break;
         case '-':
-          secondNumber = preQuizGame.startNum! + _random.nextInt(firstNumber);
+          secondNumber = _random.nextInt(firstNumber);
           _quizAnswer = firstNumber - secondNumber;
           listQuizDD.add("$firstNumber - $secondNumber");
 
@@ -596,7 +586,7 @@ class QuizBrain {
           {
             var listNumber2 = [];
             if (firstNumber % secondNumber != 0) {
-              for (int i = preQuizGame.startNum!; i <= secondNumber; i++) {
+              for (int i = 0; i <= secondNumber; i++) {
                 if (firstNumber % i == 0) {
                   listNumber2.add(i);
                 }

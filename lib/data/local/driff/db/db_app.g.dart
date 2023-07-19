@@ -39,16 +39,6 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
   late final GeneratedColumn<int> numQ = GeneratedColumn<int>(
       'numQ', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _eNumMeta = const VerificationMeta('eNum');
-  @override
-  late final GeneratedColumn<int> eNum = GeneratedColumn<int>(
-      'eNum', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _sNumMeta = const VerificationMeta('sNum');
-  @override
-  late final GeneratedColumn<int> sNum = GeneratedColumn<int>(
-      'sNum', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _scoreMeta = const VerificationMeta('score');
   @override
   late final GeneratedColumn<int> score = GeneratedColumn<int>(
@@ -56,7 +46,7 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
       type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, sign, option, dateSave, numQ, eNum, sNum, score];
+      [id, sign, option, dateSave, numQ, score];
   @override
   String get aliasedName => _alias ?? 'pre_quiz_game_entity';
   @override
@@ -94,18 +84,6 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
     } else if (isInserting) {
       context.missing(_numQMeta);
     }
-    if (data.containsKey('eNum')) {
-      context.handle(
-          _eNumMeta, eNum.isAcceptableOrUnknown(data['eNum']!, _eNumMeta));
-    } else if (isInserting) {
-      context.missing(_eNumMeta);
-    }
-    if (data.containsKey('sNum')) {
-      context.handle(
-          _sNumMeta, sNum.isAcceptableOrUnknown(data['sNum']!, _sNumMeta));
-    } else if (isInserting) {
-      context.missing(_sNumMeta);
-    }
     if (data.containsKey('score')) {
       context.handle(
           _scoreMeta, score.isAcceptableOrUnknown(data['score']!, _scoreMeta));
@@ -129,10 +107,6 @@ class $PreQuizGameEntityTable extends PreQuizGameEntity
           .read(DriftSqlType.string, data['${effectivePrefix}dateSave'])!,
       numQ: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}numQ'])!,
-      eNum: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}eNum'])!,
-      sNum: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}sNum'])!,
       score: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}score']),
     );
@@ -151,8 +125,6 @@ class PreQuizGameEntityData extends DataClass
   final String option;
   final String dateSave;
   final int numQ;
-  final int eNum;
-  final int sNum;
   final int? score;
   const PreQuizGameEntityData(
       {required this.id,
@@ -160,8 +132,6 @@ class PreQuizGameEntityData extends DataClass
       required this.option,
       required this.dateSave,
       required this.numQ,
-      required this.eNum,
-      required this.sNum,
       this.score});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -171,8 +141,6 @@ class PreQuizGameEntityData extends DataClass
     map['option_game_mode'] = Variable<String>(option);
     map['dateSave'] = Variable<String>(dateSave);
     map['numQ'] = Variable<int>(numQ);
-    map['eNum'] = Variable<int>(eNum);
-    map['sNum'] = Variable<int>(sNum);
     if (!nullToAbsent || score != null) {
       map['score'] = Variable<int>(score);
     }
@@ -186,8 +154,6 @@ class PreQuizGameEntityData extends DataClass
       option: Value(option),
       dateSave: Value(dateSave),
       numQ: Value(numQ),
-      eNum: Value(eNum),
-      sNum: Value(sNum),
       score:
           score == null && nullToAbsent ? const Value.absent() : Value(score),
     );
@@ -202,8 +168,6 @@ class PreQuizGameEntityData extends DataClass
       option: serializer.fromJson<String>(json['option']),
       dateSave: serializer.fromJson<String>(json['dateSave']),
       numQ: serializer.fromJson<int>(json['numQ']),
-      eNum: serializer.fromJson<int>(json['eNum']),
-      sNum: serializer.fromJson<int>(json['sNum']),
       score: serializer.fromJson<int?>(json['score']),
     );
   }
@@ -216,8 +180,6 @@ class PreQuizGameEntityData extends DataClass
       'option': serializer.toJson<String>(option),
       'dateSave': serializer.toJson<String>(dateSave),
       'numQ': serializer.toJson<int>(numQ),
-      'eNum': serializer.toJson<int>(eNum),
-      'sNum': serializer.toJson<int>(sNum),
       'score': serializer.toJson<int?>(score),
     };
   }
@@ -228,8 +190,6 @@ class PreQuizGameEntityData extends DataClass
           String? option,
           String? dateSave,
           int? numQ,
-          int? eNum,
-          int? sNum,
           Value<int?> score = const Value.absent()}) =>
       PreQuizGameEntityData(
         id: id ?? this.id,
@@ -237,8 +197,6 @@ class PreQuizGameEntityData extends DataClass
         option: option ?? this.option,
         dateSave: dateSave ?? this.dateSave,
         numQ: numQ ?? this.numQ,
-        eNum: eNum ?? this.eNum,
-        sNum: sNum ?? this.sNum,
         score: score.present ? score.value : this.score,
       );
   @override
@@ -249,16 +207,13 @@ class PreQuizGameEntityData extends DataClass
           ..write('option: $option, ')
           ..write('dateSave: $dateSave, ')
           ..write('numQ: $numQ, ')
-          ..write('eNum: $eNum, ')
-          ..write('sNum: $sNum, ')
           ..write('score: $score')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, sign, option, dateSave, numQ, eNum, sNum, score);
+  int get hashCode => Object.hash(id, sign, option, dateSave, numQ, score);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -268,8 +223,6 @@ class PreQuizGameEntityData extends DataClass
           other.option == this.option &&
           other.dateSave == this.dateSave &&
           other.numQ == this.numQ &&
-          other.eNum == this.eNum &&
-          other.sNum == this.sNum &&
           other.score == this.score);
 }
 
@@ -280,8 +233,6 @@ class PreQuizGameEntityCompanion
   final Value<String> option;
   final Value<String> dateSave;
   final Value<int> numQ;
-  final Value<int> eNum;
-  final Value<int> sNum;
   final Value<int?> score;
   const PreQuizGameEntityCompanion({
     this.id = const Value.absent(),
@@ -289,8 +240,6 @@ class PreQuizGameEntityCompanion
     this.option = const Value.absent(),
     this.dateSave = const Value.absent(),
     this.numQ = const Value.absent(),
-    this.eNum = const Value.absent(),
-    this.sNum = const Value.absent(),
     this.score = const Value.absent(),
   });
   PreQuizGameEntityCompanion.insert({
@@ -299,23 +248,17 @@ class PreQuizGameEntityCompanion
     required String option,
     required String dateSave,
     required int numQ,
-    required int eNum,
-    required int sNum,
     this.score = const Value.absent(),
   })  : sign = Value(sign),
         option = Value(option),
         dateSave = Value(dateSave),
-        numQ = Value(numQ),
-        eNum = Value(eNum),
-        sNum = Value(sNum);
+        numQ = Value(numQ);
   static Insertable<PreQuizGameEntityData> custom({
     Expression<int>? id,
     Expression<String>? sign,
     Expression<String>? option,
     Expression<String>? dateSave,
     Expression<int>? numQ,
-    Expression<int>? eNum,
-    Expression<int>? sNum,
     Expression<int>? score,
   }) {
     return RawValuesInsertable({
@@ -324,8 +267,6 @@ class PreQuizGameEntityCompanion
       if (option != null) 'option_game_mode': option,
       if (dateSave != null) 'dateSave': dateSave,
       if (numQ != null) 'numQ': numQ,
-      if (eNum != null) 'eNum': eNum,
-      if (sNum != null) 'sNum': sNum,
       if (score != null) 'score': score,
     });
   }
@@ -336,8 +277,6 @@ class PreQuizGameEntityCompanion
       Value<String>? option,
       Value<String>? dateSave,
       Value<int>? numQ,
-      Value<int>? eNum,
-      Value<int>? sNum,
       Value<int?>? score}) {
     return PreQuizGameEntityCompanion(
       id: id ?? this.id,
@@ -345,8 +284,6 @@ class PreQuizGameEntityCompanion
       option: option ?? this.option,
       dateSave: dateSave ?? this.dateSave,
       numQ: numQ ?? this.numQ,
-      eNum: eNum ?? this.eNum,
-      sNum: sNum ?? this.sNum,
       score: score ?? this.score,
     );
   }
@@ -369,12 +306,6 @@ class PreQuizGameEntityCompanion
     if (numQ.present) {
       map['numQ'] = Variable<int>(numQ.value);
     }
-    if (eNum.present) {
-      map['eNum'] = Variable<int>(eNum.value);
-    }
-    if (sNum.present) {
-      map['sNum'] = Variable<int>(sNum.value);
-    }
     if (score.present) {
       map['score'] = Variable<int>(score.value);
     }
@@ -389,8 +320,6 @@ class PreQuizGameEntityCompanion
           ..write('option: $option, ')
           ..write('dateSave: $dateSave, ')
           ..write('numQ: $numQ, ')
-          ..write('eNum: $eNum, ')
-          ..write('sNum: $sNum, ')
           ..write('score: $score')
           ..write(')'))
         .toString();
@@ -2098,6 +2027,216 @@ class DetailNotifiEntityCompanion
   }
 }
 
+class $PlayerLocalEntityTable extends PlayerLocalEntity
+    with TableInfo<$PlayerLocalEntityTable, PlayerLocalEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PlayerLocalEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _imageUserMeta =
+      const VerificationMeta('imageUser');
+  @override
+  late final GeneratedColumn<String> imageUser = GeneratedColumn<String>(
+      'imageUser', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, name, imageUser];
+  @override
+  String get aliasedName => _alias ?? 'player_local_entity';
+  @override
+  String get actualTableName => 'player_local_entity';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<PlayerLocalEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('imageUser')) {
+      context.handle(_imageUserMeta,
+          imageUser.isAcceptableOrUnknown(data['imageUser']!, _imageUserMeta));
+    } else if (isInserting) {
+      context.missing(_imageUserMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PlayerLocalEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PlayerLocalEntityData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      imageUser: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}imageUser'])!,
+    );
+  }
+
+  @override
+  $PlayerLocalEntityTable createAlias(String alias) {
+    return $PlayerLocalEntityTable(attachedDatabase, alias);
+  }
+}
+
+class PlayerLocalEntityData extends DataClass
+    implements Insertable<PlayerLocalEntityData> {
+  final int id;
+  final String name;
+  final String imageUser;
+  const PlayerLocalEntityData(
+      {required this.id, required this.name, required this.imageUser});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['imageUser'] = Variable<String>(imageUser);
+    return map;
+  }
+
+  PlayerLocalEntityCompanion toCompanion(bool nullToAbsent) {
+    return PlayerLocalEntityCompanion(
+      id: Value(id),
+      name: Value(name),
+      imageUser: Value(imageUser),
+    );
+  }
+
+  factory PlayerLocalEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PlayerLocalEntityData(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      imageUser: serializer.fromJson<String>(json['imageUser']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'imageUser': serializer.toJson<String>(imageUser),
+    };
+  }
+
+  PlayerLocalEntityData copyWith({int? id, String? name, String? imageUser}) =>
+      PlayerLocalEntityData(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        imageUser: imageUser ?? this.imageUser,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PlayerLocalEntityData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('imageUser: $imageUser')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, imageUser);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PlayerLocalEntityData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.imageUser == this.imageUser);
+}
+
+class PlayerLocalEntityCompanion
+    extends UpdateCompanion<PlayerLocalEntityData> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String> imageUser;
+  const PlayerLocalEntityCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.imageUser = const Value.absent(),
+  });
+  PlayerLocalEntityCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required String imageUser,
+  })  : name = Value(name),
+        imageUser = Value(imageUser);
+  static Insertable<PlayerLocalEntityData> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? imageUser,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (imageUser != null) 'imageUser': imageUser,
+    });
+  }
+
+  PlayerLocalEntityCompanion copyWith(
+      {Value<int>? id, Value<String>? name, Value<String>? imageUser}) {
+    return PlayerLocalEntityCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      imageUser: imageUser ?? this.imageUser,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (imageUser.present) {
+      map['imageUser'] = Variable<String>(imageUser.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlayerLocalEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('imageUser: $imageUser')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDb extends GeneratedDatabase {
   _$AppDb(QueryExecutor e) : super(e);
   late final $PreQuizGameEntityTable preQuizGameEntity =
@@ -2109,6 +2248,8 @@ abstract class _$AppDb extends GeneratedDatabase {
       $NotifiLocalEntityTable(this);
   late final $DetailNotifiEntityTable detailNotifiEntity =
       $DetailNotifiEntityTable(this);
+  late final $PlayerLocalEntityTable playerLocalEntity =
+      $PlayerLocalEntityTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2119,6 +2260,7 @@ abstract class _$AppDb extends GeneratedDatabase {
         quizGameEntity,
         quizTestEntity,
         notifiLocalEntity,
-        detailNotifiEntity
+        detailNotifiEntity,
+        playerLocalEntity
       ];
 }

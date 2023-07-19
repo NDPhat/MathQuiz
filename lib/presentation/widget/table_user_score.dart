@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
-import 'cir_per_indicator.dart';
 
 class UserTableScore extends StatelessWidget {
   UserTableScore(

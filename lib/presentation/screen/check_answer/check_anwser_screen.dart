@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
-
-import '../../../application/cons/color.dart';
-import '../../../application/cons/text_style.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/answer_widget.dart';
 import '../../widget/app_bar.dart';
-import '../../widget/button_custom.dart';
 
 class CheckAnswerScreen extends StatelessWidget {
   const CheckAnswerScreen({Key? key}) : super(key: key);
@@ -21,7 +17,6 @@ class CheckAnswerScreen extends StatelessWidget {
       body: Column(
         children: [
           AppBarWidget(
-              size: size,
               textTitle: 'CHECK ANSWER',
               onBack: () {
                 Navigator.pushNamed(context, Routers.homeGuest);

@@ -44,11 +44,11 @@ class OptionUseApp extends StatelessWidget {
             ),
             AnimatedTextKit(
                 onTap: () {
-                  Navigator.pushNamed(context, Routers.homeGuest);
+                  Navigator.pushNamed(context, Routers.addPlayer);
                 },
                 animatedTexts: [
                   ColorizeAnimatedText(
-                    'taptostart '.tr().toString(),
+                    'taptostart'.tr().toString(),
                     textAlign: TextAlign.center,
                     textStyle: kAnimationTextStyle,
                     colors: kColorizeAnimationColors,

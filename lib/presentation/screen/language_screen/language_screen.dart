@@ -22,7 +22,6 @@ class _LanguageScreenState extends State<LanguageScreen> {
       body: Column(
         children: [
           AppBarWidget(
-            size: size,
             onBack: () {
               Navigator.pop(context);
             },

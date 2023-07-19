@@ -28,7 +28,6 @@ class HistoryPractice extends StatelessWidget {
         child: Column(
           children: [
             AppBarWidget(bgColor: colorSystemWhite,
-              size: size,
               textTitle: 'HISTORY',
               onBack: () {
                 Navigator.pop(context);

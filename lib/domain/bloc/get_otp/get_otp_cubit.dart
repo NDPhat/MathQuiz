@@ -47,6 +47,11 @@ class GetOTPCubit extends Cubit<GetOTPState> {
     await userAPIRepo.reSendOTPMAIL(emailReset);
   }
 
+  void clearData() {
+    emit(state.copyWith(
+        verificationErrorMessage: "", status: GetOTPStatus.clear));
+  }
+
   Future<void> checkOTPCode(String emailReset, String otp) async {
     emit(state.copyWith(status: GetOTPStatus.onLoading));
     if (codeValidator(otp)) {

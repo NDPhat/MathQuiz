@@ -22,7 +22,6 @@ class OptionSignScreen extends StatelessWidget {
       body: Column(
         children: [
           AppBarWidget(
-              size: size,
               textTitle: 'choose sign'.tr().toString(),
               onBack: () {
                 Navigator.pop(context);
@@ -59,7 +58,7 @@ class OptionSignScreen extends StatelessWidget {
                                     context, Routers.chooseOption,
                                     arguments: '-');
                               },
-                              imageLink: "assets/images/tru_sign.png",
+                              imageLink: "assets/images/tru.png",
                             ),
                           ],
                         ),
@@ -81,7 +80,7 @@ class OptionSignScreen extends StatelessWidget {
                                     context, Routers.chooseOption,
                                     arguments: 'x');
                               },
-                              imageLink: "assets/images/nhan_sign.png",
+                              imageLink: "assets/images/nhan.png",
                             ),
                             ItemMenuSign(
                               size: size,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
 
@@ -22,11 +23,10 @@ class InputFieldContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
-      height: height,
       child: Column(
         children: [
           SizedBox(
+            height: 3.h,
             width: width,
             child: Text(
               nameTitle ?? "",
@@ -34,26 +34,23 @@ class InputFieldContainer extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
-          SizedBox(
-            height: height * 0.02,
-          ),
-          child,
-          SizedBox(
-            height: height * 0.01,
-          ),
+          SizedBox(height: height, width: width, child: child),
           Visibility(
             visible: isHidden == null ? false : isHidden!,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    alignment: Alignment.topLeft,
-                    child: Image.asset("assets/images/error_validate.png")),
-                Text(
-                  validateText ?? "",
-                  style: s14f400ColorErrorPro,
-                )
-              ],
+            child: SizedBox(
+              height: 2.h,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      alignment: Alignment.topLeft,
+                      child: Image.asset("assets/images/error_validate.png")),
+                  Text(
+                    validateText ?? "",
+                    style: s14f400ColorErrorPro,
+                  )
+                ],
+              ),
             ),
           )
         ],

@@ -79,8 +79,6 @@ class _FindMissingState extends State<FindMissing> {
     if (instance.get<UserGlobal>().onLogin == true) {
       PreQuizGameAPIModel? newData =
           await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
-              sNum: _preQuiz.startNum,
-              eNum: _preQuiz.endNum,
               numQ: 0,
               status: "GOING",
               sign: _preQuiz.sign,
@@ -94,8 +92,6 @@ class _FindMissingState extends State<FindMissing> {
     }
     instance.get<PreQuizGameRepo>().insertPreQuizGame(
         PreQuizGameEntityCompanion(
-            sNum: driff.Value(_preQuiz.startNum!),
-            eNum: driff.Value(_preQuiz.endNum!),
             numQ: const driff.Value(0),
             sign: driff.Value(_preQuiz.sign!),
             option: driff.Value(_preQuiz.option!),
@@ -289,7 +285,6 @@ class _FindMissingState extends State<FindMissing> {
       body: Column(
         children: [
           AppBarWidget(
-            size: data,
             onBack: () {
               _controller.pause();
               showOutDialog();

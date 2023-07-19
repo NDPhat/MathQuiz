@@ -79,8 +79,6 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
     if (instance.get<UserGlobal>().onLogin == true) {
       PreQuizGameAPIModel? newData =
           await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
-              sNum: _preQuiz.startNum,
-              eNum: _preQuiz.endNum,
               numQ: _preQuiz.numQ,
               status: "GOING",
               sign: _preQuiz.sign,
@@ -94,8 +92,6 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
     }
     instance.get<PreQuizGameRepo>().insertPreQuizGame(
         PreQuizGameEntityCompanion(
-            sNum: driff.Value(_preQuiz.startNum!),
-            eNum: driff.Value(_preQuiz.endNum!),
             numQ: driff.Value(_preQuiz.numQ!),
             sign: driff.Value(_preQuiz.sign!),
             option: driff.Value(_preQuiz.option!),
@@ -298,7 +294,6 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
       body: Column(
         children: [
           AppBarWidget(
-            size: data,
             onBack: () {
               _controller.pause();
               showOutDialog();

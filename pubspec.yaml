@@ -114,6 +114,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/images/player/
     - assets/
     - assets/detec/
     - resources/langs/en-EN.json

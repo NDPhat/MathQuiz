@@ -277,7 +277,6 @@ class _BOTBattleScreenState extends State<BotDual> {
           children: [
             AppBarWidget(
                 bgColor: colorSystemWhite,
-                size: size,
                 onBack: () {
                   controller.pause();
                   showOutDialog();

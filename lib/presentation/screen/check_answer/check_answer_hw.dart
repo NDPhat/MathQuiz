@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/model/quiz_test_res.dart';
-
 import '../../../application/cons/color.dart';
-import '../../../application/cons/text_style.dart';
 import '../../../data/model/check_model.dart';
 import '../../../data/remote/model/detail_quiz_hw_response.dart';
-import '../../../data/remote/model/result_quiz_hw_response.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/answer_widget.dart';
 import '../../widget/app_bar.dart';
-import '../../widget/button_custom.dart';
 
 class CheckAnswerHWScreen extends StatelessWidget {
   const CheckAnswerHWScreen({Key? key}) : super(key: key);
@@ -27,7 +21,6 @@ class CheckAnswerHWScreen extends StatelessWidget {
       body: Column(
         children: [
           AppBarWidget(
-              size: size,
               textTitle: 'CHECK ANSWER',
               onBack: () {
                 Navigator.pushNamed(context, Routers.homeUser);

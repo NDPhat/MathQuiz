@@ -199,7 +199,6 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
       body: Column(
         children: [
           AppBarWidget(
-            size: data,
             onBack: () {
               _controller.pause();
               showOutDialog();

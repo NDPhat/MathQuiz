@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/enum/get_otp_status.dart';
 import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
 import 'package:math/presentation/widget/app_bar.dart';
+import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
 import '../../routers/navigation.dart';
@@ -54,7 +55,6 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
   @override
   Widget build(BuildContext context) {
     String email = ModalRoute.of(context)!.settings.arguments as String;
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
           decoration: const BoxDecoration(
@@ -62,10 +62,8 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
             bottom: BorderSide(color: colorSystemWhite),
           )),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               AppBarWidget(
-                size: size,
                 onBack: () {
                   Navigator.pop(context);
                 },
@@ -73,32 +71,32 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
               ),
               SingleChildScrollView(
                 child: Container(
-                  height: size.height * 0.82,
+                  height: 82.h,
                   padding: EdgeInsets.only(
-                    left: size.width * 0.05,
-                    right: size.width * 0.05,
-                    top: size.height * 0.05,
-                    bottom: size.height * 0.05,
+                    left: 5.w,
+                    right: 5.w,
+                    top: 5.h,
+                    bottom: 5.h,
                   ),
                   child: Column(
                     children: [
-                      Container(
-                        height: size.height * 0.27,
+                      SizedBox(
+                        height: 27.h,
                         child: Column(children: [
                           Container(
-                            height: size.height * 0.27 * 0.9,
+                            height: 23.h,
                             child: Column(
                               children: [
                                 Image.asset(
                                     'assets/images/image_update_pass.png'),
                                 SizedBox(
-                                  height: size.height * 0.02,
+                                  height: 2.h,
                                 ),
                               ],
                             ),
                           ),
                           Container(
-                            height: size.height * 0.27 * 0.1,
+                            height: 2.h,
                             alignment: Alignment.centerLeft,
                             child: const Text(
                               'Please enter the verification code.',
@@ -107,16 +105,14 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                           ),
                         ]),
                       ),
-                      SizedBox(
-                        height: size.height * 0.02,
-                      ),
                       BlocBuilder<GetOTPCubit, GetOTPState>(
                           buildWhen: (pre, now) {
                         return pre.verificationErrorMessage !=
                             now.verificationErrorMessage;
                       }, builder: (BuildContext context, state) {
                         return SizedBox(
-                          height: size.height * 0.2,
+                          height: 30.h,
+                          width: 90.w,
                           child: Column(children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,8 +125,8 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   },
                                   maxLength: 1,
                                   typeText: TextInputType.number,
-                                  width: size.width * 0.15,
-                                  height: size.height * 0.1,
+                                  width: 15.w,
+                                  height: 10.h,
                                 ),
                                 InputFieldWidget(
                                   onChanged: (value) {
@@ -140,8 +136,8 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   },
                                   typeText: TextInputType.number,
                                   maxLength: 1,
-                                  width: size.width * 0.15,
-                                  height: size.height * 0.1,
+                                  width: 15.w,
+                                  height: 10.h,
                                 ),
                                 InputFieldWidget(
                                   onChanged: (value) {
@@ -151,8 +147,8 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   },
                                   typeText: TextInputType.number,
                                   maxLength: 1,
-                                  width: size.width * 0.15,
-                                  height: size.height * 0.1,
+                                  width: 15.w,
+                                  height: 10.h,
                                 ),
                                 InputFieldWidget(
                                   onChanged: (value) {
@@ -162,8 +158,8 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   },
                                   typeText: TextInputType.number,
                                   maxLength: 1,
-                                  width: size.width * 0.15,
-                                  height: size.height * 0.1,
+                                  width: 15.w,
+                                  height: 10.h,
                                 ),
                                 InputFieldWidget(
                                   maxLength: 1,
@@ -173,8 +169,8 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                         .number5Changed(value);
                                   },
                                   typeText: TextInputType.number,
-                                  width: size.width * 0.15,
-                                  height: size.height * 0.1,
+                                  width: 15.w,
+                                  height: 10.h,
                                 ),
                               ],
                             ),
@@ -192,7 +188,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: size.height * 0.02),
+                            SizedBox(height: 2.h),
                             Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -207,6 +203,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                           setState(() {
                                             onTap = true;
                                           });
+                                          context.read<GetOTPCubit>().clearData();
                                           context
                                               .read<GetOTPCubit>()
                                               .reSendOTPCode(email);
@@ -227,10 +224,10 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                             )),
                                 ]),
                             SizedBox(
-                              height: size.height * 0.02,
+                              height: 2.h,
                             ),
                             Container(
-                                width: size.width * 0.9,
+                                width: 90.w,
                                 height: 1,
                                 decoration: const BoxDecoration(
                                   border: Border(
@@ -254,16 +251,17 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   state.num3.trim().toString() +
                                   state.num4.trim().toString() +
                                   state.num5.trim().toString();
+                              context.read<GetOTPCubit>().clearData();
                               context
                                   .read<GetOTPCubit>()
                                   .checkOTPCode(email, code);
                             },
                             color: colorMainBlue,
-                            width: size.width * 0.8,
-                            height: size.height * 0.08,
+                            width: 80.w,
+                            height: 8.h,
                             child: state.status == GetOTPStatus.onLoading
                                 ? SizedBox(
-                                    height: size.height * 0.1,
+                                    height: 10.h,
                                     child: const Center(
                                       child: CircularProgressIndicator(
                                         color: colorSystemWhite,
@@ -271,7 +269,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                       ),
                                     ),
                                   )
-                                :  Text(
+                                : Text(
                                     'go'.tr().toString(),
                                     style: s20f700ColorSysWhite,
                                   ));

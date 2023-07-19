@@ -45,7 +45,6 @@ class PracticeGameUserMainScreen extends StatelessWidget {
                   ItemTakeQuiz(
                       bgColor: colorMainTealPri,
                       onPress: () {
-                        print('1');
                         Navigator.pushNamed(
                             context, Routers.takeEasyQuiz);
                       },
@@ -54,14 +53,15 @@ class PracticeGameUserMainScreen extends StatelessWidget {
                   ItemTakeQuiz(
                       onPress: () {
                         Navigator.pushNamed(
-                            context, Routers.practiceMainScreenUserGameSen);
+                            context, Routers.takeMediumQuiz);
                       },
                       bgColor: colorMainBlue,
                       textTitle: "medium"),
                   sizedBox,
                   ItemTakeQuiz(
                     onPress: () {
-                      Navigator.pushNamed(context, Routers.raw);
+                      Navigator.pushNamed(
+                          context, Routers.takeHardQuiz);
                     },
                     textTitle: 'hard',
                     bgColor: colorErrorPrimary,

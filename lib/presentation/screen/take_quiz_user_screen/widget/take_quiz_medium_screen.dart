@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/item_quiz_easy.dart';
 import 'package:sizer/sizer.dart';
+import '../../../routers/navigation.dart';
 import '../../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class TakeQuizMediumScreen extends StatelessWidget {
@@ -38,14 +39,17 @@ class TakeQuizMediumScreen extends StatelessWidget {
                     children: [
                       ItemTakeQuizEasy(
                         bgColor: Colors.yellow,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.chooseOption,
+                              arguments: '+');
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,
                           decoration: const BoxDecoration(
                             color: colorSystemWhite,
                             image: DecorationImage(
-                                image: AssetImage("assets/images/write.png"),
+                                image: AssetImage("assets/images/cong.png"),
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
@@ -54,19 +58,22 @@ class TakeQuizMediumScreen extends StatelessWidget {
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.purpleAccent,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.chooseOption,
+                              arguments: '-');
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,
                           decoration: const BoxDecoration(
                             color: colorSystemWhite,
                             image: DecorationImage(
-                                image: AssetImage("assets/images/count.png"),
+                                image: AssetImage("assets/images/tru.png"),
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
                         textBot1: 'Subtraction',
-                        textBot2: 'write',
+                        textBot2: 'numbers',
                       ),
                     ],
                   ),
@@ -75,15 +82,17 @@ class TakeQuizMediumScreen extends StatelessWidget {
                     children: [
                       ItemTakeQuizEasy(
                         bgColor: Colors.green,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.chooseOption,
+                              arguments: 'x');
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,
                           decoration: const BoxDecoration(
                             color: colorSystemWhite,
                             image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/write_missing.png"),
+                                image: AssetImage("assets/images/nhan.png"),
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
@@ -92,14 +101,17 @@ class TakeQuizMediumScreen extends StatelessWidget {
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.pink,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.chooseOption,
+                              arguments: '/');
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,
                           decoration: const BoxDecoration(
                             color: colorSystemWhite,
                             image: DecorationImage(
-                                image: AssetImage("assets/images/match.png"),
+                                image: AssetImage("assets/images/chia.png"),
                                 fit: BoxFit.scaleDown),
                           ),
                         ),

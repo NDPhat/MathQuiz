@@ -1,1 +1,1 @@
-enum GetOTPStatus { initial, success, onLoading, error }
+enum GetOTPStatus { initial, success, onLoading, error,clear }

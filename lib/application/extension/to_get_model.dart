@@ -9,8 +9,6 @@ extension PreQuizModel on PreQuizGameEntityData {
         sign: sign,
         numQ: numQ,
         score: score,
-        startNum: sNum,
-        endNum: eNum,
         dateSave: dateSave);
   }
 }

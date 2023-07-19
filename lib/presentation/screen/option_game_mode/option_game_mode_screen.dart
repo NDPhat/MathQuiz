@@ -1,15 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bounce/flutter_bounce.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:math/data/model/option_quiz.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
+import 'package:math/presentation/screen/take_quiz_user_screen/widget/item_quiz_easy.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
 
+import '../../../application/enum/pre_status.dart';
+import '../../../data/model/make_quiz.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/button_custom.dart';
+import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class OptionGameModeScreen extends StatelessWidget {
   const OptionGameModeScreen({Key? key}) : super(key: key);
@@ -17,118 +21,161 @@ class OptionGameModeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sign = ModalRoute.of(context)!.settings.arguments as String;
-
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: colorSystemWhite,
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          AppBarWidget(
-              size: size,
-              textTitle: 'choose mode'.tr().toString(),
-              onBack: () {
-                Navigator.pop(context);
-              }),
-          Padding(
-            padding: EdgeInsets.only(
-              top: size.height * 0.05,
-              left: size.width * 0.02,
-              right: size.width * 0.02,
-            ),
-            child: Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.8,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ItemMenuGameMode(
-                            size: size,
-                            icon: const Icon(
-                              LineAwesomeIcons.keyboard,
-                              size: 30,
-                            ),
-                            textTitle: 'input answer'.tr().toString(),
-                            onPress: () {
-                              Navigator.pushNamed(context, Routers.premake,
-                                  arguments: OptionQuiz(
-                                      sign: sign, optionQuiz: 'input'));
-                            },
+        resizeToAvoidBottomInset: false,
+        body: MainPageHomePG(
+          textNow: 'choose mode'.tr().toString(),
+          onPressHome: () {},
+          colorTextAndIcon: Colors.black,
+          child: Stack(
+            children: [
+              Container(
+                  width: 100.w,
+                  height: 90.h,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/bg_mode.jpg"),
+                        fit: BoxFit.cover),
+                  )),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 5.h,
+                  left: 2.h,
+                  right: 2.h,
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 80.h,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              BlocListener<PreQuizCubit, PreQuizState>(
+                                  listener: (context, state) {
+                                    if (state.status == PreQuizStatus.error) {
+                                    } else if (state.status ==
+                                        PreQuizStatus.success) {
+                                      Navigator.pushNamed(context, Routers.game,
+                                          arguments: PreQuizGame(
+                                            id: state.id,
+                                            numQ: 0,
+                                            sign: sign,
+                                            idServer: state.idServer,
+                                            option: "input",
+                                          ));
+                                    }
+                                  },
+                                  child: ItemTakeQuizEasy(
+                                      onPress: () {
+                                        context
+                                            .read<PreQuizCubit>()
+                                            .addPreQuizGame(sign, "input");
+                                      },
+                                      bgColor: Colors.yellow,
+                                      childTop: Container(
+                                        height: 14.h,
+                                        width: 30.h,
+                                        decoration: const BoxDecoration(
+                                          color: colorSystemWhite,
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/images/add_mode.png"),
+                                              fit: BoxFit.scaleDown),
+                                        ),
+                                      ),
+                                      textBot1: "Enter",
+                                      textBot2: "answer")),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              BlocListener<PreQuizCubit, PreQuizState>(
+                                  listener: (context, state) {
+                                    if (state.status == PreQuizStatus.error) {
+                                    } else if (state.status ==
+                                        PreQuizStatus.success) {
+                                      Navigator.pushNamed(
+                                          context, Routers.trueFalse,
+                                          arguments: PreQuizGame(
+                                            id: state.id,
+                                            numQ: 0,
+                                            sign: sign,
+                                            idServer: state.idServer,
+                                            option: "true/false",
+                                          ));
+                                    }
+                                  },
+                                  child: ItemTakeQuizEasy(
+                                      onPress: () {
+                                        context
+                                            .read<PreQuizCubit>()
+                                            .addPreQuizGame(sign, "true/false");
+                                      },
+                                      bgColor: Colors.green,
+                                      childTop: Container(
+                                        height: 14.h,
+                                        width: 30.h,
+                                        decoration: const BoxDecoration(
+                                          color: colorSystemWhite,
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/images/tf_mode.png"),
+                                              fit: BoxFit.scaleDown),
+                                        ),
+                                      ),
+                                      textBot1: "True/False",
+                                      textBot2: "quiz")),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              BlocListener<PreQuizCubit, PreQuizState>(
+                                  listener: (context, state) {
+                                    if (state.status == PreQuizStatus.error) {
+                                    } else if (state.status ==
+                                        PreQuizStatus.success) {
+                                      Navigator.pushNamed(
+                                          context, Routers.findMissing,
+                                          arguments: PreQuizGame(
+                                            id: state.id,
+                                            numQ: 0,
+                                            sign: sign,
+                                            idServer: state.idServer,
+                                            option: "missing",
+                                          ));
+                                    }
+                                  },
+                                  child: ItemTakeQuizEasy(
+                                      onPress: () {
+                                        context
+                                            .read<PreQuizCubit>()
+                                            .addPreQuizGame(sign, "missing");
+                                      },
+                                      bgColor: Colors.pink,
+                                      childTop: Container(
+                                        height: 14.h,
+                                        width: 30.h,
+                                        decoration: const BoxDecoration(
+                                          color: colorSystemWhite,
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/images/find_mode.png"),
+                                              fit: BoxFit.scaleDown),
+                                        ),
+                                      ),
+                                      textBot1: "Find",
+                                      textBot2: "number")),
+                            ],
                           ),
-                          SizedBox(
-                            height: size.height * 0.05,
-                          ),
-                          ItemMenuGameMode(
-                            size: size,
-                            icon: const Icon(
-                              LineAwesomeIcons.question,
-                              size: 30,
-                            ),
-                            textTitle: 'truefalse'.tr().toString(),
-                            onPress: () {
-                              Navigator.pushNamed(context, Routers.premake,
-                                  arguments: OptionQuiz(
-                                      sign: sign, optionQuiz: 'truefalse'));
-                            },
-                          ),
-                          SizedBox(
-                            height: size.height * 0.05,
-                          ),
-                          ItemMenuGameMode(
-                            size: size,
-                            icon: const Icon(
-                              Icons.youtube_searched_for,
-                              size: 40,
-                            ),
-                            textTitle: 'findmissing'.tr().toString(),
-                            onPress: () {
-                              Navigator.pushNamed(context, Routers.premake,
-                                  arguments: OptionQuiz(
-                                      sign: sign, optionQuiz: 'missing'));
-                            },
-                          ),
-                          SizedBox(
-                            height: size.height * 0.05,
-                          ),
-                          ItemMenuGameMode(
-                            size: size,
-                            icon: Image.asset("assets/images/icon_puzzle.png"),
-                            textTitle: 'puzzle'.tr().toString(),
-                            onPress: () {
-                              Navigator.pushNamed(context, Routers.premake,
-                                  arguments: OptionQuiz(
-                                      sign: sign, optionQuiz: 'puzzle'));
-                            },
-                          ),
-                          SizedBox(
-                            height: size.height * 0.05,
-                          ),
-                          ItemMenuGameMode(
-                            size: size,
-                            icon: Image.asset(
-                              "assets/images/icon_line.png",
-                            ),
-                            textTitle: 'connect'.tr().toString(),
-                            onPress: () {
-                              Navigator.pushNamed(context, Routers.premake,
-                                  arguments: OptionQuiz(
-                                      sign: sign, optionQuiz: 'connect'));
-                            },
-                          )
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
 

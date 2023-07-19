@@ -108,7 +108,6 @@ class MainTestingUserScreen extends StatelessWidget {
       body: Column(
         children: [
           AppBarWidget(
-            size: size,
             onBack: () {
               Navigator.pop(context);
             },

@@ -33,7 +33,6 @@ class AddNotifiScreen extends StatelessWidget {
       body: Column(
         children: [
           AppBarWidget(
-              size: size,
               textTitle: "Add Notification",
               onBack: () {
                 Navigator.pop(context);

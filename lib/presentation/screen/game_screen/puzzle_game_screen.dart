@@ -308,7 +308,6 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
         children: [
           AppBarWidget(
             bgColor: colorSystemWhite,
-            size: size,
             onBack: () {
               _controller.pause();
               showOutDialog();

@@ -13,7 +13,6 @@ import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../data/remote/model/pre_quiz_hw_response.dart';
 import '../../../main.dart';
 import '../../widget/async_data_detail_hw.dart';
-import '../../widget/card_data_item_home.dart';
 import '../../widget/child_right_item_card_home.dart';
 
 class DetailItemCardHomeWork extends StatelessWidget {
@@ -28,7 +27,6 @@ class DetailItemCardHomeWork extends StatelessWidget {
         child: Column(
           children: [
             AppBarWidget(
-              size: size,
               bgColor: colorSystemWhite,
               onBack: () {
                 Navigator.pop(context);
