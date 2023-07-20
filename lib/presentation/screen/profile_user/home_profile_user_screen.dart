@@ -93,7 +93,7 @@ class HomeProfileUserScreen extends StatelessWidget {
                 onPress: () {
                   instance.get<AuthenRepository>().handleAutoLoginApp(false);
                   instance.get<UserGlobal>().onLogin = false;
-                  Navigator.pushNamed(context, Routers.welcome);
+                  Navigator.pushNamed(context, Routers.chooseOptionUseApp);
                 },
                 size: size,
               ),

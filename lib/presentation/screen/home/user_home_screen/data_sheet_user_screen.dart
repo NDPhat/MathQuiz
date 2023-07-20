@@ -33,35 +33,6 @@ class DataSheetUserScreen extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Container(
-                      margin: EdgeInsets.only(top: size.height * 0.01),
-                      padding: EdgeInsets.only(
-                          top: size.height * 0.02,
-                          bottom: size.height * 0.02,
-                          right: size.height * 0.03,
-                          left: size.height * 0.03),
-                      height: size.height * 0.2,
-                      width: size.width,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage("assets/images/bg_card_home.png"),
-                              fit: BoxFit.fill)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text("Always remember :",
-                                  style: s18f700ColorWhiteSys)),
-                          Container(
-                              padding: EdgeInsets.only(top: size.height * 0.02),
-                              width: size.width,
-                              child: const Text(
-                                  "Without mathematics, there’s nothing you can do.\nEverything around you is mathematics.\nEverything around you is numbers.",
-                                  style: s15f700ColorErrorPri)),
-                        ],
-                      )),
                   LineContentItem(
                     size: size,
                     title: 'home work'.tr().toString(),

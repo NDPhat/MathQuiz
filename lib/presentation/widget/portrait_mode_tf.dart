@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/presentation/widget/quiz_body.dart';
 import 'package:math/presentation/widget/quiz_body_hw.dart';
 import 'package:math/presentation/widget/table_user_score.dart';
+import 'package:sizer/sizer.dart';
 import '../../application/cons/color.dart';
-import '../../application/cons/text_style.dart';
-
 import '../../application/utils/make_quiz.dart';
-
-import '../../domain/bloc/game/game_cubit.dart';
-import 'app_bar.dart';
 import 'button_custom.dart';
-import 'cir_per_indicator.dart';
-import 'package:circular_countdown/circular_countdown.dart';
 
 class PortraitModeTF extends StatelessWidget {
   final int score;
@@ -21,7 +13,6 @@ class PortraitModeTF extends StatelessWidget {
   final QuizBrain quizBrainObject;
   final sign;
   final controller;
-  final Size size;
   final onTap;
   final onFinished;
   PortraitModeTF({
@@ -29,7 +20,6 @@ class PortraitModeTF extends StatelessWidget {
     required this.trueQ,
     required this.falseQ,
     required this.quizNow,
-    required this.size,
     required this.onFinished,
     required this.controller,
     required this.quizBrainObject,
@@ -44,14 +34,12 @@ class PortraitModeTF extends StatelessWidget {
         Container(
           color: colorSystemWhite,
           padding: EdgeInsets.only(
-            top: size.height * 0.005,
-            bottom: size.height * 0.05,
+            top: 0.5.h,
+            bottom: 5.h,
           ),
           child: Column(
             children: [
               UserTableScore(
-                size: size,
-                trueQ: trueQ,
                 controller: controller,
                 falseQ: falseQ,
                 onFinished: onFinished,
@@ -66,14 +54,14 @@ class PortraitModeTF extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(
-                        top: size.height * 0.2, left: size.width * 0.2),
+                        top: 20.h, left: 20.w),
                     child: QuizBodyHW(
-                        quizBrainObject: quizBrainObject, size: size),
+                        quizBrainObject: quizBrainObject),
                   ),
                 ],
               ),
               SizedBox(
-                height: size.height * 0.08,
+                height:8.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,20 +71,20 @@ class PortraitModeTF extends StatelessWidget {
                       onTap('TRUE');
                     },
                     color: colorSystemWhite,
-                    width: size.width * 0.4,
-                    height: size.height * 0.08,
+                    width: 40.w,
+                    height: 8.h,
                     child: Image.asset('assets/images/true.jpg'),
                   ),
                   SizedBox(
-                    width: size.height * 0.03,
+                    width: 3.w,
                   ),
                   RoundedButton(
                     press: () {
                       onTap('FALSE');
                     },
                     color: colorSystemWhite,
-                    width: size.width * 0.4,
-                    height: size.height * 0.08,
+                    width: 40.w,
+                    height: 8.h,
                     child: Image.asset('assets/images/false.jpg'),
                   ),
                 ],

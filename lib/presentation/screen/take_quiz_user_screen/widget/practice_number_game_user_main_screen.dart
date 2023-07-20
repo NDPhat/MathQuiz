@@ -70,10 +70,7 @@ class PracticeNumberGameUserScreen extends StatelessWidget {
             child: Center(
               child: RoundedButton(
                   press: () async {
-                    Navigator.pushNamed(
-                      context,
-                      Routers.chooseSign,
-                    );
+
                   },
                   color: colorMainBlue,
                   width: size.width * 0.8,

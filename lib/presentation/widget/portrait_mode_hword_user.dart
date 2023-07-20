@@ -5,6 +5,7 @@ import 'package:math/presentation/widget/quiz_body.dart';
 import 'package:math/presentation/widget/quiz_body_hw.dart';
 import 'package:math/presentation/widget/table_user_score.dart';
 import 'package:math/presentation/widget/user_homework_score.dart';
+import 'package:sizer/sizer.dart';
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
 
@@ -23,7 +24,6 @@ class PortraitModeHomeWork extends StatelessWidget {
   final QuizBrain quizBrainObject;
   final onTap;
   VoidCallback onBack;
-  final Size size;
   CountDownController? controller;
   VoidCallback? onFinished;
   PortraitModeHomeWork({
@@ -35,7 +35,6 @@ class PortraitModeHomeWork extends StatelessWidget {
     required this.quizNow,
     required this.quizBrainObject,
     required this.onTap,
-    required this.size,
     required this.onBack,
     this.controller,
     this.onFinished,
@@ -43,7 +42,6 @@ class PortraitModeHomeWork extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         AppBarWidget(
@@ -51,13 +49,13 @@ class PortraitModeHomeWork extends StatelessWidget {
           textTitle: 'HOME WORK',
         ),
         Container(
-          height: size.height * 0.02,
+          height: 2.h,
           color: colorSystemWhite,
         ),
         Container(
           alignment: Alignment.center,
           color: colorSystemWhite,
-          height: size.height * 0.88,
+          height: 88.h,
           child: Column(
             children: [
               Stack(
@@ -69,12 +67,11 @@ class PortraitModeHomeWork extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(
-                        top: size.height * 0.2, left: size.width * 0.2),
+                        top: 20.h, left:20.w),
                     child: QuizBodyHW(
-                        quizBrainObject: quizBrainObject, size: size),
+                        quizBrainObject: quizBrainObject),
                   ),
                   UserHWScore(
-                    size: size,
                     totalQuiz: totalQ,
                     quizNow: quizNow,
                     onFinished: onFinished,
@@ -82,9 +79,9 @@ class PortraitModeHomeWork extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: size.height * 0.05),
+              SizedBox(height:5.h),
               AnswerTableHW(
-                  size: size, quizBrainObject: quizBrainObject, onTap: onTap)
+                 quizBrainObject: quizBrainObject, onTap: onTap)
             ],
           ),
         ),

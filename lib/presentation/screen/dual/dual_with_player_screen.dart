@@ -259,7 +259,6 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                       RotatedBox(
                         quarterTurns: -2,
                         child: PlayerDualScreen(
-                          size: size,
                           quizBrain: _quizBrain,
                           onTap: (int value) {
                             _checkAnswerPlayer1(value);
@@ -309,7 +308,6 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                   child: Column(
                     children: [
                       PlayerDualScreen(
-                        size: size,
                         quizBrain: _quizBrain,
                         onTap: (int value) {
                           _checkAnswerPlayer2(value);

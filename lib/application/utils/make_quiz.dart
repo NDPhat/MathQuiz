@@ -25,9 +25,8 @@ class QuizBrain {
   String _quiz = '';
   Random _random = Random();
   void makeQuiz(PreQuizGame preQuiz) {
-    int firstNumber = Random().nextInt(10);
-    int secondNumber = Random().nextInt(10);
-
+    int firstNumber = _random.nextInt(10);
+    int secondNumber = _random.nextInt(10);
     switch (preQuiz.sign) {
       case '+':
         _quizAnswer = firstNumber + secondNumber;
@@ -81,8 +80,8 @@ class QuizBrain {
   }
 
   void makeQuizFindMissing(PreQuizGame preQuiz) {
-    int firstNumber = Random().nextInt(10);
-    int secondNumber = Random().nextInt(10);
+    int firstNumber = _random.nextInt(10);
+    int secondNumber = _random.nextInt(10);
 
     switch (preQuiz.sign) {
       case '+':
@@ -147,7 +146,6 @@ class QuizBrain {
 
   void makeQuizTest() {
     List<String> _listOfSigns = ['+', '-', 'x', '/'];
-    Random _random = Random();
     var selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
     var firstNumber = _random.nextInt(20) + 1; // from 10 upto 19
     var secondNumber = _random.nextInt(20) + 1; // from 1 upto 9  (9 included)
@@ -206,7 +204,6 @@ class QuizBrain {
   // tao test theo 1 sign
   void makeQuizTestForSign() {
     List<String> _listOfSigns = ['+', '-', 'x', '/'];
-    Random _random = Random();
     var selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
     var firstNumber = _random.nextInt(20) + 1; // from 10 upto 19
     var secondNumber = _random.nextInt(20) + 1; // from 1 upto 9  (9 included)
@@ -338,8 +335,8 @@ class QuizBrain {
   }
 
   void makeQuizTrueFalse(PreQuizGame preQuiz) {
-    int firstNumber = Random().nextInt(10);
-    int secondNumber = Random().nextInt(10);
+    int firstNumber = _random.nextInt(10);
+    int secondNumber = _random.nextInt(10);
 
     switch (preQuiz.sign) {
       case '+':
@@ -521,8 +518,8 @@ class QuizBrain {
     listAnswerPuzzle = [];
     int count = 0;
     do {
-      int firstNumber = Random().nextInt(10);
-      int secondNumber = Random().nextInt(10);
+      int firstNumber = _random.nextInt(10);
+      int secondNumber = _random.nextInt(10);
       switch (preQuizGame.sign) {
         case '+':
           _quizAnswer = firstNumber + secondNumber;
@@ -564,8 +561,8 @@ class QuizBrain {
   void makeQuizDragDrop(PreQuizGame preQuizGame) {
     int count = 0;
     do {
-      int firstNumber = Random().nextInt(10);
-      int secondNumber = Random().nextInt(10);
+      int firstNumber = _random.nextInt(10);
+      int secondNumber = _random.nextInt(10);
       switch (preQuizGame.sign) {
         case '+':
           _quizAnswer = firstNumber + secondNumber;

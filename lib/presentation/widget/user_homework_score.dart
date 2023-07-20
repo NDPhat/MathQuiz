@@ -1,20 +1,18 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
-import 'cir_per_indicator.dart';
 
 class UserHWScore extends StatelessWidget {
   UserHWScore(
       {Key? key,
-      required this.size,
       this.totalQuiz,
       this.quizNow,
       this.onFinished,
       this.controller})
       : super(key: key);
-  final Size size;
   int? quizNow;
   int? totalQuiz;
   CountDownController? controller;
@@ -22,7 +20,7 @@ class UserHWScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: size.height*0.02,left: size.width*0.08,right: size.width*0.09),
+      padding: EdgeInsets.only(top: 2.h, left: 8.w, right: 8.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -30,9 +28,12 @@ class UserHWScore extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  const Icon(Icons.update,color: colorSystemWhite,),
-                  const SizedBox(
-                    height: 10,
+                  const Icon(
+                    Icons.update,
+                    color: colorSystemWhite,
+                  ),
+                   SizedBox(
+                    height:0.1.h,
                   ),
                   Text(
                     '$quizNow/$totalQuiz',
@@ -63,8 +64,7 @@ class UserHWScore extends StatelessWidget {
                     fontWeight: FontWeight.bold),
                 textFormat: CountdownTextFormat.S,
                 autoStart: false,
-                onStart: () {
-                },
+                onStart: () {},
                 onComplete: onFinished,
               ))
         ],

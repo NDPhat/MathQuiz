@@ -15,7 +15,7 @@ class PreQuizState extends Equatable {
     return PreQuizState(
       idServer: '',
       status: PreQuizStatus.initial,
-      id: 1,
+      id: 0,
     );
   }
   @override

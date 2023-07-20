@@ -278,7 +278,6 @@ class _FindMissingState extends State<FindMissing> {
 
   @override
   Widget build(BuildContext context) {
-    var data = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorMainBlue,
       resizeToAvoidBottomInset: false,
@@ -311,7 +310,6 @@ class _FindMissingState extends State<FindMissing> {
               falseQ: falseChoose,
               controller: _controller,
               quizNow: _totalNumberOfQuizzes,
-              size: data,
             );
           }),
         ],

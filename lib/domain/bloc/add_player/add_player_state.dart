@@ -17,7 +17,7 @@ class AddPlayerState extends Equatable {
   });
   factory AddPlayerState.initial() {
     return AddPlayerState(
-        name: "Player 0",
+        name: "",
         nameError: '',
         imageUser: '',
         choose: false,

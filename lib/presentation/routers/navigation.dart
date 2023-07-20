@@ -26,11 +26,13 @@ import 'package:math/presentation/screen/game_screen/drag_drop_game_screen.dart'
 import 'package:math/presentation/screen/game_screen/puzzle_game_screen.dart';
 import 'package:math/presentation/screen/game_screen/sentences_game_screen.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
+import 'package:math/presentation/screen/intro/intro_screen.dart';
 import 'package:math/presentation/screen/language_screen/language_screen.dart';
 import 'package:math/presentation/screen/login/login_screen.dart';
 import 'package:math/presentation/screen/notificaiton/notification_main_screen.dart';
 import 'package:math/presentation/screen/option_use_app/option_use_app.dart';
 import 'package:math/presentation/screen/setting/setting_main_screen.dart';
+import 'package:math/presentation/screen/splash_screen/splash_screen.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/take_quiz_hard_screen.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/take_quiz_medium_screen.dart';
 import 'package:math/presentation/screen/testing_user/test_main_user_screen.dart';
@@ -55,13 +57,11 @@ import '../screen/game_screen/find_missing.dart';
 import '../screen/game_screen/true_false_screen.dart';
 import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
-import '../screen/home/guest_home_screen/home_guest.dart';
+import '../screen/home/guest_home_screen/home_guest_screen.dart';
 import '../screen/home/user_home_screen/home_user_screen.dart';
 import '../screen/home_work/home_work_user_game_screen.dart';
 import '../screen/notificaiton/widget/add_notifi_local_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
-import '../screen/option_game_mode/option_sign_screen.dart';
-import '../screen/pre_quiz/pre_quiz_game.dart';
 import '../screen/profile_user/my_account/profile_myaccount.dart';
 import '../screen/take_quiz_user_screen/take_quiz_user_main_screen.dart';
 import '../screen/take_quiz_user_screen/widget/practice_number_game_user_main_screen.dart';
@@ -70,14 +70,13 @@ import '../screen/take_quiz_user_screen/widget/raw_screen.dart';
 import '../screen/take_quiz_user_screen/widget/take_quiz_easy_screen.dart';
 import '../screen/test_screen/test_practice_screen.dart';
 import '../screen/testing_user/testing_game_user_screen.dart';
-import '../screen/welcome_screen.dart';
 
 class Routers {
-  static const String chooseSign = '/choose_sign';
   static const String chooseOption = '/choose_option';
   static const String chooseOptionUseApp = '/choose_option_use_app';
-  static const String welcome = '/';
+  static const String splash = 'splash';
   static const String login = '/login';
+  static const String intro = '/intro';
   static const String doTestPra = '/doTestPra';
   static const String game = '/game';
   static const String raw = '/raw';
@@ -120,8 +119,7 @@ class Routers {
   static const String dragDropGame = '/dragDropGame';
   static const String homeworkGame = '/homeworkGame';
   static const String languageScreen = '/languageScreen';
-  static const String practiceMainScreenUserGame =
-      '/practiceMainScreenUserGame';
+  static const String takeQuiz = '/takeQuiz';
   static const String practiceScreenUserGameNum = '/practiceScreenUserGameNum';
   static const String practiceMainScreenUserGameSen =
       '/practiceScreenUserGameSen';
@@ -135,8 +133,10 @@ class Routers {
 
   static route(RouteSettings settings) {
     switch (settings.name) {
-      case welcome:
-        return WelcomeScreen();
+      case intro:
+        return IntroScreen();
+      case splash:
+        return SplashScreen();
       case raw:
         return DrawingNumberBoardGame();
       case languageScreen:
@@ -175,8 +175,8 @@ class Routers {
         return PracticeSenGameUserScreen();
       case practiceScreenUserGameNum:
         return PracticeNumberGameUserScreen();
-      case practiceMainScreenUserGame:
-        return PracticeGameUserMainScreen();
+      case takeQuiz:
+        return TakeQuizUserScreen();
       case testDetail:
         return DetailTestHomeWork();
       case mainTestUser:
@@ -226,7 +226,7 @@ class Routers {
                 userAPIRepo: instance.get<UserAPIRepo>()),
             child: TestTingUserGameScreen());
       case homeGuest:
-        return HomeGuestScreen();
+        return HomeGuestMainScreen();
       case homeUser:
         return HomeUserScreen();
       case checkAnswerHW:
@@ -241,14 +241,6 @@ class Routers {
                 preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
                 userAPIRepo: instance.get<UserAPIRepo>()),
             child: OptionGameModeScreen());
-      case chooseSign:
-        return OptionSignScreen();
-      case premake:
-        return BlocProvider(
-            create: (context) => PreQuizCubit(
-                preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-                userAPIRepo: instance.get<UserAPIRepo>()),
-            child: PreMakeQuizGame());
       case game:
         return BlocProvider(
             create: (context) => GameCubit(
@@ -299,7 +291,7 @@ class Routers {
                 preTestLocalRepo: instance.get<PreTestLocalRepo>()),
             child: const HistoryTest());
       default:
-        return WelcomeScreen();
+        return SplashScreen();
     }
   }
 }

@@ -193,7 +193,6 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorMainBlue,
       body: Column(
@@ -228,7 +227,6 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               onFinished: () {
                 showFinishDialog();
               },
-              size: data,
             );
           }),
         ],

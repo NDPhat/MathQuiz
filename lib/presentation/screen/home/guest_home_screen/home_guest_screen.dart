@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/user_local.dart';
+import 'package:math/main.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/student_data.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
-import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/authen/authen.dart';
-import '../../../../main.dart';
 
-class HomeUserScreen extends StatelessWidget {
-  const HomeUserScreen({Key? key}) : super(key: key);
+class HomeGuestMainScreen extends StatelessWidget {
+  const HomeGuestMainScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +30,17 @@ class HomeUserScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         StudentName(
-                          studentName: 'Player 1',
+                          studentName:
+                              instance.get<UserLocal>().name ?? 'Player 1',
                         ),
                         kHalfSizedBox,
-                        Row(
+                        const Row(
                           children: [
-                            StudentClass(studentClass: 'Class 1A'),
+                            StudentClass(studentClass: 'Class 1'),
                             kHalfSizedBox,
                             StudentYear(studentYear: '2023-2024'),
                           ],
@@ -51,7 +49,8 @@ class HomeUserScreen extends StatelessWidget {
                     ),
                     kHalfSizedBox,
                     StudentPicture(
-                      picAddress: 'assets/images/profile.png',
+                      picAddress: instance.get<UserLocal>().imageLink ??
+                          'assets/images/profile.png',
                     ),
                   ],
                 ),
@@ -129,14 +128,10 @@ class HomeUserScreen extends StatelessWidget {
                         ),
                         HomeCard(
                           onPress: () {
-                            instance
-                                .get<AuthenRepository>()
-                                .handleAutoLoginApp(false);
-                            instance.get<UserGlobal>().onLogin = false;
-                            Navigator.pushNamed(context, Routers.chooseOptionUseApp);
+                            Navigator.pushNamed(context, Routers.login);
                           },
                           icon: 'assets/icons/logout.svg',
-                          title: 'Logout',
+                          title: 'Log In',
                         ),
                       ],
                     ),

@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../../../application/cons/constants.dart';
 import '../../../../../data/model/user_global.dart';
 import '../../../../../main.dart';
@@ -34,7 +31,7 @@ class StudentClass extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
         instance.get<UserGlobal>().lop != null
-            ?"Class ${instance.get<UserGlobal>().lop!}"
+            ? "Class ${instance.get<UserGlobal>().lop!}"
             : studentClass,
         style: s16f700ColorSysWhite);
   }
@@ -57,7 +54,7 @@ class StudentYear extends StatelessWidget {
 }
 
 class StudentPicture extends StatelessWidget {
-  const StudentPicture({Key? key, required this.picAddress}) : super(key: key);
+  StudentPicture({Key? key, required this.picAddress}) : super(key: key);
   final String picAddress;
   @override
   Widget build(BuildContext context) {

@@ -18,9 +18,9 @@ class PlayerLocalRepoImpl extends PlayerLocalRepo {
   }
 
   @override
-  Future<void> insertPlayerLocal(
+  Future<int> insertPlayerLocal(
       PlayerLocalEntityCompanion entityCompanion) async {
-    await appDb.into(appDb.playerLocalEntity).insert(entityCompanion);
+    return await appDb.into(appDb.playerLocalEntity).insert(entityCompanion);
   }
 
   @override

@@ -26,8 +26,9 @@ import '../../widget/portrait_mode_game.dart';
 import '../../widget/show_end_dialog.dart';
 
 class GameScreen extends StatefulWidget {
+  const GameScreen({Key? key}) : super(key: key);
   @override
-  _GameScreenState createState() => _GameScreenState();
+  State<GameScreen> createState() => _GameScreenState();
 }
 
 class _GameScreenState extends State<GameScreen> {
@@ -45,15 +46,48 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   void initState() {
-    super.initState();
-    _quizBrain = QuizBrain();
-    _preQuiz = PreQuizGame();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
-      _preIdNow = _preQuiz.id!;
-      _preIdServerNow = _preQuiz.idServer!;
-      showReadyDialog();
-    });
+    // super.initState();
+    // _quizBrain = QuizBrain();
+    // _preQuiz = PreQuizGame();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
+    //   _preIdNow = _preQuiz.id!;
+    //   _preIdServerNow = _preQuiz.idServer!;
+    //   showTest();
+    // });
+  }
+
+  Future<void> showTest() {
+    return showDialog<void>(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+            25,
+          )),
+          backgroundColor: const Color(0xff1542bf),
+          title: const FittedBox(
+            child:
+                Text('NEW TEST?', textAlign: TextAlign.center, style: kTitleTS),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('GO', style: kDialogButtonsTS),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('BACK', style: kDialogButtonsTS),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> showReadyDialog() {
@@ -142,17 +176,17 @@ class _GameScreenState extends State<GameScreen> {
                 DateTime.now(),
               )));
       _preIdServerNow = newData!.key!;
+    } else {
+      instance.get<PreQuizGameRepo>().insertPreQuizGame(
+          PreQuizGameEntityCompanion(
+              numQ: driff.Value(0),
+              sign: driff.Value(_preQuiz.sign!),
+              option: driff.Value(_preQuiz.option!),
+              dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
+      final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
+      // cap nhap lai id
+      _preIdNow = data.id;
     }
-    // them 1 prequiz moi
-    instance.get<PreQuizGameRepo>().insertPreQuizGame(
-        PreQuizGameEntityCompanion(
-            numQ: driff.Value(0),
-            sign: driff.Value(_preQuiz.sign!),
-            option: driff.Value(_preQuiz.option!),
-            dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
-    final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
-    // cap nhap lai id
-    _preIdNow = data.id;
     _quizBrain.makeQuiz(_preQuiz);
     _score = 0;
     _totalNumberOfQuizzes = 1;
@@ -175,16 +209,19 @@ class _GameScreenState extends State<GameScreen> {
           userId: instance.get<UserGlobal>().id!,
           answer: _quizBrain.quizAnswer,
           answerSelect: userChoose));
+    } else {
+      context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
+          preId: driff.Value(_preIdNow),
+          num1:
+              driff.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
+          sign: driff.Value(_preQuiz.sign!),
+          quiz: driff.Value(_quizBrain.quiz),
+          infoQuiz: driff.Value(userAnswer),
+          num2:
+              driff.Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
+          answer: driff.Value(_quizBrain.quizAnswer.toString()),
+          answerSelect: driff.Value(userChoose.toString())));
     }
-    context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
-        preId: driff.Value(_preIdNow),
-        num1: driff.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
-        sign: driff.Value(_preQuiz.sign!),
-        quiz: driff.Value(_quizBrain.quiz),
-        infoQuiz: driff.Value(userAnswer),
-        num2: driff.Value(_quizBrain.quiz.toString().split(" ")[2].toString()),
-        answer: driff.Value(_quizBrain.quizAnswer.toString()),
-        answerSelect: driff.Value(userChoose.toString())));
   }
 
   _updateScoreLoCal() {
@@ -282,7 +319,6 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorMainBlue,
       body: Column(
@@ -293,30 +329,27 @@ class _GameScreenState extends State<GameScreen> {
               showOutDialog();
             },
           ),
-          BlocBuilder<GameCubit, GameState>(builder: (context, state) {
-            return PortraitModeGame(
-              highscore: _highScore,
-              score: _score,
-              quizBrainObject: _quizBrain,
-              onTap: (int value) {
-                setState(() {
-                  userChoose = value;
-                });
-                _checkAnswer(value, context);
-                context.read<GameCubit>().changeDataAfterDoneQ(
-                    _score, falseChoose, _score, _totalNumberOfQuizzes);
-              },
-              trueQ: state.trueQ,
-              falseQ: falseChoose,
-              onFinished: () {
-                _endGame();
-                showFinishDiaLog();
-              },
-              controller: _controller,
-              quizNow: _totalNumberOfQuizzes,
-              size: data,
-            );
-          }),
+          // BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+          //   return PortraitModeGame(
+          //     highscore: _highScore,
+          //     score: _score,
+          //     quizBrainObject: _quizBrain,
+          //     onTap: (int value) {
+          //       userChoose = value;
+          //       _checkAnswer(value, context);
+          //       context.read<GameCubit>().changeDataAfterDoneQ(
+          //           _score, falseChoose, _score, _totalNumberOfQuizzes);
+          //     },
+          //     trueQ: state.trueQ,
+          //     falseQ: falseChoose,
+          //     onFinished: () {
+          //       _endGame();
+          //       showFinishDiaLog();
+          //     },
+          //     controller: _controller,
+          //     quizNow: _totalNumberOfQuizzes,
+          //   );
+          // }),
         ],
       ),
     );

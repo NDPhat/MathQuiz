@@ -41,7 +41,7 @@ class MathQuizApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             locale: context.locale,
             onGenerateRoute: Routers.generateRoute,
-            initialRoute: Routers.welcome,
+            initialRoute: Routers.splash,
           ));
     });
   }

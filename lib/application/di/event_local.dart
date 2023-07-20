@@ -1,6 +1,8 @@
 import 'package:math/data/remote/model/user_api_res.dart';
 
+import '../../data/local/driff/db/db_app.dart';
 import '../../data/model/user_global.dart';
+import '../../data/model/user_local.dart';
 import '../../main.dart';
 
 class UserEventLocal {
@@ -16,5 +18,11 @@ class UserEventLocal {
     instance.get<UserGlobal>().address = a.add;
     instance.get<UserGlobal>().dateOfBirth = a.birthDate;
     instance.get<UserGlobal>().password = a.password;
+  }
+
+  static void updateUserLocal(PlayerLocalEntityData a) {
+    instance.get<UserLocal>().id = a.id;
+    instance.get<UserLocal>().name = a.name;
+    instance.get<UserLocal>().imageLink = a.imageUser;
   }
 }

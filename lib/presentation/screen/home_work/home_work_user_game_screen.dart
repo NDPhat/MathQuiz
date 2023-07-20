@@ -233,7 +233,6 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -263,7 +262,6 @@ class _GameHWScreenState extends State<HomeWorkGameScreen> {
               falseQ: state.falseQ,
               totalQ: _preQuiz.numQ ?? 1,
               quizNow: state.qNow,
-              size: data,
               onFinished: () {
                 showMyDialog();
               },

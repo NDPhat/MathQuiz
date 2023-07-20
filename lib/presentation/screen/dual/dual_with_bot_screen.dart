@@ -330,7 +330,6 @@ class _BOTBattleScreenState extends State<BotDual> {
                     children: [
                       SizedBox(
                         child: PlayerDualScreen(
-                          size: size,
                           quizBrain: _quizBrain,
                           onTap: (int value) {
                             setState(() {

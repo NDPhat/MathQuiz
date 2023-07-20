@@ -6,14 +6,47 @@ class AuthenRepository {
     return prefs.getBool("flagAutoLogin") ?? false;
   }
 
+  Future<bool> loadHandleLocalAutoLoginApp() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("flagLocalAutoLogin") ?? false;
+  }
+
+  Future<bool> loadHandleFirstTimeUsingApp() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("flagIntro") ?? false;
+  }
+
   Future<String> getMailHandleAutoLoginApp() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("mail") ?? "";
   }
 
+  Future<int> getIDLocalHandleAutoLoginApp() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt("idLocal") ?? 1;
+  }
+
   void handleAutoLoginApp(bool value) {
     SharedPreferences.getInstance().then((prefs) {
       prefs.setBool("flagAutoLogin", value);
+    });
+  }
+
+  void handleLocalAutoLoginApp(bool value) {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool("flagLocalAutoLogin", value);
+    });
+  }
+
+  void handleFirstTimeUsingApp(bool value) {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool("flagIntro", value);
+    });
+  }
+
+  void handleIDLocalPlayerLoginApp(int value) {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setInt("idLocal", value);
     });
   }
 

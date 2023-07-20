@@ -1,5 +1,6 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
@@ -7,14 +8,12 @@ import '../../application/cons/text_style.dart';
 class UserTableScore extends StatelessWidget {
   UserTableScore(
       {Key? key,
-      required this.size,
       this.trueQ,
       this.falseQ,
       this.quizNow,
       this.onFinished,
       this.controller})
       : super(key: key);
-  final Size size;
   int? trueQ;
   int? falseQ;
   int? quizNow;
@@ -23,14 +22,14 @@ class UserTableScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: size.height*0.17,
+      height: 17.h,
       child: Stack(
         alignment: Alignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(top: size.height * 0.02),
-            padding:  EdgeInsets.only(top: size.height*0.01, left: size.width*0.05, right: size.width*0.05),
-            height: size.height * 0.15,
+            margin: EdgeInsets.only(top: 2.h),
+            padding: EdgeInsets.only(top: 1.h, left: 5.w, right: 5.w),
+            height: 15.h,
             decoration: const BoxDecoration(
                 color: colorBlueQuaternery,
                 borderRadius: BorderRadius.only(
@@ -42,8 +41,8 @@ class UserTableScore extends StatelessWidget {
                 Column(
                   children: [
                     const Icon(Icons.update),
-                    const SizedBox(
-                      height: 10,
+                    SizedBox(
+                      height: 0.1.h,
                     ),
                     (Text(
                       'Quiz : $quizNow',
@@ -52,7 +51,7 @@ class UserTableScore extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.08),
+                  padding: EdgeInsets.only(top: 8.h),
                   child: Row(
                     children: [
                       const Text(
@@ -85,8 +84,8 @@ class UserTableScore extends StatelessWidget {
                         )
                       ],
                     ),
-                    const SizedBox(
-                      height: 10,
+                    SizedBox(
+                      height: 0.1.h,
                     ),
                     Row(
                       children: [
@@ -97,8 +96,8 @@ class UserTableScore extends StatelessWidget {
                               Icons.close,
                               size: 8,
                             )),
-                        const SizedBox(
-                          width: 5,
+                        SizedBox(
+                          width: 0.05.w,
                         ),
                         Text(
                           falseQ.toString(),
@@ -112,7 +111,7 @@ class UserTableScore extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: size.height * 0.08),
+            margin: EdgeInsets.only(bottom: 8.h),
             child: CircleAvatar(
                 radius: 40,
                 backgroundColor: colorSystemWhite,

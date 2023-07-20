@@ -48,31 +48,32 @@ class PreQuizCubit extends Cubit<PreQuizState> {
 
   void addPreQuizGame(String sign, String option) async {
     try {
-      PreQuizGameAPIModel? dataServer;
       if (instance.get<UserGlobal>().onLogin == true) {
-        dataServer = await userAPIRepo.createPreQuizGame(PreQuizGameAPIReq(
-            numQ: 0,
-            status: "GOING",
-            sign: sign,
-            score: 0,
-            optionGame: option,
-            userID: instance.get<UserGlobal>().id,
-            dateSave: formatDateInput.format(
-              DateTime.now(),
-            )));
+        PreQuizGameAPIModel? dataServer =
+            await userAPIRepo.createPreQuizGame(PreQuizGameAPIReq(
+                numQ: 0,
+                status: "GOING",
+                sign: sign,
+                score: 0,
+                optionGame: option,
+                userID: instance.get<UserGlobal>().id,
+                dateSave: formatDateInput.format(
+                  DateTime.now(),
+                )));
+        emit(state.copyWith(
+            idServer: dataServer!.key, status: PreQuizStatus.success));
+      } else {
+        final entity = PreQuizGameEntityCompanion(
+            numQ: const Value(0),
+            sign: Value(sign),
+            option: Value(option),
+            dateSave: Value(formatDateInput.format(DateTime.now())));
+        //insert task
+        await preQuizLocalRepo.insertPreQuizGame(entity);
+        PreQuizGameEntityData dataLocal =
+            await preQuizLocalRepo.getLatestPreQuizGame();
+        emit(state.copyWith(id: dataLocal.id, status: PreQuizStatus.success));
       }
-      final entity = PreQuizGameEntityCompanion(
-          numQ: const Value(0),
-          sign: Value(sign),
-          option: Value(option),
-          dateSave: Value(formatDateInput.format(DateTime.now())));
-      //insert task
-      await preQuizLocalRepo.insertPreQuizGame(entity);
-      final data = await preQuizLocalRepo.getLatestPreQuizGame();
-      emit(state.copyWith(
-          id: data.id,
-          idServer: instance.get<UserGlobal>().onLogin! ? dataServer!.key : "0",
-          status: PreQuizStatus.success));
     } on Exception catch (e) {
       emit(state.copyWith(status: PreQuizStatus.error));
     }

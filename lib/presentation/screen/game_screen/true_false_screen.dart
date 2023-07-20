@@ -287,8 +287,6 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = MediaQuery.of(context).size;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -316,7 +314,6 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
               trueQ: state.trueQ,
               falseQ: falseChoose,
               quizNow: _totalNumberOfQuizzes,
-              size: data,
             );
           }),
         ],

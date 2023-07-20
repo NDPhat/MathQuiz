@@ -17,6 +17,7 @@ import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../data/local/repo/pre_test/pre_test_repo_impl.dart';
 import '../../data/local/repo/quiz_pra/quiz_game_repo.dart';
 import '../../data/local/repo/quiz_pra/quiz_game_repo_impl.dart';
+import '../../data/model/user_local.dart';
 import '../../data/remote/api/Repo_impl/api_user_repo_impl.dart';
 
 void initDBandLocalRepo() {
@@ -38,4 +39,5 @@ void initDBandLocalRepo() {
   instance.registerLazySingleton<UserAPIRepo>(() => UserAPIRepoImpl());
   instance.registerLazySingleton<AuthenRepository>(() => AuthenRepository());
   instance.registerLazySingleton<UserGlobal>(() => UserGlobal());
+  instance.registerLazySingleton<UserLocal>(() => UserLocal());
 }

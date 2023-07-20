@@ -43,7 +43,9 @@
   "choose sign": "Choose sign",
   "choose mode": "Choose mode",
   "puzzle": "Puzzle",
-  "connect": "Connect"
+  "connect": "Connect",
+  "login": "Login",
+  "skip":"Skip"
 
 
 }

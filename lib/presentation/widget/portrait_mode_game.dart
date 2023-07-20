@@ -4,6 +4,7 @@ import 'package:math/presentation/widget/answer_table.dart';
 import 'package:math/presentation/widget/quiz_body.dart';
 import 'package:math/presentation/widget/quiz_body_hw.dart';
 import 'package:math/presentation/widget/table_user_score.dart';
+import 'package:sizer/sizer.dart';
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
 
@@ -20,7 +21,6 @@ class PortraitModeGame extends StatelessWidget {
   final int quizNow;
   final QuizBrain quizBrainObject;
   final onTap;
-  final Size size;
   CountDownController? controller;
   VoidCallback? onFinished;
   PortraitModeGame({
@@ -31,22 +31,19 @@ class PortraitModeGame extends StatelessWidget {
     required this.quizNow,
     required this.quizBrainObject,
     required this.onTap,
-    required this.size,
     this.controller,
     this.onFinished,
   });
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Container(
-          height: size.height * 0.9,
+        SizedBox(
+          height:90.h,
           child: Column(
             children: [
               UserTableScore(
-                size: size,
                 trueQ: trueQ,
                 controller: controller,
                 falseQ: falseQ,
@@ -54,8 +51,8 @@ class PortraitModeGame extends StatelessWidget {
                 quizNow: quizNow,
               ),
               Container(
-                padding: EdgeInsets.only(top: size.height * 0.02),
-                height: size.height * 0.73,
+                padding: EdgeInsets.only(top: 2.h),
+                height: 73.h,
                 color: colorMainTealPri,
                 child: Column(
                   children: [
@@ -70,15 +67,14 @@ class PortraitModeGame extends StatelessWidget {
                           Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(
-                                top: size.height * 0.2, left: size.width * 0.2),
+                                top: 20.h, left: 20.w),
                             child: QuizBodyHW(
-                                quizBrainObject: quizBrainObject, size: size),
+                                quizBrainObject: quizBrainObject),
                           ),
                         ],
                       ),
                     ),
                     AnswerTable(
-                      size: size,
                       quizBrainObject: quizBrainObject,
                       onTap: onTap,
                     )

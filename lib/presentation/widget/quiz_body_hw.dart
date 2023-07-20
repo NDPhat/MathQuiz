@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import '../../application/cons/color.dart';
-import '../../application/cons/text_style.dart';
 import '../../application/utils/make_quiz.dart';
 
 class QuizBodyHW extends StatelessWidget {
   final QuizBrain quizBrainObject;
-  final Size size;
 
-  QuizBodyHW({required this.quizBrainObject, required this.size});
+  QuizBodyHW({required this.quizBrainObject});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: size.height * 0.1,
+      height: 10.h,
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.05,
+          horizontal: 5.w,
         ),
         child: Text(
           quizBrainObject.quiz,

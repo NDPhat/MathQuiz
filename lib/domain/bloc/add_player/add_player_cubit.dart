@@ -1,9 +1,14 @@
+import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/application/di/event_local.dart';
 import 'package:math/data/remote/authen/authen.dart';
+import 'package:math/main.dart';
 
 import '../../../application/enum/add_player_status.dart';
+import '../../../data/local/driff/db/db_app.dart';
 import '../../../data/local/repo/player_local/player_local_repo.dart';
+import '../../../data/model/user_local.dart';
 part 'add_player_state.dart';
 
 class AddPlayerCubit extends Cubit<AddPlayerState> {
@@ -12,8 +17,44 @@ class AddPlayerCubit extends Cubit<AddPlayerState> {
   AddPlayerCubit({required PlayerLocalRepo playerLocalRepo})
       : playerLocalRepo = playerLocalRepo,
         super(AddPlayerState.initial());
-  void addPlayerToLocal() {}
-  void onTapAvaPlayer(bool value,String imageLink) {
-    emit(state.copyWith(choose: value,imageUser: imageLink));
+  void addPlayerToLocal(String imageLink) async {
+    if (checkName() == true) {
+      try {
+        int userID = await playerLocalRepo.insertPlayerLocal(
+            PlayerLocalEntityCompanion(
+                name: Value(state.name), imageUser: Value(imageLink)));
+        UserEventLocal.updateUserLocal(PlayerLocalEntityData(
+            id: userID, name: state.name, imageUser: imageLink));
+        instance.get<AuthenRepository>().handleLocalAutoLoginApp(true);
+        instance.get<AuthenRepository>().handleIDLocalPlayerLoginApp(userID);
+        emit(state.copyWith(status: AddPlayerStatus.success));
+      } on Exception catch (e) {
+        emit(state.copyWith(status: AddPlayerStatus.error));
+      }
+    } else {
+      emit(state.copyWith(status: AddPlayerStatus.error, nameError: nameMess));
+    }
+  }
+
+  void nameChanged(String name) {
+    state.name = name;
+  }
+
+  void imageChanged(String imageUser) {
+    state.imageUser = imageUser;
+  }
+
+  void clearData() {
+    emit(state.copyWith(status: AddPlayerStatus.clear, nameError: ""));
+  }
+
+  bool checkName() {
+    if (state.name != "") {
+      nameMess = "";
+      return true;
+    } else {
+      nameMess = "Enter this field";
+      return false;
+    }
   }
 }

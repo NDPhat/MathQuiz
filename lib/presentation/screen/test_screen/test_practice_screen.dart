@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/logic.dart';
 import '../../../data/model/pre_test_model.dart';
-import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../routers/navigation.dart';
 
@@ -49,7 +48,7 @@ class _TestScreenState extends State<TestScreen> {
         preTestLocalRepo: instance.get<PreTestLocalRepo>(),
         );
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      preTest = await ModalRoute.of(context)!.settings.arguments as PreTest;
+      preTest = ModalRoute.of(context)!.settings.arguments as PreTest;
       showReadyDialog();
     });
   }
@@ -183,7 +182,6 @@ class _TestScreenState extends State<TestScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorMainBlue,
       body: Column(
@@ -216,7 +214,6 @@ class _TestScreenState extends State<TestScreen> {
                   showMyDialog();
                 });
               },
-              size: data,
             );
           }),
         ],

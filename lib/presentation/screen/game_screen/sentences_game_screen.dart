@@ -10,14 +10,12 @@ import '../../../application/utils/format.dart';
 import '../../../application/utils/logic.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../data/remote/model/pre_quiz_game_req.dart';
 import '../../../data/remote/model/pre_quiz_game_sen_res.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../../data/remote/model/sentences_quiz_res.dart';
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/port_mode_game_sentences.dart';
-import '../../widget/portrait_mode_game.dart';
 import '../../widget/show_end_dialog.dart';
 
 class SentencesGameScreen extends StatefulWidget {
@@ -277,7 +275,6 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
         children: [
@@ -305,7 +302,6 @@ class _SentencesGameScreenState extends State<SentencesGameScreen> {
               onFinished: () {
                 showFinishDialog();
               },
-              size: data,
             );
           }),
         ],

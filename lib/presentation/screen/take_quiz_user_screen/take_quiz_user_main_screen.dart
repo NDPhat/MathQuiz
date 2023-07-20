@@ -9,8 +9,8 @@ import '../../routers/navigation.dart';
 import '../../widget/item_take_quiz_widget.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
-class PracticeGameUserMainScreen extends StatelessWidget {
-  const PracticeGameUserMainScreen({Key? key}) : super(key: key);
+class TakeQuizUserScreen extends StatelessWidget {
+  const TakeQuizUserScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,23 +45,20 @@ class PracticeGameUserMainScreen extends StatelessWidget {
                   ItemTakeQuiz(
                       bgColor: colorMainTealPri,
                       onPress: () {
-                        Navigator.pushNamed(
-                            context, Routers.takeEasyQuiz);
+                        Navigator.pushNamed(context, Routers.takeEasyQuiz);
                       },
                       textTitle: "easy"),
                   sizedBox,
                   ItemTakeQuiz(
                       onPress: () {
-                        Navigator.pushNamed(
-                            context, Routers.takeMediumQuiz);
+                        Navigator.pushNamed(context, Routers.takeMediumQuiz);
                       },
                       bgColor: colorMainBlue,
                       textTitle: "medium"),
                   sizedBox,
                   ItemTakeQuiz(
                     onPress: () {
-                      Navigator.pushNamed(
-                          context, Routers.takeHardQuiz);
+                      Navigator.pushNamed(context, Routers.takeHardQuiz);
                     },
                     textTitle: 'hard',
                     bgColor: colorErrorPrimary,
