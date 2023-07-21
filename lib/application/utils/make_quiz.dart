@@ -15,6 +15,19 @@ class QuizBrain {
   String quizTrueFalse = "TRUE";
   var listAnswer = [0, 0, 0, 0];
   List<int> listPos = [];
+  List<int> listWriteNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  List<int> listWriteAndCountNum = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  List<List<int>> listWriteMissingNum = [
+    [0, 1, 2],
+    [1, 2, 3],
+    [2, 3, 4],
+    [3, 4, 5],
+    [4, 5, 6],
+    [5, 6, 7],
+    [6, 7, 8],
+    [7, 8, 9]
+  ];
+  List<List<int>> listAnswerMatchNumber = [];
   List<int> columnTarget1 = [];
   List<int> listNumPuzzle1 = [];
   List<int> columnTarget2 = [];
@@ -24,6 +37,7 @@ class QuizBrain {
   List<String> listQuizDD = [];
   String _quiz = '';
   Random _random = Random();
+
   void makeQuiz(PreQuizGame preQuiz) {
     int firstNumber = _random.nextInt(10);
     int secondNumber = _random.nextInt(10);
@@ -604,6 +618,33 @@ class QuizBrain {
     } while (count != 5);
   }
 
+  void makeListMatchNum() {
+    int count = 0;
+    do {
+      List<int> listNow = [];
+      int anwser1 = 1;
+      int anwser2 = 1;
+      int anwser3 = 1;
+
+      anwser1 = _random.nextInt(9) + 1;
+      listNow.add(anwser1);
+      do {
+        anwser2 = _random.nextInt(9) + 1;
+      } while (anwser2 == anwser1);
+      listNow.add(anwser2);
+      do {
+        anwser3 = _random.nextInt(9) + 1;
+      } while (anwser3 == anwser1 || anwser3 == anwser2);
+      listNow.add(anwser3);
+      listAnswerMatchNumber.add(listNow);
+      count++;
+    } while (count != 10);
+  }
+
+  get listWriteNumber => listWriteNum;
+  get listWriteMissingNumber => listWriteMissingNum;
+  get listWriteAndCountNumber => listWriteAndCountNum;
+  get listMatchNumber => listAnswerMatchNumber;
   get quizAnswer => _quizAnswer;
   get getQuizTrueFalse => quizTrueFalse;
   get getQuizMissing => hiddenNum;

@@ -53,11 +53,15 @@ class OptionGameModeScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               BlocListener<PreQuizCubit, PreQuizState>(
+                                  listenWhen: (pre, now) {
+                                    return now.optionGame == "input";
+                                  },
                                   listener: (context, state) {
                                     if (state.status == PreQuizStatus.error) {
                                     } else if (state.status ==
                                         PreQuizStatus.success) {
-                                      Navigator.pushNamed(context, Routers.game,
+                                      Navigator.pushNamed(
+                                          context, Routers.enterAnswerGame,
                                           arguments: PreQuizGame(
                                             id: state.id,
                                             numQ: 0,
@@ -91,12 +95,15 @@ class OptionGameModeScreen extends StatelessWidget {
                                 height: 5.h,
                               ),
                               BlocListener<PreQuizCubit, PreQuizState>(
+                                  listenWhen: (pre, now) {
+                                    return now.optionGame == "true/false";
+                                  },
                                   listener: (context, state) {
                                     if (state.status == PreQuizStatus.error) {
                                     } else if (state.status ==
                                         PreQuizStatus.success) {
                                       Navigator.pushNamed(
-                                          context, Routers.trueFalse,
+                                          context, Routers.tfGame,
                                           arguments: PreQuizGame(
                                             id: state.id,
                                             numQ: 0,
@@ -130,12 +137,15 @@ class OptionGameModeScreen extends StatelessWidget {
                                 height: 5.h,
                               ),
                               BlocListener<PreQuizCubit, PreQuizState>(
+                                  listenWhen: (pre, now) {
+                                    return now.optionGame == "missing";
+                                  },
                                   listener: (context, state) {
                                     if (state.status == PreQuizStatus.error) {
                                     } else if (state.status ==
                                         PreQuizStatus.success) {
                                       Navigator.pushNamed(
-                                          context, Routers.findMissing,
+                                          context, Routers.missingGame,
                                           arguments: PreQuizGame(
                                             id: state.id,
                                             numQ: 0,

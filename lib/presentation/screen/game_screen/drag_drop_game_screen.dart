@@ -3,10 +3,8 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/text_style.dart';
-import 'package:math/presentation/widget/button_custom.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/make_quiz.dart';
-import '../../../data/model/item_value_puzzle.dart';
 import '../../../data/model/make_quiz.dart';
 import '../../../data/model/user_global.dart';
 import '../../../main.dart';
@@ -30,9 +28,10 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
   int falseChoose = 0;
   bool userAnswer = true;
   String _preIdServerNow = "";
+  bool playerAgain = false;
   final CountDownController _controller = CountDownController();
-  List<String> listQuiz = [];
-  List<int> listAnswer = [];
+  List<ItemValueConnect> listQuiz = [];
+  List<ItemValueConnect> listAnswer = [];
   List<String> listSign = [];
   @override
   void initState() {
@@ -93,42 +92,37 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
     setState(() {
       _quizBrain.makeQuizDragDrop(_preQuiz);
     });
+
     listAnswer = _quizBrain.getListAnswerDD;
     listQuiz = _quizBrain.getListQuizDD;
+    listQuiz.shuffle();
+    listAnswer.shuffle();
     for (int i = 0; i < 5; i++) {
       listSign.add(_preQuiz.sign!);
     }
   }
 
-  void playAgain() {}
-
-  int calAnswer(int a, int b, String sign) {
-    switch (sign) {
-      case '+':
-        return a + b;
-      case '-':
-        return a - b;
-      case 'x':
-        return a * b;
-      case '/':
-        {
-          return (a ~/ b);
-        }
+  void checkEndGame() {
+    if (listQuiz.isEmpty) {
+      _controller.pause();
+      showFinishDiaLog();
     }
-    return a + b;
   }
 
-  bool checkEmpty(List<ItemValuePuzzle> list) {
-    for (int i = 0; i < list.length; i++) {
-      if (list[i].value == null) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  bool checkAnswer() {
-    return false;
+  void playAgain() {
+    _score = 0;
+    listAnswer.clear();
+    listQuiz.clear();
+    setState(() {
+      _quizBrain.makeQuizDragDrop(_preQuiz);
+    });
+    playerAgain = true;
+    _controller.reset();
+    _controller.start();
+    listAnswer = _quizBrain.getListAnswerDD;
+    listQuiz = _quizBrain.getListQuizDD;
+    listQuiz.shuffle();
+    listAnswer.shuffle();
   }
 
   Future<void> showOutDialog() {
@@ -199,6 +193,7 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
               onPressed: () {
                 Navigator.pop(context);
                 playAgain();
+                playerAgain = false;
               },
               child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
             )
@@ -278,7 +273,11 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
                   textFormat: CountdownTextFormat.S,
                   autoStart: false,
                   onStart: () {},
-                  onComplete: showFinishDiaLog,
+                  onComplete: () {
+                    if (playerAgain == false) {
+                      showFinishDiaLog();
+                    }
+                  },
                 )),
           ),
           Container(
@@ -298,73 +297,105 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: listQuiz.map((e) {
-                            return GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                width: size.width * 0.4,
-                                height: size.height * 0.1,
-                                decoration: const BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                    color: colorBGInput),
-                                child: Center(
-                                  child: Text(
-                                    e.toString(),
-                                    style: s16f700ColorGreyTe,
+                            return Draggable(
+                                feedback: Container(
+                                  width: size.width * 0.4,
+                                  height: size.height * 0.1,
+                                  decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      color: colorBGInput),
+                                  child: Center(
+                                    child: Text(
+                                      e.quiz.toString(),
+                                      style: s16f700ColorGreyTe,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
+                                data: e.value,
+                                childWhenDragging: SizedBox(
+                                  width: size.width * 0.4,
+                                  height: size.height * 0.1,
+                                ),
+                                child: e.accepting == true
+                                    ? SizedBox(
+                                        width: size.width * 0.4,
+                                        height: size.height * 0.1,
+                                      )
+                                    : Container(
+                                        width: size.width * 0.4,
+                                        height: size.height * 0.1,
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                            color: colorBGInput),
+                                        child: Center(
+                                          child: Text(
+                                            e.quiz.toString(),
+                                            style: s16f700ColorGreyTe,
+                                          ),
+                                        ),
+                                      ));
                           }).toList()),
                     ),
                     SizedBox(
                       width: size.width * 0.4,
                       height: size.height * 0.6,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: listAnswer.map((e) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            width: size.width * 0.4,
-                            height: size.height * 0.1,
-                            decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                color: colorBGInput),
-                            child: Center(
-                              child: Text(
-                                e.toString(),
-                                style: s16f700ColorGreyTe,
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList()),
+                            return DragTarget(
+                              builder: (context, candidateData, rejectedData) {
+                                return e.accepting == true
+                                    ? SizedBox(
+                                        width: size.width * 0.4,
+                                        height: size.height * 0.1,
+                                      )
+                                    : Container(
+                                        width: size.width * 0.4,
+                                        height: size.height * 0.1,
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                            color: colorBGInput),
+                                        child: Center(
+                                          child: Text(
+                                            e.value.toString(),
+                                            style: s16f700ColorGreyTe,
+                                          ),
+                                        ),
+                                      );
+                              },
+                              onWillAccept: (data) {
+                                return data == e.value;
+                              },
+                              onAccept: (data) {
+                                _score++;
+                                setState(() {
+                                  e.accepting = true;
+                                  int index = listQuiz.indexWhere(
+                                      (element) => element.value == data);
+                                  listQuiz[index].accepting = true;
+                                  listQuiz.removeAt(index);
+                                  listAnswer.remove(e);
+                                });
+                                checkEndGame();
+                              },
+                            );
+                          }).toList()),
                     ),
                   ],
                 ),
-                SizedBox(height: size.height*0.05,),
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RoundedButton(
-                        press: () {
-                          _controller.pause();
-                          if (checkAnswer() == true) {
-                            showFinishDiaLog();
-                          } else {
-                            showErrorForm();
-                          }
-                        },
-                        color: colorMainBlue,
-                        width: size.width * 0.5,
-                        height: size.height * 0.05,
-                        child: const Center(
-                            child: Text(
-                          "CHECK",
-                          style: s16f700ColorSysWhite,
-                        ))),
+                    SizedBox(
+                      width: size.width * 0.5,
+                      height: size.height * 0.05,
+                    ),
                     GestureDetector(
                       child: const CircleAvatar(
                         radius: 20,
@@ -382,4 +413,11 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
       ),
     );
   }
+}
+
+class ItemValueConnect {
+  String? quiz;
+  int value;
+  bool accepting;
+  ItemValueConnect({required this.value, this.accepting = false, this.quiz});
 }

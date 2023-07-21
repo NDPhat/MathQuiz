@@ -61,7 +61,9 @@ class PreQuizCubit extends Cubit<PreQuizState> {
                   DateTime.now(),
                 )));
         emit(state.copyWith(
-            idServer: dataServer!.key, status: PreQuizStatus.success));
+            optionGame: option,
+            idServer: dataServer!.key,
+            status: PreQuizStatus.success));
       } else {
         final entity = PreQuizGameEntityCompanion(
             numQ: const Value(0),
@@ -72,7 +74,10 @@ class PreQuizCubit extends Cubit<PreQuizState> {
         await preQuizLocalRepo.insertPreQuizGame(entity);
         PreQuizGameEntityData dataLocal =
             await preQuizLocalRepo.getLatestPreQuizGame();
-        emit(state.copyWith(id: dataLocal.id, status: PreQuizStatus.success));
+        emit(state.copyWith(
+            optionGame: option,
+            id: dataLocal.id,
+            status: PreQuizStatus.success));
       }
     } on Exception catch (e) {
       emit(state.copyWith(status: PreQuizStatus.error));

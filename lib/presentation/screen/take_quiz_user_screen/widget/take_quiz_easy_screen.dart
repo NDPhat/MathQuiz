@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
+import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/item_quiz_easy.dart';
 import 'package:sizer/sizer.dart';
 
@@ -39,7 +40,9 @@ class TakeQuizEasyScreen extends StatelessWidget {
                     children: [
                       ItemTakeQuizEasy(
                         bgColor: Colors.yellow,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.writeNumGame);
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,
@@ -55,7 +58,9 @@ class TakeQuizEasyScreen extends StatelessWidget {
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.purpleAccent,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.writeAndCountNumGame);
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,
@@ -76,7 +81,9 @@ class TakeQuizEasyScreen extends StatelessWidget {
                     children: [
                       ItemTakeQuizEasy(
                         bgColor: Colors.green,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.writeMissing);
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,
@@ -93,7 +100,9 @@ class TakeQuizEasyScreen extends StatelessWidget {
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.pink,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.matchNumber);
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,

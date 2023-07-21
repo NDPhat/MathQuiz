@@ -23,8 +23,14 @@ import 'package:math/presentation/screen/check_answer/check_answer_hw.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_prac_screen.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
 import 'package:math/presentation/screen/game_screen/drag_drop_game_screen.dart';
+import 'package:math/presentation/screen/game_screen/easy_game/match_number_game_screen.dart';
+import 'package:math/presentation/screen/game_screen/easy_game/write_and_count_game_screen.dart';
+import 'package:math/presentation/screen/game_screen/easy_game/write_missing_number_game_screen.dart';
+import 'package:math/presentation/screen/game_screen/easy_game/write_number_game_screen.dart';
+import 'package:math/presentation/screen/game_screen/enter_answer_game_screen.dart';
+import 'package:math/presentation/screen/game_screen/find_number_game_screen.dart';
 import 'package:math/presentation/screen/game_screen/puzzle_game_screen.dart';
-import 'package:math/presentation/screen/game_screen/sentences_game_screen.dart';
+import 'package:math/presentation/screen/game_screen/true_false_game_screen.dart';
 import 'package:math/presentation/screen/get_otp/get_otp_screen.dart';
 import 'package:math/presentation/screen/intro/intro_screen.dart';
 import 'package:math/presentation/screen/language_screen/language_screen.dart';
@@ -52,9 +58,6 @@ import '../screen/dual/dual_with_bot_screen.dart';
 import '../screen/dual/dual_with_player_screen.dart';
 import '../screen/dual/option_bot_dual.dart';
 import '../screen/forget_password/forget_password_screen.dart';
-import '../screen/game_screen/basic_game_screen.dart';
-import '../screen/game_screen/find_missing.dart';
-import '../screen/game_screen/true_false_screen.dart';
 import '../screen/history/history_pratice_screen.dart';
 import '../screen/history/history_test_screen.dart';
 import '../screen/home/guest_home_screen/home_guest_screen.dart';
@@ -65,8 +68,6 @@ import '../screen/option_game_mode/option_game_mode_screen.dart';
 import '../screen/profile_user/my_account/profile_myaccount.dart';
 import '../screen/take_quiz_user_screen/take_quiz_user_main_screen.dart';
 import '../screen/take_quiz_user_screen/widget/practice_number_game_user_main_screen.dart';
-import '../screen/take_quiz_user_screen/widget/practice_sentences_game_user_main_screen.dart';
-import '../screen/take_quiz_user_screen/widget/raw_screen.dart';
 import '../screen/take_quiz_user_screen/widget/take_quiz_easy_screen.dart';
 import '../screen/test_screen/test_practice_screen.dart';
 import '../screen/testing_user/testing_game_user_screen.dart';
@@ -78,10 +79,7 @@ class Routers {
   static const String login = '/login';
   static const String intro = '/intro';
   static const String doTestPra = '/doTestPra';
-  static const String game = '/game';
-  static const String raw = '/raw';
   static const String updateProfileUser = '/updateProfileUser';
-  static const String trueFalse = '/truefalse';
   static const String forgetPass = '/forgetPass';
   static const String battleMainScreen = '/battleMainScreen';
   static const String settingScreen = '/settingScreen';
@@ -90,18 +88,15 @@ class Routers {
   static const String battleHuman = '/battleHuman';
   static const String battleBOT = '/battleBOT';
   static const String optionBot = '/optionBot';
-  static const String findMissing = '/findMissing';
   static const String homeGuest = '/homeGuest';
   static const String homeUser = '/homeUser';
   static const String gameScreenUser = '/gameScreenUser';
-  static const String senGameScreen = '/senGameScreen';
   static const String historyPra = '/historyPra';
   static const String historyTest = '/historyTest';
   static const String historyHome = '/historyHome';
   static const String hwcardDetail = '/hwcardDetail';
   static const String testDetail = '/testDetail';
   static const String practicecardDetail = '/practicecardDetail';
-  static const String premake = '/premake';
   static const String detailTest = '/detailTest';
   static const String mainTestUser = '/mainTestUser';
   static const String testingUser = '/testingUser';
@@ -112,14 +107,21 @@ class Routers {
   static const String addPlayer = '/addPlayer';
   static const String checkAnswerPracUserGame = '/checkAnswerPracUserGame';
   static const String detailQuizGame = '/detailQuizGame';
-  static const String puzzleGame = '/puzzleGame';
   static const String takeEasyQuiz = '/takeEasyQuiz';
   static const String takeMediumQuiz = '/takeMediumQuiz';
   static const String takeHardQuiz = '/takeHardQuiz';
-  static const String dragDropGame = '/dragDropGame';
   static const String homeworkGame = '/homeworkGame';
   static const String languageScreen = '/languageScreen';
   static const String takeQuiz = '/takeQuiz';
+  static const String enterAnswerGame = '/enterAnswerGame';
+  static const String tfGame = '/tfGame';
+  static const String missingGame = '/missingGame';
+  static const String puzzleGame = '/puzzleGame';
+  static const String dragDropGame = '/dragDropGame';
+  static const String writeNumGame = '/writeNumGame';
+  static const String writeAndCountNumGame = '/writeAndCountNumGame';
+  static const String writeMissing = '/writeMissing';
+  static const String matchNumber = '/matchNumber';
   static const String practiceScreenUserGameNum = '/practiceScreenUserGameNum';
   static const String practiceMainScreenUserGameSen =
       '/practiceScreenUserGameSen';
@@ -137,20 +139,22 @@ class Routers {
         return IntroScreen();
       case splash:
         return SplashScreen();
-      case raw:
-        return DrawingNumberBoardGame();
       case languageScreen:
         return LanguageScreen();
-      case puzzleGame:
-        return PuzzleGameScreen();
       case takeEasyQuiz:
         return TakeQuizEasyScreen();
+      case writeNumGame:
+        return WriteNumberBoardGame();
+      case writeAndCountNumGame:
+        return WriteAndCountGameScreen();
+      case writeMissing:
+        return WriteMissingNumberGameScreen();
+      case matchNumber:
+        return MatchNumberGameScreen();
       case takeMediumQuiz:
         return TakeQuizMediumScreen();
       case takeHardQuiz:
         return TakeQuizHardScreen();
-      case dragDropGame:
-        return DragDropGameScreen();
       case checkAnswerPracUserGame:
         return CheckAnswerPracUserGameScreen();
       case notifiScreen:
@@ -171,8 +175,6 @@ class Routers {
             child: AddNotifiScreen());
       case hwcardDetail:
         return DetailItemCardHomeWork();
-      case practiceMainScreenUserGameSen:
-        return PracticeSenGameUserScreen();
       case practiceScreenUserGameNum:
         return PracticeNumberGameUserScreen();
       case takeQuiz:
@@ -241,34 +243,10 @@ class Routers {
                 preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
                 userAPIRepo: instance.get<UserAPIRepo>()),
             child: OptionGameModeScreen());
-      case game:
-        return BlocProvider(
-            create: (context) => GameCubit(
-                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                userAPIRepo: instance.get<UserAPIRepo>()),
-            child: GameScreen());
-      case trueFalse:
-        return BlocProvider(
-            create: (context) => GameCubit(
-                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                userAPIRepo: instance.get<UserAPIRepo>()),
-            child: const TrueFalseScreen());
       case battleMainScreen:
         return const DualMainScreen();
       case battleHuman:
         return const PlayerDual();
-      case findMissing:
-        return BlocProvider(
-            create: (context) => GameCubit(
-                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                userAPIRepo: instance.get<UserAPIRepo>()),
-            child: const FindMissing());
-      case senGameScreen:
-        return BlocProvider(
-            create: (context) => GameCubit(
-                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                userAPIRepo: instance.get<UserAPIRepo>()),
-            child: SentencesGameScreen());
       case doTestPra:
         return BlocProvider(
             create: (context) =>
@@ -290,6 +268,36 @@ class Routers {
             create: (context) => HistoryTestCubit(
                 preTestLocalRepo: instance.get<PreTestLocalRepo>()),
             child: const HistoryTest());
+      case enterAnswerGame:
+        return BlocProvider(
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
+            child: const EnterAnswerGameScreen());
+      case tfGame:
+        return BlocProvider(
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
+            child: const TrueFalseGameScreen());
+      case missingGame:
+        return BlocProvider(
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
+            child: const FindMissingNumberGameScreen());
+      case puzzleGame:
+        return BlocProvider(
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
+            child: const PuzzleGameScreen());
+      case dragDropGame:
+        return BlocProvider(
+            create: (context) => GameCubit(
+                quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                userAPIRepo: instance.get<UserAPIRepo>()),
+            child: const DragDropGameScreen());
       default:
         return SplashScreen();
     }

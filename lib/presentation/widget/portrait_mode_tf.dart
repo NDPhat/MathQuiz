@@ -31,63 +31,64 @@ class PortraitModeTF extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          color: colorSystemWhite,
-          padding: EdgeInsets.only(
-            top: 0.5.h,
-            bottom: 5.h,
-          ),
+        SizedBox(
+          height: 90.h,
           child: Column(
             children: [
               UserTableScore(
+                trueQ: trueQ,
                 controller: controller,
                 falseQ: falseQ,
                 onFinished: onFinished,
                 quizNow: quizNow,
               ),
-              Stack(
-                children: [
-                  Image.asset(
-                    "assets/images/table_quiz.png",
-                    fit: BoxFit.fill,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(
-                        top: 20.h, left: 20.w),
-                    child: QuizBodyHW(
-                        quizBrainObject: quizBrainObject),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height:8.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  RoundedButton(
-                    press: () {
-                      onTap('TRUE');
-                    },
-                    color: colorSystemWhite,
-                    width: 40.w,
-                    height: 8.h,
-                    child: Image.asset('assets/images/true.jpg'),
-                  ),
-                  SizedBox(
-                    width: 3.w,
-                  ),
-                  RoundedButton(
-                    press: () {
-                      onTap('FALSE');
-                    },
-                    color: colorSystemWhite,
-                    width: 40.w,
-                    height: 8.h,
-                    child: Image.asset('assets/images/false.jpg'),
-                  ),
-                ],
+              Container(
+                padding: EdgeInsets.only(top: 2.h),
+                height: 73.h,
+                color: colorMainTealPri,
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Image.asset(
+                          "assets/images/table_quiz.png",
+                          fit: BoxFit.fill,
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                          child: QuizBodyHW(quizBrainObject: quizBrainObject),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RoundedButton(
+                          press: () {
+                            onTap('TRUE');
+                          },
+                          color: colorSystemWhite,
+                          width: 42.w,
+                          height: 13.h,
+                          child: Image.asset('assets/images/true.png'),
+                        ),
+                        RoundedButton(
+                          press: () {
+                            onTap('FALSE');
+                          },
+                          color: colorSystemWhite,
+                          width: 42.w,
+                          height: 13.h,
+                          child: Image.asset('assets/images/false.png'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

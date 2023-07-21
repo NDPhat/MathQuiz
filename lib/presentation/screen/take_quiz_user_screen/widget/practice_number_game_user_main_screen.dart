@@ -40,13 +40,13 @@ class PracticeNumberGameUserScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routers.checkAnswerPracUserGame,
                       arguments: idResult);
                 },
-                child:  Text('go'.tr().toString(), style: kTitleTSSmall),
+                child: Text('go'.tr().toString(), style: kTitleTSSmall),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child:  Text('exit'.tr().toString(), style: kTitleTSSmall),
+                child: Text('exit'.tr().toString(), style: kTitleTSSmall),
               ),
             ],
           );
@@ -69,13 +69,11 @@ class PracticeNumberGameUserScreen extends StatelessWidget {
             width: size.width,
             child: Center(
               child: RoundedButton(
-                  press: () async {
-
-                  },
+                  press: () async {},
                   color: colorMainBlue,
                   width: size.width * 0.8,
                   height: size.height * 0.1,
-                  child:  Text(
+                  child: Text(
                     'join'.tr().toString(),
                     style: s30f500colorSysWhite,
                   )),
@@ -94,7 +92,7 @@ class PracticeNumberGameUserScreen extends StatelessWidget {
           ),
           SizedBox(
             height: size.height * 0.025,
-            child:  Center(
+            child: Center(
                 child: Text(
               'history'.tr().toString(),
               style: s20f700ColorErrorPro,
@@ -132,7 +130,7 @@ class PracticeNumberGameUserScreen extends StatelessWidget {
                             },
                             size: size,
                             backgroundColor: colorMainBlue,
-                            childRight:  Center(
+                            childRight: Center(
                                 child: Text(
                               'done'.tr().toString(),
                               style: s20f700ColorSysWhite,

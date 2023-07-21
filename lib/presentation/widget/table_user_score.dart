@@ -75,8 +75,8 @@ class UserTableScore extends StatelessWidget {
                               Icons.check,
                               size: 8,
                             )),
-                        const SizedBox(
-                          width: 5,
+                        SizedBox(
+                          width: 0.5.w,
                         ),
                         Text(
                           trueQ.toString(),
@@ -85,7 +85,7 @@ class UserTableScore extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: 0.1.h,
+                      height: 0.1.w,
                     ),
                     Row(
                       children: [
@@ -97,7 +97,7 @@ class UserTableScore extends StatelessWidget {
                               size: 8,
                             )),
                         SizedBox(
-                          width: 0.05.w,
+                          width: 0.5.w,
                         ),
                         Text(
                           falseQ.toString(),

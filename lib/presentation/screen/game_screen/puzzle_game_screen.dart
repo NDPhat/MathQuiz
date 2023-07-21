@@ -60,8 +60,8 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
         return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-            25,
-          )),
+                25,
+              )),
           backgroundColor: const Color(0xff1542bf),
           title: const FittedBox(
             child: Text('ARE YOU GUYS READY ?',
@@ -200,8 +200,8 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
         return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-            25,
-          )),
+                25,
+              )),
           backgroundColor: const Color(0xff1542bf),
           title: const FittedBox(
             child: Text('DO YOU WANT TO QUIT ?',
@@ -236,12 +236,12 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
         return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-            25,
-          )),
+                25,
+              )),
           backgroundColor: const Color(0xff1542bf),
           title: const FittedBox(
             child:
-                Text('GAME OVER', textAlign: TextAlign.center, style: kTitleTS),
+            Text('GAME OVER', textAlign: TextAlign.center, style: kTitleTS),
           ),
           content: Text('Score: $_score | 5',
               textAlign: TextAlign.center, style: kContentTS),
@@ -277,8 +277,8 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
         return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-            25,
-          )),
+                25,
+              )),
           backgroundColor: const Color(0xff1542bf),
           title: const FittedBox(
             child: Text('FILL ALL THE BLANK ?',
@@ -362,97 +362,97 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
                         children: listTarget1.map((e) {
                           return e.accepting == "1"
                               ? GestureDetector(
-                                  onTap: () {
-                                    int past2 = listTarget2.indexWhere(
-                                        (element) => element.accepting == "2");
-                                    int past1 = listTarget1.indexWhere(
-                                        (element) => element.accepting == "2");
-                                    setState(() {
-                                      if (past2 >= 0) {
-                                        listTarget2[past2].accepting = "1";
-                                      }
-                                      if (past1 >= 0) {
-                                        listTarget1[past1].accepting = "1";
-                                      }
-                                      e.accepting = "2";
-                                    });
-                                  },
-                                  child: Container(
-                                    width: size.width * 0.16,
-                                    height: size.height * 0.08,
-                                    decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                        color: colorGreyTetiary),
-                                    child: Center(
-                                      child: Text(
-                                        e.value.toString(),
-                                        style: s14f500colorSysWhite,
-                                      ),
-                                    ),
-                                  ),
-                                )
+                            onTap: () {
+                              int past2 = listTarget2.indexWhere(
+                                      (element) => element.accepting == "2");
+                              int past1 = listTarget1.indexWhere(
+                                      (element) => element.accepting == "2");
+                              setState(() {
+                                if (past2 >= 0) {
+                                  listTarget2[past2].accepting = "1";
+                                }
+                                if (past1 >= 0) {
+                                  listTarget1[past1].accepting = "1";
+                                }
+                                e.accepting = "2";
+                              });
+                            },
+                            child: Container(
+                              width: size.width * 0.16,
+                              height: size.height * 0.08,
+                              decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(20)),
+                                  color: colorGreyTetiary),
+                              child: Center(
+                                child: Text(
+                                  e.value.toString(),
+                                  style: s14f500colorSysWhite,
+                                ),
+                              ),
+                            ),
+                          )
                               : (e.accepting == "0"
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          int indexNum = listNumber.indexWhere(
-                                              (element) =>
-                                                  element.accepting == "1");
-                                          if (indexNum >= 0) {
-                                            e.value =
-                                                listNumber[indexNum].value;
-                                            e.accepting = "1";
-                                            // remove number vua chon
-                                            listNumber[indexNum].accepting =
-                                                "2";
-                                          }
-                                        });
-                                      },
-                                      child: Container(
-                                        width: size.width * 0.16,
-                                        height: size.height * 0.08,
-                                        decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                            color: colorBGInput),
-                                      ),
-                                    )
-                                  //2 co nghia la da dc chon
-                                  : GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          int indexNum = listNumber.indexWhere(
-                                              (element) =>
-                                                  element.accepting == "3");
-                                          setState(() {
-                                            if (indexNum >= 0) {
-                                              listNumber[indexNum].value =
-                                                  e.value;
-                                              listNumber[indexNum].accepting =
-                                                  "0";
-                                              e.accepting = "0";
-                                            } else {
-                                              e.accepting = "1";
-                                            }
-                                          });
-                                        });
-                                      },
-                                      child: Container(
-                                        width: size.width * 0.16,
-                                        height: size.height * 0.08,
-                                        decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                            color: colorMainBlue),
-                                        child: Center(
-                                          child: Text(
-                                            e.value.toString(),
-                                            style: s14f500colorSysWhite,
-                                          ),
-                                        ),
-                                      ),
-                                    ));
+                              ? GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                int indexNum = listNumber.indexWhere(
+                                        (element) =>
+                                    element.accepting == "1");
+                                if (indexNum >= 0) {
+                                  e.value =
+                                      listNumber[indexNum].value;
+                                  e.accepting = "1";
+                                  // remove number vua chon
+                                  listNumber[indexNum].accepting =
+                                  "2";
+                                }
+                              });
+                            },
+                            child: Container(
+                              width: size.width * 0.16,
+                              height: size.height * 0.08,
+                              decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(20)),
+                                  color: colorBGInput),
+                            ),
+                          )
+                          //2 co nghia la da dc chon
+                              : GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                int indexNum = listNumber.indexWhere(
+                                        (element) =>
+                                    element.accepting == "3");
+                                setState(() {
+                                  if (indexNum >= 0) {
+                                    listNumber[indexNum].value =
+                                        e.value;
+                                    listNumber[indexNum].accepting =
+                                    "0";
+                                    e.accepting = "0";
+                                  } else {
+                                    e.accepting = "1";
+                                  }
+                                });
+                              });
+                            },
+                            child: Container(
+                              width: size.width * 0.16,
+                              height: size.height * 0.08,
+                              decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(20)),
+                                  color: colorMainBlue),
+                              child: Center(
+                                child: Text(
+                                  e.value.toString(),
+                                  style: s14f500colorSysWhite,
+                                ),
+                              ),
+                            ),
+                          ));
                         }).toList(),
                       ),
                       //sign
@@ -477,90 +477,90 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
                         children: listTarget2.map((e) {
                           return e.accepting == "1"
                               ? GestureDetector(
-                                  onTap: () {
-                                    // onTap cac phan tu da duoc chon
-                                    // chi onTap duoc 1 phan tu
-                                    int past = listTarget2.indexWhere(
-                                        (element) => element.accepting == "2");
-                                    //tat onTap ben 1
-                                    int past1 = listTarget1.indexWhere(
-                                        (element) => element.accepting == "2");
+                            onTap: () {
+                              // onTap cac phan tu da duoc chon
+                              // chi onTap duoc 1 phan tu
+                              int past = listTarget2.indexWhere(
+                                      (element) => element.accepting == "2");
+                              //tat onTap ben 1
+                              int past1 = listTarget1.indexWhere(
+                                      (element) => element.accepting == "2");
 
-                                    setState(() {
-                                      if (past1 >= 0) {
-                                        listTarget1[past1].accepting = "1";
-                                      }
-                                      if (past >= 0) {
-                                        listTarget2[past].accepting = "1";
-                                      }
-                                      if (past != listTarget2.indexOf(e)) {
-                                        e.accepting = "2";
-                                      }
-                                    });
-                                  },
-                                  child: Container(
-                                    width: size.width * 0.16,
-                                    height: size.height * 0.08,
-                                    decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                        color: colorGreyTetiary),
-                                    child: Center(
-                                      child: Text(
-                                        e.value.toString(),
-                                        style: s14f500colorSysWhite,
-                                      ),
-                                    ),
-                                  ),
-                                )
+                              setState(() {
+                                if (past1 >= 0) {
+                                  listTarget1[past1].accepting = "1";
+                                }
+                                if (past >= 0) {
+                                  listTarget2[past].accepting = "1";
+                                }
+                                if (past != listTarget2.indexOf(e)) {
+                                  e.accepting = "2";
+                                }
+                              });
+                            },
+                            child: Container(
+                              width: size.width * 0.16,
+                              height: size.height * 0.08,
+                              decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(20)),
+                                  color: colorGreyTetiary),
+                              child: Center(
+                                child: Text(
+                                  e.value.toString(),
+                                  style: s14f500colorSysWhite,
+                                ),
+                              ),
+                            ),
+                          )
                               : (e.accepting == "0"
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          int indexNum = listNumber.indexWhere(
-                                              (element) =>
-                                                  element.accepting == "1");
-                                          if (indexNum >= 0) {
-                                            e.value =
-                                                listNumber[indexNum].value;
-                                            e.accepting = "1";
-                                            // remove number vua chon
-                                            listNumber[indexNum].accepting =
-                                                "2";
-                                          }
-                                        });
-                                      },
-                                      child: Container(
-                                        width: size.width * 0.16,
-                                        height: size.height * 0.08,
-                                        decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                            color: colorBGInput),
-                                      ),
-                                    )
-                                  //2 co nghia la da dc chon
-                                  : GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          e.accepting = "1";
-                                        });
-                                      },
-                                      child: Container(
-                                        width: size.width * 0.16,
-                                        height: size.height * 0.08,
-                                        decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                            color: colorMainBlue),
-                                        child: Center(
-                                          child: Text(
-                                            e.value.toString(),
-                                            style: s14f500colorSysWhite,
-                                          ),
-                                        ),
-                                      ),
-                                    ));
+                              ? GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                int indexNum = listNumber.indexWhere(
+                                        (element) =>
+                                    element.accepting == "1");
+                                if (indexNum >= 0) {
+                                  e.value =
+                                      listNumber[indexNum].value;
+                                  e.accepting = "1";
+                                  // remove number vua chon
+                                  listNumber[indexNum].accepting =
+                                  "2";
+                                }
+                              });
+                            },
+                            child: Container(
+                              width: size.width * 0.16,
+                              height: size.height * 0.08,
+                              decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(20)),
+                                  color: colorBGInput),
+                            ),
+                          )
+                          //2 co nghia la da dc chon
+                              : GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                e.accepting = "1";
+                              });
+                            },
+                            child: Container(
+                              width: size.width * 0.16,
+                              height: size.height * 0.08,
+                              decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(20)),
+                                  color: colorMainBlue),
+                              child: Center(
+                                child: Text(
+                                  e.value.toString(),
+                                  style: s14f500colorSysWhite,
+                                ),
+                              ),
+                            ),
+                          ));
                         }).toList(),
                       ),
                       //equal
@@ -614,127 +614,127 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
                       children: listNumber.map((e) {
                         return e.accepting == "0"
                             ? GestureDetector(
-                                onTap: () {
-                                  int past = listNumber.indexWhere(
-                                      (element) => element.accepting == "1");
-                                  int past3 = listNumber.indexWhere(
-                                      (element) => element.accepting == "3");
-                                  setState(() {
-                                    if (past >= 0) {
-                                      listNumber[past].accepting = "0";
-                                    }
-                                    if (past3 >= 0) {
-                                      listNumber[past3].accepting = "2";
-                                    }
-                                    e.accepting = "1";
-                                  });
-                                },
-                                child: Container(
-                                  width: size.width * 0.05,
-                                  height: size.height * 0.08,
-                                  decoration: const BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      color: colorBGInput),
-                                  child: Center(
-                                    child: Text(
-                                      e.value.toString(),
-                                      style: s16f700ColorGreyTe,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            // 1 la da dang duoc chon
+                          onTap: () {
+                            int past = listNumber.indexWhere(
+                                    (element) => element.accepting == "1");
+                            int past3 = listNumber.indexWhere(
+                                    (element) => element.accepting == "3");
+                            setState(() {
+                              if (past >= 0) {
+                                listNumber[past].accepting = "0";
+                              }
+                              if (past3 >= 0) {
+                                listNumber[past3].accepting = "2";
+                              }
+                              e.accepting = "1";
+                            });
+                          },
+                          child: Container(
+                            width: size.width * 0.05,
+                            height: size.height * 0.08,
+                            decoration: const BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(20)),
+                                color: colorBGInput),
+                            child: Center(
+                              child: Text(
+                                e.value.toString(),
+                                style: s16f700ColorGreyTe,
+                              ),
+                            ),
+                          ),
+                        )
+                        // 1 la da dang duoc chon
                             : (e.accepting == "1"
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        e.accepting = "0";
-                                      });
-                                    },
-                                    child: Container(
-                                      width: size.width * 0.08,
-                                      height: size.height * 0.08,
-                                      decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                          color: colorErrorPrimary),
-                                      child: Center(
-                                        child: Text(
-                                          e.value.toString(),
-                                          style: s16f700ColorSysWhite,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                // 2 co nghia la da duoc chon va mat di
-                                : (e.accepting == "2"
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          // tat cac onTap cua da chon va mat di
-                                          int past = listNumber.indexWhere(
-                                              (element) =>
-                                                  element.accepting == "3");
-                                          int past1 = listNumber.indexWhere(
-                                              (element) =>
-                                                  element.accepting == "1");
-                                          setState(() {
-                                            if (past >= 0) {
-                                              listNumber[past].accepting = "2";
-                                            }
-                                            if (past1 >= 0) {
-                                              listNumber[past1].accepting = "0";
-                                            }
-                                            e.accepting = "3";
-                                          });
-                                        },
-                                        child: Container(
-                                          width: size.width * 0.08,
-                                          height: size.height * 0.08,
-                                          decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20)),
-                                              color: colorBGInput),
-                                        ),
-                                      )
-                                    //3 la trang thai 2 va dang duoc chon
-                                    : GestureDetector(
-                                        onTap: () {
-                                          int indexTarget1 = listTarget1
-                                              .indexWhere((element) =>
-                                                  element.accepting == "2");
-                                          int indexTarget2 = listTarget2
-                                              .indexWhere((element) =>
-                                                  element.accepting == "2");
-                                          setState(() {
-                                            if (indexTarget1 >= 0) {
-                                              e.value =
-                                                  listTarget1[indexTarget1]
-                                                      .value;
-                                              e.accepting = "0";
-                                              listTarget1[indexTarget1]
-                                                  .accepting = "0";
-                                            } else if (indexTarget2 >= 0) {
-                                              e.value =
-                                                  listTarget2[indexTarget2]
-                                                      .value;
-                                              e.accepting = "0";
-                                              listTarget2[indexTarget2]
-                                                  .accepting = "0";
-                                            } else {
-                                              e.accepting = "2";
-                                            }
-                                          });
-                                        },
-                                        child: Container(
-                                          width: size.width * 0.08,
-                                          height: size.height * 0.08,
-                                          decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20)),
-                                              color: colorErrorPrimary),
-                                        ),
-                                      )));
+                            ? GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              e.accepting = "0";
+                            });
+                          },
+                          child: Container(
+                            width: size.width * 0.08,
+                            height: size.height * 0.08,
+                            decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(20)),
+                                color: colorErrorPrimary),
+                            child: Center(
+                              child: Text(
+                                e.value.toString(),
+                                style: s16f700ColorSysWhite,
+                              ),
+                            ),
+                          ),
+                        )
+                        // 2 co nghia la da duoc chon va mat di
+                            : (e.accepting == "2"
+                            ? GestureDetector(
+                          onTap: () {
+                            // tat cac onTap cua da chon va mat di
+                            int past = listNumber.indexWhere(
+                                    (element) =>
+                                element.accepting == "3");
+                            int past1 = listNumber.indexWhere(
+                                    (element) =>
+                                element.accepting == "1");
+                            setState(() {
+                              if (past >= 0) {
+                                listNumber[past].accepting = "2";
+                              }
+                              if (past1 >= 0) {
+                                listNumber[past1].accepting = "0";
+                              }
+                              e.accepting = "3";
+                            });
+                          },
+                          child: Container(
+                            width: size.width * 0.08,
+                            height: size.height * 0.08,
+                            decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(20)),
+                                color: colorBGInput),
+                          ),
+                        )
+                        //3 la trang thai 2 va dang duoc chon
+                            : GestureDetector(
+                          onTap: () {
+                            int indexTarget1 = listTarget1
+                                .indexWhere((element) =>
+                            element.accepting == "2");
+                            int indexTarget2 = listTarget2
+                                .indexWhere((element) =>
+                            element.accepting == "2");
+                            setState(() {
+                              if (indexTarget1 >= 0) {
+                                e.value =
+                                    listTarget1[indexTarget1]
+                                        .value;
+                                e.accepting = "0";
+                                listTarget1[indexTarget1]
+                                    .accepting = "0";
+                              } else if (indexTarget2 >= 0) {
+                                e.value =
+                                    listTarget2[indexTarget2]
+                                        .value;
+                                e.accepting = "0";
+                                listTarget2[indexTarget2]
+                                    .accepting = "0";
+                              } else {
+                                e.accepting = "2";
+                              }
+                            });
+                          },
+                          child: Container(
+                            width: size.width * 0.08,
+                            height: size.height * 0.08,
+                            decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(20)),
+                                color: colorErrorPrimary),
+                          ),
+                        )));
                       }).toList()),
                 ),
                 SizedBox(
@@ -757,9 +757,9 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
                         height: size.height * 0.05,
                         child: const Center(
                             child: Text(
-                          "CHECK",
-                          style: s16f700ColorSysWhite,
-                        ))),
+                              "CHECK",
+                              style: s16f700ColorSysWhite,
+                            ))),
                     GestureDetector(
                       child: const CircleAvatar(
                         radius: 20,
