@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/model/quiz_game_response.dart';
+import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../main.dart';
 import '../../widget/answer_widget.dart';
@@ -13,7 +14,6 @@ class CheckAnswerPracUserGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String id = ModalRoute.of(context)!.settings.arguments as String;
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
         children: [
@@ -24,14 +24,14 @@ class CheckAnswerPracUserGameScreen extends StatelessWidget {
               }),
           Container(
             padding: EdgeInsets.only(
-                top: size.height * 0.05,
-                left: size.width * 0.05,
-                right: size.width * 0.05,
-                bottom: size.height * 0.05),
+                top: 5.h,
+                left: 5.w,
+                right: 5.w,
+                bottom: 5.h),
             child: Column(
               children: [
                 SizedBox(
-                    height: size.height * 0.7,
+                    height: 70.h,
                     child: FutureBuilder<List<QuizGameAPIModel>?>(
                         future: instance
                             .get<UserAPIRepo>()
@@ -40,8 +40,8 @@ class CheckAnswerPracUserGameScreen extends StatelessWidget {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return SizedBox(
-                              height: size.height * 0.3,
-                              width: size.width * 0.3,
+                              height: 30.h,
+                              width: 30.w,
                               child: const Center(
                                 child: CircularProgressIndicator(
                                   color: colorMainBlue,
@@ -55,7 +55,6 @@ class CheckAnswerPracUserGameScreen extends StatelessWidget {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (context, index) {
                                   return AnswerWidget(
-                                    size: size,
                                     quiz: snapshot.data![index].quiz.toString(),
                                     answer:
                                         snapshot.data![index].answer.toString(),

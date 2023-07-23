@@ -5,6 +5,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:math/application/extension/to_get_model.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
@@ -21,13 +22,13 @@ class HistoryPractice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: SizedBox(
         child: Column(
           children: [
-            AppBarWidget(bgColor: colorSystemWhite,
+            AppBarWidget(
+              bgColor: colorSystemWhite,
               textTitle: 'HISTORY',
               onBack: () {
                 Navigator.pop(context);
@@ -53,10 +54,8 @@ class HistoryPractice extends StatelessWidget {
                           return pre.timeNow != now.timeNow;
                         }, builder: (context, state) {
                           return Container(
-                            padding: EdgeInsets.only(
-                                bottom: size.height * 0.02,
-                                top: size.height * 0.02),
-                            height: size.height * 0.18,
+                            padding: EdgeInsets.only(bottom: 2.h, top: 2.h),
+                            height: 18.h,
                             child: AnimationConfiguration.synchronized(
                               child: SlideAnimation(
                                   child: Column(
@@ -69,15 +68,15 @@ class HistoryPractice extends StatelessWidget {
                                       Navigator.pop(context);
                                     },
                                     color: colorErrorPrimary,
-                                    width: size.width * 0.8,
-                                    height: size.height * 0.06,
+                                    width: 80.w,
+                                    height: 6.h,
                                     child: const Text(
                                       'DELETE BY DAY',
                                       style: s16f500ColorSysWhite,
                                     ),
                                   ),
                                   SizedBox(
-                                    height: size.height * 0.02,
+                                    height: 2.h,
                                   ),
                                   RoundedButton(
                                     press: () {
@@ -87,8 +86,8 @@ class HistoryPractice extends StatelessWidget {
                                       Navigator.pop(context);
                                     },
                                     color: colorGreyTetiary,
-                                    width: size.width * 0.8,
-                                    height: size.height * 0.06,
+                                    width: 80.w,
+                                    height: 6.h,
                                     child: const Text(
                                       'DELETE ALL',
                                       style: s16f700ColorBlueMa,
@@ -104,17 +103,14 @@ class HistoryPractice extends StatelessWidget {
               },
             ),
             Container(
-              height: size.height * 0.8,
-              padding: EdgeInsets.only(
-                  top: size.height * 0.05,
-                  left: size.width * 0.05,
-                  right: size.width * 0.05,
-                  bottom: size.height * 0.05),
+              height: 80.h,
+              padding:
+                  EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w, bottom: 5.h),
               child: Column(
                 children: [
                   SizedBox(
-                    height: size.height * 0.04,
-                    width: size.width,
+                    height: 4.h,
+                    width: 100.w,
                     child: BlocBuilder<HistoryPraCubit, HistoryPraState>(
                         buildWhen: (previousState, state) {
                       return previousState.timeNow != state.timeNow;
@@ -124,7 +120,7 @@ class HistoryPractice extends StatelessWidget {
                         children: [
                           Container(
                             padding: EdgeInsets.only(
-                              left: size.width * 0.03,
+                              left: 3.w,
                             ),
                             child: const Text(
                               'DAY ',
@@ -142,14 +138,14 @@ class HistoryPractice extends StatelessWidget {
                     }),
                   ),
                   SizedBox(
-                    height: size.height * 0.02,
+                    height: 2.h,
                   ),
                   BlocBuilder<HistoryPraCubit, HistoryPraState>(
                       builder: (context, state) {
                     return DatePicker(
                       DateTime.now().subtract(const Duration(days: 6)),
-                      height: size.height * 0.15,
-                      width: size.width * 0.115,
+                      height: 15.h,
+                      width: 11.5.w,
                       initialSelectedDate: DateTime.now(),
                       selectionColor: colorMainBlue,
                       onDateChange: (date) {
@@ -184,9 +180,8 @@ class HistoryPractice extends StatelessWidget {
                                         builder: (_) {
                                           return Container(
                                             padding: EdgeInsets.only(
-                                                bottom: size.height * 0.02,
-                                                top: size.height * 0.02),
-                                            height: size.height * 0.18,
+                                                bottom: 2.h, top: 2.h),
+                                            height: 18.h,
                                             child: AnimationConfiguration
                                                 .staggeredList(
                                                     position: index,
@@ -209,9 +204,8 @@ class HistoryPractice extends StatelessWidget {
                                                           color:
                                                               colorErrorPrimary,
                                                           width:
-                                                              size.width * 0.8,
-                                                          height: size.height *
-                                                              0.06,
+                                                             80.w,
+                                                          height: 6.h,
                                                           child: const Text(
                                                             'DELETE',
                                                             style:
@@ -219,8 +213,7 @@ class HistoryPractice extends StatelessWidget {
                                                           ),
                                                         ),
                                                         SizedBox(
-                                                          height: size.height *
-                                                              0.02,
+                                                          height:2.h
                                                         ),
                                                         RoundedButton(
                                                           press: () {
@@ -239,9 +232,8 @@ class HistoryPractice extends StatelessWidget {
                                                           color:
                                                               colorGreyTetiary,
                                                           width:
-                                                              size.width * 0.8,
-                                                          height: size.height *
-                                                              0.06,
+                                                              80.w,
+                                                          height:6.h,
                                                           child: const Text(
                                                             'DETAIL',
                                                             style:

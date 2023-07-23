@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
+import 'package:sizer/sizer.dart';
 import '../../application/cons/text_style.dart';
 import '../../data/remote/model/pre_quiz_hw_response.dart';
 
 
 class WeakWidget extends StatelessWidget {
   const WeakWidget(
-      {Key? key, required this.size, this.dataResult, this.dataPre})
+      {Key? key, this.dataResult, this.dataPre})
       : super(key: key);
-  final Size size;
   final ResultQuizHWAPIModel? dataResult;
   final PreQuizHWResAPIModel? dataPre;
 
@@ -18,7 +18,7 @@ class WeakWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: size.height * 0.01),
+        SizedBox(height: 1.h),
         Container(
           alignment: Alignment.center,
           child: Text(
@@ -26,7 +26,7 @@ class WeakWidget extends StatelessWidget {
             style: s15f700ColorYellow,
           ),
         ),
-        SizedBox(height: size.height * 0.02),
+        SizedBox(height: 2.h),
         dataResult != null
             ? Container(
                 alignment: Alignment.center,

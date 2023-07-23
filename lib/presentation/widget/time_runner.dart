@@ -5,13 +5,11 @@ import '../../application/cons/color.dart';
 class Time_Runner extends StatelessWidget {
   const Time_Runner({
     super.key,
-    required this.size,
     required this.controller,
     this.onFinish,
   });
   final CountDownController controller;
   final onFinish;
-  final Size size;
 
   @override
   Widget build(BuildContext context) {

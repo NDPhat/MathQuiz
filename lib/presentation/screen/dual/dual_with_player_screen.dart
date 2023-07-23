@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/logic.dart';
@@ -154,8 +155,7 @@ class _HumanBattleScreenState extends State<PlayerDual> {
           )),
           backgroundColor: const Color(0xff1542bf),
           title: FittedBox(
-            child:
-                Text("$player", textAlign: TextAlign.center, style: kTitleTS),
+            child: Text(player, textAlign: TextAlign.center, style: kTitleTS),
           ),
           actions: [
             TextButton(
@@ -239,21 +239,19 @@ class _HumanBattleScreenState extends State<PlayerDual> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: Center(
         child: Column(
           children: [
-            AppBarWidget(
-                onBack: () {
-                  controller.pause();
-                  showOutDialog();
-                }),
+            AppBarWidget(onBack: () {
+              controller.pause();
+              showOutDialog();
+            }),
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.35,
+                  height: 35.h,
                   child: Column(
                     children: [
                       RotatedBox(
@@ -269,33 +267,30 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.2,
+                  height: 20.h,
                   child: Column(
                     children: [
                       SizedBox(
                         child: RotatedBox(
                             quarterTurns: -2,
                             child: Info_Player_Line(
-                                size: size,
                                 falsePlayer: _falsePlayer1,
                                 score: _score1,
                                 namePlayer: "Player 1")),
                       ),
                       Row(children: <Widget>[
-                        DivideLine(size: size),
+                        const DivideLine(),
                         Time_Runner(
                           onFinish: () {
                             if (startAgain == false) {
                               showEndGame();
                             }
                           },
-                          size: size,
                           controller: controller,
                         ),
-                        DivideLine(size: size)
+                        const DivideLine()
                       ]),
                       Info_Player_Line(
-                        size: size,
                         falsePlayer: _falsePlayer2,
                         score: _score2,
                         namePlayer: 'Player 2',
@@ -304,7 +299,7 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.35,
+                  height: 35.h,
                   child: Column(
                     children: [
                       PlayerDualScreen(

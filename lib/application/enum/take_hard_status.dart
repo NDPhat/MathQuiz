@@ -1,0 +1,1 @@
+enum TakeHardStatus { initial,success,save,error}

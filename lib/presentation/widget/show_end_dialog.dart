@@ -13,11 +13,11 @@ class ShowEndDialog extends StatelessWidget {
   final totalNumberOfQuizzes;
   final startGame;
 
-  ShowEndDialog(
-      {required this.score,
-      required this.totalNumberOfQuizzes,
-      required this.startGame,
-     });
+  ShowEndDialog({
+    required this.score,
+    required this.totalNumberOfQuizzes,
+    required this.startGame,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,6 @@ class ShowEndDialog extends StatelessWidget {
           return TextButton(
             onPressed: () {
               if (instance.get<UserGlobal>().onLogin == true) {
-
                 Navigator.pushNamed(context, Routers.homeUser);
               } else {
                 Navigator.pushNamed(context, Routers.homeGuest);

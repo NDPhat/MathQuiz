@@ -1,34 +1,35 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:math/application/utils/make_quiz.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
-import 'package:math/data/remote/model/pre_quiz_game_req.dart';
+import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 import 'package:math/data/remote/model/pre_quiz_game_sen_req.dart';
 import 'package:math/data/remote/model/quiz_game_req.dart';
 import 'package:math/data/remote/model/quiz_test_req.dart';
-
 import '../../../application/enum/game_status.dart';
 import '../../../data/local/driff/db/db_app.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../data/remote/model/detail_quiz_hw_req.dart';
-import '../../../data/remote/model/detail_quiz_hw_response.dart';
-import '../../../data/remote/model/pre_quiz_game_response.dart';
-import '../../../data/remote/model/quiz_game_response.dart';
-
 part 'game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
   final QuizGameLocalRepo quizPraLocalRepo;
+  final QuizTestLocalRepo quizTestLocalRepo;
   final UserAPIRepo userAPIRepo;
 
   GameCubit(
       {required QuizGameLocalRepo quizPraLocalRepo,
+      required QuizTestLocalRepo quizTestLocalRepo,
       required UserAPIRepo userAPIRepo})
       : quizPraLocalRepo = quizPraLocalRepo,
         userAPIRepo = userAPIRepo,
+        quizTestLocalRepo = quizTestLocalRepo,
         super(GameState.initial());
-  void addQuizToLocal(QuizGameEntityCompanion entityCompanion) {
+  void addQuizGameToLocal(QuizGameEntityCompanion entityCompanion) {
     quizPraLocalRepo.insertQuizGame(entityCompanion);
+  }
+
+  void addQuizMixToLocal(QuizTestEntityCompanion entityCompanion) {
+    quizTestLocalRepo.insertTest(entityCompanion);
   }
 
   void changeDataAfterDoneQ(int trueQ, int falseQ, int score, int quizNow) {
@@ -55,7 +56,7 @@ class GameCubit extends Cubit<GameState> {
     userAPIRepo.saveQuizDetailHW(data);
   }
 
-  void addQuizTesttoServer(QuizTestReq data) {
+  void addQuizTestToServer(QuizTestReq data) {
     userAPIRepo.createQuizTest(data);
   }
 
@@ -71,7 +72,7 @@ class GameCubit extends Cubit<GameState> {
     await userAPIRepo.deletePreQuizSenGame(id);
   }
 
-  void updatePreGameSenNowById(String id,PreQuizGameSenReq req) async {
-    await userAPIRepo.updatePreQuizSenGameByID(req,id);
+  void updatePreGameSenNowById(String id, PreQuizGameSenReq req) async {
+    await userAPIRepo.updatePreQuizSenGameByID(req, id);
   }
 }

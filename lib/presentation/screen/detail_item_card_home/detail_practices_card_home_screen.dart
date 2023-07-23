@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/chart_data_week.dart';
-import 'package:math/data/remote/model/detail_quiz_hw_response.dart';
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
 import 'package:math/data/remote/model/quiz_game_response.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/child_right_home_practices_input.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
+import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/utils/count_sign.dart';
@@ -21,7 +21,6 @@ class DetailItemCardPractices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String type = ModalRoute.of(context)!.settings.arguments as String;
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: SingleChildScrollView(
@@ -34,19 +33,16 @@ class DetailItemCardPractices extends StatelessWidget {
               },
             ),
             Container(
-              height: size.height * 0.9,
-              padding: EdgeInsets.only(
-                  left: size.width * 0.05, right: size.width * 0.05),
+              height: 90.h,
+              padding: EdgeInsets.only(left: 5.w, right: 5.w),
               child: Column(
                 children: [
                   LineContentItem(
-                      size: size,
                       title: 'data season'.tr().toString(),
                       icon: const Icon(Icons.calendar_month)),
                   Column(
                     children: [
                       ChildRightHomeInput(
-                        size: size,
                         deTail: true,
                         typeGame: type,
                       ),
@@ -58,7 +54,7 @@ class DetailItemCardPractices extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: size.height * 0.01,
+                    height: 1.h,
                   ),
                   Container(
                     height: 1,
@@ -69,14 +65,13 @@ class DetailItemCardPractices extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: size.height * 0.01,
+                    height: 1.h,
                   ),
                   LineContentItem(
-                      size: size,
                       title: 'data week'.tr().toString(),
                       icon: const Icon(Icons.calendar_view_week)),
                   SizedBox(
-                    height: size.height * 0.4,
+                    height: 40.h,
                     child: FutureBuilder<List<PreQuizGameAPIModel>?>(
                         future: instance
                             .get<UserAPIRepo>()
@@ -86,8 +81,8 @@ class DetailItemCardPractices extends StatelessWidget {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return SizedBox(
-                              height: size.height * 0.3,
-                              width: size.width * 0.3,
+                              height: 30.h,
+                              width: 30.w,
                               child: const Center(
                                 child: CircularProgressIndicator(
                                   color: colorMainBlue,
@@ -97,17 +92,15 @@ class DetailItemCardPractices extends StatelessWidget {
                             );
                           } else if (snapshot.hasData) {
                             return ListView.builder(
-
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
-                                snapshot.data!.sort(
-                                        (a, b) => a.dateSave!.compareTo(b.dateSave!));
+                                snapshot.data!.sort((a, b) =>
+                                    a.dateSave!.compareTo(b.dateSave!));
                                 return ItemAsyncDataDetailHW(
-                                  size: size,
                                   textTitle: 'Task ${index + 1}',
                                   listSIgn: '${snapshot.data![index].sign}',
                                   childRight: SizedBox(
-                                    width: size.width * 0.45,
+                                    width: 45.w,
                                     child: FutureBuilder<
                                             List<QuizGameAPIModel>?>(
                                         future: instance
@@ -241,7 +234,8 @@ class DetailItemCardPractices extends StatelessWidget {
                                           }
                                         }),
                                   ),
-                                  timeHW: "${snapshot.data![index].dateSave} ", type: "hw",
+                                  timeHW: "${snapshot.data![index].dateSave} ",
+                                  type: "hw",
                                 );
                               },
                             );

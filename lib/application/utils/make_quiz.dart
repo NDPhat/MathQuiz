@@ -1,11 +1,8 @@
 import 'dart:math';
-
 import 'package:math/data/model/make_quiz.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/main.dart';
-
 import '../../data/model/pre_join_homework.dart';
-import '../../data/remote/model/pre_quiz_hw_response.dart';
 import '../../data/remote/model/sentences_quiz_res.dart';
 
 class QuizBrain {
@@ -27,6 +24,7 @@ class QuizBrain {
     [6, 7, 8],
     [7, 8, 9]
   ];
+  List<String> listSignHardGame = [];
   List<List<int>> listAnswerMatchNumber = [];
   List<int> columnTarget1 = [];
   List<int> listNumPuzzle1 = [];
@@ -39,8 +37,8 @@ class QuizBrain {
   Random _random = Random();
 
   void makeQuiz(PreQuizGame preQuiz) {
-    int firstNumber = _random.nextInt(10);
-    int secondNumber = _random.nextInt(10);
+    int firstNumber = _random.nextInt(9) + 1;
+    int secondNumber = _random.nextInt(9) + 1;
     switch (preQuiz.sign) {
       case '+':
         _quizAnswer = firstNumber + secondNumber;
@@ -56,7 +54,7 @@ class QuizBrain {
         {
           var listNumber2 = [];
           if (firstNumber % secondNumber != 0) {
-            for (int i = 0; i <= secondNumber; i++) {
+            for (int i = 1; i <= secondNumber; i++) {
               if (firstNumber % i == 0) {
                 listNumber2.add(i);
               }
@@ -94,9 +92,8 @@ class QuizBrain {
   }
 
   void makeQuizFindMissing(PreQuizGame preQuiz) {
-    int firstNumber = _random.nextInt(10);
-    int secondNumber = _random.nextInt(10);
-
+    int firstNumber = _random.nextInt(9) + 1;
+    int secondNumber = _random.nextInt(9) + 1;
     switch (preQuiz.sign) {
       case '+':
         _quizAnswer = firstNumber + secondNumber;
@@ -112,7 +109,7 @@ class QuizBrain {
         {
           var listNumber2 = [];
           if (firstNumber % secondNumber != 0) {
-            for (int i = 0; i <= secondNumber; i++) {
+            for (int i = 1; i <= secondNumber; i++) {
               if (firstNumber % i == 0) {
                 listNumber2.add(i);
               }
@@ -129,16 +126,15 @@ class QuizBrain {
     int fake1 = 0;
     int fake2 = 0;
     int fake3 = 0;
+
+    fake1 = _quizAnswer + 10;
     do {
-      fake1 = _quizAnswer + 10 + 0;
-    } while (fake1 == _quizAnswer);
-    do {
-      fake2 = _quizAnswer + 10 + 0;
-    } while (fake2 == _quizAnswer || fake2 == fake1);
+      fake2 = _quizAnswer + _random.nextInt(9) + 1;
+    } while (fake2 == fake1);
 
     do {
-      fake3 = _quizAnswer + 10 + 0;
-    } while (fake3 == _quizAnswer || fake3 == fake1 || fake3 == fake2);
+      fake3 = _quizAnswer + _random.nextInt(9) + 1;
+    } while (fake3 == fake1 || fake3 == fake2);
     //0 hidden num1,1 hidden num2
     listAnswer = [];
 
@@ -161,8 +157,8 @@ class QuizBrain {
   void makeQuizTest() {
     List<String> _listOfSigns = ['+', '-', 'x', '/'];
     var selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
-    var firstNumber = _random.nextInt(20) + 1; // from 10 upto 19
-    var secondNumber = _random.nextInt(20) + 1; // from 1 upto 9  (9 included)
+    var firstNumber = _random.nextInt(9) + 1; // from 10 upto 19
+    var secondNumber = _random.nextInt(9) + 1; // from 1 upto 9  (9 included)
     switch (selectedSign) {
       case '+':
         _quizAnswer = firstNumber + secondNumber;
@@ -215,63 +211,7 @@ class QuizBrain {
     _quiz = '$firstNumber ${selectedSign} $secondNumber =';
   }
 
-  // tao test theo 1 sign
-  void makeQuizTestForSign() {
-    List<String> _listOfSigns = ['+', '-', 'x', '/'];
-    var selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
-    var firstNumber = _random.nextInt(20) + 1; // from 10 upto 19
-    var secondNumber = _random.nextInt(20) + 1; // from 1 upto 9  (9 included)
-    switch (selectedSign) {
-      case '+':
-        _quizAnswer = firstNumber + secondNumber;
-        break;
-      case '-':
-        secondNumber = _random.nextInt(firstNumber) + 1;
-        _quizAnswer = firstNumber - secondNumber;
-        break;
-      case 'x':
-        _quizAnswer = firstNumber * secondNumber;
-        break;
-      case '/':
-        {
-          var listNumber2 = [];
-          if (firstNumber % secondNumber != 0) {
-            for (int i = 1; i <= secondNumber; i++) {
-              if (firstNumber % i == 0) {
-                listNumber2.add(i);
-              }
-            }
-          }
-          if (listNumber2.isEmpty) {
-            secondNumber = firstNumber;
-          } else {
-            secondNumber = listNumber2[_random.nextInt(listNumber2.length)];
-          }
-          _quizAnswer = (firstNumber ~/ secondNumber);
-        }
-    }
-    int anwser1 = 1;
-    int anwser2 = 1;
-    int anwser3 = 1;
-    do {
-      anwser1 = _random.nextInt(_quizAnswer + 20) + 1;
-    } while (anwser1 == _quizAnswer);
-    do {
-      anwser2 = _random.nextInt(_quizAnswer + 20) + 1;
-    } while (anwser2 == _quizAnswer || anwser2 == anwser1);
-
-    do {
-      anwser3 = _random.nextInt(_quizAnswer + 20) + 1;
-    } while (
-        anwser3 == _quizAnswer || anwser3 == anwser1 || anwser3 == anwser2);
-    listAnswer = [];
-    listAnswer.add(anwser1);
-    listAnswer.add(anwser2);
-    listAnswer.add(anwser3);
-    listAnswer.add(_quizAnswer);
-    listAnswer.shuffle();
-    _quiz = '$firstNumber ${selectedSign} $secondNumber =';
-  }
+  // tao take_hard theo 1 sign
 
   void makeQuizBOT(String level) {
     List<String> _listOfSigns = ['+', '-', 'x', '/'];
@@ -349,8 +289,8 @@ class QuizBrain {
   }
 
   void makeQuizTrueFalse(PreQuizGame preQuiz) {
-    int firstNumber = _random.nextInt(10);
-    int secondNumber = _random.nextInt(10);
+    int firstNumber = _random.nextInt(9) + 1;
+    int secondNumber = _random.nextInt(9) + 1;
 
     switch (preQuiz.sign) {
       case '+':
@@ -526,15 +466,18 @@ class QuizBrain {
     listAnswer.shuffle();
   }
 
-  void makeQuizPuzzle(PreQuizGame preQuizGame) {
+  void makeQuizPuzzle() {
     listNumPuzzle1 = [];
     listNumPuzzle2 = [];
     listAnswerPuzzle = [];
+    listSignHardGame = [];
     int count = 0;
     do {
-      int firstNumber = _random.nextInt(10);
-      int secondNumber = _random.nextInt(10);
-      switch (preQuizGame.sign) {
+      List<String> _listOfSigns = ['+', '-', 'x', '/'];
+      String selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
+      int firstNumber = _random.nextInt(9) + 1;
+      int secondNumber = _random.nextInt(9) + 1;
+      switch (selectedSign) {
         case '+':
           _quizAnswer = firstNumber + secondNumber;
           break;
@@ -549,7 +492,7 @@ class QuizBrain {
           {
             var listNumber2 = [];
             if (firstNumber % secondNumber != 0) {
-              for (int i = 0; i <= secondNumber; i++) {
+              for (int i = 1; i <= secondNumber; i++) {
                 if (firstNumber % i == 0) {
                   listNumber2.add(i);
                 }
@@ -564,20 +507,21 @@ class QuizBrain {
           }
       }
       listNumPuzzle1.add(firstNumber);
-      columnTarget1.add(firstNumber);
       listNumPuzzle2.add(secondNumber);
-      columnTarget2.add(secondNumber);
+      listSignHardGame.add(selectedSign);
       listAnswerPuzzle.add(_quizAnswer);
       count++;
     } while (count != 5);
   }
 
-  void makeQuizDragDrop(PreQuizGame preQuizGame) {
+  void makeQuizDragDrop() {
     int count = 0;
     do {
-      int firstNumber = _random.nextInt(10);
-      int secondNumber = _random.nextInt(10);
-      switch (preQuizGame.sign) {
+      List<String> _listOfSigns = ['+', '-', 'x', '/'];
+      String selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
+      int firstNumber = _random.nextInt(9) + 1;
+      int secondNumber = _random.nextInt(9) + 1;
+      switch (selectedSign) {
         case '+':
           _quizAnswer = firstNumber + secondNumber;
           listQuizDD.add("$firstNumber + $secondNumber");
@@ -597,7 +541,7 @@ class QuizBrain {
           {
             var listNumber2 = [];
             if (firstNumber % secondNumber != 0) {
-              for (int i = 0; i <= secondNumber; i++) {
+              for (int i = 1; i <= secondNumber; i++) {
                 if (firstNumber % i == 0) {
                   listNumber2.add(i);
                 }
@@ -612,7 +556,6 @@ class QuizBrain {
             listQuizDD.add("$firstNumber / $secondNumber");
           }
       }
-
       listAnswerDD.add(_quizAnswer);
       count++;
     } while (count != 5);
@@ -645,6 +588,7 @@ class QuizBrain {
   get listWriteMissingNumber => listWriteMissingNum;
   get listWriteAndCountNumber => listWriteAndCountNum;
   get listMatchNumber => listAnswerMatchNumber;
+  get getListSignHardGame => listSignHardGame;
   get quizAnswer => _quizAnswer;
   get getQuizTrueFalse => quizTrueFalse;
   get getQuizMissing => hiddenNum;
@@ -655,6 +599,4 @@ class QuizBrain {
   get getListQuizDD => listQuizDD;
   get getListNumPuzzle1 => listNumPuzzle1;
   get getListNumPuzzle2 => listNumPuzzle2;
-  get getColumnTarget1 => columnTarget1;
-  get getColumnTarget2 => columnTarget2;
 }

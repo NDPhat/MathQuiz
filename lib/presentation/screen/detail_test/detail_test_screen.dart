@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
+import 'package:sizer/sizer.dart';
 import '../../../main.dart';
 import '../../widget/answer_widget.dart';
 import '../../widget/app_bar.dart';
@@ -11,24 +12,19 @@ class DetailTestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int preId = ModalRoute.of(context)!.settings.arguments as int;
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
         children: [
-          AppBarWidget(
-              onBack: () {
-                Navigator.pop(context);
-              }),
+          AppBarWidget(onBack: () {
+            Navigator.pop(context);
+          }),
           Container(
-            padding: EdgeInsets.only(
-                top: size.height * 0.06,
-                left: size.width * 0.05,
-                right: size.width * 0.05,
-                bottom: size.height * 0.05),
+            padding:
+                EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w, bottom: 5.h),
             child: Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.7,
+                  height: 70.h,
                   child: StreamBuilder<List<QuizTestEntityData>>(
                       stream: instance
                           .get<QuizTestLocalRepo>()
@@ -40,7 +36,6 @@ class DetailTestScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 return AnswerWidget(
                                   quiz: snapshot.data![index].quiz.toString(),
-                                  size: size,
                                   answer:
                                       snapshot.data![index].answer.toString(),
                                   answerSelect: snapshot

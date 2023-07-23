@@ -7,6 +7,7 @@ import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
+import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/utils/count_sign.dart';
@@ -21,7 +22,6 @@ class DetailTestHomeWork extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: SingleChildScrollView(
@@ -34,31 +34,29 @@ class DetailTestHomeWork extends StatelessWidget {
               },
             ),
             Container(
-              height: size.height * 0.9,
+              height: 90.h,
               padding: EdgeInsets.only(
-                  left: size.width * 0.05, right: size.width * 0.05),
+                  left: 5.w, right:5.w),
               child: Column(
                 children: [
                   LineContentItem(
-                      size: size,
                       title: 'data season'.tr().toString(),
                       icon: const Icon(Icons.calendar_month)),
                   Column(
                     children: [
                       ChildRightHW(
-                        type: "test",
-                        size: size,
+                        type: "take_hard",
                         deTail: true,
                       ),
                       const Center(
                           child: Text(
-                        'Data test result ',
+                        'Data take_hard result ',
                         style: s14f500ColorMainTe,
                       ))
                     ],
                   ),
                   SizedBox(
-                    height: size.height * 0.01,
+                    height:1.h,
                   ),
                   Container(
                     height: 1,
@@ -69,14 +67,13 @@ class DetailTestHomeWork extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: size.height * 0.01,
+                    height:1.h
                   ),
                   LineContentItem(
-                      size: size,
                       title: 'data detail'.tr().toString(),
                       icon: const Icon(Icons.calendar_view_week)),
                   SizedBox(
-                    height: size.height * 0.4,
+                    height:40.h,
                     child: FutureBuilder<List<PreTestAPIRes>?>(
                         future: instance
                             .get<UserAPIRepo>()
@@ -86,8 +83,8 @@ class DetailTestHomeWork extends StatelessWidget {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return SizedBox(
-                              height: size.height * 0.3,
-                              width: size.width * 0.3,
+                              height: 30.h,
+                              width: 30.w,
                               child: const Center(
                                 child: CircularProgressIndicator(
                                   color: colorMainBlue,
@@ -106,11 +103,10 @@ class DetailTestHomeWork extends StatelessWidget {
                                   score = score + element.score!;
                                 }
                                 return ItemAsyncDataDetailHW(
-                                  size: size,
                                   scoreAve: "$score/$totalQ",
                                   textTitle: 'Task ${index + 1}',
                                   childRight: SizedBox(
-                                    width: size.width * 0.45,
+                                    width: 45.w,
                                     child: FutureBuilder<List<QuizTestAPIRes>?>(
                                         future: instance
                                             .get<UserAPIRepo>()
@@ -244,7 +240,7 @@ class DetailTestHomeWork extends StatelessWidget {
                                         }),
                                   ),
                                   timeHW: "${snapshot.data![index].dateSave}",
-                                  type: "test",
+                                  type: "take_hard",
                                 );
                               },
                             );

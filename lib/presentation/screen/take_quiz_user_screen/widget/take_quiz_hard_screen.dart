@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/cons/color.dart';
+import 'package:math/data/model/pre_test_model.dart';
+import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/item_quiz_easy.dart';
 import 'package:sizer/sizer.dart';
-
+import '../../../../application/enum/take_hard_status.dart';
+import '../../../../domain/bloc/take_hard/take_hard_cubit.dart';
 import '../../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class TakeQuizHardScreen extends StatelessWidget {
@@ -40,7 +43,9 @@ class TakeQuizHardScreen extends StatelessWidget {
                     children: [
                       ItemTakeQuizEasy(
                         bgColor: Colors.yellow,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.puzzleGame);
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,
@@ -56,7 +61,9 @@ class TakeQuizHardScreen extends StatelessWidget {
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.purpleAccent,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.dragDropGame);
+                        },
                         childTop: Container(
                           height: 14.h,
                           width: 30.h,
@@ -75,22 +82,35 @@ class TakeQuizHardScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ItemTakeQuizEasy(
-                        bgColor: Colors.green,
-                        onPress: () {},
-                        childTop: Container(
-                          height: 14.h,
-                          width: 30.h,
-                          decoration: const BoxDecoration(
-                            color: colorSystemWhite,
-                            image: DecorationImage(
-                                image: AssetImage("assets/images/mix.png"),
-                                fit: BoxFit.scaleDown),
-                          ),
-                        ),
-                        textBot1: 'Mix',
-                        textBot2: 'numbers',
-                      ),
+                      BlocListener<TakeHardCubit, TakeHardState>(
+                          listener: (context, state) {
+                            if (state.status == TakeHardStatus.error) {
+                            } else if (state.status == TakeHardStatus.success) {
+                              Navigator.pushNamed(context, Routers.mixGame,
+                                  arguments: PreTest(
+                                      id: state.id,
+                                      keyServer: state.idServer,
+                                      sumQuiz: 0));
+                            }
+                          },
+                          child: ItemTakeQuizEasy(
+                            bgColor: Colors.green,
+                            onPress: () {
+                              context.read<TakeHardCubit>().addPreTest();
+                            },
+                            childTop: Container(
+                              height: 14.h,
+                              width: 30.h,
+                              decoration: const BoxDecoration(
+                                color: colorSystemWhite,
+                                image: DecorationImage(
+                                    image: AssetImage("assets/images/mix.png"),
+                                    fit: BoxFit.scaleDown),
+                              ),
+                            ),
+                            textBot1: 'Mix',
+                            textBot2: 'numbers',
+                          )),
                       ItemTakeQuizEasy(
                         bgColor: Colors.pink,
                         onPress: () {},

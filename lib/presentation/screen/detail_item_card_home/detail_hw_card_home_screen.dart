@@ -5,6 +5,7 @@ import 'package:math/data/model/chart_data_week.dart';
 import 'package:math/data/remote/model/detail_quiz_hw_response.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
+import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/utils/count_sign.dart';
@@ -20,7 +21,6 @@ class DetailItemCardHomeWork extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: SingleChildScrollView(
@@ -33,20 +33,18 @@ class DetailItemCardHomeWork extends StatelessWidget {
               },
             ),
             Container(
-              height: size.height * 0.9,
+              height: 90.h,
               padding: EdgeInsets.only(
-                  left: size.width * 0.05, right: size.width * 0.05),
+                  left: 05.w, right:5.w),
               child: Column(
                 children: [
                   LineContentItem(
-                      size: size,
                       title: 'data season'.tr().toString(),
                       icon: const Icon(Icons.calendar_month)),
                   Column(
                     children: [
                       ChildRightHW(
                         type: "hw",
-                        size: size,
                         deTail: true,
                       ),
                       const Center(
@@ -57,7 +55,7 @@ class DetailItemCardHomeWork extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: size.height * 0.01,
+                    height:1.h,
                   ),
                   Container(
                     height: 1,
@@ -68,22 +66,21 @@ class DetailItemCardHomeWork extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: size.height * 0.01,
+                    height: 1.h,
                   ),
                   LineContentItem(
-                      size: size,
                       title: 'data week'.tr().toString(),
                       icon: const Icon(Icons.calendar_view_week)),
                   SizedBox(
-                    height: size.height * 0.4,
+                    height:40.h,
                     child: FutureBuilder<List<PreQuizHWResAPIModel>?>(
                         future: instance.get<UserAPIRepo>().getALlPreQuizHW(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return SizedBox(
-                              height: size.height * 0.3,
-                              width: size.width * 0.3,
+                              height: 30.h,
+                              width: 30.w,
                               child: const Center(
                                 child: CircularProgressIndicator(
                                   color: colorMainBlue,
@@ -98,12 +95,11 @@ class DetailItemCardHomeWork extends StatelessWidget {
                                 snapshot.data!
                                     .sort((a, b) => a.week!.compareTo(b.week!));
                                 return ItemAsyncDataDetailHW(
-                                  size: size,
                                   textTitle:
                                       'Week ${snapshot.data![index].week}',
                                   listSIgn: '${snapshot.data![index].sign}',
                                   childRight: SizedBox(
-                                    width: size.width * 0.45,
+                                    width: 45.w,
                                     child: FutureBuilder<
                                             List<DetailQuizHWAPIModel>?>(
                                         future: instance

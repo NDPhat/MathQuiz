@@ -36,9 +36,7 @@ class HomeUserScreen extends StatelessWidget {
                     const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        StudentName(
-                          studentName: 'Player 1',
-                        ),
+                        StudentName(),
                         kHalfSizedBox,
                         Row(
                           children: [
@@ -98,7 +96,10 @@ class HomeUserScreen extends StatelessWidget {
                           title: 'Take Quiz',
                         ),
                         HomeCard(
-                          onPress: () {},
+                          onPress: () {
+                            Navigator.pushNamed(context, Routers.assignmentMainScreen);
+
+                          },
                           icon: 'assets/icons/assignment.svg',
                           title: 'Assignments',
                         ),
@@ -108,9 +109,12 @@ class HomeUserScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         HomeCard(
-                          onPress: () {},
+                          onPress: () {
+                            Navigator.pushNamed(
+                                context, Routers.battleMainScreen);
+                          },
                           icon: 'assets/icons/result.svg',
-                          title: 'Result',
+                          title: 'Game',
                         ),
                         HomeCard(
                           onPress: () {},
@@ -133,7 +137,8 @@ class HomeUserScreen extends StatelessWidget {
                                 .get<AuthenRepository>()
                                 .handleAutoLoginApp(false);
                             instance.get<UserGlobal>().onLogin = false;
-                            Navigator.pushNamed(context, Routers.chooseOptionUseApp);
+                            Navigator.pushNamed(
+                                context, Routers.chooseOptionUseApp);
                           },
                           icon: 'assets/icons/logout.svg',
                           title: 'Logout',

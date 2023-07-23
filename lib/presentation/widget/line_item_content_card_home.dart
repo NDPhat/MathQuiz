@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../application/cons/text_style.dart';
 
 class LineContentItem extends StatelessWidget {
   const LineContentItem({
     super.key,
-    required this.size,
     required this.title,
     required this.icon,
   });
 
-  final Size size;
   final String title;
   final Icon icon;
 
@@ -18,7 +17,7 @@ class LineContentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding:
-      EdgeInsets.only(top: size.height * 0.01),
+      EdgeInsets.only(top: 1.h),
       alignment: Alignment.centerLeft,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

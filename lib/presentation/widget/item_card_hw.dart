@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../application/cons/color.dart';
 import 'dart:math' as math;
@@ -6,12 +7,10 @@ import 'dart:math' as math;
 class ItemCardHW extends StatelessWidget {
   const ItemCardHW(
       {Key? key,
-      required this.size,
       required this.childLeft,
       required this.childRight,
       required this.backgroundColor, required this.onTap})
       : super(key: key);
-  final Size size;
   final Widget childLeft;
   final Widget childRight;
   final Color backgroundColor;
@@ -24,11 +23,11 @@ class ItemCardHW extends StatelessWidget {
       child: Card(
         color: backgroundColor,
         child: SizedBox(
-          height: size.height * 0.1,
+          height: 10.h,
           child: Row(
             children: [
               SizedBox(
-                width: size.width * 0.5,
+                width:50.w,
                 child: childLeft,
               ),
               Expanded(
@@ -41,7 +40,7 @@ class ItemCardHW extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: size.width * 0.2,
+                width: 20.w,
                 child: childRight,
               ),
             ],

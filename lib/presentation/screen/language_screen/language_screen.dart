@@ -17,7 +17,6 @@ class LanguageScreen extends StatefulWidget {
 class _LanguageScreenState extends State<LanguageScreen> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
         children: [
@@ -34,7 +33,6 @@ class _LanguageScreenState extends State<LanguageScreen> {
               size: 30,
               color: colorSystemYeloow,
             ),
-            size: size,
             textStyle: s16f700ColorGreyTe,
             onPress: () {
               setState(() {
@@ -49,7 +47,6 @@ class _LanguageScreenState extends State<LanguageScreen> {
               size: 30,
               color: colorSystemYeloow,
             ),
-            size: size,
             textStyle: s16f700ColorGreyTe,
             onPress: () {
               EasyLocalization.of(context)!

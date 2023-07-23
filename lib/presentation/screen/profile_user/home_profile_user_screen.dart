@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/remote/authen/authen.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../application/cons/color.dart';
 import '../../../data/model/user_global.dart';
@@ -12,15 +12,14 @@ import '../home/user_home_screen/widget/main_home_page_bg.dart';
 import 'my_account/profile_menu_widget.dart';
 
 class HomeProfileUserScreen extends StatelessWidget {
-  HomeProfileUserScreen({Key? key, required this.size});
-  Size size;
+  HomeProfileUserScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return MainPageHomePG(
         colorTextAndIcon: Colors.black,
         textNow: 'profile'.tr().toString(),
-        onPressHome: () {  },
+        onPressHome: () {},
         child: Expanded(
             child: SingleChildScrollView(
           child: Column(
@@ -28,8 +27,8 @@ class HomeProfileUserScreen extends StatelessWidget {
               Stack(
                 children: [
                   Container(
-                      width: size.width * 0.22,
-                      height: size.height * 0.1,
+                      width: 22.w,
+                      height: 10.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(60)),
                           border: Border.all(color: colorSystemYeloow),
@@ -52,11 +51,11 @@ class HomeProfileUserScreen extends StatelessWidget {
                       )),
                 ],
               ),
-              SizedBox(height: size.height * 0.01),
+              SizedBox(height: 1.h),
               Text('Mr.P', style: Theme.of(context).textTheme.headline4),
               Text('Coding is my life',
                   style: Theme.of(context).textTheme.bodyText2),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: 2.h),
 
               /// -- MENU
               SingleChildScrollView(
@@ -66,10 +65,9 @@ class HomeProfileUserScreen extends StatelessWidget {
                   onPress: () {
                     Navigator.pushNamed(context, Routers.updateProfileUser);
                   },
-                  size: size,
                 ),
               ),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: 2.h),
 
               ProfileMenuWidget(
                 title: "setting".tr().toString(),
@@ -77,16 +75,14 @@ class HomeProfileUserScreen extends StatelessWidget {
                 onPress: () {
                   Navigator.pushNamed(context, Routers.settingScreen);
                 },
-                size: size,
               ),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: 2.h),
               ProfileMenuWidget(
                 title: "record".tr().toString(),
                 icon: LineAwesomeIcons.record_vinyl,
                 onPress: () {},
-                size: size,
               ),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: 2.h),
               ProfileMenuWidget(
                 title: "logout".tr().toString(),
                 icon: LineAwesomeIcons.alternate_sign_out,
@@ -95,7 +91,6 @@ class HomeProfileUserScreen extends StatelessWidget {
                   instance.get<UserGlobal>().onLogin = false;
                   Navigator.pushNamed(context, Routers.chooseOptionUseApp);
                 },
-                size: size,
               ),
             ],
           ),

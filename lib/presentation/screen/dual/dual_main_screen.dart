@@ -1,136 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:math/data/model/option_quiz.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../application/cons/color.dart';
+import '../../../application/cons/constants.dart';
 import '../../../application/cons/text_style.dart';
 
 import '../../routers/navigation.dart';
 import '../../widget/app_bar.dart';
 import '../../widget/button_custom.dart';
+import '../../widget/item_take_quiz_widget.dart';
+import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class DualMainScreen extends StatelessWidget {
   const DualMainScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          AppBarWidget(
-              textTitle: 'CHOOSE ONE',
-              onBack: () {
-                Navigator.pop(context);
-              }),
-          SizedBox(
-            height: size.height * 0.8,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: size.height * 0.05,
-                  left: size.width * 0.02,
-                  right: size.width * 0.02,
-                  bottom: size.height * 0.05),
-              child: Center(
-                child: Column(
-                  children: [
-                    Image.asset(
-                      "assets/images/choose.jpg",
-                      width: size.width * 0.6,
-                    ),
-                    SizedBox(
-                      height: size.height * 0.1,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Bounce(
-                          duration: Duration(milliseconds: 200),
-                          onPressed: () {},
-                          child: Image.asset(
-                            "assets/images/gamemode.png",
-                            width: size.width * 0.3,
-                          ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                    color: colorSystemPurpleTertiary,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: RoundedButton(
-                                  press: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      Routers.optionBot,
-                                    );
-                                  },
-                                  color: colorSystemPurpleTertiary,
-                                  width: size.width * 0.55,
-                                  height: size.height * 0.15,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Image.asset('assets/images/robot.png'),
-                                      const Text(
-                                        'ROBOT',
-                                        style: s16f700ColorBlueMa,
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
-                            Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                    color: colorSystemPurpleTertiary,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: Column(
-                                  children: [
-                                    RoundedButton(
-                                      press: () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          Routers.battleHuman,
-                                        );
-                                      },
-                                      color: colorSystemPurpleTertiary,
-                                      width: size.width * 0.55,
-                                      height: size.height * 0.15,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Image.asset(
-                                              'assets/images/hmbattle.png'),
-                                          const Text(
-                                            'PLAYER BATTLE',
-                                            style: s16f700ColorBlueMa,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+      body: MainPageHomePG(
+        textNow: 'Battle game',
+        onPressHome: () {},
+        colorTextAndIcon: Colors.black,
+        child: Container(
+          width: 100.w,
+          height: 80.h,
+          padding: EdgeInsets.only(left: 5.w, right: 5.w),
+          decoration: const BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(
+                width: 100.w,
+                height: 10.h,
+                child: Center(
+                    child: Text("SELECT MODE GAME",
+                        style: GoogleFonts.abrilFatface(
+                            color: colorSystemWhite,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 25))),
               ),
-            ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ItemTakeQuiz(
+                      bgColor: colorMainTealPri,
+                      onPress: () {
+                        Navigator.pushNamed(context, Routers.optionBot);
+                      },
+                      textTitle: "BOT"),
+                  sizedBox,
+                  ItemTakeQuiz(
+                      onPress: () {
+                        Navigator.pushNamed(context, Routers.battleHuman);
+                      },
+                      bgColor: colorMainBlue,
+                      textTitle: "PLAYER"),
+                ],
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

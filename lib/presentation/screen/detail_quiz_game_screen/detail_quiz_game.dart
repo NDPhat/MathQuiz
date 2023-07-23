@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
+import 'package:sizer/sizer.dart';
 import '../../../main.dart';
 import '../../widget/answer_widget.dart';
 import '../../widget/app_bar.dart';
@@ -11,7 +12,6 @@ class DetailQuizGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int preId = ModalRoute.of(context)!.settings.arguments as int;
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
         children: [
@@ -21,16 +21,13 @@ class DetailQuizGame extends StatelessWidget {
             },
           ),
           Container(
-            height: size.height * 0.85,
-            padding: EdgeInsets.only(
-                top: size.height * 0.05,
-                left: size.width * 0.05,
-                right: size.width * 0.05,
-                bottom: size.height * 0.05),
+            height: 85.h,
+            padding:
+                EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w, bottom: 5.h),
             child: Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.75,
+                  height: 75.h,
                   child: StreamBuilder<List<QuizGameEntityData>>(
                       stream: instance
                           .get<QuizGameLocalRepo>()
@@ -41,7 +38,6 @@ class DetailQuizGame extends StatelessWidget {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
                                 return AnswerWidget(
-                                  size: size,
                                   quiz: snapshot.data![index].quiz.toString(),
                                   quizInfo:
                                       snapshot.data![index].infoQuiz ?? true,
@@ -57,7 +53,6 @@ class DetailQuizGame extends StatelessWidget {
                         }
                       }),
                 ),
-
               ],
             ),
           ),

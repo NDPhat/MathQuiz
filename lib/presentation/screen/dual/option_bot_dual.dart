@@ -1,62 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:math/data/model/level_game_bot.dart';
-
+import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/cons/text_style.dart';
-
 import '../../routers/navigation.dart';
-import '../../widget/app_bar.dart';
-import '../../widget/button_custom.dart';
+import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class OptionModeBotDual extends StatelessWidget {
+  const OptionModeBotDual({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
-      body: Column(
-        children: [
-          AppBarWidget(
-              textTitle: 'CHOOSE ONE',
-              onBack: () {
-                Navigator.pop(context);
-              }),
-          Padding(
-            padding: EdgeInsets.only(
-                top: size.height * 0.15, bottom: size.height * 0.05),
-            child: Center(
-              child: Column(
+      body: MainPageHomePG(
+        textNow: 'BOT battle',
+        onPressHome: () {},
+        colorTextAndIcon: Colors.black,
+        child: Container(
+          width: 100.w,
+          height: 80.h,
+          padding: EdgeInsets.only(left: 5.w, right: 5.w),
+          decoration: const BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(
+                width: 100.w,
+                height: 10.h,
+                child: Center(
+                    child: Text("SELECT MODE GAME",
+                        style: GoogleFonts.abrilFatface(
+                            color: colorSystemWhite,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 25))),
+              ),
+              const Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Level_Box(
-                    size: size,
-                    time: 5,
                     level: "easy",
-                    style: kTitleTSBold,
+                    time: 5,
+                    style: kTitleTSBold1,
+                    colorBG: colorMainTealPri,
                   ),
-                  SizedBox(
-                    height: size.height * 0.04,
-                  ),
+                  sizedBox,
                   Level_Box(
-                    size: size,
                     level: "medium",
                     time: 4,
                     style: kTitleTSBold1,
+                    colorBG: colorMainBlue,
                   ),
-                  SizedBox(
-                    height: size.height * 0.04,
-                  ),
+                  sizedBox,
                   Level_Box(
-                    size: size,
                     level: "hard",
                     time: 3,
-                    style: kTitleTSBold2,
+                    style: kTitleTSBold1,
+                    colorBG: colorErrorPrimary,
                   ),
                 ],
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -65,14 +74,14 @@ class OptionModeBotDual extends StatelessWidget {
 class Level_Box extends StatelessWidget {
   const Level_Box(
       {super.key,
-      required this.size,
       required this.level,
       required this.style,
-      required this.time});
+      required this.time,
+      required this.colorBG});
 
-  final Size size;
   final String level;
   final int time;
+  final Color colorBG;
   final TextStyle style;
 
   @override
@@ -83,9 +92,10 @@ class Level_Box extends StatelessWidget {
               arguments: LevelGameBot(level: level, time: time));
         },
         child: Container(
-            height: size.height * 0.17,
-            width: size.width * 0.9,
+            height: 17.h,
+            width: 80.w,
             decoration: BoxDecoration(
+                color: colorBG,
                 border: Border.all(color: colorGrayBG),
                 borderRadius: const BorderRadius.all(Radius.circular(15))),
             child: Center(child: Text(level.toUpperCase(), style: style))));

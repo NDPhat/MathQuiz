@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/text_style.dart';
+import 'package:math/data/model/user_local.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../../application/cons/constants.dart';
 import '../../../../../data/model/user_global.dart';
 import '../../../../../main.dart';
 
 class StudentName extends StatelessWidget {
-  const StudentName({Key? key, required this.studentName}) : super(key: key);
-  final String studentName;
+  const StudentName({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         const Text('Hi ', style: s16f700ColorSysWhite),
         Text(
-            instance.get<UserGlobal>().fullName != null
+            instance.get<UserGlobal>().onLogin == true
                 ? instance.get<UserGlobal>().fullName!
-                : studentName,
+                : instance.get<UserLocal>().name!,
             style: s16f700ColorSysWhite),
       ],
     );
@@ -30,7 +30,7 @@ class StudentClass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-        instance.get<UserGlobal>().lop != null
+        instance.get<UserGlobal>().onLogin == true
             ? "Class ${instance.get<UserGlobal>().lop!}"
             : studentClass,
         style: s16f700ColorSysWhite);
@@ -64,7 +64,7 @@ class StudentPicture extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8), // Border radius
         child: ClipOval(
-            child: instance.get<UserGlobal>().linkImage != null
+            child: instance.get<UserGlobal>().onLogin == true
                 ? Image.network(
                     instance.get<UserGlobal>().linkImage!,
                     fit: BoxFit.cover,

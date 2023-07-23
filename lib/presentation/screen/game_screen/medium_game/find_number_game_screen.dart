@@ -4,33 +4,36 @@ import 'package:drift/drift.dart' as driff;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../application/cons/color.dart';
-import '../../../application/cons/constants.dart';
-import '../../../application/utils/format.dart';
-import '../../../data/local/driff/db/db_app.dart';
-import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
-import '../../../data/model/make_quiz.dart';
-import '../../../data/model/user_global.dart';
-import '../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../data/remote/model/pre_quiz_game_req.dart';
-import '../../../data/remote/model/pre_quiz_game_response.dart';
-import '../../../data/remote/model/quiz_game_req.dart';
-import '../../../domain/bloc/game/game_cubit.dart';
-import '../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
-import '../../../application/utils/make_quiz.dart';
-import '../../../main.dart';
-import '../../routers/navigation.dart';
-import '../../widget/app_bar.dart';
-import '../../widget/portrait_mode_game.dart';
-import '../../widget/show_end_dialog.dart';
+import '../../../../application/cons/color.dart';
+import '../../../../application/cons/constants.dart';
+import '../../../../application/utils/format.dart';
+import '../../../../application/utils/logic.dart';
+import '../../../../data/local/driff/db/db_app.dart';
+import '../../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
+import '../../../../data/model/make_quiz.dart';
+import '../../../../data/model/user_global.dart';
+import '../../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../../data/remote/model/pre_quiz_game_req.dart';
+import '../../../../data/remote/model/pre_quiz_game_response.dart';
+import '../../../../data/remote/model/quiz_game_req.dart';
+import '../../../../domain/bloc/game/game_cubit.dart';
+import '../../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
+import '../../../../application/utils/make_quiz.dart';
+import '../../../../main.dart';
+import '../../../routers/navigation.dart';
+import '../../../widget/app_bar.dart';
+import '../../../widget/portrait_mode_game.dart';
+import '../../../widget/show_end_dialog.dart';
 
-class EnterAnswerGameScreen extends StatefulWidget {
-  const EnterAnswerGameScreen({Key? key}) : super(key: key);
+class FindMissingNumberGameScreen extends StatefulWidget {
+  const FindMissingNumberGameScreen({Key? key}) : super(key: key);
   @override
-  State<EnterAnswerGameScreen> createState() => _EnterAnswerGameScreenState();
+  State<FindMissingNumberGameScreen> createState() =>
+      _FindMissingNumberGameScreenState();
 }
 
-class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
+class _FindMissingNumberGameScreenState
+    extends State<FindMissingNumberGameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
@@ -42,6 +45,7 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = false;
   final CountDownController _controller = CountDownController();
+  bool playAgain = false;
 
   @override
   void initState() {
@@ -84,20 +88,7 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  if (instance.get<UserGlobal>().onLogin == true) {
-                    context
-                        .read<GameCubit>()
-                        .deletePreGameNow(_preIdServerNow.toString());
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, Routers.homeUser);
-                  } else {
-                    PreQuizCubit(
-                            preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-                            userAPIRepo: instance.get<UserAPIRepo>())
-                        .deletePreQuizGame(_preIdNow);
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, Routers.homeGuest);
-                  }
+                  deletePreGame();
                 },
                 child: const Text('BACK', style: kDialogButtonsTS),
               ),
@@ -108,9 +99,24 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
     );
   }
 
+  void deletePreGame() {
+    if (instance.get<UserGlobal>().onLogin == true) {
+      context.read<GameCubit>().deletePreGameNow(_preIdServerNow.toString());
+      Navigator.pop(context);
+      Navigator.pushNamed(context, Routers.homeUser);
+    } else {
+      PreQuizCubit(
+              preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+              userAPIRepo: instance.get<UserAPIRepo>())
+          .deletePreQuizGame(_preIdNow);
+      Navigator.pop(context);
+      Navigator.pushNamed(context, Routers.homeGuest);
+    }
+  }
+
   void _startGame(PreQuizGame _preQuiz) async {
     setState(() {
-      _quizBrain.makeQuiz(_preQuiz);
+      _quizBrain.makeQuizFindMissing(_preQuiz);
     });
     _score = 0;
     _totalNumberOfQuizzes = 1;
@@ -119,16 +125,10 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
   }
 
   void _makeNewQuiz() async {
-    _quizBrain.makeQuiz(_preQuiz);
+    _quizBrain.makeQuizFindMissing(_preQuiz);
   }
 
-  void _startGameAgain() async {
-    setState(() {
-      falseChoose = 0;
-      _score = 0;
-      _totalNumberOfQuizzes = 0;
-    });
-    // them tren server
+  Future<void> addNewDataPlayAgain() async {
     if (instance.get<UserGlobal>().onLogin == true) {
       PreQuizGameAPIModel? newData =
           await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
@@ -153,9 +153,23 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
       // cap nhap lai id
       _preIdNow = data.id;
     }
-    _quizBrain.makeQuiz(_preQuiz);
+  }
+
+  void _startGameAgain() {
+    setState(() {
+      falseChoose = 0;
+      _score = 0;
+      _totalNumberOfQuizzes = 0;
+    });
+    addNewDataPlayAgain();
+    // them tren server
+    playAgain = true;
+    _controller.reset();
+    _controller.start();
+    _quizBrain.makeQuizFindMissing(_preQuiz);
     _score = 0;
     _totalNumberOfQuizzes = 1;
+    playAgain = false;
   }
 
   void _resetScreen() {
@@ -176,7 +190,7 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
           answer: _quizBrain.quizAnswer,
           answerSelect: userChoose));
     } else {
-      context.read<GameCubit>().addQuizToLocal(QuizGameEntityCompanion(
+      context.read<GameCubit>().addQuizGameToLocal(QuizGameEntityCompanion(
           preId: driff.Value(_preIdNow),
           num1:
               driff.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
@@ -190,36 +204,32 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
     }
   }
 
-  _updateScoreLoCal() {
-    PreQuizCubit(
-            preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-            userAPIRepo: instance.get<UserAPIRepo>())
-        .updateScoreQuizGame(_score, _preIdNow, _totalNumberOfQuizzes);
-  }
-
-  void _endGame() {
+  updateScore() {
     if (instance.get<UserGlobal>().onLogin == true) {
       instance.get<UserAPIRepo>().updatePreQuizGameByID(
           PreQuizGameAPIReq(
               score: _score, status: "DONE", numQ: _totalNumberOfQuizzes),
           _preIdServerNow);
+    } else {
+      PreQuizCubit(
+              preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+              userAPIRepo: instance.get<UserAPIRepo>())
+          .updateScoreQuizGame(_score, _preIdNow, _totalNumberOfQuizzes);
     }
-    _updateScoreLoCal();
-    showFinishDiaLog();
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
     if (userChoice.toString().isNotEmpty) {
-      if (userChoice == _quizBrain.quizAnswer) {
+      if (userChoice == _quizBrain.getQuizMissing) {
         userAnswer = true;
         _saveData(context);
-        // playSound('correct-choice.wav');
+        playSound('correct-choice.wav');
         _score++;
         _resetScreen();
       } else {
         userAnswer = false;
         _saveData(context);
-        // playSound('wrong-choice.wav');
+        playSound('wrong-choice.wav');
         falseChoose++;
         _resetScreen();
       }
@@ -265,8 +275,14 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, Routers.homeUser);
+                updateScore();
+                if (instance.get<UserGlobal>().onLogin == true) {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeUser);
+                } else {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Routers.homeGuest);
+                }
               },
               child: const Center(child: Text('YES', style: kDialogButtonsTS)),
             ),
@@ -309,8 +325,10 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
               trueQ: state.trueQ,
               falseQ: falseChoose,
               onFinished: () {
-                _endGame();
-                showFinishDiaLog();
+                if (playAgain == false) {
+                  updateScore();
+                  showFinishDiaLog();
+                }
               },
               controller: _controller,
               quizNow: _totalNumberOfQuizzes,

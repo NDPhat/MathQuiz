@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:math/application/enum/update_profile_status.dart';
 import 'package:math/data/model/user_global.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +16,7 @@ import 'package:math/main.dart';
 import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/button_custom.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
+import 'package:sizer/sizer.dart';
 import '../../../../../application/cons/color.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -214,7 +214,6 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
   final List<String> genders = ['Male', 'Female'];
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
         children: [
@@ -228,10 +227,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
             child: SingleChildScrollView(
               reverse: true,
               child: Padding(
-                padding: EdgeInsets.only(
-                    top: size.height * 0.05,
-                    left: size.width * 0.02,
-                    right: size.width * 0.02),
+                padding: EdgeInsets.only(top: 5.h, left: 2.w, right: 2.w),
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   child: Column(
@@ -240,7 +236,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       Stack(
                         children: [
                           CircleAvatar(
-                              radius: size.width * 0.15,
+                              radius: 15.w,
                               child: FutureBuilder<void>(
                                 future: retrieveLostData(),
                                 builder: (BuildContext context,
@@ -284,14 +280,14 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: size.height * 0.02),
+                      SizedBox(height: 2.h),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           buildWhen: (pre, now) {
                         return pre.nameError != now.nameError;
                       }, builder: (context, state) {
                         return InputFieldWidget(
-                          width: size.width * 0.9,
-                          height: size.height * 0.12,
+                          width: 90.w,
+                          height: 12.h,
                           controller:
                               TextEditingController(text: state.fullName),
                           hintText: 'Your name',
@@ -310,16 +306,16 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           validateText: state.nameError,
                         );
                       }),
-                      SizedBox(height: size.height * 0.01),
+                      SizedBox(height: 1.h),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           builder: (context, state) {
                         return InputFieldWidget(
                           controller: TextEditingController(text: state.lop),
-                          width: size.width * 0.9,
                           readOnly: true,
                           nameTitle: "Your class",
-                          height: size.height * 0.12,
                           hintText: 'Class',
+                          width: 90.w,
+                          height: 12.h,
                           icon: const Icon(
                             LineAwesomeIcons.restroom,
                             color: Colors.black,
@@ -327,7 +323,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           ),
                         );
                       }),
-                      SizedBox(height: size.height * 0.02),
+                      SizedBox(height: 2.h),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           buildWhen: (pre, now) {
                         return pre.sex != now.sex;
@@ -376,8 +372,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                     .sexChanged(value ?? "Male");
                               },
                               buttonStyleData: ButtonStyleData(
-                                width: size.width * 0.9,
-                                height: size.height * 0.075,
+                                width: 90.w,
+                                height: 7.5.w,
                                 padding:
                                     const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
@@ -399,7 +395,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                               ),
                               dropdownStyleData: DropdownStyleData(
                                 maxHeight: 100,
-                                width: size.width * 0.45,
+                                width: 45.w,
                                 padding: null,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(14),
@@ -426,8 +422,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                 .phoneChanged(value);
                           },
                           controller: TextEditingController(text: state.phone),
-                          width: size.width * 0.9,
-                          height: size.height * 0.12,
+                          width: 90.w,
+                          height: 12.h,
                           typeText: TextInputType.number,
                           hintText: 'Your phone',
                           nameTitle: "Your phone",
@@ -440,7 +436,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           validateText: state.phoneError,
                         );
                       }),
-                      SizedBox(height: size.height * 0.01),
+                      SizedBox(height: 1.h),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           buildWhen: (pre, now) {
                         return pre.birthDateError != now.birthDateError ||
@@ -448,8 +444,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       }, builder: (context, state) {
                         return InputFieldWidget(
                           readOnly: true,
-                          width: size.width * 0.9,
-                          height: size.height * 0.12,
+                          width: 90.w,
+                          height: 12.h,
                           hintText: 'Your birthDate',
                           nameTitle: 'Your birthDate',
                           isHidden: state.birthDateError != "",
@@ -474,17 +470,17 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                               UpdateProfileCubit>(context),
                                           child: Padding(
                                             padding: EdgeInsets.only(
-                                              left: size.width * 0.05,
-                                              right: size.width * 0.05,
+                                              left: 5.w,
+                                              right: 5.w,
                                             ),
                                             child: SizedBox(
-                                              height: size.height * 0.3,
+                                              height: 30.h,
                                               child: Column(
                                                 children: [
                                                   SizedBox(
-                                                    height: size.height * 0.23,
+                                                    height: 23.h,
                                                     child: MyScrollDatePicker(
-                                                        widthScreen: size.width,
+                                                        widthScreen: 100.w,
                                                         scrollViewOptions:
                                                             const DatePickerScrollViewOptions(
                                                           year: ScrollViewDetailOptions(
@@ -520,8 +516,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                                       Navigator.pop(context);
                                                     },
                                                     color: colorMainBlue,
-                                                    width: size.width * 0.8,
-                                                    height: size.height * 0.06,
+                                                    width: 80.w,
+                                                    height: 6.h,
                                                     child: const Text(
                                                       'Done',
                                                       style:
@@ -539,14 +535,14 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                               TextEditingController(text: state.birthDate),
                         );
                       }),
-                      SizedBox(height: size.height * 0.01),
+                      SizedBox(height: 1.h),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           builder: (context, state) {
                         return InputFieldWidget(
                           readOnly: true,
                           controller: TextEditingController(text: state.email),
-                          width: size.width * 0.9,
-                          height: size.height * 0.12,
+                          width: 90.w,
+                          height: 12.h,
                           hintText: 'Your email',
                           nameTitle: 'Your email',
                           icon: const Icon(
@@ -556,14 +552,14 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           ),
                         );
                       }),
-                      SizedBox(height: size.height * 0.01),
+                      SizedBox(height: 1.h),
                       BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
                           buildWhen: (pre, now) {
                         return pre.addError != now.addError;
                       }, builder: (context, state) {
                         return InputFieldWidget(
-                          width: size.width * 0.9,
-                          height: size.height * 0.12,
+                          width: 90.w,
+                          height: 12.h,
                           hintText: 'Your address',
                           nameTitle: 'Your address',
                           isHidden: state.addError != "",
@@ -582,7 +578,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                           ),
                         );
                       }),
-                      SizedBox(height: size.height * 0.01),
+                      SizedBox(height: 1.h),
 
                       BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
                           listener: (context, state) {
@@ -638,11 +634,11 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                       linkImage, deleteHash, _imageFile);
                             },
                             color: colorMainBlue,
-                            width: size.width * 0.8,
-                            height: size.height * 0.08,
+                            width: 80.w,
+                            height: 8.h,
                             child: state.status == UpdateProfileStatus.onLoading
                                 ? SizedBox(
-                                    height: size.height * 0.1,
+                                    height: 10.h,
                                     child: const Center(
                                       child: CircularProgressIndicator(
                                         color: colorSystemWhite,

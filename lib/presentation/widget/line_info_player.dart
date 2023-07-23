@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
@@ -6,14 +7,12 @@ import '../../application/cons/text_style.dart';
 class Info_Player_Line extends StatelessWidget {
   const Info_Player_Line({
     super.key,
-    required this.size,
     required int falsePlayer,
     required int score,
     required this.namePlayer,
   })  : _falsePlayer = falsePlayer,
         _score = score;
 
-  final Size size;
   final int _falsePlayer;
   final int _score;
   final String namePlayer;
@@ -21,8 +20,7 @@ class Info_Player_Line extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
+      padding: EdgeInsets.only(left: 05.w, right: 05.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -30,7 +28,7 @@ class Info_Player_Line extends StatelessWidget {
               ? Row(
                   children: [
                     SizedBox(
-                      width: size.width * 0.4,
+                      width: 40.w,
                       child: Row(
                         children: [
                           Visibility(
@@ -61,14 +59,14 @@ class Info_Player_Line extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: size.width * 0.3,
+                      width: 30.w,
                       child: Text(
                         namePlayer,
                         style: s16f700ColorError,
                       ),
                     ),
                     SizedBox(
-                      width: size.width * 0.2,
+                      width: 20.w,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -76,9 +74,7 @@ class Info_Player_Line extends StatelessWidget {
                               _score.toString(),
                               style: s16f700ColorError,
                             ),
-                            SizedBox(
-                              width: size.width * 0.02,
-                            ),
+                            SizedBox(width: 2.w),
                             const CircleAvatar(
                               backgroundColor: colorErrorPrimary,
                               radius: 10,
@@ -95,16 +91,16 @@ class Info_Player_Line extends StatelessWidget {
                   child: Row(
                     children: [
                       Container(
-                        padding: EdgeInsets.only(left: size.width*0.1),
+                        padding: EdgeInsets.only(left: 10.w),
                         alignment: Alignment.center,
-                        width: size.width * 0.78,
+                        width: 78.w,
                         child: Text(
                           namePlayer,
                           style: s16f700ColorError,
                         ),
                       ),
                       SizedBox(
-                        width: size.width * 0.12,
+                        width: 12.w,
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -113,7 +109,7 @@ class Info_Player_Line extends StatelessWidget {
                                 style: s16f700ColorError,
                               ),
                               SizedBox(
-                                width: size.width * 0.01,
+                                width: 1.w,
                               ),
                               const CircleAvatar(
                                 backgroundColor: colorErrorPrimary,

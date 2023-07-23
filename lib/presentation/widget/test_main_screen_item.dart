@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
+import 'package:sizer/sizer.dart';
 import '../../application/cons/text_style.dart';
-
 
 class TestmainScreenItemCard extends StatelessWidget {
   const TestmainScreenItemCard(
-      {Key? key, required this.size, required this.dataResult,required this.index})
+      {Key? key, required this.dataResult, required this.index})
       : super(key: key);
-  final Size size;
   final int index;
   final PreTestAPIRes dataResult;
 
@@ -17,7 +16,7 @@ class TestmainScreenItemCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: size.height * 0.01),
+        SizedBox(height: 1.h),
         Container(
           alignment: Alignment.center,
           child: Text(
@@ -25,8 +24,8 @@ class TestmainScreenItemCard extends StatelessWidget {
             style: s15f700ColorYellow,
           ),
         ),
-        SizedBox(height: size.height * 0.02),
-             Container(
+        SizedBox(height: 2.h),
+        Container(
           alignment: Alignment.center,
           child: (Text(
             'SCORE : ${dataResult.score!} / ${dataResult.sumQ!}',

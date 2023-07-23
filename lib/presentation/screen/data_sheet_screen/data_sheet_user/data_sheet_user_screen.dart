@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/widget/card_data_item_home.dart';
+import 'package:sizer/sizer.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../data/remote/api/Repo/api_user_repo.dart';
@@ -15,11 +14,10 @@ import '../../../../main.dart';
 import '../../../widget/child_right_home_practices_input.dart';
 import '../../../widget/child_right_item_card_home.dart';
 import '../../../widget/line_item_content_card_home.dart';
-import 'widget/main_home_page_bg.dart';
+import '../../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class DataSheetUserScreen extends StatelessWidget {
-  DataSheetUserScreen({Key? key, required this.size});
-  Size size;
+  const DataSheetUserScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,6 @@ class DataSheetUserScreen extends StatelessWidget {
               Column(
                 children: [
                   LineContentItem(
-                    size: size,
                     title: 'home work'.tr().toString(),
                     icon: const Icon(LineAwesomeIcons.book),
                   ),
@@ -47,8 +44,8 @@ class DataSheetUserScreen extends StatelessWidget {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return SizedBox(
-                            height: size.height * 0.3,
-                            width: size.width * 0.3,
+                            height: 30.h,
+                            width: 30.w,
                             child: const Center(
                               child: CircularProgressIndicator(
                                 color: colorMainBlue,
@@ -69,14 +66,12 @@ class DataSheetUserScreen extends StatelessWidget {
                                 Navigator.pushNamed(
                                     context, Routers.hwcardDetail);
                               },
-                              size: size,
                               textTitle: 'HOME WORK',
                               totalQ: totalQ.toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
                               childRight: ChildRightHW(
                                 type: "hw",
-                                size: size,
                               ),
                               timeNow:
                                   DateFormat.yMMMEd().format(DateTime.now()));
@@ -85,7 +80,6 @@ class DataSheetUserScreen extends StatelessWidget {
                         }
                       }),
                   LineContentItem(
-                    size: size,
                     title: 'practice'.tr().toString(),
                     icon: const Icon(Icons.dashboard),
                   ),
@@ -99,8 +93,8 @@ class DataSheetUserScreen extends StatelessWidget {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return SizedBox(
-                            height: size.height * 0.3,
-                            width: size.width * 0.3,
+                            height: 30.h,
+                            width: 30.w,
                             child: const Center(
                               child: CircularProgressIndicator(
                                 color: colorMainBlue,
@@ -117,7 +111,6 @@ class DataSheetUserScreen extends StatelessWidget {
                             score = score + element.score!;
                           }
                           return ItemAsyncDataPageHome(
-                            size: size,
                             onTap: () {
                               Navigator.pushNamed(
                                   context, Routers.practicecardDetail,
@@ -128,7 +121,6 @@ class DataSheetUserScreen extends StatelessWidget {
                             trueAve:
                                 ((score / totalQ) * 100).toStringAsFixed(2),
                             childRight: ChildRightHomeInput(
-                              size: size,
                               typeGame: "input",
                             ),
                             timeNow: DateFormat.yMMMEd().format(DateTime.now()),
@@ -137,20 +129,20 @@ class DataSheetUserScreen extends StatelessWidget {
                         return Container();
                       }),
                   SizedBox(
-                    height: size.height * 0.02,
+                    height: 2.h,
                   ),
                   FutureBuilder<List<PreQuizGameAPIModel>?>(
                       future: instance
                           .get<UserAPIRepo>()
                           .getALlPreQuizGameByUidandOptionGame(
                               instance.get<UserGlobal>().id.toString(),
-                              "truefalse"),
+                              "true/false"),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return SizedBox(
-                            height: size.height * 0.3,
-                            width: size.width * 0.3,
+                            height: 30.h,
+                            width: 30.w,
                             child: const Center(
                               child: CircularProgressIndicator(
                                 color: colorMainBlue,
@@ -167,19 +159,17 @@ class DataSheetUserScreen extends StatelessWidget {
                             score = score + element.score!;
                           }
                           return ItemAsyncDataPageHome(
-                              size: size,
                               onTap: () {
                                 Navigator.pushNamed(
                                     context, Routers.practicecardDetail,
-                                    arguments: "truefalse");
+                                    arguments: "true/false");
                               },
                               textTitle: 'TRUE FALSE',
                               totalQ: totalQ.toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
                               childRight: ChildRightHomeInput(
-                                size: size,
-                                typeGame: "truefalse",
+                                typeGame: "true/false",
                               ),
                               timeNow:
                                   DateFormat.yMMMEd().format(DateTime.now()));
@@ -187,7 +177,7 @@ class DataSheetUserScreen extends StatelessWidget {
                         return Container();
                       }),
                   SizedBox(
-                    height: size.height * 0.02,
+                    height: 2.h,
                   ),
                   FutureBuilder<List<PreQuizGameAPIModel>?>(
                       future: instance
@@ -199,8 +189,8 @@ class DataSheetUserScreen extends StatelessWidget {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return SizedBox(
-                            height: size.height * 0.3,
-                            width: size.width * 0.3,
+                            height: 30.h,
+                            width: 30.w,
                             child: const Center(
                               child: CircularProgressIndicator(
                                 color: colorMainBlue,
@@ -217,7 +207,6 @@ class DataSheetUserScreen extends StatelessWidget {
                             score = score + element.score!;
                           }
                           return ItemAsyncDataPageHome(
-                              size: size,
                               onTap: () {
                                 Navigator.pushNamed(
                                     context, Routers.practicecardDetail,
@@ -228,7 +217,6 @@ class DataSheetUserScreen extends StatelessWidget {
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
                               childRight: ChildRightHomeInput(
-                                size: size,
                                 typeGame: "missing",
                               ),
                               timeNow:
@@ -237,8 +225,7 @@ class DataSheetUserScreen extends StatelessWidget {
                         return Container();
                       }),
                   LineContentItem(
-                    size: size,
-                    title: 'test'.tr().toString(),
+                    title: 'take_hard'.tr().toString(),
                     icon: const Icon(Icons.task),
                   ),
                   FutureBuilder<List<PreTestAPIRes>?>(
@@ -250,8 +237,8 @@ class DataSheetUserScreen extends StatelessWidget {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return SizedBox(
-                            height: size.height * 0.3,
-                            width: size.width * 0.3,
+                            height: 30.h,
+                            width: 30.w,
                             child: const Center(
                               child: CircularProgressIndicator(
                                 color: colorMainBlue,
@@ -268,7 +255,6 @@ class DataSheetUserScreen extends StatelessWidget {
                             score = score + element.score!;
                           }
                           return ItemAsyncDataPageHome(
-                              size: size,
                               onTap: () {
                                 Navigator.pushNamed(
                                     context, Routers.testDetail);
@@ -278,8 +264,7 @@ class DataSheetUserScreen extends StatelessWidget {
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
                               childRight: ChildRightHW(
-                                type: "test",
-                                size: size,
+                                type: "take_hard",
                               ),
                               timeNow:
                                   DateFormat.yMMMEd().format(DateTime.now()));

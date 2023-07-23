@@ -3,13 +3,13 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/text_style.dart';
-import '../../../application/cons/constants.dart';
-import '../../../application/utils/make_quiz.dart';
-import '../../../data/model/make_quiz.dart';
-import '../../../data/model/user_global.dart';
-import '../../../main.dart';
-import '../../routers/navigation.dart';
-import '../../widget/app_bar.dart';
+import 'package:sizer/sizer.dart';
+import '../../../../application/cons/constants.dart';
+import '../../../../application/utils/make_quiz.dart';
+import '../../../../data/model/user_global.dart';
+import '../../../../main.dart';
+import '../../../routers/navigation.dart';
+import '../../../widget/app_bar.dart';
 
 class DragDropGameScreen extends StatefulWidget {
   const DragDropGameScreen({Key? key}) : super(key: key);
@@ -21,27 +21,18 @@ class DragDropGameScreen extends StatefulWidget {
 class _DragDropGameScreenState extends State<DragDropGameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
-  int _highScore = 0;
-  late PreQuizGame _preQuiz;
-  int _preIdNow = 0;
   int userChoose = 1;
   int falseChoose = 0;
   bool userAnswer = true;
-  String _preIdServerNow = "";
   bool playerAgain = false;
   final CountDownController _controller = CountDownController();
   List<ItemValueConnect> listQuiz = [];
   List<ItemValueConnect> listAnswer = [];
-  List<String> listSign = [];
   @override
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-    _preQuiz = PreQuizGame();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
-      _preIdNow = _preQuiz.id!;
-      _preIdServerNow = _preQuiz.idServer!;
       showReadyDialog();
     });
   }
@@ -90,16 +81,19 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
 
   void initData() {
     setState(() {
-      _quizBrain.makeQuizDragDrop(_preQuiz);
+      _quizBrain.makeQuizDragDrop();
     });
-
-    listAnswer = _quizBrain.getListAnswerDD;
-    listQuiz = _quizBrain.getListQuizDD;
+    List<int> listAnswerData = _quizBrain.getListAnswerDD;
+    List<String> listQuizData = _quizBrain.getListQuizDD;
+    for (int i = 0; i < listAnswerData.length; i++) {
+      listAnswer.add(ItemValueConnect(value: listAnswerData[i]));
+    }
+    for (int i = 0; i < listQuizData.length; i++) {
+      listQuiz.add(
+          ItemValueConnect(quiz: listQuizData[i], value: listAnswerData[i]));
+    }
     listQuiz.shuffle();
     listAnswer.shuffle();
-    for (int i = 0; i < 5; i++) {
-      listSign.add(_preQuiz.sign!);
-    }
   }
 
   void checkEndGame() {
@@ -114,13 +108,20 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
     listAnswer.clear();
     listQuiz.clear();
     setState(() {
-      _quizBrain.makeQuizDragDrop(_preQuiz);
+      _quizBrain.makeQuizDragDrop();
     });
     playerAgain = true;
     _controller.reset();
     _controller.start();
-    listAnswer = _quizBrain.getListAnswerDD;
-    listQuiz = _quizBrain.getListQuizDD;
+    List<int> listAnswerData = _quizBrain.getListAnswerDD;
+    List<String> listQuizData = _quizBrain.getListQuizDD;
+    for (int i = 0; i < listAnswerData.length; i++) {
+      listAnswer.add(ItemValueConnect(value: listAnswerData[i]));
+    }
+    for (int i = 0; i < listQuizData.length; i++) {
+      listQuiz.add(
+          ItemValueConnect(quiz: listQuizData[i], value: listAnswerData[i]));
+    }
     listQuiz.shuffle();
     listAnswer.shuffle();
   }
@@ -234,7 +235,6 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
       resizeToAvoidBottomInset: false,
@@ -248,8 +248,8 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
             },
           ),
           Container(
-            height: size.height * 0.1,
-            width: size.width,
+            height: 10.h,
+            width: 100.w,
             alignment: Alignment.center,
             child: CircleAvatar(
                 radius: 35,
@@ -281,26 +281,23 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
                 )),
           ),
           Container(
-            padding: EdgeInsets.only(
-                bottom: size.height * 0.02,
-                top: size.height * 0.02,
-                left: size.width * 0.05,
-                right: size.width * 0.05),
+            padding:
+                EdgeInsets.only(bottom: 2.h, top: 2.h, left: 5.w, right: 5.w),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: size.width * 0.4,
-                      height: size.height * 0.6,
+                      width: 40.w,
+                      height: 60.h,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: listQuiz.map((e) {
                             return Draggable(
                                 feedback: Container(
-                                  width: size.width * 0.4,
-                                  height: size.height * 0.1,
+                                  width: 40.w,
+                                  height: 10.h,
                                   decoration: const BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(20)),
@@ -314,17 +311,17 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
                                 ),
                                 data: e.value,
                                 childWhenDragging: SizedBox(
-                                  width: size.width * 0.4,
-                                  height: size.height * 0.1,
+                                  width: 40.w,
+                                  height: 10.h,
                                 ),
                                 child: e.accepting == true
                                     ? SizedBox(
-                                        width: size.width * 0.4,
-                                        height: size.height * 0.1,
+                                        width: 40.w,
+                                        height: 10.h,
                                       )
                                     : Container(
-                                        width: size.width * 0.4,
-                                        height: size.height * 0.1,
+                                        width: 40.w,
+                                        height: 10.h,
                                         decoration: const BoxDecoration(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(20)),
@@ -339,8 +336,8 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
                           }).toList()),
                     ),
                     SizedBox(
-                      width: size.width * 0.4,
-                      height: size.height * 0.6,
+                      width: 40.w,
+                      height: 60.h,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: listAnswer.map((e) {
@@ -348,12 +345,12 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
                               builder: (context, candidateData, rejectedData) {
                                 return e.accepting == true
                                     ? SizedBox(
-                                        width: size.width * 0.4,
-                                        height: size.height * 0.1,
+                                        width: 40.w,
+                                        height: 10.h,
                                       )
                                     : Container(
-                                        width: size.width * 0.4,
-                                        height: size.height * 0.1,
+                                        width: 40.w,
+                                        height: 10.h,
                                         decoration: const BoxDecoration(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(20)),
@@ -387,21 +384,19 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: size.height * 0.05,
+                  height: 5.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: size.width * 0.5,
-                      height: size.height * 0.05,
+                      width: 50.w,
+                      height: 5.h,
                     ),
-                    GestureDetector(
-                      child: const CircleAvatar(
-                        radius: 20,
-                        child: Center(
-                          child: Icon(Icons.question_mark),
-                        ),
+                    const CircleAvatar(
+                      radius: 20,
+                      child: Center(
+                        child: Icon(Icons.question_mark),
                       ),
                     )
                   ],

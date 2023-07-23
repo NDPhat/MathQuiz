@@ -3,5 +3,17 @@ class PreTest {
   int? sumQuiz;
   int? score;
   String? dateSave;
-  PreTest({this.id, this.sumQuiz, this.score, this.dateSave});
+  int? falseQ;
+  String? keyServer;
+  int? trueQ;
+  String? userID;
+  PreTest(
+      {this.id,
+      this.sumQuiz,
+      this.score,
+      this.dateSave,
+      this.trueQ,
+      this.falseQ,
+      this.keyServer,
+      this.userID});
 }

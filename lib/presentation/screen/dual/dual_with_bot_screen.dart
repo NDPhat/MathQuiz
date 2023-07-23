@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/logic.dart';
@@ -268,7 +269,6 @@ class _BOTBattleScreenState extends State<BotDual> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: colorSystemWhite,
@@ -284,39 +284,36 @@ class _BOTBattleScreenState extends State<BotDual> {
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.35,
+                  height:35.h,
                   child: const Image(
                       image: NetworkImage(
                           "https://media3.giphy.com/media/bU2xOiv6LlSyB75szf/giphy.gif?cid=ecf05e47uylbzn7cuj96pgnqnjyt5tvkqvlfzwg6c2lm9okz&ep=v1_gifs_search&rid=giphy.gif&ct=g")),
                 ),
                 SizedBox(
-                  height: size.height * 0.2,
+                  height: 20.h,
                   child: Column(
                     children: [
                       SizedBox(
                         child: RotatedBox(
                             quarterTurns: -2,
                             child: Info_Player_Line(
-                                size: size,
                                 falsePlayer: 0,
                                 score: _scoreBot,
                                 namePlayer: "BOT")),
                       ),
                       Row(children: <Widget>[
-                        DivideLine(size: size),
+                        const DivideLine(),
                         Time_Runner(
                           onFinish: () {
                             if (playerAgain == false) {
                               showEndGame();
                             }
                           },
-                          size: size,
                           controller: controller,
                         ),
-                        DivideLine(size: size)
+                        const DivideLine()
                       ]),
                       Info_Player_Line(
-                        size: size,
                         falsePlayer: _falsePlayer,
                         score: _scoreHM,
                         namePlayer: 'Player',
@@ -325,7 +322,7 @@ class _BOTBattleScreenState extends State<BotDual> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.35,
+                  height:35.h,
                   child: Column(
                     children: [
                       SizedBox(

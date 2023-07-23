@@ -128,7 +128,6 @@ class PracticeNumberGameUserScreen extends StatelessWidget {
                             onTap: () {
                               showDoneDialog(snapshot.data![index].key!);
                             },
-                            size: size,
                             backgroundColor: colorMainBlue,
                             childRight: Center(
                                 child: Text(

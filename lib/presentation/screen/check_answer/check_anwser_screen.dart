@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
+import 'package:sizer/sizer.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/answer_widget.dart';
@@ -22,15 +23,12 @@ class CheckAnswerScreen extends StatelessWidget {
                 Navigator.pushNamed(context, Routers.homeGuest);
               }),
           Container(
-            padding: EdgeInsets.only(
-                top: size.height * 0.05,
-                left: size.width * 0.05,
-                right: size.width * 0.05,
-                bottom: size.height * 0.05),
+            padding:
+                EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w, bottom: 5.h),
             child: Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.7,
+                  height: 70.h,
                   child: StreamBuilder<List<QuizTestEntityData>>(
                       stream: instance
                           .get<QuizTestLocalRepo>()
@@ -41,7 +39,6 @@ class CheckAnswerScreen extends StatelessWidget {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
                                 return AnswerWidget(
-                                  size: size,
                                   quiz: snapshot.data![index].quiz.toString(),
                                   answer:
                                       snapshot.data![index].answer.toString(),

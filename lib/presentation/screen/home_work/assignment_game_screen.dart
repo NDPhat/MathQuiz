@@ -2,72 +2,71 @@ import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/application/cons/color.dart';
 import 'package:math/data/model/user_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/model/pre_test_res.dart';
-import 'package:math/data/remote/model/quiz_test_req.dart';
-import 'package:math/main.dart';
-import 'package:math/presentation/widget/app_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/logic.dart';
-import '../../../application/utils/make_quiz.dart';
-import '../../../data/remote/model/pre_test_req.dart';
+import '../../../data/model/pre_join_homework.dart';
+import '../../../data/remote/model/detail_quiz_hw_req.dart';
+import '../../../data/remote/model/result_quiz_hw_req.dart';
 import '../../../domain/bloc/game/game_cubit.dart';
+import '../../../application/utils/make_quiz.dart';
+import '../../../main.dart';
 import '../../routers/navigation.dart';
-import '../../widget/portrait_mode_game.dart';
+import '../../widget/portrait_mode_hword_user.dart';
 
-class TestTingUserGameScreen extends StatefulWidget {
-  const TestTingUserGameScreen({Key? key}) : super(key: key);
+class AssignmentGameScreen extends StatefulWidget {
+  const AssignmentGameScreen({Key? key}) : super(key: key);
 
   @override
-  State<TestTingUserGameScreen> createState() => _TestTingUserGameScreenState();
+  State<AssignmentGameScreen> createState() => _GameHWScreenState();
 }
 
-class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
+class _GameHWScreenState extends State<AssignmentGameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
   int _highScore = 0;
+  late PreJoinQuizHW _preQuiz;
   int falseChoose = 0;
-  late PreTestAPIRes preTest;
-  int _totalNumberOfQuizzes = 0;
   bool userAnswer = false;
+  int _totalNumberOfQuizzes = 0;
   final CountDownController _controller = CountDownController();
+
   @override
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
-    preTest = PreTestAPIRes();
+    _preQuiz = PreJoinQuizHW();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      preTest = ModalRoute.of(context)!.settings.arguments as PreTestAPIRes;
-      showReadyDialog(preTest);
+      _preQuiz = ModalRoute.of(context)!.settings.arguments as PreJoinQuizHW;
+      showReadyDialog();
     });
   }
 
-  void _startGame() async {
+  void _startGame(PreJoinQuizHW _preQuiz) async {
     setState(() {
-      _quizBrain.makeQuizTest();
+      _quizBrain.makeQuizHomeWork(_preQuiz);
     });
+    falseChoose = 0;
     _score = 0;
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    _highScore = preferences.getInt('highscore') ?? 0;
+    _totalNumberOfQuizzes = 1;
   }
 
-  void _checkAnswer(int userChoice, BuildContext context) async {
-    _totalNumberOfQuizzes++;
-    if (userChoice == _quizBrain.quizAnswer) {
-      userAnswer = true;
-      playSound('correct-choice.wav');
-      _score++;
-    } else {
-      userAnswer = false;
-      falseChoose++;
-      playSound('wrong-choice.wav');
-    }
+  void _makeNewQuiz() {
+    _quizBrain.makeQuizHomeWork(_preQuiz);
   }
 
-  Future<void> showFinishDialog() {
+  void _resetScreen() {
+    setState(() {
+      _totalNumberOfQuizzes++;
+    });
+  }
+
+  void _endGame() {
+    showMyDialog();
+  }
+
+  Future<void> showMyDialog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -87,15 +86,17 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
           actions: [
             TextButton(
               onPressed: () async {
-                await instance.get<UserAPIRepo>().updatePreQuizTestByID(
-                    PreTestReq(
-                        sumQ: _totalNumberOfQuizzes,
+                await instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
+                    ResultQuizHWAPIReq(
+                        week: _preQuiz.week,
+                        numQ: _preQuiz.numQ,
                         trueQ: _score,
+                        lop: instance.get<UserGlobal>().lop.toString(),
                         falseQ: falseChoose,
+                        name: instance.get<UserGlobal>().fullName,
                         score: _score,
-                        dateSave: DateTime.now().toString(),
-                        userID: instance.get<UserGlobal>().id),
-                    preTest.key.toString());
+                        userId: instance.get<UserGlobal>().id),
+                    _preQuiz.resultID.toString());
                 Navigator.pushNamed(context, Routers.homeUser);
               },
               child: const Center(child: Text('EXIT', style: kDialogButtonsTS)),
@@ -104,6 +105,43 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
         );
       },
     );
+  }
+
+  void _checkAnswer(int userChoice, BuildContext context) async {
+    if (userChoice.toString().isNotEmpty) {
+      if (userChoice == _quizBrain.quizAnswer) {
+        userAnswer = true;
+        playSound('hw_sound.mp3');
+        _score++;
+        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
+          // _saveData(context);
+          _endGame();
+        } else {
+          // _saveData(context);
+          _resetScreen();
+        }
+      } else {
+        userAnswer = false;
+        falseChoose++;
+        playSound('hw_sound.mp3');
+        if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
+          // _saveData(context);
+          _endGame();
+        } else {
+          // _saveData(context);
+          _resetScreen();
+        }
+      }
+    } else {
+      falseChoose++;
+      if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
+        //_saveData(context);
+        _endGame();
+      } else {
+        //_saveData(context);
+        _resetScreen();
+      }
+    }
   }
 
   Future<void> showOutDialog() {
@@ -125,15 +163,17 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                instance.get<UserAPIRepo>().updatePreQuizTestByID(
-                    PreTestReq(
-                        sumQ: _totalNumberOfQuizzes,
+                instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
+                    ResultQuizHWAPIReq(
+                        week: _preQuiz.week,
+                        numQ: _preQuiz.numQ,
                         trueQ: _score,
+                        lop: instance.get<UserGlobal>().lop.toString(),
                         falseQ: falseChoose,
+                        name: instance.get<UserGlobal>().fullName,
                         score: _score,
-                        dateSave: DateTime.now().toString(),
-                        userID: instance.get<UserGlobal>().id),
-                    preTest.key.toString());
+                        userId: instance.get<UserGlobal>().id),
+                    _preQuiz.resultID.toString());
                 Navigator.pushNamed(context, Routers.homeUser);
               },
               child: const Center(child: Text('YES', style: kDialogButtonsTS)),
@@ -151,7 +191,7 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
     );
   }
 
-  Future<void> showReadyDialog(PreTestAPIRes preTestNow) {
+  Future<void> showReadyDialog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -168,10 +208,10 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
           ),
           actions: [
             TextButton(
-              onPressed: () async {
+              onPressed: () {
                 Navigator.pop(context);
                 _controller.start();
-                _startGame();
+                _startGame(_preQuiz);
               },
               child: const Text('GO', style: kDialogButtonsTS),
             ),
@@ -179,7 +219,7 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
               onPressed: () {
                 instance
                     .get<UserAPIRepo>()
-                    .deleteTestingNotDoByPreTestId(preTest.key.toString());
+                    .deleteResultHWNotDo(_preQuiz.resultID.toString());
                 Navigator.pop(context);
                 Navigator.pushNamed(context, Routers.homeUser);
               },
@@ -194,43 +234,44 @@ class _TestTingUserGameScreenState extends State<TestTingUserGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorMainBlue,
-      body: Column(
-        children: [
-          AppBarWidget(
-            onBack: () {
-              _controller.pause();
-              showOutDialog();
-            },
+      resizeToAvoidBottomInset: false,
+      body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: kGradientColors,
+            ),
           ),
-          BlocBuilder<GameCubit, GameState>(builder: (context, state) {
-            return PortraitModeGame(
+          child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+            return PortraitModeHomeWork(
               highscore: _highScore,
               score: _score,
               quizBrainObject: _quizBrain,
               onTap: (int value) {
                 _checkAnswer(value, context);
-                context.read<GameCubit>().addQuizTesttoServer(QuizTestReq(
+                context.read<GameCubit>().addQuizHWToServer(DetailQuizHWAPIReq(
                     quiz: _quizBrain.quiz.toString(),
                     answerSelect: value,
                     answer: _quizBrain.quizAnswer,
                     infoQuiz: userAnswer,
-                    preTestID: preTest.key));
-                _quizBrain.makeQuizTest();
+                    resultHWID: _preQuiz.resultID));
+                  _makeNewQuiz();
                 context.read<GameCubit>().changeDataAfterDoneQ(
                     _score, falseChoose, _score, _totalNumberOfQuizzes);
               },
-              trueQ: _score,
-              falseQ: falseChoose,
-              controller: _controller,
-              quizNow: _totalNumberOfQuizzes,
+              trueQ: state.trueQ,
+              falseQ: state.falseQ,
+              totalQ: _preQuiz.numQ ?? 1,
+              quizNow: state.qNow,
               onFinished: () {
-                showFinishDialog();
+                showMyDialog();
+              },
+              controller: _controller,
+              onBack: () {
+                _controller.pause();
+                showOutDialog();
               },
             );
-          }),
-        ],
-      ),
+          })),
     );
   }
 }

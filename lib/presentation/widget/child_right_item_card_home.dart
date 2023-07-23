@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
+import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../application/cons/color.dart';
@@ -12,18 +13,16 @@ import '../../main.dart';
 class ChildRightHW extends StatelessWidget {
   ChildRightHW({
     Key? key,
-    required this.size,
     required this.type,
     this.deTail,
   }) : super(key: key);
-  final Size size;
   bool? deTail;
   final String type;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: deTail == null ? size.width * 0.46 : size.width,
-        height: deTail == null ? size.height * 0.09 : size.height * 0.3,
+        width: deTail == null ? 46.w : 10.w,
+        height: deTail == null ? 9.h : 30.h,
         child: type == "hw"
             ? FutureBuilder<List<ResultQuizHWAPIModel>?>(
                 future: instance.get<UserAPIRepo>().getALlResultQuizHWByUserID(

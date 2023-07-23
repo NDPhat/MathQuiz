@@ -6,6 +6,7 @@ import 'package:math/application/extension/to_get_test_model.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/domain/bloc/history/history_test_cubit.dart';
+import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
 import '../../../main.dart';
@@ -19,7 +20,6 @@ class HistoryTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: Column(
@@ -50,10 +50,8 @@ class HistoryTest extends StatelessWidget {
                         return pre.timeNow != now.timeNow;
                       }, builder: (context, state) {
                         return Container(
-                          padding: EdgeInsets.only(
-                              bottom: size.height * 0.02,
-                              top: size.height * 0.02),
-                          height: size.height * 0.18,
+                          padding: EdgeInsets.only(bottom: 2.h, top: 2.h),
+                          height: 18.h,
                           child: AnimationConfiguration.synchronized(
                             child: SlideAnimation(
                                 child: Column(
@@ -66,15 +64,15 @@ class HistoryTest extends StatelessWidget {
                                     Navigator.pop(context);
                                   },
                                   color: colorErrorPrimary,
-                                  width: size.width * 0.8,
-                                  height: size.height * 0.06,
+                                  width: 80.w,
+                                  height: 6.h,
                                   child: const Text(
                                     'DELETE BY DAY',
                                     style: s16f500ColorSysWhite,
                                   ),
                                 ),
                                 SizedBox(
-                                  height: size.height * 0.02,
+                                  height: 2.h,
                                 ),
                                 RoundedButton(
                                   press: () {
@@ -84,8 +82,8 @@ class HistoryTest extends StatelessWidget {
                                     Navigator.pop(context);
                                   },
                                   color: colorGreyTetiary,
-                                  width: size.width * 0.8,
-                                  height: size.height * 0.06,
+                                  width: 80.w,
+                                  height: 6.h,
                                   child: const Text(
                                     'DELETE ALL',
                                     style: s16f700ColorBlueMa,
@@ -101,18 +99,15 @@ class HistoryTest extends StatelessWidget {
             },
           ),
           SizedBox(
-            height: size.height * 0.8,
+            height: 80.h,
             child: Padding(
-              padding: EdgeInsets.only(
-                  top: size.height * 0.04,
-                  left: size.width * 0.05,
-                  right: size.width * 0.05,
-                  bottom: size.height * 0.04),
+              padding:
+                  EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w, bottom: 4.h),
               child: Column(
                 children: [
                   SizedBox(
-                    height: size.height * 0.04,
-                    width: size.width,
+                    height: 04.h,
+                    width: 100.w,
                     child: BlocBuilder<HistoryTestCubit, HistoryTestState>(
                         buildWhen: (previousState, state) {
                       return previousState.timeNow != state.timeNow;
@@ -122,7 +117,7 @@ class HistoryTest extends StatelessWidget {
                         children: [
                           Container(
                             padding: EdgeInsets.only(
-                              left: size.width * 0.03,
+                              left: 3.w,
                             ),
                             child: const Text(
                               'DAY ',
@@ -140,15 +135,15 @@ class HistoryTest extends StatelessWidget {
                     }),
                   ),
                   SizedBox(
-                    height: size.height * 0.02,
+                    height: 2.h,
                   ),
                   BlocBuilder<HistoryTestCubit, HistoryTestState>(
                       builder: (context, state) {
                     return Container(
                       child: DatePicker(
                         DateTime.now().subtract(const Duration(days: 6)),
-                        height: size.height * 0.15,
-                        width: size.width * 0.115,
+                        height: 15.h,
+                        width: 11.5.w,
                         initialSelectedDate: DateTime.now(),
                         selectionColor: colorMainBlue,
                         onDateChange: (date) {
@@ -184,73 +179,65 @@ class HistoryTest extends StatelessWidget {
                                         builder: (_) {
                                           return Container(
                                             padding: EdgeInsets.only(
-                                                bottom: size.height * 0.02,
-                                                top: size.height * 0.02),
-                                            height: size.height * 0.18,
-                                            child: AnimationConfiguration
-                                                .staggeredList(
-                                                    position: index,
-                                                    child: SlideAnimation(
-                                                        child: Column(
-                                                      children: [
-                                                        RoundedButton(
-                                                          press: () {
-                                                            context
-                                                                .read<
-                                                                    HistoryTestCubit>()
-                                                                .deletePreTest(
-                                                                    snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .id);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          color:
-                                                              colorErrorPrimary,
-                                                          width:
-                                                              size.width * 0.8,
-                                                          height: size.height *
-                                                              0.06,
-                                                          child: const Text(
-                                                            'DELETE',
-                                                            style:
-                                                                s16f500ColorSysWhite,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: size.height *
-                                                              0.02,
-                                                        ),
-                                                        RoundedButton(
-                                                          press: () {
-                                                            Navigator.pop(
-                                                                context);
+                                                bottom: 2.h, top: 2.h),
+                                            height: 18.h,
+                                            child:
+                                                AnimationConfiguration
+                                                    .staggeredList(
+                                                        position: index,
+                                                        child: SlideAnimation(
+                                                            child: Column(
+                                                          children: [
+                                                            RoundedButton(
+                                                              press: () {
+                                                                context
+                                                                    .read<
+                                                                        HistoryTestCubit>()
+                                                                    .deletePreTest(
+                                                                        snapshot
+                                                                            .data![index]
+                                                                            .id);
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              color:
+                                                                  colorErrorPrimary,
+                                                              width: 80.w,
+                                                              height: 6.h,
+                                                              child: const Text(
+                                                                'DELETE',
+                                                                style:
+                                                                    s16f500ColorSysWhite,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                                height: 2.h),
+                                                            RoundedButton(
+                                                              press: () {
+                                                                Navigator.pop(
+                                                                    context);
 
-                                                            Navigator.pushNamed(
-                                                                context,
-                                                                Routers
-                                                                    .detailTest,
-                                                                arguments:
-                                                                    snapshot
+                                                                Navigator.pushNamed(
+                                                                    context,
+                                                                    Routers
+                                                                        .detailTest,
+                                                                    arguments: snapshot
                                                                         .data![
                                                                             index]
                                                                         .id);
-                                                          },
-                                                          color:
-                                                              colorGreyTetiary,
-                                                          width:
-                                                              size.width * 0.8,
-                                                          height: size.height *
-                                                              0.06,
-                                                          child: const Text(
-                                                            'DETAIL',
-                                                            style:
-                                                                s16f700ColorBlueMa,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ))),
+                                                              },
+                                                              color:
+                                                                  colorGreyTetiary,
+                                                              width: 80.w,
+                                                              height: 6.h,
+                                                              child: const Text(
+                                                                'DETAIL',
+                                                                style:
+                                                                    s16f700ColorBlueMa,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ))),
                                           );
                                         });
                                   },

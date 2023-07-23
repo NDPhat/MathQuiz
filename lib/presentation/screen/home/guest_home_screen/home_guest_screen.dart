@@ -30,15 +30,12 @@ class HomeGuestMainScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Column(
+                    const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        StudentName(
-                          studentName:
-                              instance.get<UserLocal>().name ?? 'Player 1',
-                        ),
+                        StudentName(),
                         kHalfSizedBox,
-                        const Row(
+                        Row(
                           children: [
                             StudentClass(studentClass: 'Class 1'),
                             kHalfSizedBox,
@@ -49,9 +46,9 @@ class HomeGuestMainScreen extends StatelessWidget {
                     ),
                     kHalfSizedBox,
                     StudentPicture(
-                      picAddress: instance.get<UserLocal>().imageLink ??
-                          'assets/images/profile.png',
-                    ),
+                        picAddress: instance.get<UserLocal>().imageLink != null
+                            ? instance.get<UserLocal>().imageLink!
+                            : 'assets/images/profile.png'),
                   ],
                 ),
                 sizedBox,
@@ -99,33 +96,28 @@ class HomeGuestMainScreen extends StatelessWidget {
                         HomeCard(
                           onPress: () {},
                           icon: 'assets/icons/assignment.svg',
-                          title: 'Assignments',
+                          title: 'Game',
                         ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        HomeCard(
-                          onPress: () {},
-                          icon: 'assets/icons/result.svg',
-                          title: 'Result',
-                        ),
                         HomeCard(
                           onPress: () {},
                           icon: 'assets/icons/datesheet.svg',
                           title: 'DateSheet',
                         ),
+                        HomeCard(
+                          onPress: () {},
+                          icon: 'assets/icons/event.svg',
+                          title: 'Setting',
+                        ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        HomeCard(
-                          onPress: () {},
-                          icon: 'assets/icons/event.svg',
-                          title: 'Events',
-                        ),
                         HomeCard(
                           onPress: () {
                             Navigator.pushNamed(context, Routers.login);

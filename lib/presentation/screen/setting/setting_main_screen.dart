@@ -32,7 +32,6 @@ class SettingMainScreen extends StatelessWidget {
               size: 30,
               color: colorSystemYeloow,
             ),
-            size: size,
             textStyle: s16f700ColorGreyTe,
             onPress: () {},
           ),
@@ -47,7 +46,6 @@ class SettingMainScreen extends StatelessWidget {
             onPress: () {
               Navigator.pushNamed(context, Routers.notifiScreen);
             },
-            size: size,
             textStyle: s16f700ColorGreyTe,
           ),
           SizedBox(height: size.height * 0.03),
@@ -61,7 +59,6 @@ class SettingMainScreen extends StatelessWidget {
             onPress: () {
               Navigator.pushNamed(context, Routers.languageScreen);
             },
-            size: size,
             textStyle: s16f700ColorGreyTe,
           )
         ],
