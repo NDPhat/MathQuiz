@@ -1,16 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:math/application/cons/text_style.dart';
-import 'package:math/data/model/user_local.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/student_data.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../data/remote/authen/authen.dart';
 import '../../../../main.dart';
+import '../../../widget/home_card.dart';
 
 class HomeUserScreen extends StatelessWidget {
   const HomeUserScreen({Key? key}) : super(key: key);
@@ -25,8 +23,8 @@ class HomeUserScreen extends StatelessWidget {
           //fixed height for first half
           Container(
             width: 100.w,
-            height: 40.h,
-            padding: const EdgeInsets.all(kDefaultPadding),
+            height: 35.h,
+            padding: EdgeInsets.only(left: 5.w, right: 5.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -74,8 +72,15 @@ class HomeUserScreen extends StatelessWidget {
           //other will use all the remaining height of screen
           Expanded(
             child: Container(
+              padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
               width: 100.w,
+              height: 65.h,
               decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                      'assets/images/bg_home_user.png',
+                    ),
+                    fit: BoxFit.fill),
                 color: colorSystemWhite,
                 borderRadius: kTopBorderRadius,
               ),
@@ -93,55 +98,63 @@ class HomeUserScreen extends StatelessWidget {
                             Navigator.pushNamed(context, Routers.takeQuiz);
                           },
                           icon: 'assets/icons/quiz.svg',
-                          title: 'Take Quiz',
+                          title: 'take quiz'.tr().toString(),
+                          colorBG: colorMainBlueChart,
                         ),
                         HomeCard(
+                          colorBG: colorErrorPrimary,
                           onPress: () {
-                            Navigator.pushNamed(context, Routers.assignmentMainScreen);
-
+                            Navigator.pushNamed(
+                                context, Routers.assignmentMainScreen);
                           },
                           icon: 'assets/icons/assignment.svg',
-                          title: 'Assignments',
+                          title: 'assignment'.tr().toString(),
                         ),
                       ],
                     ),
+                    sizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         HomeCard(
+                          colorBG: colorMainTealPri,
                           onPress: () {
                             Navigator.pushNamed(
                                 context, Routers.battleMainScreen);
                           },
                           icon: 'assets/icons/result.svg',
-                          title: 'Game',
+                          title: 'game'.tr().toString(),
                         ),
                         HomeCard(
-                          onPress: () {},
+                          colorBG: colorSystemYeloow,
+                          onPress: () {
+                            Navigator.pushNamed(
+                                context, Routers.dataSheetScreen);
+                          },
                           icon: 'assets/icons/datesheet.svg',
-                          title: 'DateSheet',
+                          title: 'data sheet'.tr().toString(),
                         ),
                       ],
                     ),
+                    sizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         HomeCard(
-                          onPress: () {},
+                          colorBG: Colors.pink,
+                          onPress: () {
+                            Navigator.pushNamed(context, Routers.settingScreen);
+                          },
                           icon: 'assets/icons/event.svg',
-                          title: 'Events',
+                          title: 'setting'.tr().toString(),
                         ),
                         HomeCard(
+                          colorBG: Colors.orange,
                           onPress: () {
-                            instance
-                                .get<AuthenRepository>()
-                                .handleAutoLoginApp(false);
-                            instance.get<UserGlobal>().onLogin = false;
-                            Navigator.pushNamed(
-                                context, Routers.chooseOptionUseApp);
+                            Navigator.pushNamed(context, Routers.profileScreen);
                           },
-                          icon: 'assets/icons/logout.svg',
-                          title: 'Logout',
+                          icon: 'assets/icons/resume.svg',
+                          title: 'profile'.tr().toString(),
                         ),
                       ],
                     ),
@@ -151,47 +164,6 @@ class HomeUserScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class HomeCard extends StatelessWidget {
-  const HomeCard(
-      {Key? key,
-      required this.onPress,
-      required this.icon,
-      required this.title})
-      : super(key: key);
-  final VoidCallback onPress;
-  final String icon;
-  final String title;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPress,
-      child: Container(
-        margin: EdgeInsets.only(top: 1.h),
-        width: 40.w,
-        height: 15.h,
-        decoration: BoxDecoration(
-          color: colorMainBlueChart,
-          borderRadius: BorderRadius.circular(kDefaultPadding),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              icon,
-              height: SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40.sp,
-              width: SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40.sp,
-              color: colorSystemWhite,
-            ),
-            Text(title,
-                textAlign: TextAlign.center, style: s14f500colorSysWhite),
-          ],
-        ),
       ),
     );
   }

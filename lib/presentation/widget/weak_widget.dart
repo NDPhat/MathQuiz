@@ -1,38 +1,37 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
-import 'package:sizer/sizer.dart';
 import '../../application/cons/text_style.dart';
 import '../../data/remote/model/pre_quiz_hw_response.dart';
 
-
 class WeakWidget extends StatelessWidget {
   const WeakWidget(
-      {Key? key, this.dataResult, this.dataPre})
+      {Key? key, this.dataResult, this.dataPre, required this.colorBorder})
       : super(key: key);
   final ResultQuizHWAPIModel? dataResult;
   final PreQuizHWResAPIModel? dataPre;
+  final Color colorBorder;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SizedBox(height: 1.h),
         Container(
           alignment: Alignment.center,
           child: Text(
-            'WEEK ${dataResult == null ? dataPre!.week : dataResult!.week}',
-            style: s15f700ColorYellow,
+            '${'week'.tr()} ${dataResult == null ? dataPre!.week : dataResult!.week}',
+            style: GoogleFonts.saira(color: colorBorder, fontSize: 20),
           ),
         ),
-        SizedBox(height: 2.h),
         dataResult != null
             ? Container(
                 alignment: Alignment.center,
                 child: (Text(
-                  'SCORE : ${dataResult!.score!} / ${dataResult!.numQ!}',
-                  style: s14f500ColorMainTe,
+                  '${'score'.tr()} : ${dataResult!.score!} / ${dataResult!.numQ!}',
+                  style:
+                      GoogleFonts.songMyung(color: colorBorder, fontSize: 14),
                 )),
               )
             : Container(),

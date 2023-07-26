@@ -84,7 +84,7 @@ class _LoginUserApp extends State<LoginUserApp> {
                         height: 4.h,
                       ),
                       SizedBox(
-                        height:37.h,
+                        height: 37.h,
                         child: Column(
                           children: [
                             BlocBuilder<LoginCubit, LoginState>(
@@ -107,7 +107,7 @@ class _LoginUserApp extends State<LoginUserApp> {
                               );
                             }),
                             SizedBox(
-                              height:2.5.h,
+                              height: 2.5.h,
                             ),
                             BlocBuilder<LoginCubit, LoginState>(
                                 buildWhen: (pre, now) {
@@ -263,6 +263,7 @@ class _LoginUserApp extends State<LoginUserApp> {
     );
   }
 }
+
 class ForgetPassWidget extends StatelessWidget {
   const ForgetPassWidget({
     Key? key,

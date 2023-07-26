@@ -89,7 +89,7 @@ class StudentDataCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 42.w,
+      width: 40.w,
       height: 12.h,
       decoration: BoxDecoration(
         color: colorSystemWhite,

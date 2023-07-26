@@ -31,7 +31,7 @@ class TakeHardCubit extends Cubit<TakeHardState> {
             .createPreQuizTest(PreTestReq(
                 sumQ: 0,
                 score: 0,
-                dateSave: DateTime.now().toString(),
+                dateSave: formatTimeTestInput.format(DateTime.now()),
                 trueQ: 0,
                 falseQ: 0,
                 userID: instance.get<UserGlobal>().id!));
@@ -41,7 +41,9 @@ class TakeHardCubit extends Cubit<TakeHardState> {
         final entity = PreTestEntityCompanion(
             score: const Value(0),
             sumQuiz: const Value(0),
-            dateSave: Value(formatDateInput.format(DateTime.now())));
+            dateSave: Value(
+              formatTimeTestInput.format(DateTime.now()),
+            ));
         //insert task
         await preTestLocalRepo.insertPreTest(entity);
         PreTestEntityData dataLocal = await preTestLocalRepo.getLatestPreTest();

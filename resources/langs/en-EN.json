@@ -14,6 +14,7 @@
   "join": "Join",
   "history": "History",
   "done": "Done",
+  "do": "DO",
   "input answer": "Input Answer",
   "truefalse": "True/False",
   "findmissing": "FindMissing",
@@ -35,17 +36,27 @@
   "forget pass": "Forget password",
   "data season": "Data season",
   "data week": "Data week",
+  "week": "Week",
+  "score": "Score",
+  "view": "VIEW",
   "data detail" : "Data detail",
   "update profile": "Update profile",
+  "update pass": "Update pass",
   "check answer": "Check answer",
   "task":"TASK",
   "score": "SCORE",
   "choose sign": "Choose sign",
+  "sign": "Sign",
   "choose mode": "Choose mode",
   "puzzle": "Puzzle",
   "connect": "Connect",
   "login": "Login",
-  "skip":"Skip"
-
+  "skip":"Skip",
+  "take quiz":"Take quiz",
+  "data sheet": "Data sheet",
+  "assignment": "Assignment",
+  "total quiz": "Total quiz",
+  "average": "Average",
+  "to": "To"
 
 }

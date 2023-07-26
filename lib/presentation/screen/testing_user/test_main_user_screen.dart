@@ -42,7 +42,7 @@ class MainTestingUserScreen extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.checkAnswerHW,
+                  Navigator.pushNamed(context, Routers.checkAnswerHWAndTest,
                       arguments:
                           CheckAnswerModel(id: idResult, type: "take_hard"));
                 },
@@ -106,7 +106,7 @@ class MainTestingUserScreen extends StatelessWidget {
                               onTap: () {
                                 showDoneDialog(snapshot.data![index].key!);
                               },
-                              backgroundColor: colorMainBlue,
+                              colorBorder: colorMainBlue,
                               childRight: Center(
                                   child: Text(
                                 'done'.tr().toString(),

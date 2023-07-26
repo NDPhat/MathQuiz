@@ -42,50 +42,41 @@ class PortraitModeHomeWork extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppBarWidget(
-          onBack: onBack,
-          textTitle: 'HOME WORK',
-        ),
-        Container(
-          height: 2.h,
-          color: colorSystemWhite,
-        ),
-        Container(
-          alignment: Alignment.center,
-          color: colorSystemWhite,
-          height: 88.h,
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Image.asset(
-                    "assets/images/table_quiz.png",
-                    fit: BoxFit.fill,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(
-                        top: 20.h, left:20.w),
-                    child: QuizBodyHW(
-                        quizBrainObject: quizBrainObject),
-                  ),
-                  UserHWScore(
-                    totalQuiz: totalQ,
-                    quizNow: quizNow,
-                    onFinished: onFinished,
-                    controller: controller,
-                  ),
-                ],
-              ),
-              SizedBox(height:5.h),
-              AnswerTableHW(
-                 quizBrainObject: quizBrainObject, onTap: onTap)
-            ],
+    return Container(
+      alignment: Alignment.center,
+      height: 90.h,
+      child: Column(
+        children: [
+          UserHWScore(
+            totalQuiz: totalQ,
+            quizNow: quizNow,
+            onFinished: onFinished,
+            controller: controller,
           ),
-        ),
-      ],
+          Container(
+            height: 73.h,
+            color: colorWaringText,
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Image.asset(
+                      "assets/images/table_quiz.png",
+                      fit: BoxFit.fill,
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                      child: QuizBodyHW(quizBrainObject: quizBrainObject),
+                    ),
+                  ],
+                ),
+                AnswerTableHW(quizBrainObject: quizBrainObject, onTap: onTap)
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

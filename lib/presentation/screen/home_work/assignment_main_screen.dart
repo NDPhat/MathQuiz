@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/user_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
@@ -25,6 +26,37 @@ class AssignmentMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> createPreHW(PreQuizHWResAPIModel dataPre) async {
+      PreQuizHWResAPIModel? preQuiz = await instance
+          .get<UserAPIRepo>()
+          .getPreQuizHWByWeek(dataPre.week.toString());
+
+      ResultQuizHWAPIModel? data = await instance
+          .get<UserAPIRepo>()
+          .createResultHomeWorkWeek(ResultQuizHWAPIReq(
+              week: dataPre.week.toString(),
+              numQ: dataPre.numQ,
+              trueQ: 0,
+              falseQ: 0,
+              lop: instance.get<UserGlobal>().lop.toString(),
+              name: instance.get<UserGlobal>().fullName,
+              score: 0,
+              userId: instance.get<UserGlobal>().id));
+      PreJoinQuizHW preJoinHW = PreJoinQuizHW(
+        resultID: data!.key,
+        week: preQuiz!.week,
+        numQ: preQuiz.numQ,
+        sign: preQuiz.sign,
+        sNum: preQuiz.sNum,
+        eNum: preQuiz.eNum,
+        dend: preQuiz.dend,
+        dstart: preQuiz.dstart,
+      );
+      Navigator.pop(context);
+      Navigator.pushNamed(context, Routers.assignmentGameScreen,
+          arguments: preJoinHW);
+    }
+
     Future<void> showJoinHWDialog(PreQuizHWResAPIModel dataPre) {
       return showDialog<void>(
         context: context,
@@ -42,34 +74,8 @@ class AssignmentMainScreen extends StatelessWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () async {
-                  PreQuizHWResAPIModel? preQuiz = await instance
-                      .get<UserAPIRepo>()
-                      .getPreQuizHWByWeek(dataPre.week.toString());
-                  ResultQuizHWAPIModel? data = await instance
-                      .get<UserAPIRepo>()
-                      .createResultHomeWorkWeek(ResultQuizHWAPIReq(
-                          week: dataPre.week.toString(),
-                          numQ: dataPre.numQ,
-                          trueQ: 0,
-                          falseQ: 0,
-                          lop: instance.get<UserGlobal>().lop.toString(),
-                          name: instance.get<UserGlobal>().fullName,
-                          score: 0,
-                          userId: instance.get<UserGlobal>().id));
-                  PreJoinQuizHW preJoinHW = PreJoinQuizHW(
-                    resultID: data!.key,
-                    week: preQuiz!.week,
-                    numQ: preQuiz.numQ,
-                    sign: preQuiz.sign,
-                    sNum: preQuiz.sNum,
-                    eNum: preQuiz.eNum,
-                    dend: preQuiz.dend,
-                    dstart: preQuiz.dstart,
-                  );
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.assignmentGameScreen,
-                      arguments: preJoinHW);
+                onPressed: () {
+                  createPreHW(dataPre);
                 },
                 child: Text('go'.tr().toString(), style: s16f700ColorError),
               ),
@@ -98,22 +104,22 @@ class AssignmentMainScreen extends StatelessWidget {
             backgroundColor: const Color(0xff1542bf),
             title: FittedBox(
               child: Text("${'review your answer'.tr()}?",
-                  textAlign: TextAlign.center, style: s30f700colorSysWhite),
+                  textAlign: TextAlign.center, style: kScoreLabelTextStyle),
             ),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.checkAnswerHW,
+                  Navigator.pushNamed(context, Routers.checkAnswerHWAndTest,
                       arguments: CheckAnswerModel(id: idResult, type: "hw"));
                 },
-                child: Text('go'.tr().toString(), style: s16f700ColorError),
+                child: Text('go'.tr().toString(), style: kDialogButtonsTS),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('exit'.tr().toString(), style: s15f700ColorYellow),
+                child: Text('exit'.tr().toString(), style: kDialogButtonsTS),
               ),
             ],
           );
@@ -127,17 +133,18 @@ class AssignmentMainScreen extends StatelessWidget {
           textNow: 'home work'.tr().toString(),
           onPressHome: () {},
           child: Padding(
-            padding: EdgeInsets.only(left: 2.w, right: 2.w),
+            padding: EdgeInsets.only(left: 5.w, right: 5.w),
             child: Column(
               children: [
                 Column(
                   children: [
                     LineContentItem(
+                        colorBG: colorMainTealPri,
                         title: 'done'.tr().toString(),
                         icon: const Icon(Icons.check)),
                     SingleChildScrollView(
                       child: SizedBox(
-                        height: 40.h,
+                        height: 50.h,
                         child: FutureBuilder<List<ResultQuizHWAPIModel>?>(
                             future: instance
                                 .get<UserAPIRepo>()
@@ -168,14 +175,17 @@ class AssignmentMainScreen extends StatelessWidget {
                                         showDoneDialog(
                                             snapshot.data![index].key!);
                                       },
-                                      backgroundColor: colorMainBlue,
+                                      colorBorder: colorMainBlue,
                                       childRight: Center(
                                           child: Text(
-                                        'done'.tr().toString(),
-                                        style: s20f700ColorSysWhite,
+                                        'view'.tr().toString(),
+                                        style: GoogleFonts.aclonica(
+                                            color: colorMainBlue, fontSize: 20),
                                       )),
                                       childLeft: WeakWidget(
-                                          dataResult: snapshot.data![index]),
+                                        dataResult: snapshot.data![index],
+                                        colorBorder: colorMainBlue,
+                                      ),
                                     );
                                   },
                                 );
@@ -197,6 +207,7 @@ class AssignmentMainScreen extends StatelessWidget {
                       height: 1.h,
                     ),
                     LineContentItem(
+                        colorBG: colorErrorPrimary,
                         title: 'on schedule'.tr().toString(),
                         icon: const Icon(Icons.do_not_disturb)),
                     SingleChildScrollView(
@@ -226,14 +237,18 @@ class AssignmentMainScreen extends StatelessWidget {
                                     itemCount: 1,
                                     itemBuilder: (context, index) {
                                       return ItemCardHW(
-                                        backgroundColor: colorErrorPrimary,
-                                        childRight: const Center(
+                                        colorBorder: colorErrorPrimary,
+                                        childRight: Center(
                                             child: Text(
-                                          "DO",
-                                          style: s20f700ColorGreyte,
+                                          "do".tr().toString(),
+                                          style: GoogleFonts.aclonica(
+                                              color: colorMainBlue,
+                                              fontSize: 20),
                                         )),
-                                        childLeft:
-                                            WeakWidget(dataPre: snapshot.data),
+                                        childLeft: WeakWidget(
+                                          dataPre: snapshot.data,
+                                          colorBorder: colorErrorPrimary,
+                                        ),
                                         onTap: () {
                                           showJoinHWDialog(snapshot.data!);
                                         },

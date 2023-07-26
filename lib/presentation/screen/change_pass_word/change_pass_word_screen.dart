@@ -1,11 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/data/model/user_global.dart';
-
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
-import 'package:math/main.dart';
-import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/input_field_widget.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
@@ -15,13 +11,11 @@ import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
-class UpdatePasswordScreen extends StatelessWidget {
-  const UpdatePasswordScreen({Key? key}) : super(key: key);
+class ChangePassWordScreen extends StatelessWidget {
+  const ChangePassWordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String email = (ModalRoute.of(context)!.settings.arguments as String?) ??
-        instance.get<UserGlobal>().email!;
     return Scaffold(
         body: MainPageHomePG(
       colorTextAndIcon: Colors.black,
@@ -33,8 +27,6 @@ class UpdatePasswordScreen extends StatelessWidget {
           padding: EdgeInsets.only(
             left: 10.w,
             right: 10.w,
-            top: 5.h,
-            bottom: 5.h,
           ),
           child: Column(
             children: [
@@ -53,18 +45,38 @@ class UpdatePasswordScreen extends StatelessWidget {
                 height: 2.h,
               ),
               SizedBox(
-                height: 35.h,
+                height: 45.h,
                 child: Column(
                   children: [
+                    BlocBuilder<UpdatePassCubit, UpdatePassState>(
+                        buildWhen: (pre, now) {
+                      return pre.oldPassErrorMessage != now.oldPassErrorMessage;
+                    }, builder: (BuildContext context, state) {
+                      return InputFieldWidget(
+                        hintText: 'Enter your old password',
+                        width: 80.w,
+                        height: 8.h,
+                        nameTitle: "Password",
+                        onChanged: (value) {
+                          context.read<UpdatePassCubit>().oldPassChanged(value);
+                        },
+                        validateText: state.oldPassErrorMessage,
+                        isHidden: state.oldPassErrorMessage != "",
+                        icon: const Icon(Icons.fingerprint),
+                      );
+                    }),
+                    SizedBox(
+                      height: 3.h,
+                    ),
                     BlocBuilder<UpdatePassCubit, UpdatePassState>(
                         buildWhen: (pre, now) {
                       return pre.passErrorMessage != now.passErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 'Enter your password',
+                        hintText: 'Enter your new password',
                         width: 80.w,
                         height: 8.h,
-                        nameTitle: "Password",
+                        nameTitle: "Newp password",
                         onChanged: (value) {
                           context.read<UpdatePassCubit>().passChanged(value);
                         },
@@ -110,7 +122,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                       context.read<UpdatePassCubit>().clearData();
                       context
                           .read<UpdatePassCubit>()
-                          .updatePassWithCredentials(email);
+                          .changePassWithCredentials();
                     },
                     color: colorMainBlue,
                     width: 80.w,

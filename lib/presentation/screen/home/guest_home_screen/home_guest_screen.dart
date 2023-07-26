@@ -74,6 +74,7 @@ class HomeGuestMainScreen extends StatelessWidget {
             child: Container(
               width: 100.w,
               decoration: const BoxDecoration(
+
                 color: colorSystemWhite,
                 borderRadius: kTopBorderRadius,
               ),

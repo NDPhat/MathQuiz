@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:math/presentation/screen/restart_app/restart_app_widget.dart';
 import 'package:sizer/sizer.dart';
 import 'application/di/setupProject.dart';
 
@@ -19,7 +20,8 @@ void main() async {
         ],
         path: "resources/langs",
         saveLocale: true,
-        child: const MathQuizApp()), // Wrap your app
+        fallbackLocale: const Locale("en", "EN"),
+        child: const RestartWidget(child: MathQuizApp())), // Wrap your app
   ));
 }
 

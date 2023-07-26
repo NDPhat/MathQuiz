@@ -9,37 +9,41 @@ class ItemCardHW extends StatelessWidget {
       {Key? key,
       required this.childLeft,
       required this.childRight,
-      required this.backgroundColor, required this.onTap})
+      required this.colorBorder,
+      required this.onTap})
       : super(key: key);
   final Widget childLeft;
   final Widget childRight;
-  final Color backgroundColor;
+  final Color colorBorder;
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: onTap,
-      child: Card(
-        color: backgroundColor,
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: colorBorder),
+            borderRadius: const BorderRadius.all(Radius.circular(25))),
         child: SizedBox(
-          height: 10.h,
+          height: 13.h,
           child: Row(
             children: [
               SizedBox(
-                width:50.w,
+                height: 13.h,
+                width: 50.w,
                 child: childLeft,
               ),
               Expanded(
                 child: Transform.rotate(
                   angle: math.pi / 2,
-                  child:  const Divider(
-                    color: colorGreyDisable,
-                    height:10,
+                  child:  Divider(
+                    color: colorBorder,
+                    height: 10,
                   ),
                 ),
               ),
               SizedBox(
+                height: 13.h,
                 width: 20.w,
                 child: childRight,
               ),

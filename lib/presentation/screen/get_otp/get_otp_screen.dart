@@ -122,6 +122,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                     context
                                         .read<GetOTPCubit>()
                                         .number1Changed(value);
+                                    if (value.length == 1) {
+                                      FocusScope.of(context).nextFocus();
+                                    }
                                   },
                                   maxLength: 1,
                                   typeText: TextInputType.number,
@@ -133,6 +136,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                     context
                                         .read<GetOTPCubit>()
                                         .number2Changed(value);
+                                    if (value.length == 1) {
+                                      FocusScope.of(context).nextFocus();
+                                    }
                                   },
                                   typeText: TextInputType.number,
                                   maxLength: 1,
@@ -144,6 +150,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                     context
                                         .read<GetOTPCubit>()
                                         .number3Changed(value);
+                                    if (value.length == 1) {
+                                      FocusScope.of(context).nextFocus();
+                                    }
                                   },
                                   typeText: TextInputType.number,
                                   maxLength: 1,
@@ -155,6 +164,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                     context
                                         .read<GetOTPCubit>()
                                         .number4Changed(value);
+                                    if (value.length == 1) {
+                                      FocusScope.of(context).nextFocus();
+                                    }
                                   },
                                   typeText: TextInputType.number,
                                   maxLength: 1,
@@ -167,6 +179,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                     context
                                         .read<GetOTPCubit>()
                                         .number5Changed(value);
+                                    if (value.length == 1) {
+                                      FocusScope.of(context).nextFocus();
+                                    }
                                   },
                                   typeText: TextInputType.number,
                                   width: 15.w,
@@ -203,7 +218,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                           setState(() {
                                             onTap = true;
                                           });
-                                          context.read<GetOTPCubit>().clearData();
+                                          context
+                                              .read<GetOTPCubit>()
+                                              .clearData();
                                           context
                                               .read<GetOTPCubit>()
                                               .reSendOTPCode(email);

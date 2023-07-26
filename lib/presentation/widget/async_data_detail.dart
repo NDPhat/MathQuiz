@@ -1,46 +1,39 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
-
-import '../../application/cons/color.dart';
 import '../../application/cons/text_style.dart';
 
-class ItemAsyncDataPageHome extends StatelessWidget {
-  const ItemAsyncDataPageHome({
+class ItemAsyncDataDetail extends StatelessWidget {
+  const ItemAsyncDataDetail({
     Key? key,
     required this.textTitle,
-    required this.totalQ,
-    required this.trueAve,
     required this.childRight,
-    required this.timeNow,
-    required this.onTap,
+    required this.timeSave,
     required this.colorBorder,
+    required this.onPress,
   }) : super(key: key);
   final String textTitle;
-  final String totalQ;
-  final String timeNow;
-  final String trueAve;
+  final String timeSave;
   final Widget childRight;
   final Color colorBorder;
-  final VoidCallback onTap;
+  final VoidCallback onPress;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onPress,
       child: Container(
         decoration: BoxDecoration(
-            color: colorSystemWhite,
             border: Border.all(color: colorBorder),
             borderRadius: const BorderRadius.all(Radius.circular(25))),
-        padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h),
-        width: 90.w,
-        height: 20.h,
+        padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
+        height: 18.h,
+        width: 20.w,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: 30.w,
+              width: 15.w,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -48,39 +41,38 @@ class ItemAsyncDataPageHome extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       textTitle,
-                      style: s16f500ColorGreyTe,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "${'total quiz'.tr()} : $totalQ",
-                      style: s16f500ColorError,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "${'average'.tr()} : $trueAve%",
-                      style: s14f500ColorMainTe,
+                      style: GoogleFonts.abel(color: colorBorder, fontSize: 18),
                     ),
                   ),
                 ],
               ),
             ),
+            Container(
+              height: 10.h,
+              width: 5.w,
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(width: 2, color: colorBorder),
+                ),
+              ),
+            ),
             SizedBox(
+              width: 65.w,
+              height: 16.h,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    alignment: Alignment.centerLeft,
-                    height: 05.h,
+                    padding: EdgeInsets.only(right: 5.w),
+                    alignment: Alignment.centerRight,
+                    height: 3.w,
+                    width: 65.w,
                     child: Text(
-                      timeNow,
+                      timeSave,
                       style: s12f400ColorGreyTe,
                     ),
                   ),
-                  SizedBox(height: 13.h, child: childRight)
+                  SizedBox(height: 13.h, width: 60.w, child: childRight)
                 ],
               ),
             ),

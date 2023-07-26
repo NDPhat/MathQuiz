@@ -17,8 +17,10 @@ import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
 import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
 import 'package:math/presentation/screen/add_new_guest_player/add_new_guest_player_screen.dart';
-import 'package:math/presentation/screen/check_answer/check_answer_hw.dart';
+import 'package:math/presentation/screen/change_pass_word/change_pass_word_screen.dart';
+import 'package:math/presentation/screen/check_answer/check_answer_hw_test.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_prac_screen.dart';
+import 'package:math/presentation/screen/data_sheet_screen/data_sheet_user/data_sheet_user_screen.dart';
 import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
 import 'package:math/presentation/screen/game_screen/hard_game/drag_drop_game_screen.dart';
 import 'package:math/presentation/screen/game_screen/easy_game/match_number_game_screen.dart';
@@ -67,6 +69,7 @@ import '../screen/home/user_home_screen/home_user_screen.dart';
 import '../screen/home_work/assignment_main_screen.dart';
 import '../screen/notificaiton/widget/add_notifi_local_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
+import '../screen/profile_user/home_profile_user_screen.dart';
 import '../screen/profile_user/my_account/profile_myaccount.dart';
 import '../screen/take_quiz_user_screen/take_quiz_user_main_screen.dart';
 import '../screen/take_quiz_user_screen/widget/take_quiz_easy_screen.dart';
@@ -97,7 +100,7 @@ class Routers {
   static const String detailTest = '/detailTest';
   static const String mainTestUser = '/mainTestUser';
   static const String checkAnswer = '/checkAnswer';
-  static const String checkAnswerHW = '/checkAnswerHW';
+  static const String checkAnswerHWAndTest = '/checkAnswerHWAndTest';
   static const String notifiScreen = '/notifiScreen';
   static const String addNotifiScreen = '/addNotifiScreen';
   static const String addPlayer = '/addPlayer';
@@ -120,6 +123,9 @@ class Routers {
   static const String matchNumber = '/matchNumber';
   static const String mixGame = '/mixGame';
   static const String assignmentMainScreen = '/assignmentMainScreen';
+  static const String dataSheetScreen = '/dataSheetScreen';
+  static const String profileScreen = '/profileScreen';
+  static const String changePassScreen = '/changePassScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
@@ -144,8 +150,16 @@ class Routers {
         return WriteAndCountGameScreen();
       case writeMissing:
         return WriteMissingNumberGameScreen();
+      case profileScreen:
+        return HomeProfileUserScreen();
       case matchNumber:
         return const MatchNumberGameScreen();
+      case changePassScreen:
+        return BlocProvider(
+            create: (context) => UpdatePassCubit(
+                  userAPIRepo: instance.get<UserAPIRepo>(),
+                ),
+            child: const ChangePassWordScreen());
       case takeMediumQuiz:
         return const TakeQuizMediumScreen();
       case takeHardQuiz:
@@ -209,7 +223,7 @@ class Routers {
         return BlocProvider(
             create: (context) =>
                 UpdatePassCubit(userAPIRepo: instance.get<UserAPIRepo>()),
-            child: UpdatePasswordScreen());
+            child: const UpdatePasswordScreen());
       case chooseOptionUseApp:
         return const OptionUseApp();
       case assignmentGameScreen:
@@ -224,10 +238,12 @@ class Routers {
         return const HomeGuestMainScreen();
       case homeUser:
         return const HomeUserScreen();
-      case checkAnswerHW:
-        return const CheckAnswerHWScreen();
+      case checkAnswerHWAndTest:
+        return const CheckAnswerHWAndTestScreen();
       case battleBOT:
         return const BotDual();
+      case dataSheetScreen:
+        return const DataSheetUserScreen();
       case optionBot:
         return OptionModeBotDual();
       case chooseOption:

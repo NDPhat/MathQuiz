@@ -21,7 +21,7 @@ class ChildRightHW extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: deTail == null ? 46.w : 10.w,
+        width: deTail == null ? 46.w : 100.w,
         height: deTail == null ? 9.h : 30.h,
         child: type == "hw"
             ? FutureBuilder<List<ResultQuizHWAPIModel>?>(

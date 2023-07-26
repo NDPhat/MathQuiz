@@ -3,17 +3,17 @@
   "language": "Ngôn ngữ",
   "taptostart": "Chạm để bắt đầu",
   "welcomeback": "Mừng trở lại",
-  "home" :"Trang chủ",
   "game": "Trò chơi",
-  "home work":"Bài Tập",
+  "home work":"Bài tập",
   "profile": "Cá nhân",
-  "practice":"Luyện Tập",
+  "practice":"Luyện tập",
   "test": "Kiểm tra",
   "number": "Dạng số",
   "sentences":"Dạng câu",
   "join": "Tham gia",
   "history": "Lịch sử",
   "done": "Xong",
+  "do": "THAM GIA",
   "input answer": "Nhập liệu",
   "truefalse": "Đúng/Sai",
   "findmissing": "Điền",
@@ -35,17 +35,32 @@
   "forget pass": "Quên mật khẩu",
   "data season": "Dữ liệu kỳ",
   "data week": "Dữ liệu tuần",
+  "week": "Tuần",
+  "score": "Điểm",
+  "view": "XEM LẠI",
   "data detail" : "Dữ liệu chi tiết",
   "update profile": "Thông tin cá nhân",
+  "update pass": "Thay đổi mật khẩu",
   "check answer": "Kiểm tra đáp án",
   "task": "Bài",
   "score": "Điểm",
   "choose sign": "Chọn phép tính",
+  "sign": "Dấu",
   "choose mode": "Chọn bài toán",
   "puzzle": "Mảnh ghép",
   "connect": "Nối",
   "login": "Đăng nhập",
-  "skip":"Bỏ qua"
+  "skip":"Bỏ qua",
+  "take quiz":"Luyện tập",
+  "data sheet": "Thống kê",
+  "assignment": "Bài tập",
+  "total quiz": "Số câu",
+  "average": "Tỉ lệ",
+  "to": "Đến"
+
+
+
+
 
 
 

@@ -12,11 +12,13 @@ class MainPageHomePG extends StatelessWidget {
   MainPageHomePG({
     Key? key,
     required this.child,
+    this.homeIcon,
     required this.textNow,
     required this.onPressHome,
     required this.colorTextAndIcon,
   }) : super(key: key);
   Widget child;
+  Widget? homeIcon;
   VoidCallback onPressHome;
   String textNow;
   Color colorTextAndIcon;
@@ -27,11 +29,11 @@ class MainPageHomePG extends StatelessWidget {
         Container(
           height: 10.h,
           padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
-          child: Row(
+          child: Stack(
             children: [
               Container(
                 alignment: Alignment.centerLeft,
-                width: 32.w,
+                width: 100.w,
                 child: IconButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -42,11 +44,22 @@ class MainPageHomePG extends StatelessWidget {
                       color: colorTextAndIcon,
                     )),
               ),
-              Text(textNow,
-                  style: TextStyle(
-                      color: colorTextAndIcon,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700)),
+              Container(
+                width: 100.w,
+                alignment: Alignment.center,
+                child: Text(textNow,
+                    style: TextStyle(
+                        color: colorTextAndIcon,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700)),
+              ),
+              GestureDetector(
+                onTap: onPressHome,
+                child: Container(
+                    alignment: Alignment.centerRight,
+                    width: 100.w,
+                    child: homeIcon),
+              )
             ],
           ),
         ),

@@ -13,7 +13,6 @@ class CheckAnswerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int preId = ModalRoute.of(context)!.settings.arguments as int;
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
         children: [

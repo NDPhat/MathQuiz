@@ -4,14 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/item_quiz_easy.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
-
 import '../../../application/enum/pre_status.dart';
 import '../../../data/model/make_quiz.dart';
 import '../../routers/navigation.dart';
-import '../../widget/app_bar.dart';
 import '../../widget/button_custom.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 

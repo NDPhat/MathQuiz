@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/application/cons/color.dart';
 import 'package:math/data/model/user_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/logic.dart';
 import '../../../data/model/pre_join_homework.dart';
@@ -86,18 +89,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
           actions: [
             TextButton(
               onPressed: () async {
-                await instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
-                    ResultQuizHWAPIReq(
-                        week: _preQuiz.week,
-                        numQ: _preQuiz.numQ,
-                        trueQ: _score,
-                        lop: instance.get<UserGlobal>().lop.toString(),
-                        falseQ: falseChoose,
-                        name: instance.get<UserGlobal>().fullName,
-                        score: _score,
-                        userId: instance.get<UserGlobal>().id),
-                    _preQuiz.resultID.toString());
-                Navigator.pushNamed(context, Routers.homeUser);
+                updatePreHW();
               },
               child: const Center(child: Text('EXIT', style: kDialogButtonsTS)),
             ),
@@ -107,6 +99,15 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
     );
   }
 
+  _saveData(int value) {
+    context.read<GameCubit>().addQuizHWToServer(DetailQuizHWAPIReq(
+        quiz: _quizBrain.quiz.toString(),
+        answerSelect: value,
+        answer: _quizBrain.quizAnswer,
+        infoQuiz: userAnswer,
+        resultHWID: _preQuiz.resultID));
+  }
+
   void _checkAnswer(int userChoice, BuildContext context) async {
     if (userChoice.toString().isNotEmpty) {
       if (userChoice == _quizBrain.quizAnswer) {
@@ -114,10 +115,8 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
         playSound('hw_sound.mp3');
         _score++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          // _saveData(context);
           _endGame();
         } else {
-          // _saveData(context);
           _resetScreen();
         }
       } else {
@@ -125,23 +124,35 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
         falseChoose++;
         playSound('hw_sound.mp3');
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-          // _saveData(context);
           _endGame();
         } else {
-          // _saveData(context);
           _resetScreen();
         }
       }
     } else {
       falseChoose++;
       if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
-        //_saveData(context);
         _endGame();
       } else {
-        //_saveData(context);
         _resetScreen();
       }
     }
+  }
+
+  void updatePreHW() {
+    Navigator.pop(context);
+    instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
+        ResultQuizHWAPIReq(
+            week: _preQuiz.week,
+            numQ: _preQuiz.numQ,
+            trueQ: _score,
+            lop: instance.get<UserGlobal>().lop.toString(),
+            falseQ: falseChoose,
+            name: instance.get<UserGlobal>().fullName,
+            score: _score,
+            userId: instance.get<UserGlobal>().id),
+        _preQuiz.resultID.toString());
+    Navigator.pushNamed(context, Routers.homeUser);
   }
 
   Future<void> showOutDialog() {
@@ -162,19 +173,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
-                    ResultQuizHWAPIReq(
-                        week: _preQuiz.week,
-                        numQ: _preQuiz.numQ,
-                        trueQ: _score,
-                        lop: instance.get<UserGlobal>().lop.toString(),
-                        falseQ: falseChoose,
-                        name: instance.get<UserGlobal>().fullName,
-                        score: _score,
-                        userId: instance.get<UserGlobal>().id),
-                    _preQuiz.resultID.toString());
-                Navigator.pushNamed(context, Routers.homeUser);
+                updatePreHW();
               },
               child: const Center(child: Text('YES', style: kDialogButtonsTS)),
             ),
@@ -189,6 +188,14 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
         );
       },
     );
+  }
+
+  void deletePreHW() {
+    instance
+        .get<UserAPIRepo>()
+        .deleteResultHWNotDo(_preQuiz.resultID.toString());
+    Navigator.pop(context);
+    Navigator.pushNamed(context, Routers.homeUser);
   }
 
   Future<void> showReadyDialog() {
@@ -217,11 +224,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
             ),
             TextButton(
               onPressed: () {
-                instance
-                    .get<UserAPIRepo>()
-                    .deleteResultHWNotDo(_preQuiz.resultID.toString());
-                Navigator.pop(context);
-                Navigator.pushNamed(context, Routers.homeUser);
+                deletePreHW();
               },
               child: const Text('BACK', style: kDialogButtonsTS),
             ),
@@ -234,13 +237,12 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: colorMainBlue,
       resizeToAvoidBottomInset: false,
-      body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: kGradientColors,
-            ),
-          ),
+      body: MainPageHomePG(
+          textNow: "home work".tr(),
+          onPressHome: () {},
+          colorTextAndIcon: Colors.black,
           child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
             return PortraitModeHomeWork(
               highscore: _highScore,
@@ -248,13 +250,8 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
               quizBrainObject: _quizBrain,
               onTap: (int value) {
                 _checkAnswer(value, context);
-                context.read<GameCubit>().addQuizHWToServer(DetailQuizHWAPIReq(
-                    quiz: _quizBrain.quiz.toString(),
-                    answerSelect: value,
-                    answer: _quizBrain.quizAnswer,
-                    infoQuiz: userAnswer,
-                    resultHWID: _preQuiz.resultID));
-                  _makeNewQuiz();
+                _saveData(value);
+                _makeNewQuiz();
                 context.read<GameCubit>().changeDataAfterDoneQ(
                     _score, falseChoose, _score, _totalNumberOfQuizzes);
               },

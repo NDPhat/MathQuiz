@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/application/di/event_local.dart';
 import 'package:math/application/enum/update_profile_status.dart';
-import 'package:math/data/remote/model/user_api_res.dart';
 
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';

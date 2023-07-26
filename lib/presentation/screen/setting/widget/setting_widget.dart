@@ -24,7 +24,8 @@ class SettingMenuWidget extends StatelessWidget {
       onPressed: onPress,
       child: Container(
         padding: EdgeInsets.all(2.w),
-        height: 8.w,
+        height: 8.h,
+        width: 100.w,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -26,46 +26,48 @@ class TakeQuizUserScreen extends StatelessWidget {
           decoration: const BoxDecoration(
               color: Colors.black,
               borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(
-                width: 100.w,
-                height: 10.h,
-                child: Center(
-                    child: Text("SELECT MODE GAME",
-                        style: GoogleFonts.abrilFatface(
-                            color: colorSystemWhite,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 25))),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ItemTakeQuiz(
-                      bgColor: colorMainTealPri,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: 100.w,
+                  height: 10.h,
+                  child: Center(
+                      child: Text("SELECT MODE GAME",
+                          style: GoogleFonts.abrilFatface(
+                              color: colorSystemWhite,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 25))),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ItemTakeQuiz(
+                        bgColor: colorMainTealPri,
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.takeEasyQuiz);
+                        },
+                        textTitle: "easy"),
+                    sizedBox,
+                    ItemTakeQuiz(
+                        onPress: () {
+                          Navigator.pushNamed(context, Routers.takeMediumQuiz);
+                        },
+                        bgColor: colorMainBlue,
+                        textTitle: "medium"),
+                    sizedBox,
+                    ItemTakeQuiz(
                       onPress: () {
-                        Navigator.pushNamed(context, Routers.takeEasyQuiz);
+                        Navigator.pushNamed(context, Routers.takeHardQuiz);
                       },
-                      textTitle: "easy"),
-                  sizedBox,
-                  ItemTakeQuiz(
-                      onPress: () {
-                        Navigator.pushNamed(context, Routers.takeMediumQuiz);
-                      },
-                      bgColor: colorMainBlue,
-                      textTitle: "medium"),
-                  sizedBox,
-                  ItemTakeQuiz(
-                    onPress: () {
-                      Navigator.pushNamed(context, Routers.takeHardQuiz);
-                    },
-                    textTitle: 'hard',
-                    bgColor: colorErrorPrimary,
-                  ),
-                ],
-              ),
-            ],
+                      textTitle: 'hard',
+                      bgColor: colorErrorPrimary,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

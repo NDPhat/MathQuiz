@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:math/application/cons/constants.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../application/cons/color.dart';
@@ -19,28 +21,36 @@ class AnswerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        decoration: BoxDecoration(
-          color: quizInfo ? colorBlueQuaternery : colorSystemErrorTer,
-        ),
-        padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 2.h),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          AnswerDetailWidget(
-            quiz: quiz,
-            answer: answer,
-            answerSelect: answerSelect,
-            quizInfo: quizInfo,
-          ),
-          Center(
-            child: Text(
-              answer,
-              style: s20f700ColorMBlue,
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: quizInfo ? colorMainTealPri : colorErrorPrimary),
+              color: colorSystemWhite,
+              borderRadius: BorderRadius.all(Radius.circular(5.w))),
+          padding:
+              EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 2.h),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            AnswerDetailWidget(
+              quiz: quiz,
+              answer: answer,
+              answerSelect: answerSelect,
+              quizInfo: quizInfo,
             ),
-          )
-        ]),
-      ),
+            Center(
+              child: Text(
+                answer,
+                style: GoogleFonts.abel(
+                    color: quizInfo ? colorMainTealPri : colorErrorPrimary,
+                    fontSize: 16),
+              ),
+            )
+          ]),
+        ),
+        sizedBox
+      ],
     );
   }
 }
@@ -72,7 +82,7 @@ class AnswerDetailWidget extends StatelessWidget {
                 child: quizInfo
                     ? const Icon(
                         (Icons.done),
-                        color: colorMainBlue,
+                        color: colorMainTealPri,
                         size: 30,
                       )
                     : const Icon(
@@ -84,11 +94,16 @@ class AnswerDetailWidget extends StatelessWidget {
               children: [
                 Text(
                   quiz,
-                  style: s20f700ColorMBlue,
+                  style: GoogleFonts.abel(
+                      color: quizInfo ? colorMainTealPri : colorErrorPrimary,
+                      fontSize: 20),
                 ),
+                SizedBox(height: 1.h),
                 Text(
                   "Answer Select = $answerSelect",
-                  style: s16f700ColorBlueMa,
+                  style:  GoogleFonts.abel(
+                      color: quizInfo ? colorMainTealPri : colorErrorPrimary,
+                      fontSize: 16),
                 )
               ],
             )

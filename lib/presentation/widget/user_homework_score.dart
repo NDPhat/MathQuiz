@@ -1,5 +1,6 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../application/cons/color.dart';
@@ -19,54 +20,55 @@ class UserHWScore extends StatelessWidget {
   VoidCallback? onFinished;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 2.h, left: 8.w, right: 8.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SizedBox(
+      height: 17.h,
+      child: Stack(
         children: [
-          Row(
-            children: [
-              Column(
-                children: [
-                  const Icon(
-                    Icons.update,
-                    color: colorSystemWhite,
-                  ),
-                   SizedBox(
-                    height:0.1.h,
-                  ),
-                  Text(
-                    '$quizNow/$totalQuiz',
-                    style: s16f700ColorSysWhite,
-                  )
-                ],
-              ),
-            ],
+          Container(
+            margin: EdgeInsets.only(top: 2.h),
+            padding:
+                EdgeInsets.only(top: 1.h, left: 5.w, right: 5.w, bottom: 2.h),
+            alignment: Alignment.bottomCenter,
+            height: 15.h,
+            decoration: const BoxDecoration(
+                color: colorSystemPurple,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50))),
+            child: Text(
+              "$quizNow/$totalQuiz",
+              style:
+                  GoogleFonts.aclonica(color: colorErrorPrimary, fontSize: 20),
+            ),
           ),
-          CircleAvatar(
-              radius: 40,
-              backgroundColor: colorSystemWhite,
-              child: CircularCountDownTimer(
-                duration: 60,
-                initialDuration: 0,
-                controller: controller,
-                width: 50,
-                height: 50,
-                ringColor: colorSystemWhite,
-                fillColor: colorSystemWhite,
-                backgroundColor: colorGrayBG,
-                backgroundGradient: null,
-                strokeWidth: 20.0,
-                strokeCap: StrokeCap.round,
-                textStyle: const TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-                textFormat: CountdownTextFormat.S,
-                autoStart: false,
-                onStart: () {},
-                onComplete: onFinished,
-              ))
+          Container(
+            alignment: Alignment.bottomCenter,
+            margin: EdgeInsets.only(bottom: 10.h),
+            child: CircleAvatar(
+                radius: 40,
+                backgroundColor: colorSystemWhite,
+                child: CircularCountDownTimer(
+                  duration: 60,
+                  initialDuration: 0,
+                  controller: controller,
+                  width: 50,
+                  height: 50,
+                  ringColor: colorSystemWhite,
+                  fillColor: colorSystemWhite,
+                  backgroundColor: colorGrayBG,
+                  backgroundGradient: null,
+                  strokeWidth: 20.0,
+                  strokeCap: StrokeCap.round,
+                  textStyle: const TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                  textFormat: CountdownTextFormat.S,
+                  autoStart: false,
+                  onStart: () {},
+                  onComplete: onFinished,
+                )),
+          )
         ],
       ),
     );
