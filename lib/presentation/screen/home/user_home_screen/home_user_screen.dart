@@ -5,9 +5,6 @@ import 'package:math/presentation/screen/home/user_home_screen/widget/student_da
 import 'package:sizer/sizer.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
-import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/authen/authen.dart';
-import '../../../../main.dart';
 import '../../../widget/home_card.dart';
 
 class HomeUserScreen extends StatelessWidget {

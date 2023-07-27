@@ -5,7 +5,6 @@ import 'package:math/data/remote/authen/authen.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../data/model/user_global.dart';
 import '../../../main.dart';

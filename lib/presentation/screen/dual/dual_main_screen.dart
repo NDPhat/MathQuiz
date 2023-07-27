@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:math/data/model/option_quiz.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/cons/text_style.dart';
-
 import '../../routers/navigation.dart';
-import '../../widget/app_bar.dart';
-import '../../widget/button_custom.dart';
 import '../../widget/item_take_quiz_widget.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 

@@ -34,9 +34,11 @@ class DetailQuizGame extends StatelessWidget {
                           .getAllQuizGameByPreQuizId(preId),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
+                          return CustomScrollView(slivers: [
+                          SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                          childCount: snapshot.data!.length,
+                                  (context, index) {
                                 return AnswerWidget(
                                   quiz: snapshot.data![index].quiz.toString(),
                                   quizInfo:
@@ -47,7 +49,7 @@ class DetailQuizGame extends StatelessWidget {
                                       .data![index].answerSelect
                                       .toString(),
                                 );
-                              });
+                              }))]);
                         } else {
                           return Container();
                         }

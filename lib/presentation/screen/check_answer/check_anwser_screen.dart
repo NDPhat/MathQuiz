@@ -34,19 +34,20 @@ class CheckAnswerScreen extends StatelessWidget {
                           .getAllTestByPreTestId(preId),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                return AnswerWidget(
-                                  quiz: snapshot.data![index].quiz.toString(),
-                                  answer:
-                                      snapshot.data![index].answer.toString(),
-                                  answerSelect: snapshot
-                                      .data![index].answerSelect
-                                      .toString(),
-                                  quizInfo: snapshot.data![index].infoQuiz!,
-                                );
-                              });
+                          return CustomScrollView(slivers: [
+                            SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                    childCount: snapshot.data!.length,
+                                    (context, index) {
+                              return AnswerWidget(
+                                quiz: snapshot.data![index].quiz.toString(),
+                                answer: snapshot.data![index].answer.toString(),
+                                answerSelect: snapshot.data![index].answerSelect
+                                    .toString(),
+                                quizInfo: snapshot.data![index].infoQuiz!,
+                              );
+                            }))
+                          ]);
                         } else {
                           return Container();
                         }

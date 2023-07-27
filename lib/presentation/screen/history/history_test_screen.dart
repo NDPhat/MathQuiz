@@ -163,88 +163,90 @@ class HistoryTest extends StatelessWidget {
                           .getAllPreTestByDay(state.timeNow.toString()),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                return SizedBox(
-                                    child: GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(25)),
-                                        ),
-                                        builder: (_) {
-                                          return Container(
-                                            padding: EdgeInsets.only(
-                                                bottom: 2.h, top: 2.h),
-                                            height: 18.h,
-                                            child:
-                                                AnimationConfiguration
-                                                    .staggeredList(
-                                                        position: index,
-                                                        child: SlideAnimation(
-                                                            child: Column(
-                                                          children: [
-                                                            RoundedButton(
-                                                              press: () {
-                                                                context
-                                                                    .read<
-                                                                        HistoryTestCubit>()
-                                                                    .deletePreTest(
-                                                                        snapshot
-                                                                            .data![index]
-                                                                            .id);
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              color:
-                                                                  colorErrorPrimary,
-                                                              width: 80.w,
-                                                              height: 6.h,
-                                                              child: const Text(
-                                                                'DELETE',
-                                                                style:
-                                                                    s16f500ColorSysWhite,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                                height: 2.h),
-                                                            RoundedButton(
-                                                              press: () {
-                                                                Navigator.pop(
-                                                                    context);
+                          return CustomScrollView(slivers: [
+                            SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                    childCount: snapshot.data!.length,
+                                    (context, index) {
+                              return SizedBox(
+                                  child: GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(25)),
+                                      ),
+                                      builder: (_) {
+                                        return Container(
+                                          padding: EdgeInsets.only(
+                                              bottom: 2.h, top: 2.h),
+                                          height: 18.h,
+                                          child: AnimationConfiguration
+                                              .staggeredList(
+                                                  position: index,
+                                                  child: SlideAnimation(
+                                                      child: Column(
+                                                    children: [
+                                                      RoundedButton(
+                                                        press: () {
+                                                          context
+                                                              .read<
+                                                                  HistoryTestCubit>()
+                                                              .deletePreTest(
+                                                                  snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .id);
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        color:
+                                                            colorErrorPrimary,
+                                                        width: 80.w,
+                                                        height: 6.h,
+                                                        child: const Text(
+                                                          'DELETE',
+                                                          style:
+                                                              s16f500ColorSysWhite,
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 2.h),
+                                                      RoundedButton(
+                                                        press: () {
+                                                          Navigator.pop(
+                                                              context);
 
-                                                                Navigator.pushNamed(
-                                                                    context,
-                                                                    Routers
-                                                                        .detailTest,
-                                                                    arguments: snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .id);
-                                                              },
-                                                              color:
-                                                                  colorGreyTetiary,
-                                                              width: 80.w,
-                                                              height: 6.h,
-                                                              child: const Text(
-                                                                'DETAIL',
-                                                                style:
-                                                                    s16f700ColorBlueMa,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ))),
-                                          );
-                                        });
-                                  },
-                                  child: PreTestTitle(
-                                      snapshot.data![index].toGetTestModel()),
-                                ));
-                              });
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              Routers
+                                                                  .detailTest,
+                                                              arguments:
+                                                                  snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .id);
+                                                        },
+                                                        color: colorGreyTetiary,
+                                                        width: 80.w,
+                                                        height: 6.h,
+                                                        child: const Text(
+                                                          'DETAIL',
+                                                          style:
+                                                              s16f700ColorBlueMa,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ))),
+                                        );
+                                      });
+                                },
+                                child: PreTestTitle(
+                                    snapshot.data![index].toGetTestModel()),
+                              ));
+                            }))
+                          ]);
                         } else {
                           return const Center(
                             child: Text(

@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:math/application/cons/color.dart';
-import 'package:math/data/model/user_global.dart';
-import 'package:math/main.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../../application/cons/constants.dart';
-import '../../../../../application/cons/text_style.dart';
 
 class MainPageHomePG extends StatelessWidget {
   MainPageHomePG({

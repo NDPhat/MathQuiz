@@ -6,7 +6,6 @@ import 'package:math/data/model/check_model.dart';
 import 'package:math/data/remote/model/detail_quiz_hw_response.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:math/presentation/routers/navigation.dart';
-import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -80,6 +79,9 @@ class DetailItemCardHomeWork extends StatelessWidget {
                   title: 'data week'.tr().toString(),
                   icon: const Icon(Icons.calendar_view_week)),
               SizedBox(
+                height: 1.h,
+              ),
+              SizedBox(
                 height: 40.h,
                 child: FutureBuilder<List<PreQuizHWResAPIModel>?>(
                     future: instance.get<UserAPIRepo>().getALlPreQuizHW(),
@@ -96,156 +98,165 @@ class DetailItemCardHomeWork extends StatelessWidget {
                           ),
                         );
                       } else if (snapshot.hasData) {
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            snapshot.data!
-                                .sort((a, b) => a.week!.compareTo(b.week!));
-                            return ItemAsyncDataDetail(
-                              colorBorder: colorErrorPrimary,
-                              textTitle:
-                                  "${'week'.tr()} ${snapshot.data![index].week!}",
-                              childRight: SizedBox(
-                                height: 20.h,
-                                width: 45.w,
-                                child: FutureBuilder<
-                                        List<DetailQuizHWAPIModel>?>(
-                                    future: instance
-                                        .get<UserAPIRepo>()
-                                        .getALlQuizDetailByUserIDAndWeek(
-                                            instance
-                                                .get<UserGlobal>()
-                                                .id!
-                                                .toString(),
-                                            snapshot.data![index].week!),
-                                    builder: (context, snapshotChild) {
-                                      if (snapshotChild.hasData) {
-                                        int signAddTrue = 0;
-                                        int signSubTrue = 0;
-                                        int signMulTrue = 0;
-                                        int signDiviTrue = 0;
-                                        int signAddFalse = 0;
-                                        int signSubFalse = 0;
-                                        int signMulFalse = 0;
-                                        int signDiviFalse = 0;
-                                        for (int i = 0;
-                                            i < snapshotChild.data!.length;
-                                            i++) {
-                                          int sign = getSign(
-                                              quiz:
-                                                  snapshotChild.data![i].quiz!);
-                                          if (snapshotChild.data![i].infoQuiz ==
-                                              true) {
-                                            switch (sign) {
-                                              case 0:
-                                                signAddTrue++;
-                                                break;
-                                              case 1:
-                                                signSubTrue++;
-                                                break;
-                                              case 2:
-                                                signMulTrue++;
-                                                break;
-                                              case 3:
-                                                signDiviTrue++;
-                                                break;
-                                            }
-                                          } else {
-                                            switch (sign) {
-                                              case 0:
-                                                signAddFalse++;
-                                                break;
-                                              case 1:
-                                                signSubFalse++;
-                                                break;
-                                              case 2:
-                                                signMulFalse++;
-                                                break;
-                                              case 3:
-                                                signDiviFalse++;
-                                                break;
+                        return CustomScrollView(slivers: [
+                          SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                            childCount: snapshot.data!.length,
+                            (context, index) {
+                              snapshot.data!
+                                  .sort((a, b) => a.week!.compareTo(b.week!));
+                              return ItemAsyncDataDetail(
+                                colorBorder: colorErrorPrimary,
+                                textTitle:
+                                    "${'week'.tr()} ${snapshot.data![index].week!}",
+                                childRight: SizedBox(
+                                  height: 20.h,
+                                  width: 45.w,
+                                  child: FutureBuilder<
+                                          List<DetailQuizHWAPIModel>?>(
+                                      future: instance
+                                          .get<UserAPIRepo>()
+                                          .getALlQuizDetailByUserIDAndWeek(
+                                              instance
+                                                  .get<UserGlobal>()
+                                                  .id!
+                                                  .toString(),
+                                              snapshot.data![index].week!),
+                                      builder: (context, snapshotChild) {
+                                        if (snapshotChild.hasData) {
+                                          int signAddTrue = 0;
+                                          int signSubTrue = 0;
+                                          int signMulTrue = 0;
+                                          int signDiviTrue = 0;
+                                          int signAddFalse = 0;
+                                          int signSubFalse = 0;
+                                          int signMulFalse = 0;
+                                          int signDiviFalse = 0;
+                                          for (int i = 0;
+                                              i < snapshotChild.data!.length;
+                                              i++) {
+                                            int sign = getSign(
+                                                quiz: snapshotChild
+                                                    .data![i].quiz!);
+                                            if (snapshotChild
+                                                    .data![i].infoQuiz ==
+                                                true) {
+                                              switch (sign) {
+                                                case 0:
+                                                  signAddTrue++;
+                                                  break;
+                                                case 1:
+                                                  signSubTrue++;
+                                                  break;
+                                                case 2:
+                                                  signMulTrue++;
+                                                  break;
+                                                case 3:
+                                                  signDiviTrue++;
+                                                  break;
+                                              }
+                                            } else {
+                                              switch (sign) {
+                                                case 0:
+                                                  signAddFalse++;
+                                                  break;
+                                                case 1:
+                                                  signSubFalse++;
+                                                  break;
+                                                case 2:
+                                                  signMulFalse++;
+                                                  break;
+                                                case 3:
+                                                  signDiviFalse++;
+                                                  break;
+                                              }
                                             }
                                           }
+                                          List<ChartDataWeek> dataList = [
+                                            ChartDataWeek(
+                                                "+", signAddTrue, signAddFalse),
+                                            ChartDataWeek(
+                                                "-", signSubTrue, signSubFalse),
+                                            ChartDataWeek(
+                                                "x", signMulTrue, signMulFalse),
+                                            ChartDataWeek("/", signDiviTrue,
+                                                signDiviFalse),
+                                          ];
+                                          return SfCartesianChart(
+                                              plotAreaBorderColor:
+                                                  colorMainBlue,
+                                              plotAreaBorderWidth: 0,
+                                              primaryXAxis: CategoryAxis(
+                                                majorGridLines:
+                                                    const MajorGridLines(
+                                                        width: 0),
+                                                //Hide the axis line of x-axis
+                                              ),
+                                              primaryYAxis: NumericAxis(
+                                                //Hide the gridlines of y-axis
+                                                majorGridLines:
+                                                    const MajorGridLines(
+                                                        width: 0),
+                                                //Hide the axis line of y-axis
+                                              ),
+                                              series: <CartesianSeries<
+                                                  ChartDataWeek, String>>[
+                                                ColumnSeries<ChartDataWeek,
+                                                    String>(
+                                                  color: colorMainBlue,
+                                                  dataSource: dataList,
+                                                  xValueMapper:
+                                                      (ChartDataWeek chart,
+                                                              _) =>
+                                                          chart.x,
+                                                  yValueMapper:
+                                                      (ChartDataWeek chart,
+                                                              _) =>
+                                                          chart.y,
+                                                  dataLabelSettings:
+                                                      const DataLabelSettings(
+                                                          color: colorMainBlue,
+                                                          textStyle: TextStyle(
+                                                              fontSize: 2)),
+                                                ),
+                                                ColumnSeries<ChartDataWeek,
+                                                    String>(
+                                                  color: colorErrorPrimary,
+                                                  dataSource: dataList,
+                                                  xValueMapper:
+                                                      (ChartDataWeek chart,
+                                                              _) =>
+                                                          chart.x,
+                                                  yValueMapper:
+                                                      (ChartDataWeek chart,
+                                                              _) =>
+                                                          chart.y1,
+                                                  dataLabelSettings:
+                                                      const DataLabelSettings(
+                                                          color: colorMainBlue,
+                                                          textStyle: TextStyle(
+                                                              fontSize: 2)),
+                                                ),
+                                              ]);
+                                        } else {
+                                          return Container();
                                         }
-                                        List<ChartDataWeek> dataList = [
-                                          ChartDataWeek(
-                                              "+", signAddTrue, signAddFalse),
-                                          ChartDataWeek(
-                                              "-", signSubTrue, signSubFalse),
-                                          ChartDataWeek(
-                                              "x", signMulTrue, signMulFalse),
-                                          ChartDataWeek(
-                                              "/", signDiviTrue, signDiviFalse),
-                                        ];
-                                        return SfCartesianChart(
-                                            plotAreaBorderColor: colorMainBlue,
-                                            plotAreaBorderWidth: 0,
-                                            primaryXAxis: CategoryAxis(
-                                              majorGridLines:
-                                                  const MajorGridLines(
-                                                      width: 0),
-                                              //Hide the axis line of x-axis
-                                            ),
-                                            primaryYAxis: NumericAxis(
-                                              //Hide the gridlines of y-axis
-                                              majorGridLines:
-                                                  const MajorGridLines(
-                                                      width: 0),
-                                              //Hide the axis line of y-axis
-                                            ),
-                                            series: <CartesianSeries<
-                                                ChartDataWeek, String>>[
-                                              ColumnSeries<ChartDataWeek,
-                                                  String>(
-                                                color: colorMainBlue,
-                                                dataSource: dataList,
-                                                xValueMapper:
-                                                    (ChartDataWeek chart, _) =>
-                                                        chart.x,
-                                                yValueMapper:
-                                                    (ChartDataWeek chart, _) =>
-                                                        chart.y,
-                                                dataLabelSettings:
-                                                    const DataLabelSettings(
-                                                        color: colorMainBlue,
-                                                        textStyle: TextStyle(
-                                                            fontSize: 2)),
-                                              ),
-                                              ColumnSeries<ChartDataWeek,
-                                                  String>(
-                                                color: colorErrorPrimary,
-                                                dataSource: dataList,
-                                                xValueMapper:
-                                                    (ChartDataWeek chart, _) =>
-                                                        chart.x,
-                                                yValueMapper:
-                                                    (ChartDataWeek chart, _) =>
-                                                        chart.y1,
-                                                dataLabelSettings:
-                                                    const DataLabelSettings(
-                                                        color: colorMainBlue,
-                                                        textStyle: TextStyle(
-                                                            fontSize: 2)),
-                                              ),
-                                            ]);
-                                      } else {
-                                        return Container();
-                                      }
-                                    }),
-                              ),
-                              timeSave:
-                                  "${getTimeEndHW(snapshot.data![index].dstart.toString())} ${'to'.tr()} ${getTimeEndHW(snapshot.data![index].dend.toString())}",
-                              onPress: () async {
-                                String? id = await getIDResultHW(
-                                    snapshot.data![index].week!);
-                                Navigator.pushNamed(
-                                    context, Routers.checkAnswerHWAndTest,
-                                    arguments:
-                                        CheckAnswerModel(type: "hw", id: id));
-                              },
-                            );
-                          },
-                        );
+                                      }),
+                                ),
+                                timeSave:
+                                    "${getTimeEndHW(snapshot.data![index].dstart.toString())} ${'to'.tr()} ${getTimeEndHW(snapshot.data![index].dend.toString())}",
+                                onPress: () async {
+                                  String? id = await getIDResultHW(
+                                      snapshot.data![index].week!);
+                                  Navigator.pushNamed(
+                                      context, Routers.checkAnswerHWAndTest,
+                                      arguments:
+                                          CheckAnswerModel(type: "hw", id: id));
+                                },
+                              );
+                            },
+                          ))
+                        ]);
                       } else {
                         return Container();
                       }

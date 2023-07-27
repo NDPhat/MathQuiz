@@ -7,8 +7,10 @@ import 'package:math/data/remote/model/pre_test_req.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/data/remote/model/quiz_game_req.dart';
 import 'package:math/data/remote/model/quiz_game_response.dart';
+import 'package:math/data/remote/model/quiz_game_with_pagination_res.dart';
 import 'package:math/data/remote/model/quiz_test_req.dart';
 import 'package:math/data/remote/model/quiz_test_res.dart';
+import 'package:math/data/remote/model/quiz_test_with_pagination_res.dart';
 import 'package:math/data/remote/model/result_quiz_hw_req.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:math/data/remote/model/sentences_quiz_res.dart';
@@ -824,6 +826,59 @@ class UserAPIRepoImpl extends UserAPIRepo {
         return result;
       } else {
         return null;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<List<QuizGameAPIPagiModel>?> getALlQuizGameByPreGameIDWithPagination(
+      String preID, int page) async {
+    try {
+      final url =
+          "${endpoint}getAllQuizGameByPreIDWithPagination?preID=$preID&page_num=$page&page_size=10";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<QuizGameAPIPagiModel>? result =
+            QuizGamePagiAPIRes.fromJson(parsed).data;
+        return result;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<QuizGameAPIPagiModel>? result =
+            QuizGamePagiAPIRes.fromJson(parsed).data;
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<List<QuizTestAPIPagiModel>?> getALlQuizTestByPreTestIDWithPagi(
+      String preID, int page) async {
+    // TODO: implement getALlQuizTestByPreTestIDWithPagi
+    try {
+      final url =
+          "${endpoint}getAllQuizTestByPreIDWithPagination?preID=$preID&page_num=$page&page_size=10";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<QuizTestAPIPagiModel>? result =
+            QuizTestPagiAPIRes.fromJson(parsed).data;
+        return result;
+      } else {
+        // log(req.body);
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<QuizTestAPIPagiModel>? result =
+            QuizTestPagiAPIRes.fromJson(parsed).data;
+        return result;
       }
     } on SocketException catch (_) {
       return Future.error('No network found');
