@@ -9,7 +9,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/cons/text_style.dart';
 import '../../routers/navigation.dart';
 import '../../widget/input_field_widget.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
@@ -36,6 +35,9 @@ class _AddNewGuestPlayerScreenState extends State<AddNewGuestPlayerScreen> {
         backgroundColor: colorBlueQuaternery,
         resizeToAvoidBottomInset: false,
         body: MainPageHomePG(
+            onBack: () {
+              Navigator.pop(context);
+            },
             textNow: 'New player',
             onPressHome: () {},
             colorTextAndIcon: Colors.black,

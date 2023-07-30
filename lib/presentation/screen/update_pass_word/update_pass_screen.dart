@@ -5,7 +5,6 @@ import 'package:math/data/model/user_global.dart';
 
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
 import 'package:math/main.dart';
-import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/input_field_widget.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
@@ -24,6 +23,9 @@ class UpdatePasswordScreen extends StatelessWidget {
         instance.get<UserGlobal>().email!;
     return Scaffold(
         body: MainPageHomePG(
+      onBack: () {
+        Navigator.pop(context);
+      },
       colorTextAndIcon: Colors.black,
       textNow: 'update pass'.tr().toString(),
       onPressHome: () {},

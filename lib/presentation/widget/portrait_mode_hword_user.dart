@@ -17,7 +17,6 @@ class PortraitModeHomeWork extends StatelessWidget {
   final int quizNow;
   final QuizBrain quizBrainObject;
   final onTap;
-  VoidCallback onBack;
   CountDownController? controller;
   VoidCallback? onFinished;
   PortraitModeHomeWork({
@@ -29,7 +28,6 @@ class PortraitModeHomeWork extends StatelessWidget {
     required this.quizNow,
     required this.quizBrainObject,
     required this.onTap,
-    required this.onBack,
     this.controller,
     this.onFinished,
   });

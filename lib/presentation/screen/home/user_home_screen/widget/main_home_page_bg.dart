@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-
 class MainPageHomePG extends StatelessWidget {
   MainPageHomePG({
     Key? key,
@@ -9,11 +8,13 @@ class MainPageHomePG extends StatelessWidget {
     this.homeIcon,
     required this.textNow,
     required this.onPressHome,
+    required this.onBack,
     required this.colorTextAndIcon,
   }) : super(key: key);
   Widget child;
   Widget? homeIcon;
   VoidCallback onPressHome;
+  VoidCallback onBack;
   String textNow;
   Color colorTextAndIcon;
   @override
@@ -29,9 +30,7 @@ class MainPageHomePG extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 width: 100.w,
                 child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: onBack,
                     icon: Icon(
                       Icons.keyboard_backspace,
                       size: 30,

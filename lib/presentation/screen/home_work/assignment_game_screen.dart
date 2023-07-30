@@ -240,6 +240,10 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
       backgroundColor: colorMainBlue,
       resizeToAvoidBottomInset: false,
       body: MainPageHomePG(
+          onBack: () {
+            _controller.pause();
+            showOutDialog();
+          },
           textNow: "home work".tr(),
           onPressHome: () {},
           colorTextAndIcon: Colors.black,
@@ -263,10 +267,6 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
                 showMyDialog();
               },
               controller: _controller,
-              onBack: () {
-                _controller.pause();
-                showOutDialog();
-              },
             );
           })),
     );

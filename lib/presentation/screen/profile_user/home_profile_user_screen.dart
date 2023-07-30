@@ -18,6 +18,9 @@ class HomeProfileUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: MainPageHomePG(
+          onBack: () {
+            Navigator.pushNamed(context, Routers.homeUser);
+          },
           colorTextAndIcon: Colors.black,
           textNow: 'profile'.tr().toString(),
           onPressHome: () {},

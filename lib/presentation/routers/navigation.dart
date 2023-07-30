@@ -18,10 +18,11 @@ import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
 import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
 import 'package:math/presentation/screen/add_new_guest_player/add_new_guest_player_screen.dart';
 import 'package:math/presentation/screen/change_pass_word/change_pass_word_screen.dart';
-import 'package:math/presentation/screen/check_answer/check_answer_hw_test.dart';
 import 'package:math/presentation/screen/check_answer/check_answer_prac_screen.dart';
+import 'package:math/presentation/screen/check_answer/check_answer_test_screen.dart';
+import 'package:math/presentation/screen/data_sheet_screen/data_sheet_guest/data_sheet_guest_screen.dart';
 import 'package:math/presentation/screen/data_sheet_screen/data_sheet_user/data_sheet_user_screen.dart';
-import 'package:math/presentation/screen/detail_quiz_game_screen/detail_quiz_game.dart';
+import 'package:math/presentation/screen/detail_quiz_guest/detail_quiz_game.dart';
 import 'package:math/presentation/screen/game_screen/hard_game/drag_drop_game_screen.dart';
 import 'package:math/presentation/screen/game_screen/easy_game/match_number_game_screen.dart';
 import 'package:math/presentation/screen/game_screen/easy_game/write_and_count_game_screen.dart';
@@ -43,7 +44,6 @@ import 'package:math/presentation/screen/setting/setting_main_screen.dart';
 import 'package:math/presentation/screen/splash_screen/splash_screen.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/take_quiz_hard_screen.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/take_quiz_medium_screen.dart';
-import 'package:math/presentation/screen/testing_user/test_main_user_screen.dart';
 import 'package:math/presentation/screen/update_pass_word/update_pass_screen.dart';
 import '../../data/local/repo/detail_notifi/detail_notifi_repo.dart';
 import '../../data/local/repo/player_local/player_local_repo.dart';
@@ -52,18 +52,19 @@ import '../../data/local/repo/test/quiz_test_repo.dart';
 import '../../domain/bloc/history/history_pra_cubit.dart';
 import '../../domain/bloc/take_hard/take_hard_cubit.dart';
 import '../../main.dart';
+import '../screen/check_answer/check_answer_hw.dart';
 import '../screen/check_answer/check_anwser_screen.dart';
 import '../screen/detail_item_card_home/detail_hw_card_home_screen.dart';
 import '../screen/detail_item_card_home/detail_practices_card_home_screen.dart';
 import '../screen/detail_item_card_home/detail_test_home_screen.dart';
-import '../screen/detail_test/detail_test_screen.dart';
+import '../screen/detail_quiz_guest/detail_test_screen.dart';
 import '../screen/dual/dual_main_screen.dart';
 import '../screen/dual/dual_with_bot_screen.dart';
 import '../screen/dual/dual_with_player_screen.dart';
 import '../screen/dual/option_bot_dual.dart';
 import '../screen/forget_password/forget_password_screen.dart';
-import '../screen/history/history_pratice_screen.dart';
-import '../screen/history/history_test_screen.dart';
+import '../screen/history_guest/history_pratice_screen.dart';
+import '../screen/history_guest/history_test_screen.dart';
 import '../screen/home/guest_home_screen/home_guest_screen.dart';
 import '../screen/home/user_home_screen/home_user_screen.dart';
 import '../screen/home_work/assignment_main_screen.dart';
@@ -93,14 +94,13 @@ class Routers {
   static const String homeUser = '/homeUser';
   static const String historyPra = '/historyPra';
   static const String historyTest = '/historyTest';
-  static const String historyHome = '/historyHome';
   static const String hwcardDetail = '/hwcardDetail';
   static const String testDetail = '/testDetail';
   static const String practicecardDetail = '/practicecardDetail';
   static const String detailTest = '/detailTest';
-  static const String mainTestUser = '/mainTestUser';
   static const String checkAnswer = '/checkAnswer';
-  static const String checkAnswerHWAndTest = '/checkAnswerHWAndTest';
+  static const String checkAnswerHW = '/checkAnswerHW';
+  static const String checkAnswerTest = '/checkAnswerTest';
   static const String notifiScreen = '/notifiScreen';
   static const String addNotifiScreen = '/addNotifiScreen';
   static const String addPlayer = '/addPlayer';
@@ -124,6 +124,7 @@ class Routers {
   static const String mixGame = '/mixGame';
   static const String assignmentMainScreen = '/assignmentMainScreen';
   static const String dataSheetScreen = '/dataSheetScreen';
+  static const String dataSheetGuestScreen = '/dataSheetGuestScreen';
   static const String profileScreen = '/profileScreen';
   static const String changePassScreen = '/changePassScreen';
 
@@ -191,9 +192,7 @@ class Routers {
       case takeQuiz:
         return const TakeQuizUserScreen();
       case testDetail:
-        return const DetailTestHomeWork();
-      case mainTestUser:
-        return const MainTestingUserScreen();
+        return const DetailMixGameScreen();
       case settingScreen:
         return const SettingMainScreen();
       case practicecardDetail:
@@ -238,12 +237,16 @@ class Routers {
         return const HomeGuestMainScreen();
       case homeUser:
         return const HomeUserScreen();
-      case checkAnswerHWAndTest:
-        return const CheckAnswerHWAndTestScreen();
+      case checkAnswerHW:
+        return const CheckAnswerHWScreen();
+      case checkAnswerTest:
+        return const CheckAnswerTestScreen();
       case battleBOT:
         return const BotDual();
       case dataSheetScreen:
         return const DataSheetUserScreen();
+      case dataSheetGuestScreen:
+        return const DataSheetGuestScreen();
       case optionBot:
         return OptionModeBotDual();
       case chooseOption:

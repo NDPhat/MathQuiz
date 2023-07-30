@@ -244,10 +244,12 @@ class _HumanBattleScreenState extends State<PlayerDual> {
       body: Center(
         child: Column(
           children: [
-            AppBarWidget(onBack: () {
-              controller.pause();
-              showOutDialog();
-            }),
+            AppBarWidget(
+                bgColor: colorSystemWhite,
+                onBack: () {
+                  controller.pause();
+                  showOutDialog();
+                }),
             Column(
               children: [
                 SizedBox(

@@ -19,9 +19,11 @@ class PreTestTitle extends StatelessWidget {
         //  width: SizeConfig.screenWidth * 0.78,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: (preTest.score ?? 0) < (preTest.sumQuiz ?? 0)
-              ? colorSystemErrorTer
-              : colorBlueQuaternery,
+          border: Border.all(
+            color: (preTest.score! / preTest.sumQuiz!) * 100 > 80
+                ? colorMainTealPri
+                : colorErrorPrimary,
+          ),
         ),
         child: Row(children: [
           Expanded(
@@ -31,21 +33,27 @@ class PreTestTitle extends StatelessWidget {
                 Text(
                   "TEST ${preTest.id!} ",
                   style: GoogleFonts.lato(
-                    textStyle: s14f500ColorMainTe,
+                    color: (preTest.score! / preTest.sumQuiz!) * 100 > 80
+                        ? colorMainTealPri
+                        : colorErrorPrimary,
                   ),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   " SCORE : ${preTest.score ?? 0}",
                   style: GoogleFonts.lato(
-                    textStyle: s14f500ColorMainTe,
+                    color: (preTest.score! / preTest.sumQuiz!) * 100 > 80
+                        ? colorMainTealPri
+                        : colorErrorPrimary,
                   ),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   " TOTAL QUIZ : ${preTest.sumQuiz ?? 0}",
                   style: GoogleFonts.lato(
-                    textStyle: s14f500ColorMainTe,
+                    color: (preTest.score! / preTest.sumQuiz!) * 100 > 80
+                        ? colorMainTealPri
+                        : colorErrorPrimary,
                   ),
                 ),
               ],
@@ -55,14 +63,20 @@ class PreTestTitle extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 10),
             height: 60,
             width: 0.5,
-            color: colorMainBlue,
+            color: (preTest.score! / preTest.sumQuiz!) * 100 > 80
+                ? colorMainTealPri
+                : colorErrorPrimary,
           ),
           RotatedBox(
             quarterTurns: 3,
             child: Text(
-              ( preTest.score ?? 0 )== (preTest.sumQuiz ?? 0 )? "COMPLETED" : "NOT GOOD",
+              (preTest.score ?? 0) == (preTest.sumQuiz ?? 0)
+                  ? "COMPLETED"
+                  : "NOT GOOD",
               style: GoogleFonts.lato(
-                textStyle: s14f500ColorGreyTe,
+                color: (preTest.score! / preTest.sumQuiz!) * 100 > 80
+                    ? colorMainTealPri
+                    : colorErrorPrimary,
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math/application/cons/color.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:sizer/sizer.dart';
@@ -13,9 +14,11 @@ class DetailQuizGame extends StatelessWidget {
   Widget build(BuildContext context) {
     int preId = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
+      backgroundColor: colorSystemWhite,
       body: Column(
         children: [
           AppBarWidget(
+            bgColor: colorSystemWhite,
             onBack: () {
               Navigator.pop(context);
             },
@@ -35,21 +38,20 @@ class DetailQuizGame extends StatelessWidget {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return CustomScrollView(slivers: [
-                          SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                          childCount: snapshot.data!.length,
-                                  (context, index) {
-                                return AnswerWidget(
-                                  quiz: snapshot.data![index].quiz.toString(),
-                                  quizInfo:
-                                      snapshot.data![index].infoQuiz ?? true,
-                                  answer:
-                                      snapshot.data![index].answer.toString(),
-                                  answerSelect: snapshot
-                                      .data![index].answerSelect
-                                      .toString(),
-                                );
-                              }))]);
+                            SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                    childCount: snapshot.data!.length,
+                                    (context, index) {
+                              return AnswerWidget(
+                                quiz: snapshot.data![index].quiz.toString(),
+                                quizInfo:
+                                    snapshot.data![index].infoQuiz ?? true,
+                                answer: snapshot.data![index].answer.toString(),
+                                answerSelect: snapshot.data![index].answerSelect
+                                    .toString(),
+                              );
+                            }))
+                          ]);
                         } else {
                           return Container();
                         }

@@ -25,6 +25,9 @@ class DataSheetUserScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
+          onBack: () {
+            Navigator.pop(context);
+          },
           colorTextAndIcon: Colors.black,
           textNow: 'data sheet'.tr().toString(),
           onPressHome: () {},
@@ -34,265 +37,256 @@ class DataSheetUserScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Column(
-                      children: [
-                        LineContentItem(
-                          colorBG: colorMainTealPri,
-                          title: 'home work'.tr().toString(),
-                          icon: const Icon(LineAwesomeIcons.book),
-                        ),
-                        sizedBox,
-                        FutureBuilder<List<ResultQuizHWAPIModel>?>(
-                            future: instance
-                                .get<UserAPIRepo>()
-                                .getALlResultQuizHWByUserID(
-                                    instance.get<UserGlobal>().id.toString()),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return SizedBox(
-                                  height: 30.h,
-                                  width: 30.w,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      color: colorMainBlue,
-                                      strokeWidth: 5,
-                                    ),
-                                  ),
-                                );
-                              }
-                              if (snapshot.hasData &&
-                                  snapshot.data!.isNotEmpty) {
-                                int totalQ = 0;
-                                int score = 0;
-                                for (var element in snapshot.data!) {
-                                  totalQ = totalQ + element.numQ!;
-                                  score = score + element.score!;
-                                }
-                                return ItemAsyncDataPageHome(
-                                    colorBorder: colorMainTealPri,
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, Routers.hwcardDetail);
-                                    },
-                                    textTitle: 'home work'.tr().toString(),
-                                    totalQ: totalQ.toString(),
-                                    trueAve: ((score / totalQ) * 100)
-                                        .toStringAsFixed(2),
-                                    childRight: ChildRightHW(
-                                      type: "hw",
-                                    ),
-                                    timeNow: DateFormat.yMMMEd()
-                                        .format(DateTime.now()));
-                              } else {
-                                return Container();
-                              }
-                            }),
-                        sizedBox,
-                        LineContentItem(
-                          colorBG: colorSystemYeloow,
-                          title: 'practice'.tr().toString(),
-                          icon: const Icon(Icons.dashboard),
-                        ),
-                        sizedBox,
-                        FutureBuilder<List<PreQuizGameAPIModel>?>(
-                            future: instance
-                                .get<UserAPIRepo>()
-                                .getALlPreQuizGameByUidandOptionGame(
-                                    instance.get<UserGlobal>().id.toString(),
-                                    "input"),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return SizedBox(
-                                  height: 30.h,
-                                  width: 30.w,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      color: colorMainBlue,
-                                      strokeWidth: 5,
-                                    ),
-                                  ),
-                                );
-                              }
-                              if (snapshot.hasData &&
-                                  snapshot.data!.isNotEmpty) {
-                                int totalQ = 0;
-                                int score = 0;
-                                for (var element in snapshot.data!) {
-                                  totalQ = totalQ + element.numQ!;
-                                  score = score + element.score!;
-                                }
-                                return ItemAsyncDataPageHome(
-                                  colorBorder: colorSystemYeloow,
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, Routers.practicecardDetail,
-                                        arguments: "input");
-                                  },
-                                  textTitle: 'input answer'.tr().toString(),
-                                  totalQ: totalQ.toString(),
-                                  trueAve: ((score / totalQ) * 100)
-                                      .toStringAsFixed(2),
-                                  childRight: ChildRightHomeInput(
-                                    typeGame: "input",
-                                  ),
-                                  timeNow: DateFormat.yMMMEd()
-                                      .format(DateTime.now()),
-                                );
-                              }
-                              return Container();
-                            }),
-                        sizedBox,
-                        FutureBuilder<List<PreQuizGameAPIModel>?>(
-                            future: instance
-                                .get<UserAPIRepo>()
-                                .getALlPreQuizGameByUidandOptionGame(
-                                    instance.get<UserGlobal>().id.toString(),
-                                    "true/false"),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return SizedBox(
-                                  height: 30.h,
-                                  width: 30.w,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      color: colorMainBlue,
-                                      strokeWidth: 5,
-                                    ),
-                                  ),
-                                );
-                              }
-                              if (snapshot.hasData &&
-                                  snapshot.data!.isNotEmpty) {
-                                int totalQ = 0;
-                                int score = 0;
-                                for (var element in snapshot.data!) {
-                                  totalQ = totalQ + element.numQ!;
-                                  score = score + element.score!;
-                                }
-                                return ItemAsyncDataPageHome(
-                                    colorBorder: colorSystemYeloow,
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, Routers.practicecardDetail,
-                                          arguments: "true/false");
-                                    },
-                                    textTitle: 'true false'.tr().toString(),
-                                    totalQ: totalQ.toString(),
-                                    trueAve: ((score / totalQ) * 100)
-                                        .toStringAsFixed(2),
-                                    childRight: ChildRightHomeInput(
-                                      typeGame: "true/false",
-                                    ),
-                                    timeNow: DateFormat.yMMMEd()
-                                        .format(DateTime.now()));
-                              }
-                              return Container();
-                            }),
-                        sizedBox,
-                        FutureBuilder<List<PreQuizGameAPIModel>?>(
-                            future: instance
-                                .get<UserAPIRepo>()
-                                .getALlPreQuizGameByUidandOptionGame(
-                                    instance.get<UserGlobal>().id.toString(),
-                                    "missing"),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return SizedBox(
-                                  height: 30.h,
-                                  width: 30.w,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      color: colorMainBlue,
-                                      strokeWidth: 5,
-                                    ),
-                                  ),
-                                );
-                              }
-                              if (snapshot.hasData &&
-                                  snapshot.data!.isNotEmpty) {
-                                int totalQ = 0;
-                                int score = 0;
-                                for (var element in snapshot.data!) {
-                                  totalQ = totalQ + element.numQ!;
-                                  score = score + element.score!;
-                                }
-                                return ItemAsyncDataPageHome(
-                                    colorBorder: colorSystemYeloow,
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, Routers.practicecardDetail,
-                                          arguments: "missing");
-                                    },
-                                    textTitle: 'findmissing'.tr().toString(),
-                                    totalQ: totalQ.toString(),
-                                    trueAve: ((score / totalQ) * 100)
-                                        .toStringAsFixed(2),
-                                    childRight: ChildRightHomeInput(
-                                      typeGame: "missing",
-                                    ),
-                                    timeNow: DateFormat.yMMMEd()
-                                        .format(DateTime.now()));
-                              }
-                              return Container();
-                            }),
-                        sizedBox,
-                        LineContentItem(
-                          colorBG: colorErrorPrimary,
-                          title: "test".tr().toString(),
-                          icon: const Icon(Icons.task),
-                        ),
-                        sizedBox,
-                        FutureBuilder<List<PreTestAPIRes>?>(
-                            future: instance
-                                .get<UserAPIRepo>()
-                                .getALlPreQuizTestByUid(
-                                    instance.get<UserGlobal>().id.toString()),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return SizedBox(
-                                  height: 30.h,
-                                  width: 30.w,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      color: colorMainBlue,
-                                      strokeWidth: 5,
-                                    ),
-                                  ),
-                                );
-                              }
-                              if (snapshot.hasData &&
-                                  snapshot.data!.isNotEmpty) {
-                                int totalQ = 0;
-                                int score = 0;
-                                for (var element in snapshot.data!) {
-                                  totalQ = totalQ + element.sumQ!;
-                                  score = score + element.score!;
-                                }
-                                return ItemAsyncDataPageHome(
-                                    colorBorder: colorErrorPrimary,
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, Routers.testDetail);
-                                    },
-                                    textTitle: 'test'.tr().toString(),
-                                    totalQ: totalQ.toString(),
-                                    trueAve: ((score / totalQ) * 100)
-                                        .toStringAsFixed(2),
-                                    childRight: ChildRightHW(
-                                      type: "test",
-                                    ),
-                                    timeNow: DateFormat.yMMMEd()
-                                        .format(DateTime.now()));
-                              }
-                              return Container();
-                            }),
-                      ],
+                    LineContentItem(
+                      colorBG: colorMainTealPri,
+                      title: 'home work'.tr().toString(),
+                      icon: const Icon(LineAwesomeIcons.book),
                     ),
+                    sizedBox,
+                    FutureBuilder<List<ResultQuizHWAPIModel>?>(
+                        future: instance
+                            .get<UserAPIRepo>()
+                            .getALlResultQuizHWByUserID(
+                                instance.get<UserGlobal>().id.toString()),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return SizedBox(
+                              height: 30.h,
+                              width: 30.w,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: colorMainBlue,
+                                  strokeWidth: 5,
+                                ),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                            int totalQ = 0;
+                            int score = 0;
+                            for (var element in snapshot.data!) {
+                              totalQ = totalQ + element.numQ!;
+                              score = score + element.score!;
+                            }
+                            return ItemAsyncDataPageHome(
+                                colorBorder: colorMainTealPri,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, Routers.hwcardDetail);
+                                },
+                                textTitle: 'home work'.tr().toString(),
+                                totalQ: totalQ.toString(),
+                                trueAve:
+                                    ((score / totalQ) * 100).toStringAsFixed(2),
+                                childRight: ChildRightHW(
+                                  type: "hw",
+                                ),
+                                timeNow:
+                                    DateFormat.yMMMEd().format(DateTime.now()));
+                          } else {
+                            return Container();
+                          }
+                        }),
+                    sizedBox,
+                    LineContentItem(
+                      colorBG: colorSystemYeloow,
+                      title: 'practice'.tr().toString(),
+                      icon: const Icon(Icons.dashboard),
+                    ),
+                    sizedBox,
+                    FutureBuilder<List<PreQuizGameAPIModel>?>(
+                        future: instance
+                            .get<UserAPIRepo>()
+                            .getALlPreQuizGameByUidandOptionGame(
+                                instance.get<UserGlobal>().id.toString(),
+                                "input"),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return SizedBox(
+                              height: 30.h,
+                              width: 30.w,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: colorMainBlue,
+                                  strokeWidth: 5,
+                                ),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                            int totalQ = 0;
+                            int score = 0;
+                            for (var element in snapshot.data!) {
+                              totalQ = totalQ + element.numQ!;
+                              score = score + element.score!;
+                            }
+                            return ItemAsyncDataPageHome(
+                              colorBorder: colorSystemYeloow,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, Routers.practicecardDetail,
+                                    arguments: "input");
+                              },
+                              textTitle: 'input answer'.tr().toString(),
+                              totalQ: totalQ.toString(),
+                              trueAve:
+                                  ((score / totalQ) * 100).toStringAsFixed(2),
+                              childRight: ChildRightHomeInput(
+                                typeGame: "input",
+                              ),
+                              timeNow:
+                                  DateFormat.yMMMEd().format(DateTime.now()),
+                            );
+                          }
+                          return Container();
+                        }),
+                    sizedBox,
+                    FutureBuilder<List<PreQuizGameAPIModel>?>(
+                        future: instance
+                            .get<UserAPIRepo>()
+                            .getALlPreQuizGameByUidandOptionGame(
+                                instance.get<UserGlobal>().id.toString(),
+                                "true/false"),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return SizedBox(
+                              height: 30.h,
+                              width: 30.w,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: colorMainBlue,
+                                  strokeWidth: 5,
+                                ),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                            int totalQ = 0;
+                            int score = 0;
+                            for (var element in snapshot.data!) {
+                              totalQ = totalQ + element.numQ!;
+                              score = score + element.score!;
+                            }
+                            return ItemAsyncDataPageHome(
+                                colorBorder: colorSystemYeloow,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, Routers.practicecardDetail,
+                                      arguments: "true/false");
+                                },
+                                textTitle: 'true false'.tr().toString(),
+                                totalQ: totalQ.toString(),
+                                trueAve:
+                                    ((score / totalQ) * 100).toStringAsFixed(2),
+                                childRight: ChildRightHomeInput(
+                                  typeGame: "true/false",
+                                ),
+                                timeNow:
+                                    DateFormat.yMMMEd().format(DateTime.now()));
+                          }
+                          return Container();
+                        }),
+                    sizedBox,
+                    FutureBuilder<List<PreQuizGameAPIModel>?>(
+                        future: instance
+                            .get<UserAPIRepo>()
+                            .getALlPreQuizGameByUidandOptionGame(
+                                instance.get<UserGlobal>().id.toString(),
+                                "missing"),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return SizedBox(
+                              height: 30.h,
+                              width: 30.w,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: colorMainBlue,
+                                  strokeWidth: 5,
+                                ),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                            int totalQ = 0;
+                            int score = 0;
+                            for (var element in snapshot.data!) {
+                              totalQ = totalQ + element.numQ!;
+                              score = score + element.score!;
+                            }
+                            return ItemAsyncDataPageHome(
+                                colorBorder: colorSystemYeloow,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, Routers.practicecardDetail,
+                                      arguments: "missing");
+                                },
+                                textTitle: 'findmissing'.tr().toString(),
+                                totalQ: totalQ.toString(),
+                                trueAve:
+                                    ((score / totalQ) * 100).toStringAsFixed(2),
+                                childRight: ChildRightHomeInput(
+                                  typeGame: "missing",
+                                ),
+                                timeNow:
+                                    DateFormat.yMMMEd().format(DateTime.now()));
+                          }
+                          return Container();
+                        }),
+                    sizedBox,
+                    LineContentItem(
+                      colorBG: colorErrorPrimary,
+                      title: "test".tr().toString(),
+                      icon: const Icon(Icons.task),
+                    ),
+                    sizedBox,
+                    FutureBuilder<List<PreTestAPIRes>?>(
+                        future: instance
+                            .get<UserAPIRepo>()
+                            .getALlPreQuizTestByUid(
+                                instance.get<UserGlobal>().id.toString()),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return SizedBox(
+                              height: 30.h,
+                              width: 30.w,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: colorMainBlue,
+                                  strokeWidth: 5,
+                                ),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                            int totalQ = 0;
+                            int score = 0;
+                            for (var element in snapshot.data!) {
+                              totalQ = totalQ + element.sumQ!;
+                              score = score + element.score!;
+                            }
+                            return ItemAsyncDataPageHome(
+                                colorBorder: colorErrorPrimary,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, Routers.testDetail);
+                                },
+                                textTitle: 'test'.tr().toString(),
+                                totalQ: totalQ.toString(),
+                                trueAve:
+                                    ((score / totalQ) * 100).toStringAsFixed(2),
+                                childRight: ChildRightHW(
+                                  type: "test",
+                                ),
+                                timeNow:
+                                    DateFormat.yMMMEd().format(DateTime.now()));
+                          }
+                          return Container();
+                        }),
                   ],
                 ),
               ),

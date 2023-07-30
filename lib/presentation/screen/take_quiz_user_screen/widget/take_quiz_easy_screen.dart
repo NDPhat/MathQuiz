@@ -11,7 +11,9 @@ class TakeQuizEasyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MainPageHomePG(
+      body: MainPageHomePG(   onBack: () {
+        Navigator.pop(context);
+      },
         textNow: 'Easy quiz',
         onPressHome: () {},
         colorTextAndIcon: Colors.black,

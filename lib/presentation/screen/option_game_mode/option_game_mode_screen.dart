@@ -21,6 +21,9 @@ class OptionGameModeScreen extends StatelessWidget {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: MainPageHomePG(
+          onBack: () {
+            Navigator.pop(context);
+          },
           textNow: 'choose mode'.tr().toString(),
           onPressHome: () {},
           colorTextAndIcon: Colors.black,

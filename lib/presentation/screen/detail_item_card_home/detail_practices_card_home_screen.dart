@@ -26,6 +26,9 @@ class DetailItemCardPractices extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
         textNow: "${'practice'.tr()} ${'data sheet'.tr().toLowerCase()}",
         onPressHome: () {},
         colorTextAndIcon: Colors.black,

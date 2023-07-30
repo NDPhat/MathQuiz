@@ -162,7 +162,7 @@ class HistoryTest extends StatelessWidget {
                           .get<PreTestLocalRepo>()
                           .getAllPreTestByDay(state.timeNow.toString()),
                       builder: (context, snapshot) {
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                           return CustomScrollView(slivers: [
                             SliverList(
                                 delegate: SliverChildBuilderDelegate(

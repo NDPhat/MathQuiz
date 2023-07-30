@@ -15,6 +15,9 @@ class TakeQuizHardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
         textNow: 'Hard quiz',
         onPressHome: () {},
         colorTextAndIcon: Colors.black,

@@ -15,6 +15,9 @@ class OptionModeBotDual extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
         textNow: 'BOT battle',
         onPressHome: () {},
         colorTextAndIcon: Colors.black,

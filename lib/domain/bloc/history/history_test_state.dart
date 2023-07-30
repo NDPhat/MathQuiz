@@ -18,9 +18,8 @@ class HistoryTestState extends Equatable {
 
   @override
   List<Object?> get props => [
-    timeNow,
-
-  ];
+        timeNow,
+      ];
 
   HistoryTestState copyWith({
     String? timeNow,

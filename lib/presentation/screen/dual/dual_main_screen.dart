@@ -15,6 +15,9 @@ class DualMainScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
         textNow: 'Battle game',
         onPressHome: () {},
         colorTextAndIcon: Colors.black,

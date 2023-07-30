@@ -5,13 +5,11 @@ import 'package:math/data/model/chart_data_week.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/presentation/routers/navigation.dart';
-import 'package:math/presentation/widget/app_bar.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/utils/count_sign.dart';
-import '../../../data/model/check_model.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../main.dart';
@@ -19,14 +17,17 @@ import '../../widget/async_data_detail.dart';
 import '../../widget/child_right_item_card_home.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
-class DetailTestHomeWork extends StatelessWidget {
-  const DetailTestHomeWork({Key? key}) : super(key: key);
+class DetailMixGameScreen extends StatelessWidget {
+  const DetailMixGameScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
         textNow: "${'test'.tr()} ${'data sheet'.tr().toLowerCase()}",
         onPressHome: () {},
         colorTextAndIcon: Colors.black,
@@ -69,7 +70,6 @@ class DetailTestHomeWork extends StatelessWidget {
                   title: 'data detail'.tr().toString(),
                   icon: const Icon(Icons.calendar_view_week)),
               SizedBox(height: 1.h),
-
               SizedBox(
                 height: 40.h,
                 child: FutureBuilder<List<PreTestAPIRes>?>(
@@ -234,9 +234,8 @@ class DetailTestHomeWork extends StatelessWidget {
                                 timeSave: "${snapshot.data![index].dateSave}",
                                 onPress: () {
                                   Navigator.pushNamed(
-                                      context, Routers.checkAnswerHWAndTest,
-                                      arguments: CheckAnswerModel(
-                                          id: snapshot.data![index].key));
+                                      context, Routers.checkAnswerTest,
+                                      arguments: snapshot.data![index].key);
                                 },
                               );
                             },

@@ -5,12 +5,9 @@ import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/constants.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/presentation/screen/setting/widget/setting_widget.dart';
-import 'package:math/presentation/widget/app_bar.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../routers/navigation.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
-import '../profile_user/my_account/profile_menu_widget.dart';
 
 class SettingMainScreen extends StatelessWidget {
   const SettingMainScreen({Key? key}) : super(key: key);
@@ -19,6 +16,9 @@ class SettingMainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
         colorTextAndIcon: Colors.black,
         textNow: 'setting'.tr().toString(),
         onPressHome: () {},

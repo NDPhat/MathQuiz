@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:math/application/cons/constants.dart';
 import 'package:math/application/enum/update_profile_status.dart';
 import 'package:math/data/model/user_global.dart';
@@ -14,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/main.dart';
+import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/widget/button_custom.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:sizer/sizer.dart';
@@ -217,9 +216,18 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pushNamed(context, Routers.profileScreen);
+        },
         colorTextAndIcon: Colors.black,
         textNow: 'profile'.tr().toString(),
-        onPressHome: () {},
+        onPressHome: () {
+          Navigator.pushNamed(context, Routers.homeUser);
+        },
+        homeIcon: const Icon(
+          LineAwesomeIcons.home,
+          color: Colors.black,
+        ),
         child: Expanded(
           child: SingleChildScrollView(
             reverse: true,
@@ -621,6 +629,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                               await uploadImageToServer(
                                   instance.get<UserGlobal>().fullName!);
                             }
+                            context.read<UpdateProfileCubit>().clearData();
                             context
                                 .read<UpdateProfileCubit>()
                                 .updateProfileUser(

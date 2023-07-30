@@ -20,6 +20,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
         textNow: "language".tr().toString(),
         onPressHome: () {},
         colorTextAndIcon: Colors.black,

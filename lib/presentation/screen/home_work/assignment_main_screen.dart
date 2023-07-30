@@ -11,9 +11,7 @@ import 'package:math/presentation/widget/item_card_hw.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
 import '../../../application/cons/color.dart';
-
 import '../../../application/cons/constants.dart';
-import '../../../data/model/check_model.dart';
 import '../../../data/model/pre_join_homework.dart';
 import '../../../data/remote/model/result_quiz_hw_req.dart';
 import '../../routers/navigation.dart';
@@ -110,8 +108,8 @@ class AssignmentMainScreen extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.checkAnswerHWAndTest,
-                      arguments: CheckAnswerModel(id: idResult, type: "hw"));
+                  Navigator.pushNamed(context, Routers.checkAnswerHW,
+                      arguments: idResult);
                 },
                 child: Text('go'.tr().toString(), style: kDialogButtonsTS),
               ),
@@ -129,6 +127,9 @@ class AssignmentMainScreen extends StatelessWidget {
 
     return Scaffold(
       body: MainPageHomePG(
+          onBack: () {
+            Navigator.pop(context);
+          },
           colorTextAndIcon: Colors.black,
           textNow: 'home work'.tr().toString(),
           onPressHome: () {},

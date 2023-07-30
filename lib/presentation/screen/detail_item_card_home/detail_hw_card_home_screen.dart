@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/chart_data_week.dart';
-import 'package:math/data/model/check_model.dart';
 import 'package:math/data/remote/model/detail_quiz_hw_response.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:math/presentation/routers/navigation.dart';
@@ -34,6 +33,9 @@ class DetailItemCardHomeWork extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
         textNow: "${'home work'.tr()} ${'data sheet'.tr().toLowerCase()}",
         onPressHome: () {},
         colorTextAndIcon: Colors.black,
@@ -249,9 +251,8 @@ class DetailItemCardHomeWork extends StatelessWidget {
                                   String? id = await getIDResultHW(
                                       snapshot.data![index].week!);
                                   Navigator.pushNamed(
-                                      context, Routers.checkAnswerHWAndTest,
-                                      arguments:
-                                          CheckAnswerModel(type: "hw", id: id));
+                                      context, Routers.checkAnswerHW,
+                                      arguments: id);
                                 },
                               );
                             },

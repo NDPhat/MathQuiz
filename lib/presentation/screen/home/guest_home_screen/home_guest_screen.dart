@@ -74,7 +74,6 @@ class HomeGuestMainScreen extends StatelessWidget {
             child: Container(
               width: 100.w,
               decoration: const BoxDecoration(
-
                 color: colorSystemWhite,
                 borderRadius: kTopBorderRadius,
               ),
@@ -95,7 +94,10 @@ class HomeGuestMainScreen extends StatelessWidget {
                           title: 'Take Quiz',
                         ),
                         HomeCard(
-                          onPress: () {},
+                          onPress: () {
+                            Navigator.pushNamed(
+                                context, Routers.battleMainScreen);
+                          },
                           icon: 'assets/icons/assignment.svg',
                           title: 'Game',
                         ),
@@ -105,12 +107,17 @@ class HomeGuestMainScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         HomeCard(
-                          onPress: () {},
+                          onPress: () {
+                            Navigator.pushNamed(
+                                context, Routers.dataSheetGuestScreen);
+                          },
                           icon: 'assets/icons/datesheet.svg',
                           title: 'DateSheet',
                         ),
                         HomeCard(
-                          onPress: () {},
+                          onPress: () {
+                            Navigator.pushNamed(context, Routers.settingScreen);
+                          },
                           icon: 'assets/icons/event.svg',
                           title: 'Setting',
                         ),

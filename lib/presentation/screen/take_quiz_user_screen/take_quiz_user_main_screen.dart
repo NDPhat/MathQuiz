@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/color.dart';
-import 'package:math/application/cons/text_style.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/constants.dart';
 import '../../routers/navigation.dart';
@@ -16,6 +15,9 @@ class TakeQuizUserScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
         textNow: 'Take quiz',
         onPressHome: () {},
         colorTextAndIcon: Colors.black,

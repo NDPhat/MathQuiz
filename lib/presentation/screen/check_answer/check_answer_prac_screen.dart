@@ -80,6 +80,9 @@ class _CheckAnswerPracUserGameScreenState
   Widget build(BuildContext context) {
     return Scaffold(
         body: MainPageHomePG(
+            onBack: (){
+              Navigator.pop(context);
+            },
             textNow: 'check answer'.tr().toString(),
             colorTextAndIcon: Colors.black,
             onPressHome: () {},

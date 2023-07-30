@@ -87,14 +87,18 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     emit(state.copyWith(birthDate: value));
   }
 
-  Future<void> updateProfileUser(
-      String linkImage, String deleteHash, File? _imageFile) async {
+  void clearData() {
     emit(state.copyWith(
         nameError: "",
         addError: "",
         phoneError: "",
         birthError: "",
-        status: UpdateProfileStatus.onLoading));
+        status: UpdateProfileStatus.clear));
+  }
+
+  Future<void> updateProfileUser(
+      String linkImage, String deleteHash, File? _imageFile) async {
+    emit(state.copyWith(status: UpdateProfileStatus.onLoading));
     if (isFormValid()) {
       late UserAPIReq dataNew;
       if (_imageFile != null) {

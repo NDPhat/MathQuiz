@@ -18,6 +18,9 @@ class ChangePassWordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: MainPageHomePG(
+      onBack: () {
+        Navigator.pop(context);
+      },
       colorTextAndIcon: Colors.black,
       textNow: 'update pass'.tr().toString(),
       onPressHome: () {},

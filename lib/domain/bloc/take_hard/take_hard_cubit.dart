@@ -42,7 +42,7 @@ class TakeHardCubit extends Cubit<TakeHardState> {
             score: const Value(0),
             sumQuiz: const Value(0),
             dateSave: Value(
-              formatTimeTestInput.format(DateTime.now()),
+              formatDateInput.format(DateTime.now()),
             ));
         //insert task
         await preTestLocalRepo.insertPreTest(entity);
