@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -18,7 +19,7 @@ class DualMainScreen extends StatelessWidget {
         onBack: () {
           Navigator.pop(context);
         },
-        textNow: 'Battle game',
+        textNow: 'battle game'.tr(),
         onPressHome: () {},
         colorTextAndIcon: Colors.black,
         child: Container(
@@ -35,7 +36,7 @@ class DualMainScreen extends StatelessWidget {
                 width: 100.w,
                 height: 10.h,
                 child: Center(
-                    child: Text("SELECT MODE GAME",
+                    child: Text("SELECT MODE GAME".tr(),
                         style: GoogleFonts.abrilFatface(
                             color: colorSystemWhite,
                             fontWeight: FontWeight.w700,
@@ -49,14 +50,14 @@ class DualMainScreen extends StatelessWidget {
                       onPress: () {
                         Navigator.pushNamed(context, Routers.optionBot);
                       },
-                      textTitle: "BOT"),
+                      textTitle: "bot".tr()),
                   sizedBox,
                   ItemTakeQuiz(
                       onPress: () {
                         Navigator.pushNamed(context, Routers.battleHuman);
                       },
                       bgColor: colorMainBlue,
-                      textTitle: "PLAYER"),
+                      textTitle: "player".tr()),
                 ],
               ),
             ],

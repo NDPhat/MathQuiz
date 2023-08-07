@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/cons/color.dart';
@@ -18,7 +19,7 @@ class TakeQuizHardScreen extends StatelessWidget {
         onBack: () {
           Navigator.pop(context);
         },
-        textNow: 'Hard quiz',
+        textNow: 'hard quiz'.tr(),
         onPressHome: () {},
         colorTextAndIcon: Colors.black,
         child: Stack(
@@ -28,7 +29,9 @@ class TakeQuizHardScreen extends StatelessWidget {
                 height: 90.h,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/bg_take_easy.jpg"),
+                      image: AssetImage(
+                        'assets/images/bg/bg2.jpg',
+                      ),
                       fit: BoxFit.cover),
                 )),
             Container(
@@ -59,8 +62,8 @@ class TakeQuizHardScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Puzzle',
-                        textBot2: 'number',
+                        textBot1: 'puzzle'.tr(),
+                        textBot2: 'number'.tr(),
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.purpleAccent,
@@ -77,8 +80,8 @@ class TakeQuizHardScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Connect',
-                        textBot2: 'number',
+                        textBot1: 'connect'.tr(),
+                        textBot2: 'number'.tr(),
                       ),
                     ],
                   ),
@@ -111,8 +114,8 @@ class TakeQuizHardScreen extends StatelessWidget {
                                     fit: BoxFit.scaleDown),
                               ),
                             ),
-                            textBot1: 'Mix',
-                            textBot2: 'numbers',
+                            textBot1: 'mix'.tr(),
+                            textBot2: 'number'.tr(),
                           )),
                       ItemTakeQuizEasy(
                         bgColor: Colors.pink,

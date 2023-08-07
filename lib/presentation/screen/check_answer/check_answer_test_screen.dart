@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
-import '../../../data/remote/model/quiz_test_with_pagination_res.dart';
+import '../../../data/remote/model/quiz_test_res.dart';
 import '../../../main.dart';
 import '../../widget/answer_widget.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
@@ -21,7 +21,7 @@ class _CheckAnswerTestScreenState extends State<CheckAnswerTestScreen> {
   ScrollController controller = ScrollController();
   bool isLoadMoreRunning = false;
   String key = "";
-  List<QuizTestAPIPagiModel>? posts = [];
+  List<QuizTestAPIRes>? posts = [];
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _CheckAnswerTestScreenState extends State<CheckAnswerTestScreen> {
         isLoadMoreRunning = true; // Display a progress indicator at the bottom
       });
       page += 1; // Increase _page by 1
-      final List<QuizTestAPIPagiModel>? fetchedPosts = await instance
+      final List<QuizTestAPIRes>? fetchedPosts = await instance
           .get<UserAPIRepo>()
           .getALlQuizTestByPreTestIDWithPagi(key, page);
       if (fetchedPosts!.isNotEmpty) {
@@ -61,7 +61,7 @@ class _CheckAnswerTestScreenState extends State<CheckAnswerTestScreen> {
     setState(() {
       isFirstLoadRunning = true;
     });
-    final List<QuizTestAPIPagiModel>? fetchedPosts = await instance
+    final List<QuizTestAPIRes>? fetchedPosts = await instance
         .get<UserAPIRepo>()
         .getALlQuizTestByPreTestIDWithPagi(key, page);
     if (fetchedPosts!.isNotEmpty) {

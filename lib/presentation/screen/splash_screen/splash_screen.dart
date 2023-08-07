@@ -52,10 +52,17 @@ class SplashScreenState extends State<SplashScreen> {
           int id = await instance
               .get<AuthenRepository>()
               .getIDLocalHandleAutoLoginApp();
-          PlayerLocalEntityData dataLocal =
+          PlayerLocalEntityData dataLocal;
+          dataLocal =
               await instance.get<PlayerLocalRepo>().getPlayerLocal(id);
-          UserEventLocal.updateUserLocal(dataLocal);
-          Navigator.pushNamed(context, Routers.homeGuest);
+          if(dataLocal != null) {
+            UserEventLocal.updateUserLocal(dataLocal);
+            Navigator.pushNamed(context, Routers.homeGuest);
+          }
+          else{
+            Navigator.pushNamed(context, Routers.addPlayer);
+
+          }
         } else {
           Navigator.pushNamed(context, Routers.chooseOptionUseApp);
         }

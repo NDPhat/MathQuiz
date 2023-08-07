@@ -18,7 +18,7 @@ class TakeQuizUserScreen extends StatelessWidget {
         onBack: () {
           Navigator.pop(context);
         },
-        textNow: 'Take quiz',
+        textNow: 'practice'.tr(),
         onPressHome: () {},
         colorTextAndIcon: Colors.black,
         child: Container(
@@ -36,7 +36,7 @@ class TakeQuizUserScreen extends StatelessWidget {
                   width: 100.w,
                   height: 10.h,
                   child: Center(
-                      child: Text("SELECT MODE GAME",
+                      child: Text("SELECT MODE GAME".tr(),
                           style: GoogleFonts.abrilFatface(
                               color: colorSystemWhite,
                               fontWeight: FontWeight.w700,
@@ -50,20 +50,20 @@ class TakeQuizUserScreen extends StatelessWidget {
                         onPress: () {
                           Navigator.pushNamed(context, Routers.takeEasyQuiz);
                         },
-                        textTitle: "easy"),
+                        textTitle: "easy".tr()),
                     sizedBox,
                     ItemTakeQuiz(
                         onPress: () {
                           Navigator.pushNamed(context, Routers.takeMediumQuiz);
                         },
                         bgColor: colorMainBlue,
-                        textTitle: "medium"),
+                        textTitle: "medium".tr()),
                     sizedBox,
                     ItemTakeQuiz(
                       onPress: () {
                         Navigator.pushNamed(context, Routers.takeHardQuiz);
                       },
-                      textTitle: 'hard',
+                      textTitle: 'hard'.tr(),
                       bgColor: colorErrorPrimary,
                     ),
                   ],

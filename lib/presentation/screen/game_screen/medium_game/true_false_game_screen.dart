@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:drift/drift.dart' as driff;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/remote/model/pre_quiz_game_req.dart';
+import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
@@ -21,7 +23,6 @@ import '../../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../../application/utils/make_quiz.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
-import '../../../widget/app_bar.dart';
 import '../../../widget/portrait_mode_tf.dart';
 import '../../../widget/show_end_dialog.dart';
 
@@ -172,8 +173,8 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
               25,
             )),
             backgroundColor: const Color(0xff1542bf),
-            title: const FittedBox(
-              child: Text('ARE YOU GUYS READY ?',
+            title:  FittedBox(
+              child: Text('${'are you ready'.tr()} ?',
                   textAlign: TextAlign.center, style: kTitleTS),
             ),
             actions: [
@@ -183,13 +184,13 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
                   _controller.start();
                   _startGame(_preQuiz);
                 },
-                child: const Text('GO', style: kDialogButtonsTS),
+                child:  Text('go'.tr(), style: kDialogButtonsTS),
               ),
               TextButton(
                 onPressed: () {
                   deletePreGame();
                 },
-                child: const Text('BACK', style: kDialogButtonsTS),
+                child:  Text('exit'.tr(), style: kDialogButtonsTS),
               ),
             ],
           ),
@@ -264,8 +265,8 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('DO YOU WANT TO QUIT ?',
+          title:  FittedBox(
+            child: Text('${'do you want to quit'.tr()} ?',
                 textAlign: TextAlign.center, style: kScoreLabelTextStyle),
           ),
           actions: [
@@ -281,14 +282,14 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
                 }
               },
               child:
-                  const Center(child: Text('YES', style: kScoreLabelTextStyle)),
+                   Center(child: Text('yes'.tr(), style: kScoreLabelTextStyle)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 _controller.resume();
               },
-              child: const Center(child: Text('NO', style: kTitleTS)),
+              child:  Center(child: Text('no'.tr(), style: kTitleTS)),
             ),
           ],
         );
@@ -301,36 +302,34 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
     return Scaffold(
       backgroundColor: colorMainBlue,
       resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          AppBarWidget(
-            onBack: () {
-              _controller.pause();
-              showOutDialog();
+      body: MainPageHomePG(
+        textNow: "",
+        colorTextAndIcon: colorSystemYeloow,
+        onBack: () {
+          _controller.pause();
+          showOutDialog();
+        },
+        child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+          return PortraitModeTF(
+            score: state.score,
+            controller: _controller,
+            onFinished: () {
+              if (playAgain == false) {
+                updateScore();
+                showFinishDiaLog();
+              }
             },
-          ),
-          BlocBuilder<GameCubit, GameState>(builder: (context, state) {
-            return PortraitModeTF(
-              score: state.score,
-              controller: _controller,
-              onFinished: () {
-                if (playAgain == false) {
-                  updateScore();
-                  showFinishDiaLog();
-                }
-              },
-              quizBrainObject: _quizBrain,
-              onTap: (String value) {
-                _checkAnswer(value, context);
-                context.read<GameCubit>().changeDataAfterDoneQ(
-                    _score, falseChoose, _score, _totalNumberOfQuizzes);
-              },
-              trueQ: state.trueQ,
-              falseQ: falseChoose,
-              quizNow: _totalNumberOfQuizzes,
-            );
-          }),
-        ],
+            quizBrainObject: _quizBrain,
+            onTap: (String value) {
+              _checkAnswer(value, context);
+              context.read<GameCubit>().changeDataAfterDoneQ(
+                  _score, falseChoose, _score, _totalNumberOfQuizzes);
+            },
+            trueQ: state.trueQ,
+            falseQ: falseChoose,
+            quizNow: _totalNumberOfQuizzes,
+          );
+        }),
       ),
     );
   }

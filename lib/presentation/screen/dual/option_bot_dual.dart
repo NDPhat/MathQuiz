@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/data/model/level_game_bot.dart';
@@ -18,7 +19,7 @@ class OptionModeBotDual extends StatelessWidget {
         onBack: () {
           Navigator.pop(context);
         },
-        textNow: 'BOT battle',
+        textNow: "battle game".tr(),
         onPressHome: () {},
         colorTextAndIcon: Colors.black,
         child: Container(
@@ -35,31 +36,31 @@ class OptionModeBotDual extends StatelessWidget {
                 width: 100.w,
                 height: 10.h,
                 child: Center(
-                    child: Text("SELECT MODE GAME",
+                    child: Text("SELECT MODE GAME".tr(),
                         style: GoogleFonts.abrilFatface(
                             color: colorSystemWhite,
                             fontWeight: FontWeight.w700,
                             fontSize: 25))),
               ),
-              const Column(
+               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Level_Box(
-                    level: "easy",
+                    level: "easy".tr(),
                     time: 5,
                     style: kTitleTSBold1,
                     colorBG: colorMainTealPri,
                   ),
                   sizedBox,
                   Level_Box(
-                    level: "medium",
+                    level: "medium".tr(),
                     time: 4,
                     style: kTitleTSBold1,
                     colorBG: colorMainBlue,
                   ),
                   sizedBox,
                   Level_Box(
-                    level: "hard",
+                    level: "hard".tr(),
                     time: 3,
                     style: kTitleTSBold1,
                     colorBG: colorErrorPrimary,

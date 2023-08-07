@@ -16,6 +16,16 @@ class AuthenRepository {
     return prefs.getBool("flagIntro") ?? false;
   }
 
+  Future<bool> loadHandleFirstTimeShowUserManualDragDrop() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("showUserManual") ?? true;
+  }
+
+  Future<bool> loadHandleFirstTimeShowUserManualPuzzle() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("showUserManualPuzzle") ?? true;
+  }
+
   Future<String> getMailHandleAutoLoginApp() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("mail") ?? "";
@@ -41,6 +51,18 @@ class AuthenRepository {
   void handleFirstTimeUsingApp(bool value) {
     SharedPreferences.getInstance().then((prefs) {
       prefs.setBool("flagIntro", value);
+    });
+  }
+
+  void handleFirstTimeDragDropUserManual(bool value) {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool("showUserManual", value);
+    });
+  }
+
+  void handleFirstTimePuzzleUserManual(bool value) {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool("showUserManualPuzzle", value);
     });
   }
 

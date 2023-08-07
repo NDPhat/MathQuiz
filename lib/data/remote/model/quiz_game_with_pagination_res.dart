@@ -1,14 +1,16 @@
+import 'package:math/data/remote/model/quiz_game_response.dart';
+
 class QuizGamePagiAPIRes {
-  List<QuizGameAPIPagiModel>? data;
+  List<QuizGameAPIModel>? data;
   int? total;
   int? count;
   QuizGamePagiAPIRes({this.data, this.total, this.count});
 
   QuizGamePagiAPIRes.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <QuizGameAPIPagiModel>[];
+      data = <QuizGameAPIModel>[];
       json['data'].forEach((v) {
-        data!.add(new QuizGameAPIPagiModel.fromJson(v));
+        data!.add(new QuizGameAPIModel.fromJson(v));
       });
     }
     total = json['total'];
@@ -22,51 +24,6 @@ class QuizGamePagiAPIRes {
     }
     data['total'] = this.total;
     data['count'] = this.count;
-    return data;
-  }
-}
-
-class QuizGameAPIPagiModel {
-  int? answer;
-  int? answerSelect;
-  bool? infoQuiz;
-  String? key;
-  String? prequizGameID;
-  String? quiz;
-  String? sign;
-  String? userId;
-
-  QuizGameAPIPagiModel(
-      {this.answer,
-      this.answerSelect,
-      this.infoQuiz,
-      this.key,
-      this.prequizGameID,
-      this.quiz,
-      this.sign,
-      this.userId});
-
-  QuizGameAPIPagiModel.fromJson(Map<String, dynamic> json) {
-    answer = json['answer'];
-    answerSelect = json['answerSelect'];
-    infoQuiz = json['infoQuiz'];
-    key = json['key'];
-    prequizGameID = json['prequizGameID'];
-    quiz = json['quiz'];
-    sign = json['sign'];
-    userId = json['userId'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['answer'] = this.answer;
-    data['answerSelect'] = this.answerSelect;
-    data['infoQuiz'] = this.infoQuiz;
-    data['key'] = this.key;
-    data['prequizGameID'] = this.prequizGameID;
-    data['quiz'] = this.quiz;
-    data['sign'] = this.sign;
-    data['userId'] = this.userId;
     return data;
   }
 }

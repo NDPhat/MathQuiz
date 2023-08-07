@@ -1,6 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/user_local.dart';
 import 'package:math/main.dart';
 import 'package:math/presentation/routers/navigation.dart';
@@ -8,6 +7,7 @@ import 'package:math/presentation/screen/home/user_home_screen/widget/student_da
 import 'package:sizer/sizer.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
+import '../../../widget/home_card.dart';
 
 class HomeGuestMainScreen extends StatelessWidget {
   const HomeGuestMainScreen({Key? key}) : super(key: key);
@@ -30,37 +30,25 @@ class HomeGuestMainScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        StudentName(),
-                        kHalfSizedBox,
-                        Row(
-                          children: [
-                            StudentClass(studentClass: 'Class 1'),
-                            kHalfSizedBox,
-                            StudentYear(studentYear: '2023-2024'),
-                          ],
-                        )
-                      ],
-                    ),
+                    StudentName(),
                     kHalfSizedBox,
                     StudentPicture(
-                        picAddress: instance.get<UserLocal>().imageLink != null
-                            ? instance.get<UserLocal>().imageLink!
-                            : 'assets/images/profile.png'),
+                        picAddress:
+                            instance.get<UserLocal>().imageLink!.isNotEmpty
+                                ? instance.get<UserLocal>().imageLink!
+                                : 'assets/images/profile.png'),
                   ],
                 ),
                 sizedBox,
-                const Row(
+                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     StudentDataCard(
-                      title: 'Attendance',
+                      title: 'attendance'.tr(),
                       value: '90.02%',
                     ),
                     StudentDataCard(
-                      title: 'Score',
+                      title: 'score'.tr(),
                       value: 'B',
                     ),
                   ],
@@ -87,19 +75,21 @@ class HomeGuestMainScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         HomeCard(
+                          colorBG: colorMainTealPri,
                           onPress: () {
                             Navigator.pushNamed(context, Routers.takeQuiz);
                           },
                           icon: 'assets/icons/quiz.svg',
-                          title: 'Take Quiz',
+                          title: 'take quiz'.tr(),
                         ),
                         HomeCard(
+                          colorBG: colorErrorPrimary,
                           onPress: () {
                             Navigator.pushNamed(
                                 context, Routers.battleMainScreen);
                           },
                           icon: 'assets/icons/assignment.svg',
-                          title: 'Game',
+                          title: 'game'.tr(),
                         ),
                       ],
                     ),
@@ -107,31 +97,22 @@ class HomeGuestMainScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         HomeCard(
+                          colorBG: colorSystemYeloow,
                           onPress: () {
                             Navigator.pushNamed(
                                 context, Routers.dataSheetGuestScreen);
                           },
                           icon: 'assets/icons/datesheet.svg',
-                          title: 'DateSheet',
+                          title: 'history'.tr().toString(),
                         ),
                         HomeCard(
+                          colorBG: Colors.purple,
                           onPress: () {
-                            Navigator.pushNamed(context, Routers.settingScreen);
+                            Navigator.pushNamed(
+                                context, Routers.settingGuestScreen);
                           },
                           icon: 'assets/icons/event.svg',
-                          title: 'Setting',
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        HomeCard(
-                          onPress: () {
-                            Navigator.pushNamed(context, Routers.login);
-                          },
-                          icon: 'assets/icons/logout.svg',
-                          title: 'Log In',
+                          title: 'setting'.tr(),
                         ),
                       ],
                     ),
@@ -141,47 +122,6 @@ class HomeGuestMainScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class HomeCard extends StatelessWidget {
-  const HomeCard(
-      {Key? key,
-      required this.onPress,
-      required this.icon,
-      required this.title})
-      : super(key: key);
-  final VoidCallback onPress;
-  final String icon;
-  final String title;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPress,
-      child: Container(
-        margin: EdgeInsets.only(top: 1.h),
-        width: 40.w,
-        height: 15.h,
-        decoration: BoxDecoration(
-          color: colorMainBlueChart,
-          borderRadius: BorderRadius.circular(kDefaultPadding),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              icon,
-              height: SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40.sp,
-              width: SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40.sp,
-              color: colorSystemWhite,
-            ),
-            Text(title,
-                textAlign: TextAlign.center, style: s14f500colorSysWhite),
-          ],
-        ),
       ),
     );
   }

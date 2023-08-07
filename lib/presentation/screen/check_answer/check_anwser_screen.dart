@@ -5,7 +5,6 @@ import 'package:sizer/sizer.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/answer_widget.dart';
-import '../../widget/app_bar.dart';
 
 class CheckAnswerScreen extends StatelessWidget {
   const CheckAnswerScreen({Key? key}) : super(key: key);
@@ -16,11 +15,6 @@ class CheckAnswerScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          AppBarWidget(
-              textTitle: 'CHECK ANSWER',
-              onBack: () {
-                Navigator.pushNamed(context, Routers.homeGuest);
-              }),
           Container(
             padding:
                 EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w, bottom: 5.h),

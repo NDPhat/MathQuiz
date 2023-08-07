@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:drift/drift.dart' as drift;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/data/model/pre_test_model.dart';
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/main.dart';
+import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../application/cons/constants.dart';
 import '../../../../application/utils/logic.dart';
@@ -19,7 +21,6 @@ import '../../../../data/remote/model/pre_test_req.dart';
 import '../../../../data/remote/model/quiz_test_req.dart';
 import '../../../routers/navigation.dart';
 import '';
-import '../../../widget/app_bar.dart';
 import '../../../widget/portrait_mode_game.dart';
 
 class MixNumberGameScreen extends StatefulWidget {
@@ -83,8 +84,8 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('DO YOU WANT TO QUIT ?',
+          title:  FittedBox(
+            child: Text('${'do you want to quiz'.tr()} ?',
                 textAlign: TextAlign.center, style: kScoreLabelTextStyle),
           ),
           actions: [
@@ -92,14 +93,14 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
               onPressed: () {
                 updateScore();
               },
-              child: const Center(child: Text('YES', style: kDialogButtonsTS)),
+              child:  Center(child: Text('yes'.tr(), style: kDialogButtonsTS)),
             ),
             TextButton(
               onPressed: () {
                 _controller.resume();
                 Navigator.pop(context);
               },
-              child: const Center(child: Text('NO', style: kDialogButtonsTS)),
+              child:  Center(child: Text('no'.tr(), style: kDialogButtonsTS)),
             ),
           ],
         );
@@ -192,8 +193,8 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('ARE YOU GUYS READY ?',
+          title:  FittedBox(
+            child: Text('${'are you ready'.tr()} ?',
                 textAlign: TextAlign.center, style: kTitleTS),
           ),
           actions: [
@@ -203,13 +204,13 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
                 _controller.start();
                 _startGame();
               },
-              child: const Text('GO', style: kDialogButtonsTS),
+              child:  Text('go'.tr(), style: kDialogButtonsTS),
             ),
             TextButton(
               onPressed: () {
                 deletePreTest();
               },
-              child: const Text('BACK', style: kDialogButtonsTS),
+              child:  Text('exit'.tr(), style: kDialogButtonsTS),
             ),
           ],
         );
@@ -235,36 +236,34 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorMainBlue,
-      body: Column(
-        children: [
-          AppBarWidget(
-            onBack: () {
-              _controller.pause();
-              showOutDialog();
+      body: MainPageHomePG(
+        textNow: "",
+        colorTextAndIcon: colorSystemYeloow,
+        onBack: () {
+          _controller.pause();
+          showOutDialog();
+        },
+        child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+          return PortraitModeGame(
+            highscore: _highScore,
+            score: _score,
+            quizBrainObject: _quizBrain,
+            onTap: (int value) {
+              addData(context, value);
+              _checkAnswer(value, context);
+              _quizBrain.makeQuizTest();
+              context.read<GameCubit>().changeDataAfterDoneQ(
+                  _score, falseChoose, _score, _totalNumberOfQuizzes);
             },
-          ),
-          BlocBuilder<GameCubit, GameState>(builder: (context, state) {
-            return PortraitModeGame(
-              highscore: _highScore,
-              score: _score,
-              quizBrainObject: _quizBrain,
-              onTap: (int value) {
-                addData(context, value);
-                _checkAnswer(value, context);
-                _quizBrain.makeQuizTest();
-                context.read<GameCubit>().changeDataAfterDoneQ(
-                    _score, falseChoose, _score, _totalNumberOfQuizzes);
-              },
-              trueQ: _score,
-              falseQ: falseChoose,
-              controller: _controller,
-              quizNow: _totalNumberOfQuizzes,
-              onFinished: () {
-                showFinishDialog();
-              },
-            );
-          }),
-        ],
+            trueQ: _score,
+            falseQ: falseChoose,
+            controller: _controller,
+            quizNow: _totalNumberOfQuizzes,
+            onFinished: () {
+              showFinishDialog();
+            },
+          );
+        }),
       ),
     );
   }

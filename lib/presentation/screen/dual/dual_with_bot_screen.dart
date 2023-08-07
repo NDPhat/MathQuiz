@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
@@ -10,7 +12,6 @@ import '../../../data/model/level_game_bot.dart';
 import '../../../data/model/user_global.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
-import '../../widget/app_bar.dart';
 import '../../widget/divider_line.dart';
 import '../../widget/line_info_player.dart';
 import '../../widget/playey_dual_screen.dart';
@@ -133,8 +134,8 @@ class _BOTBattleScreenState extends State<BotDual> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('ARE YOU READY ?',
+          title: FittedBox(
+            child: Text('${'are you ready'.tr()} ?',
                 textAlign: TextAlign.center, style: kTitleTS),
           ),
           actions: [
@@ -144,7 +145,7 @@ class _BOTBattleScreenState extends State<BotDual> {
                 controller.start();
                 _startGame();
               },
-              child: Text('GO', style: kTitleTSReadyDL),
+              child: Text('go'.tr(), style: kTitleTSReadyDL),
             ),
             TextButton(
               onPressed: () {
@@ -156,7 +157,7 @@ class _BOTBattleScreenState extends State<BotDual> {
                   Navigator.pushNamed(context, Routers.homeGuest);
                 }
               },
-              child: Text('BACK', style: kTitleTSReadyDL),
+              child: Text('exit'.tr(), style: kTitleTSReadyDL),
             ),
           ],
         );
@@ -175,8 +176,8 @@ class _BOTBattleScreenState extends State<BotDual> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('DO YOU WANT TO QUIT ?',
+          title: FittedBox(
+            child: Text('${'do you want to quiz'.tr()} ?',
                 textAlign: TextAlign.center, style: kScoreLabelTextStyle),
           ),
           actions: [
@@ -194,14 +195,14 @@ class _BOTBattleScreenState extends State<BotDual> {
                 }
               },
               child:
-                  const Center(child: Text('YES', style: kScoreLabelTextStyle)),
+                  Center(child: Text('yes'.tr(), style: kScoreLabelTextStyle)),
             ),
             TextButton(
               onPressed: () {
                 controller.resume();
                 Navigator.pop(context);
               },
-              child: const Center(child: Text('NO', style: kTitleTS)),
+              child: Center(child: Text('no'.tr(), style: kTitleTS)),
             ),
           ],
         );
@@ -221,8 +222,7 @@ class _BOTBattleScreenState extends State<BotDual> {
           )),
           backgroundColor: const Color(0xff1542bf),
           title: FittedBox(
-            child:
-                Text("$player", textAlign: TextAlign.center, style: kTitleTS),
+            child: Text(player, textAlign: TextAlign.center, style: kTitleTS),
           ),
           actions: [
             TextButton(
@@ -235,7 +235,7 @@ class _BOTBattleScreenState extends State<BotDual> {
                   Navigator.pushNamed(context, Routers.homeGuest);
                 }
               },
-              child: const Text('EXIT', style: kDialogButtonsTS),
+              child: Text('exit'.tr(), style: kDialogButtonsTS),
             ),
             TextButton(
               onPressed: () {
@@ -243,7 +243,7 @@ class _BOTBattleScreenState extends State<BotDual> {
                 _startAgainGame();
                 playerAgain = false;
               },
-              child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
+              child: Text('play again'.tr(), style: kDialogButtonsTS),
             ),
           ],
         );
@@ -254,11 +254,11 @@ class _BOTBattleScreenState extends State<BotDual> {
   void showEndGame() {
     timer.cancel();
     if (_scoreBot > _scoreHM) {
-      showFinishDialog("BOT Wining");
+      showFinishDialog("bot".tr() + "wining".tr());
     } else if (_scoreHM > _scoreBot) {
-      showFinishDialog("PLayer Wining");
+      showFinishDialog("player".tr() + "wining".tr());
     } else {
-      showFinishDialog("DRAW");
+      showFinishDialog("draw".tr());
     }
   }
 
@@ -270,80 +270,87 @@ class _BOTBattleScreenState extends State<BotDual> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: colorSystemWhite,
-      body: Center(
-        child: Column(
-          children: [
-            AppBarWidget(
-                bgColor: colorSystemWhite,
-                onBack: () {
-                  controller.pause();
-                  showOutDialog();
-                }),
-            Column(
-              children: [
-                SizedBox(
-                  height:35.h,
-                  child: const Image(
-                      image: NetworkImage(
-                          "https://media3.giphy.com/media/bU2xOiv6LlSyB75szf/giphy.gif?cid=ecf05e47uylbzn7cuj96pgnqnjyt5tvkqvlfzwg6c2lm9okz&ep=v1_gifs_search&rid=giphy.gif&ct=g")),
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(
+                  'assets/images/bg/bg12.jpg',
                 ),
-                SizedBox(
-                  height: 20.h,
-                  child: Column(
+                fit: BoxFit.fill),
+          ),
+          child: MainPageHomePG(
+            textNow: "",
+            colorTextAndIcon: colorMainBlue,
+            onBack: () {
+              controller.pause();
+              showOutDialog();
+            },
+            child: Center(
+              child: Column(
+                children: [
+                  Column(
                     children: [
                       SizedBox(
-                        child: RotatedBox(
-                            quarterTurns: -2,
-                            child: Info_Player_Line(
-                                falsePlayer: 0,
-                                score: _scoreBot,
-                                namePlayer: "BOT")),
+                        height: 35.h,
+                        child: Image.asset("assets/images/dual_bot.png"),
                       ),
-                      Row(children: <Widget>[
-                        const DivideLine(),
-                        Time_Runner(
-                          onFinish: () {
-                            if (playerAgain == false) {
-                              showEndGame();
-                            }
-                          },
-                          controller: controller,
+                      SizedBox(
+                        height: 20.h,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              child: RotatedBox(
+                                  quarterTurns: -2,
+                                  child: Info_Player_Line(
+                                      falsePlayer: 0,
+                                      score: _scoreBot,
+                                      namePlayer: "Bot")),
+                            ),
+                            Row(children: <Widget>[
+                              const DivideLine(),
+                              Time_Runner(
+                                onFinish: () {
+                                  if (playerAgain == false) {
+                                    showEndGame();
+                                  }
+                                },
+                                controller: controller,
+                              ),
+                              const DivideLine()
+                            ]),
+                            Info_Player_Line(
+                              falsePlayer: _falsePlayer,
+                              score: _scoreHM,
+                              namePlayer: 'Player',
+                            ),
+                          ],
                         ),
-                        const DivideLine()
-                      ]),
-                      Info_Player_Line(
-                        falsePlayer: _falsePlayer,
-                        score: _scoreHM,
-                        namePlayer: 'Player',
+                      ),
+                      SizedBox(
+                        height: 35.h,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              child: PlayerDualScreen(
+                                quizBrain: _quizBrain,
+                                onTap: (int value) {
+                                  setState(() {
+                                    userChoose = value;
+                                  });
+                                  _checkAnswerPlayer(value);
+                                },
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height:35.h,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        child: PlayerDualScreen(
-                          quizBrain: _quizBrain,
-                          onTap: (int value) {
-                            setState(() {
-                              userChoose = value;
-                            });
-                            _checkAnswerPlayer(value);
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

@@ -28,16 +28,16 @@ class HomeUserScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Column(
+                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        StudentName(),
+                        const StudentName(),
                         kHalfSizedBox,
                         Row(
                           children: [
-                            StudentClass(studentClass: 'Class 1A'),
+                            StudentClass(studentClass: '${'class'.tr()} 1A'),
                             kHalfSizedBox,
-                            StudentYear(studentYear: '2023-2024'),
+                            const StudentYear(studentYear: '2023-2024'),
                           ],
                         )
                       ],
@@ -49,15 +49,15 @@ class HomeUserScreen extends StatelessWidget {
                   ],
                 ),
                 sizedBox,
-                const Row(
+                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     StudentDataCard(
-                      title: 'Attendance',
+                      title: 'attendance'.tr(),
                       value: '90.02%',
                     ),
                     StudentDataCard(
-                      title: 'Score',
+                      title: 'score'.tr(),
                       value: 'B',
                     ),
                   ],

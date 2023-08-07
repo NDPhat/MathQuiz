@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/utils/make_quiz.dart';
+import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
 import '../../../../application/cons/color.dart';
@@ -12,7 +14,6 @@ import '../../../../data/model/prediction.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
-import '../../../widget/app_bar.dart';
 import '../../../widget/board_item_take_easy_game.dart';
 
 class WriteAndCountGameScreen extends StatefulWidget {
@@ -79,6 +80,7 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
       width: width,
       height: height,
       decoration: BoxDecoration(
+        color: colorSystemWhite,
         border: Border.all(
           color: Colors.black,
           width: Constants.borderSize,
@@ -118,9 +120,9 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child:
-                Text('GAME OVER', textAlign: TextAlign.center, style: kTitleTS),
+          title: FittedBox(
+            child: Text('game over'.tr(),
+                textAlign: TextAlign.center, style: kTitleTS),
           ),
           actions: [
             TextButton(
@@ -131,14 +133,14 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
                   Navigator.pushNamed(context, Routers.homeGuest);
                 }
               },
-              child: const Text('EXIT', style: kDialogButtonsTS),
+              child: Text('exit'.tr(), style: kDialogButtonsTS),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 playAgain();
               },
-              child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
+              child: Text('play again'.tr(), style: kDialogButtonsTS),
             )
           ],
         );
@@ -198,45 +200,55 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            AppBarWidget(
-              onBack: () {
-                Navigator.pop(context);
-              },
-              bgColor: colorSystemWhite,
-            ),
-            BoardItemTakeEasy(
-              width: 60.w,
-              height: 30.h,
-              bgColor: colorMainBlueChart,
-              child: GridView.count(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1.0,
-                  padding: const EdgeInsets.all(4.0),
-                  mainAxisSpacing: 4.0,
-                  crossAxisSpacing: 4.0,
-                  children: randomListValue[position].map((ItemValue item) {
-                    return CircleItem(
-                      colorBG: item.color,
-                      width: 60.w,
-                      height: 10.h,
-                    );
-                  }).toList()),
-            ),
-            sizedBox,
-            Transform.rotate(
-              angle: math.pi / 2,
-              child: const Icon(
-                Icons.keyboard_double_arrow_right,
-                color: colorMainTealPri,
-                size: 50,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                'assets/images/bg/bg6.jpg',
               ),
+              fit: BoxFit.fill),
+        ),
+        child: MainPageHomePG(
+          textNow: "",
+          colorTextAndIcon: colorSystemYeloow,
+          onBack: () {
+            Navigator.pop(context);
+          },
+          child: Center(
+            child: Column(
+              children: [
+                BoardItemTakeEasy(
+                  width: 60.w,
+                  height: 30.h,
+                  bgColor: colorMainBlueChart,
+                  child: GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 1.0,
+                      padding: const EdgeInsets.all(4.0),
+                      mainAxisSpacing: 4.0,
+                      crossAxisSpacing: 4.0,
+                      children: randomListValue[position].map((ItemValue item) {
+                        return CircleItem(
+                          colorBG: item.color,
+                          width: 60.w,
+                          height: 10.h,
+                        );
+                      }).toList()),
+                ),
+                sizedBox,
+                Transform.rotate(
+                  angle: math.pi / 2,
+                  child: const Icon(
+                    Icons.keyboard_double_arrow_right,
+                    color: colorSystemWhite,
+                    size: 50,
+                  ),
+                ),
+                sizedBox,
+                _drawCanvasWidget(60.w, 30.h),
+              ],
             ),
-            sizedBox,
-            _drawCanvasWidget(60.w, 30.h),
-          ],
+          ),
         ),
       ),
     );

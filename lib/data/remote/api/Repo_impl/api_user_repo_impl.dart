@@ -1,10 +1,12 @@
 import 'dart:convert' show utf8;
 import 'dart:convert';
 import 'dart:io';
+import 'package:math/data/remote/model/pre_quiz_game_res_pagi.dart';
 import 'package:math/data/remote/model/pre_quiz_game_response.dart';
 import 'package:math/data/remote/model/pre_quiz_game_sen_req.dart';
 import 'package:math/data/remote/model/pre_test_req.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
+import 'package:math/data/remote/model/pre_test_res_pagi.dart';
 import 'package:math/data/remote/model/quiz_game_req.dart';
 import 'package:math/data/remote/model/quiz_game_response.dart';
 import 'package:math/data/remote/model/quiz_game_with_pagination_res.dart';
@@ -12,6 +14,7 @@ import 'package:math/data/remote/model/quiz_test_req.dart';
 import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/data/remote/model/quiz_test_with_pagination_res.dart';
 import 'package:math/data/remote/model/result_quiz_hw_req.dart';
+import 'package:math/data/remote/model/result_quiz_hw_res_pagi.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:math/data/remote/model/sentences_quiz_res.dart';
 import 'package:math/data/remote/model/user_api_res.dart';
@@ -835,7 +838,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<List<QuizGameAPIPagiModel>?> getALlQuizGameByPreGameIDWithPagination(
+  Future<List<QuizGameAPIModel>?> getALlQuizGameByPreGameIDWithPagination(
       String preID, int page) async {
     try {
       final url =
@@ -843,13 +846,13 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(req.body);
-        List<QuizGameAPIPagiModel>? result =
+        List<QuizGameAPIModel>? result =
             QuizGamePagiAPIRes.fromJson(parsed).data;
         return result;
       } else {
         // log(req.body);
         Map<String, dynamic> parsed = json.decode(req.body);
-        List<QuizGameAPIPagiModel>? result =
+        List<QuizGameAPIModel>? result =
             QuizGamePagiAPIRes.fromJson(parsed).data;
         return result;
       }
@@ -861,7 +864,7 @@ class UserAPIRepoImpl extends UserAPIRepo {
   }
 
   @override
-  Future<List<QuizTestAPIPagiModel>?> getALlQuizTestByPreTestIDWithPagi(
+  Future<List<QuizTestAPIRes>?> getALlQuizTestByPreTestIDWithPagi(
       String preID, int page) async {
     // TODO: implement getALlQuizTestByPreTestIDWithPagi
     try {
@@ -870,14 +873,82 @@ class UserAPIRepoImpl extends UserAPIRepo {
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       if (req.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(req.body);
-        List<QuizTestAPIPagiModel>? result =
-            QuizTestPagiAPIRes.fromJson(parsed).data;
+        List<QuizTestAPIRes>? result = QuizTestPagiAPIRes.fromJson(parsed).data;
         return result;
       } else {
         // log(req.body);
         Map<String, dynamic> parsed = json.decode(req.body);
-        List<QuizTestAPIPagiModel>? result =
-            QuizTestPagiAPIRes.fromJson(parsed).data;
+        List<QuizTestAPIRes>? result = QuizTestPagiAPIRes.fromJson(parsed).data;
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<PreQuizGameAPIResPagi?> getALlPreQuizGameByUidandOptionGameWithPagi(
+      String uid, String option, int page) async {
+    try {
+      final url =
+          "${endpoint}getAllPreQuizGameByUIdAndOptionGameWithPage?uid=$uid&optionGame=$option&page_num=$page&page_size=5";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreQuizGameAPIResPagi? result = PreQuizGameAPIResPagi.fromJson(parsed);
+        return result;
+      } else {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreQuizGameAPIResPagi? result = PreQuizGameAPIResPagi.fromJson(parsed);
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<PreTestAPIResPagi?> getALlPreQuizTestByUidWithPagi(
+      String uid, int page) async {
+    try {
+      final url =
+          "${endpoint}getAllPreQuizTestByUIdWithPagi?uid=$uid&page_num=$page&page_size=5";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreTestAPIResPagi? result = PreTestAPIResPagi.fromJson(parsed);
+        return result;
+      } else {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        PreTestAPIResPagi? result = PreTestAPIResPagi.fromJson(parsed);
+        return result;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<ResultQuizHWResPagi?> getALlResultQuizHWByUserIDWithPagi(
+      String uid, int page) async {
+    // TODO: implement getALlResultQuizHWByUserIDWithPagi
+    try {
+      final url =
+          "${endpoint}getAllResultQuizHWByUIdWithPagi?userID=$uid&page_num=$page&page_size=5";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        ResultQuizHWResPagi? result = ResultQuizHWResPagi.fromJson(parsed);
+        return result;
+      } else {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        ResultQuizHWResPagi? result = ResultQuizHWResPagi.fromJson(parsed);
         return result;
       }
     } on SocketException catch (_) {

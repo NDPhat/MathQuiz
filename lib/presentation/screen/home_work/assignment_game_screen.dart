@@ -80,18 +80,18 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
+          title:  FittedBox(
             child:
-                Text('GAME OVER', textAlign: TextAlign.center, style: kTitleTS),
+                Text('game over'.tr(), textAlign: TextAlign.center, style: kTitleTS),
           ),
-          content: Text('Score: $_score | $_totalNumberOfQuizzes',
+          content: Text('score'.tr() +":" +' $_score | $_totalNumberOfQuizzes',
               textAlign: TextAlign.center, style: kContentTS),
           actions: [
             TextButton(
               onPressed: () async {
                 updatePreHW();
               },
-              child: const Center(child: Text('EXIT', style: kDialogButtonsTS)),
+              child:  Center(child: Text('exit'.tr(), style: kDialogButtonsTS)),
             ),
           ],
         );
@@ -166,8 +166,8 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('DO YOU WANT TO QUIT ?',
+          title:  FittedBox(
+            child: Text('${'do you want to quit'.tr()} ?',
                 textAlign: TextAlign.center, style: kScoreLabelTextStyle),
           ),
           actions: [
@@ -175,14 +175,14 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
               onPressed: () {
                 updatePreHW();
               },
-              child: const Center(child: Text('YES', style: kDialogButtonsTS)),
+              child:  Center(child: Text('yes'.tr(), style: kDialogButtonsTS)),
             ),
             TextButton(
               onPressed: () {
                 _controller.resume();
                 Navigator.pop(context);
               },
-              child: const Center(child: Text('NO', style: kDialogButtonsTS)),
+              child:  Center(child: Text('no'.tr(), style: kDialogButtonsTS)),
             ),
           ],
         );
@@ -209,8 +209,8 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('ARE YOU GUYS READY ?',
+          title:  FittedBox(
+            child: Text('${'are you ready'.tr()} ?',
                 textAlign: TextAlign.center, style: kTitleTS),
           ),
           actions: [
@@ -220,13 +220,13 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
                 _controller.start();
                 _startGame(_preQuiz);
               },
-              child: const Text('GO', style: kDialogButtonsTS),
+              child:  Text('go'.tr(), style: kDialogButtonsTS),
             ),
             TextButton(
               onPressed: () {
                 deletePreHW();
               },
-              child: const Text('BACK', style: kDialogButtonsTS),
+              child:  Text('exit'.tr(), style: kDialogButtonsTS),
             ),
           ],
         );

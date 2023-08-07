@@ -12,6 +12,7 @@ import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
+import '../../../application/utils/format.dart';
 import '../../../data/model/pre_join_homework.dart';
 import '../../../data/remote/model/result_quiz_hw_req.dart';
 import '../../routers/navigation.dart';
@@ -36,6 +37,7 @@ class AssignmentMainScreen extends StatelessWidget {
               numQ: dataPre.numQ,
               trueQ: 0,
               falseQ: 0,
+              dateSave: formatDateInput.format(DateTime.now()),
               lop: instance.get<UserGlobal>().lop.toString(),
               name: instance.get<UserGlobal>().fullName,
               score: 0,
@@ -166,30 +168,38 @@ class AssignmentMainScreen extends StatelessWidget {
                                 );
                               }
                               if (snapshot.hasData) {
-                                return ListView.builder(
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder: (context, index) {
-                                    snapshot.data!.sort(
-                                        (a, b) => a.week!.compareTo(b.week!));
-                                    return ItemCardHW(
-                                      onTap: () {
-                                        showDoneDialog(
-                                            snapshot.data![index].key!);
-                                      },
-                                      colorBorder: colorMainBlue,
-                                      childRight: Center(
-                                          child: Text(
-                                        'view'.tr().toString(),
-                                        style: GoogleFonts.aclonica(
-                                            color: colorMainBlue, fontSize: 20),
-                                      )),
-                                      childLeft: WeakWidget(
-                                        dataResult: snapshot.data![index],
-                                        colorBorder: colorMainBlue,
-                                      ),
-                                    );
-                                  },
-                                );
+                                return CustomScrollView(slivers: [
+                                  SliverList(
+                                      delegate: SliverChildBuilderDelegate(
+                                    childCount: snapshot.data!.length,
+                                    (context, index) {
+                                      snapshot.data!.sort(
+                                          (a, b) => a.week!.compareTo(b.week!));
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 0.5.h, bottom: 0.5.h),
+                                        child: ItemCardHW(
+                                          onTap: () {
+                                            showDoneDialog(
+                                                snapshot.data![index].key!);
+                                          },
+                                          colorBorder: colorMainBlue,
+                                          childRight: Center(
+                                              child: Text(
+                                            'view'.tr().toString(),
+                                            style: GoogleFonts.aclonica(
+                                                color: colorMainBlue,
+                                                fontSize: 20),
+                                          )),
+                                          childLeft: WeakWidget(
+                                            dataResult: snapshot.data![index],
+                                            colorBorder: colorMainBlue,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ))
+                                ]);
                               }
 
                               return Container();

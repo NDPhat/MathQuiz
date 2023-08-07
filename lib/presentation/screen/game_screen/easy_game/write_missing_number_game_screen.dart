@@ -1,9 +1,9 @@
-import 'dart:math';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/utils/make_quiz.dart';
+import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
-import 'dart:math' as math;
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/cons_rec.dart';
 import '../../../../application/cons/constants.dart';
@@ -13,7 +13,6 @@ import '../../../../data/model/prediction.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
-import '../../../widget/app_bar.dart';
 import '../../../widget/board_item_take_easy_game.dart';
 
 class WriteMissingNumberGameScreen extends StatefulWidget {
@@ -60,6 +59,7 @@ class _WriteMissingNumberGameScreenState
       width: width,
       height: height,
       decoration: BoxDecoration(
+        color: colorSystemWhite,
         border: Border.all(
           color: Colors.black,
           width: Constants.borderSize,
@@ -99,9 +99,9 @@ class _WriteMissingNumberGameScreenState
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child:
-                Text('GAME OVER', textAlign: TextAlign.center, style: kTitleTS),
+          title: FittedBox(
+            child: Text('game over'.tr(),
+                textAlign: TextAlign.center, style: kTitleTS),
           ),
           actions: [
             TextButton(
@@ -112,14 +112,14 @@ class _WriteMissingNumberGameScreenState
                   Navigator.pushNamed(context, Routers.homeGuest);
                 }
               },
-              child: const Text('EXIT', style: kDialogButtonsTS),
+              child: Text('exit'.tr(), style: kDialogButtonsTS),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 playAgain();
               },
-              child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
+              child: Text('play again'.tr(), style: kDialogButtonsTS),
             )
           ],
         );
@@ -178,45 +178,55 @@ class _WriteMissingNumberGameScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            AppBarWidget(
-              onBack: () {
-                Navigator.pop(context);
-              },
-              bgColor: colorSystemWhite,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                'assets/images/bg/bg10.jpg',
+              ),
+              fit: BoxFit.fill),
+        ),
+        child: MainPageHomePG(
+          textNow: "",
+          colorTextAndIcon: colorSystemYeloow,
+          onBack: () {
+            Navigator.pop(context);
+          },
+          child: Center(
+            child: Column(
+              children: [
+                BoardItemTakeEasy(
+                    width: 60.w,
+                    height: 25.h,
+                    bgColor: colorMainBlueChart,
+                    child: Center(
+                      child: Text(
+                        randomList[position][0].toString(),
+                        style: GoogleFonts.cabin(
+                            color: colorSystemWhite,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 100),
+                      ),
+                    )),
+                sizedBox,
+                _drawCanvasWidget(60.w, 25.h),
+                sizedBox,
+                BoardItemTakeEasy(
+                    width: 60.w,
+                    height: 25.h,
+                    bgColor: colorMainBlueChart,
+                    child: Center(
+                      child: Text(
+                        randomList[position][2].toString(),
+                        style: GoogleFonts.cabin(
+                            color: colorSystemWhite,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 100),
+                      ),
+                    )),
+              ],
             ),
-            BoardItemTakeEasy(
-                width: 60.w,
-                height: 25.h,
-                bgColor: colorMainBlueChart,
-                child: Center(
-                  child: Text(
-                    randomList[position][0].toString(),
-                    style: GoogleFonts.cabin(
-                        color: colorSystemWhite,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 100),
-                  ),
-                )),
-            sizedBox,
-            _drawCanvasWidget(60.w, 25.h),
-            sizedBox,
-            BoardItemTakeEasy(
-                width: 60.w,
-                height: 25.h,
-                bgColor: colorMainBlueChart,
-                child: Center(
-                  child: Text(
-                    randomList[position][2].toString(),
-                    style: GoogleFonts.cabin(
-                        color: colorSystemWhite,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 100),
-                  ),
-                )),
-          ],
+          ),
         ),
       ),
     );

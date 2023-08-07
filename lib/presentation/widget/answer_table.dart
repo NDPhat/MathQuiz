@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../application/cons/color.dart';
-import '../../application/cons/text_style.dart';
 import '../../application/utils/make_quiz.dart';
 import 'button_custom.dart';
 
 class AnswerTable extends StatefulWidget {
-  AnswerTable(
-      {Key? key,
-      required this.quizBrainObject,
-      required this.onTap,
-      })
-      : super(key: key);
+  AnswerTable({
+    Key? key,
+    required this.quizBrainObject,
+    required this.onTap,
+  }) : super(key: key);
   final QuizBrain quizBrainObject;
   final onTap;
   @override
@@ -24,16 +23,14 @@ class _AnswerTableState extends State<AnswerTable> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-          left: 5.w,
-          right: 5.w,
-          top: 5.h),
+      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 5.h),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RoundedButton(
+                colorBorder: colorMainBlue,
                 press: () {
                   // setState(() {
                   //   _Press1 = true;
@@ -45,27 +42,28 @@ class _AnswerTableState extends State<AnswerTable> {
                   //   });
                   // });
                 },
-                color: colorAccentBlue,
+                color: colorSystemWhite,
                 width: 35.w,
                 height: 8.h,
                 child: Text(
                   widget.quizBrainObject.listAnswer[0].toString(),
-                  style: s16f700ColorSysWhite,
+                  style: GoogleFonts.aclonica(color: colorMainBlue,fontSize: 20),
                 ),
               ),
               SizedBox(
                 width: 5.w,
               ),
               RoundedButton(
+                colorBorder: colorMainBlue,
                 press: () {
                   widget.onTap(widget.quizBrainObject.listAnswer[1]);
                 },
-                color: colorAccentBlue,
+                color: colorSystemWhite,
                 width: 35.w,
                 height: 8.h,
                 child: Text(
                   widget.quizBrainObject.listAnswer[1].toString(),
-                  style: s16f700ColorSysWhite,
+                  style: GoogleFonts.aclonica(color: colorMainBlue,fontSize: 20),
                 ),
               ),
             ],
@@ -77,30 +75,32 @@ class _AnswerTableState extends State<AnswerTable> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RoundedButton(
+                colorBorder: colorMainBlue,
                 press: () {
                   widget.onTap(widget.quizBrainObject.listAnswer[2]);
                 },
-                color: colorAccentBlue,
+                color: colorSystemWhite,
                 width: 35.w,
                 height: 8.h,
                 child: Text(
                   widget.quizBrainObject.listAnswer[2].toString(),
-                  style: s16f700ColorSysWhite,
+                  style: GoogleFonts.aclonica(color: colorMainBlue,fontSize: 20),
                 ),
               ),
               SizedBox(
                 width: 5.w,
               ),
               RoundedButton(
+                colorBorder: colorMainBlue,
                 press: () {
                   widget.onTap(widget.quizBrainObject.listAnswer[3]);
                 },
-                color: colorAccentBlue,
+                color: colorSystemWhite,
                 width: 35.w,
                 height: 8.h,
                 child: Text(
                   widget.quizBrainObject.listAnswer[3].toString(),
-                  style: s16f700ColorSysWhite,
+                  style: GoogleFonts.aclonica(color: colorMainBlue,fontSize: 20),
                 ),
               ),
             ],

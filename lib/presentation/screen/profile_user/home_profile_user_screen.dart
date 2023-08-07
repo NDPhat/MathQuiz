@@ -75,7 +75,7 @@ class HomeProfileUserScreen extends StatelessWidget {
                 SizedBox(height: 3.h),
 
                 ProfileMenuWidget(
-                  title: "update pass".tr().toString(),
+                  title: "update password".tr().toString(),
                   icon: LineAwesomeIcons.lock,
                   onPress: () {
                     Navigator.pushNamed(context, Routers.changePassScreen);

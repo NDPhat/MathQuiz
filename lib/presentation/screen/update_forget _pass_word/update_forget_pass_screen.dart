@@ -14,8 +14,8 @@ import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
-class UpdatePasswordScreen extends StatelessWidget {
-  const UpdatePasswordScreen({Key? key}) : super(key: key);
+class UpdateForgetPasswordScreen extends StatelessWidget {
+  const UpdateForgetPasswordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class UpdatePasswordScreen extends StatelessWidget {
         Navigator.pop(context);
       },
       colorTextAndIcon: Colors.black,
-      textNow: 'update pass'.tr().toString(),
+      textNow: 'update password'.tr().toString(),
       onPressHome: () {},
       child: SingleChildScrollView(
         child: Container(
@@ -44,10 +44,10 @@ class UpdatePasswordScreen extends StatelessWidget {
                 'assets/images/image_update_pass.png',
                 height: 25.h,
               ),
-              const Align(
+               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Please enter your new password.',
+                  'change your password.'.tr(),
                   style: s16f400ColorGreyTe,
                 ),
               ),
@@ -63,10 +63,10 @@ class UpdatePasswordScreen extends StatelessWidget {
                       return pre.passErrorMessage != now.passErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 'Enter your password',
+                        hintText: 'enter your password'.tr(),
                         width: 80.w,
                         height: 8.h,
-                        nameTitle: "Password",
+                        nameTitle: "your new password".tr(),
                         onChanged: (value) {
                           context.read<UpdatePassCubit>().passChanged(value);
                         },
@@ -84,10 +84,10 @@ class UpdatePasswordScreen extends StatelessWidget {
                           now.confirmPassErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 'Re-enter your password',
+                        hintText: 're-enter your password'.tr(),
                         width: 80.w,
                         height: 8.h,
-                        nameTitle: "Re-password",
+                        nameTitle: "your re-password".tr(),
                         onChanged: (value) {
                           context
                               .read<UpdatePassCubit>()
@@ -127,8 +127,8 @@ class UpdatePasswordScreen extends StatelessWidget {
                               ),
                             ),
                           )
-                        : const Text(
-                            'GO',
+                        :  Text(
+                            'go'.tr(),
                             style: s20f700ColorSysWhite,
                           ));
               })

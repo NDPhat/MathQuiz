@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/data/remote/model/quiz_game_response.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
@@ -23,7 +24,7 @@ class _CheckAnswerPracUserGameScreenState
   ScrollController controller = ScrollController();
   bool isLoadMoreRunning = false;
   late String id;
-  List<QuizGameAPIPagiModel>? posts = [];
+  List<QuizGameAPIModel>? posts = [];
 
   @override
   void initState() {
@@ -35,13 +36,19 @@ class _CheckAnswerPracUserGameScreenState
     });
   }
 
+  @override
+  void dispose() {
+    mounted;
+    super.dispose();
+  }
+
   void loadMore() async {
     if (controller.position.pixels == controller.position.maxScrollExtent) {
       setState(() {
         isLoadMoreRunning = true; // Display a progress indicator at the bottom
       });
       page += 1; // Increase _page by 1
-      final List<QuizGameAPIPagiModel>? fetchedPosts = await instance
+      final List<QuizGameAPIModel>? fetchedPosts = await instance
           .get<UserAPIRepo>()
           .getALlQuizGameByPreGameIDWithPagination(id, page);
       if (fetchedPosts!.isNotEmpty) {
@@ -63,7 +70,7 @@ class _CheckAnswerPracUserGameScreenState
     setState(() {
       isFirstLoadRunning = true;
     });
-    final List<QuizGameAPIPagiModel>? fetchedPosts = await instance
+    final List<QuizGameAPIModel>? fetchedPosts = await instance
         .get<UserAPIRepo>()
         .getALlQuizGameByPreGameIDWithPagination(id, page);
     if (fetchedPosts!.isNotEmpty) {
@@ -80,7 +87,7 @@ class _CheckAnswerPracUserGameScreenState
   Widget build(BuildContext context) {
     return Scaffold(
         body: MainPageHomePG(
-            onBack: (){
+            onBack: () {
               Navigator.pop(context);
             },
             textNow: 'check answer'.tr().toString(),

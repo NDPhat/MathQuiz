@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/item_quiz_easy.dart';
@@ -10,10 +11,11 @@ class TakeQuizMediumScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MainPageHomePG(   onBack: () {
-        Navigator.pop(context);
-      },
-        textNow: 'Medium quiz',
+      body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
+        textNow: 'medium quiz'.tr(),
         onPressHome: () {},
         colorTextAndIcon: Colors.black,
         child: Stack(
@@ -23,7 +25,9 @@ class TakeQuizMediumScreen extends StatelessWidget {
                 height: 90.h,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/bg_take_easy.jpg"),
+                      image: AssetImage(
+                        'assets/images/bg/bg8.jpg',
+                      ),
                       fit: BoxFit.cover),
                 )),
             Container(
@@ -55,8 +59,8 @@ class TakeQuizMediumScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Addition',
-                        textBot2: 'numbers',
+                        textBot1: 'addition'.tr(),
+                        textBot2: 'number'.tr(),
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.purpleAccent,
@@ -74,8 +78,8 @@ class TakeQuizMediumScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Subtraction',
-                        textBot2: 'numbers',
+                        textBot1: 'subtraction'.tr(),
+                        textBot2: 'number'.tr(),
                       ),
                     ],
                   ),
@@ -98,8 +102,8 @@ class TakeQuizMediumScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Multiple',
-                        textBot2: 'numbers',
+                        textBot1: 'multiple'.tr(),
+                        textBot2: 'number'.tr(),
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.pink,
@@ -117,7 +121,7 @@ class TakeQuizMediumScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Division',
+                        textBot1: 'division'.tr(),
                         textBot2: 'numbers',
                       ),
                     ],

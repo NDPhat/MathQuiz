@@ -177,7 +177,7 @@ class DataSheetUserScreen extends StatelessWidget {
                                       context, Routers.practicecardDetail,
                                       arguments: "true/false");
                                 },
-                                textTitle: 'true false'.tr().toString(),
+                                textTitle: 'truefalse'.tr().toString(),
                                 totalQ: totalQ.toString(),
                                 trueAve:
                                     ((score / totalQ) * 100).toStringAsFixed(2),

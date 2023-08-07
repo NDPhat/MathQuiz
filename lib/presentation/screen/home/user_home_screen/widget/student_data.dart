@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/text_style.dart';
@@ -13,7 +14,7 @@ class StudentName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Text('Hi ', style: s16f700ColorSysWhite),
+        Text("${'hi'.tr()} ", style: s16f700ColorSysWhite),
         Text(
             instance.get<UserGlobal>().onLogin == true
                 ? instance.get<UserGlobal>().fullName!
@@ -31,7 +32,7 @@ class StudentClass extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
         instance.get<UserGlobal>().onLogin == true
-            ? "Class ${instance.get<UserGlobal>().lop!}"
+            ? "${"class".tr()} ${instance.get<UserGlobal>().lop!}"
             : studentClass,
         style: s16f700ColorSysWhite);
   }

@@ -127,14 +127,17 @@ class QuizBrain {
     int fake2 = 0;
     int fake3 = 0;
 
-    fake1 = _quizAnswer + 10;
     do {
-      fake2 = _quizAnswer + _random.nextInt(9) + 1;
-    } while (fake2 == fake1);
+      fake1 = _random.nextInt(20) + 0;
+    } while (fake1 == firstNumber && fake1 == secondNumber);
+    do {
+      fake2 = _random.nextInt(20) + 0;
+    } while (fake2 == fake1 && fake2 == firstNumber && fake2 == secondNumber);
 
     do {
-      fake3 = _quizAnswer + _random.nextInt(9) + 1;
-    } while (fake3 == fake1 || fake3 == fake2);
+      fake3 = _random.nextInt(20) + 0;
+    } while (fake3 == fake1 ||
+        fake3 == fake2 && fake3 == firstNumber && fake3 == secondNumber);
     //0 hidden num1,1 hidden num2
     listAnswer = [];
 
@@ -515,6 +518,8 @@ class QuizBrain {
   }
 
   void makeQuizDragDrop() {
+    listAnswerDD.clear();
+    listQuizDD.clear();
     int count = 0;
     do {
       List<String> _listOfSigns = ['+', '-', 'x', '/'];

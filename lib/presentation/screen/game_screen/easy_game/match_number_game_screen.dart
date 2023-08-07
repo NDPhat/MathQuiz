@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/presentation/screen/game_screen/easy_game/write_and_count_game_screen.dart';
+import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../application/cons/constants.dart';
 import '../../../../application/utils/make_quiz.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
-import '../../../widget/app_bar.dart';
 import '../../../widget/board_item_take_easy_game.dart';
 
 class MatchNumberGameScreen extends StatefulWidget {
@@ -101,9 +102,9 @@ class _MatchNumberGameScreenState extends State<MatchNumberGameScreen> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child:
-                Text('GAME OVER', textAlign: TextAlign.center, style: kTitleTS),
+          title: FittedBox(
+            child: Text('game over'.tr(),
+                textAlign: TextAlign.center, style: kTitleTS),
           ),
           actions: [
             TextButton(
@@ -114,13 +115,13 @@ class _MatchNumberGameScreenState extends State<MatchNumberGameScreen> {
                   Navigator.pushNamed(context, Routers.homeGuest);
                 }
               },
-              child: const Text('EXIT', style: kDialogButtonsTS),
+              child: Text('exit'.tr(), style: kDialogButtonsTS),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('PLAY AGAIN', style: kDialogButtonsTS),
+              child: Text('play again'.tr(), style: kDialogButtonsTS),
             )
           ],
         );
@@ -139,8 +140,8 @@ class _MatchNumberGameScreenState extends State<MatchNumberGameScreen> {
             25,
           )),
           backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child: Text('FILL ALL THE BLANK ?',
+          title: FittedBox(
+            child: Text("${"fill all the blank".tr()} ?",
                 textAlign: TextAlign.center, style: kTitleTS),
           ),
           actions: [
@@ -148,7 +149,7 @@ class _MatchNumberGameScreenState extends State<MatchNumberGameScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('GO', style: kDialogButtonsTS),
+              child: Text('go'.tr(), style: kDialogButtonsTS),
             ),
           ],
         );
@@ -161,134 +162,147 @@ class _MatchNumberGameScreenState extends State<MatchNumberGameScreen> {
     return Scaffold(
       backgroundColor: colorSystemWhite,
       resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          AppBarWidget(
-            bgColor: colorSystemWhite,
-            onBack: () {},
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 5.w, right: 5.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 40.w,
-                  height: 80.h,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: randomListDrag.map((e) {
-                        return Draggable(
-                            feedback: BoardItemTakeEasy(
-                              width: 40.w,
-                              height: 26.h,
-                              bgColor: colorMainBlueChart,
-                              child: GridView.count(
-                                  crossAxisCount: 3,
-                                  childAspectRatio: 1.0,
-                                  padding: const EdgeInsets.all(4.0),
-                                  mainAxisSpacing: 4.0,
-                                  crossAxisSpacing: 4.0,
-                                  children: e.map((ItemValueMatch item) {
-                                    return CircleItem(
-                                      colorBG: item.color,
-                                      width: 15.w,
-                                      height: 8.h,
-                                    );
-                                  }).toList()),
-                            ),
-                            data: e.first.value,
-                            childWhenDragging: SizedBox(
-                              width: 40.w,
-                              height: 26.h,
-                            ),
-                            child: e.first.accepting == true
-                                ? SizedBox(
-                                    width: 40.w,
-                                    height: 26.h,
-                                  )
-                                : BoardItemTakeEasy(
-                                    width: 40.w,
-                                    height: 26.h,
-                                    bgColor: colorMainBlueChart,
-                                    child: GridView.count(
-                                        crossAxisCount: 3,
-                                        childAspectRatio: 1.0,
-                                        padding: const EdgeInsets.all(4.0),
-                                        mainAxisSpacing: 4.0,
-                                        crossAxisSpacing: 4.0,
-                                        children: e.map((ItemValueMatch item) {
-                                          return CircleItem(
-                                            colorBG: item.color,
-                                            width: 40.w,
-                                            height: 8.h,
-                                          );
-                                        }).toList()),
-                                  ));
-                      }).toList()),
-                ),
-                SizedBox(
-                  width: 40.w,
-                  height: 80.h,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: randomListDrop[position].map((e) {
-                        return DragTarget(
-                          builder: (context, candidateData, rejectedData) {
-                            return e.accepting == true
-                                ? SizedBox(
-                                    width: 40.w,
-                                    height: 26.h,
-                                  )
-                                : Container(
-                                    width: 40.w,
-                                    height: 26.h,
-                                    decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                        color: colorBGInput),
-                                    child: Center(
-                                      child: Text(
-                                        e.value.toString(),
-                                        style: GoogleFonts.cabin(
-                                            color: colorErrorPrimary,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 100),
-                                      ),
-                                    ),
-                                  );
-                          },
-                          onWillAccept: (data) {
-                            return data == e.value;
-                          },
-                          onAccept: (data) {
-                            count++;
-                            setState(() {
-                              e.accepting = true;
-                              int index = randomListDrag.indexWhere(
-                                  (element) => element.first.value == data);
-                              randomListDrag[index].first.accepting = true;
-                            });
-                            if (count == 3) {
-                              if (length < 9) {
-                                length++;
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                'assets/images/bg/bg2.jpg',
+              ),
+              fit: BoxFit.fill),
+        ),
+        child: MainPageHomePG(
+          textNow: "",
+          colorTextAndIcon: colorSystemWhite,
+          onBack: () {
+            Navigator.pop(context);
+          },
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 40.w,
+                      height: 80.h,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: randomListDrag.map((e) {
+                            return Draggable(
+                                feedback: BoardItemTakeEasy(
+                                  width: 40.w,
+                                  height: 26.h,
+                                  bgColor: colorMainBlueChart,
+                                  child: GridView.count(
+                                      crossAxisCount: 3,
+                                      childAspectRatio: 1.0,
+                                      padding: const EdgeInsets.all(4.0),
+                                      mainAxisSpacing: 4.0,
+                                      crossAxisSpacing: 4.0,
+                                      children: e.map((ItemValueMatch item) {
+                                        return CircleItem(
+                                          colorBG: item.color,
+                                          width: 15.w,
+                                          height: 8.h,
+                                        );
+                                      }).toList()),
+                                ),
+                                data: e.first.value,
+                                childWhenDragging: SizedBox(
+                                  width: 40.w,
+                                  height: 26.h,
+                                ),
+                                child: e.first.accepting == true
+                                    ? SizedBox(
+                                        width: 40.w,
+                                        height: 26.h,
+                                      )
+                                    : BoardItemTakeEasy(
+                                        width: 40.w,
+                                        height: 26.h,
+                                        bgColor: colorMainBlueChart,
+                                        child: GridView.count(
+                                            crossAxisCount: 3,
+                                            childAspectRatio: 1.0,
+                                            padding: const EdgeInsets.all(4.0),
+                                            mainAxisSpacing: 4.0,
+                                            crossAxisSpacing: 4.0,
+                                            children:
+                                                e.map((ItemValueMatch item) {
+                                              return CircleItem(
+                                                colorBG: item.color,
+                                                width: 40.w,
+                                                height: 8.h,
+                                              );
+                                            }).toList()),
+                                      ));
+                          }).toList()),
+                    ),
+                    SizedBox(
+                      width: 40.w,
+                      height: 80.h,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: randomListDrop[position].map((e) {
+                            return DragTarget(
+                              builder: (context, candidateData, rejectedData) {
+                                return e.accepting == true
+                                    ? SizedBox(
+                                        width: 40.w,
+                                        height: 26.h,
+                                      )
+                                    : Container(
+                                        width: 40.w,
+                                        height: 26.h,
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                            color: colorBGInput),
+                                        child: Center(
+                                          child: Text(
+                                            e.value.toString(),
+                                            style: GoogleFonts.cabin(
+                                                color: colorErrorPrimary,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 100),
+                                          ),
+                                        ),
+                                      );
+                              },
+                              onWillAccept: (data) {
+                                return data == e.value;
+                              },
+                              onAccept: (data) {
+                                count++;
                                 setState(() {
-                                  position++;
-                                  count = 0;
-                                  initDragAgain();
+                                  e.accepting = true;
+                                  int index = randomListDrag.indexWhere(
+                                      (element) => element.first.value == data);
+                                  randomListDrag[index].first.accepting = true;
                                 });
-                              } else {
-                                showFinishDiaLog();
-                              }
-                            }
-                          },
-                        );
-                      }).toList()),
+                                if (count == 3) {
+                                  if (length < 9) {
+                                    length++;
+                                    setState(() {
+                                      position++;
+                                      count = 0;
+                                      initDragAgain();
+                                    });
+                                  } else {
+                                    showFinishDiaLog();
+                                  }
+                                }
+                              },
+                            );
+                          }).toList()),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

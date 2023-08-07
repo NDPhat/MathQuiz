@@ -111,15 +111,15 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                       border: Border.all(color: colorSystemYeloow)),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(
+                      const Icon(
                         LineAwesomeIcons.envira_gallery,
                         color: Colors.black,
                         size: 30,
                       ),
-                      Text('Gallery'),
+                      Text('gallery'.tr()),
                     ],
                   ),
                 ),
@@ -134,15 +134,15 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         border: Border.all(color: colorSystemYeloow)),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
+                        const Icon(
                           LineAwesomeIcons.retro_camera,
                           color: Colors.black,
                           size: 30,
                         ),
-                        Text('Camera'),
+                        Text('camera'.tr()),
                       ],
                     ),
                   ),
@@ -211,7 +211,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
     }
   }
 
-  final List<String> genders = ['Male', 'Female'];
+  final List<String> genders = ["Male", "Female"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -293,8 +293,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         width: 90.w,
                         height: 8.h,
                         controller: TextEditingController(text: state.fullName),
-                        hintText: 'Your name',
-                        nameTitle: "Your name",
+                        hintText: 'your name'.tr(),
+                        nameTitle: 'your name'.tr(),
                         onChanged: (value) {
                           context.read<UpdateProfileCubit>().nameChanged(value);
                         },
@@ -313,8 +313,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       return InputFieldWidget(
                         controller: TextEditingController(text: state.lop),
                         readOnly: true,
-                        nameTitle: "Your class",
-                        hintText: 'Class',
+                        nameTitle: 'your class'.tr(),
+                        hintText: 'your class'.tr(),
                         width: 90.w,
                         height: 8.h,
                         icon: const Icon(
@@ -334,14 +334,14 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             isExpanded: true,
-                            hint: const Row(
+                            hint: Row(
                               children: [
-                                Icon(Icons.list,
+                                const Icon(Icons.list,
                                     size: 16, color: colorMainBlue),
                                 Expanded(
                                   child: Text(
-                                    'Choose gender',
-                                    style: TextStyle(
+                                    'choose gender'.tr(),
+                                    style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                         color: colorMainBlue),
@@ -424,8 +424,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         width: 90.w,
                         height: 8.h,
                         typeText: TextInputType.number,
-                        hintText: 'Your phone',
-                        nameTitle: "Your phone",
+                        hintText: 'your phone'.tr(),
+                        nameTitle: 'your phone'.tr(),
                         icon: const Icon(
                           LineAwesomeIcons.phone,
                           color: Colors.black,
@@ -445,8 +445,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         readOnly: true,
                         width: 90.w,
                         height: 8.h,
-                        hintText: 'Your birthDate',
-                        nameTitle: 'Your birthDate',
+                        hintText: "your birthday".tr(),
+                        nameTitle: 'your birthday'.tr(),
                         isHidden: state.birthDateError != "",
                         validateText: state.birthDateError,
                         icon: const Icon(
@@ -525,8 +525,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                                   color: colorMainBlue,
                                                   width: 80.w,
                                                   height: 6.h,
-                                                  child: const Text(
-                                                    'Done',
+                                                  child: Text(
+                                                    'go'.tr(),
                                                     style: s14f500colorSysWhite,
                                                   ),
                                                 )
@@ -550,8 +550,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         controller: TextEditingController(text: state.email),
                         width: 90.w,
                         height: 8.h,
-                        hintText: 'Your email',
-                        nameTitle: 'Your email',
+                        hintText: 'your email'.tr(),
+                        nameTitle: 'your email'.tr(),
                         icon: const Icon(
                           LineAwesomeIcons.mail_bulk,
                           color: Colors.black,
@@ -568,8 +568,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       return InputFieldWidget(
                         width: 90.w,
                         height: 8.h,
-                        hintText: 'Your address',
-                        nameTitle: 'Your address',
+                        hintText: 'your address'.tr(),
+                        nameTitle: 'your address'.tr(),
                         isHidden: state.addError != "",
                         validateText: state.addError,
                         onChanged: (value) {

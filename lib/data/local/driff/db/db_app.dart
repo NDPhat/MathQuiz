@@ -3,6 +3,8 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import '../../../../main.dart';
+import '../../../remote/authen/authen.dart';
 import '../entities/detail_notifi.dart';
 import '../entities/notifi_local.dart';
 import '../entities/player.dart';
@@ -38,12 +40,12 @@ class AppDb extends _$AppDb {
   @override
   int get schemaVersion => 1;
 
-  // when change role to user
-  Future<void> deleteEverything() {
-    return transaction(() async {
-      for (final table in allTables) {
-        await delete(table).go();
-      }
-    });
+  // delete Data
+
+  void deleteLocalPlayer() {
+    for (final table in allTables) {
+      table.deleteAll();
+    }
+    instance.get<AuthenRepository>().handleLocalAutoLoginApp(false);
   }
 }

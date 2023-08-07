@@ -6,16 +6,16 @@ class MainPageHomePG extends StatelessWidget {
     Key? key,
     required this.child,
     this.homeIcon,
-    required this.textNow,
-    required this.onPressHome,
+    this.textNow,
+    this.onPressHome,
     required this.onBack,
     required this.colorTextAndIcon,
   }) : super(key: key);
   Widget child;
   Widget? homeIcon;
-  VoidCallback onPressHome;
+  VoidCallback? onPressHome;
   VoidCallback onBack;
-  String textNow;
+  String? textNow;
   Color colorTextAndIcon;
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class MainPageHomePG extends StatelessWidget {
               Container(
                 width: 100.w,
                 alignment: Alignment.center,
-                child: Text(textNow,
+                child: Text(textNow ?? "",
                     style: TextStyle(
                         color: colorTextAndIcon,
                         fontSize: 20,

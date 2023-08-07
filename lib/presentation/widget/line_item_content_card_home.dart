@@ -7,12 +7,14 @@ class LineContentItem extends StatelessWidget {
   const LineContentItem({
     super.key,
     required this.title,
+    this.iconOnTap,
     required this.icon,
     required this.colorBG,
   });
   final Color colorBG;
   final String title;
   final Icon icon;
+  final VoidCallback? iconOnTap;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class LineContentItem extends StatelessWidget {
               style: s18f700ColorGreyPri,
             ),
           ),
-          icon
+          GestureDetector(onTap: iconOnTap, child: icon)
         ],
       ),
     );

@@ -90,7 +90,7 @@ class _AddNewGuestPlayerScreenState extends State<AddNewGuestPlayerScreen> {
                           return pre.nameError != now.nameError;
                         }, builder: (BuildContext context, state) {
                           return InputFieldWidget(
-                            hintText: 'Email your name',
+                            hintText: 'Enter your name',
                             nameTitle: 'Your name',
                             width: 80.w,
                             height: 8.h,

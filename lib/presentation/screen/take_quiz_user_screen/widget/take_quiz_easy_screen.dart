@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/presentation/routers/navigation.dart';
@@ -11,10 +12,11 @@ class TakeQuizEasyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MainPageHomePG(   onBack: () {
-        Navigator.pop(context);
-      },
-        textNow: 'Easy quiz',
+      body: MainPageHomePG(
+        onBack: () {
+          Navigator.pop(context);
+        },
+        textNow: 'easy quiz'.tr(),
         onPressHome: () {},
         colorTextAndIcon: Colors.black,
         child: Stack(
@@ -24,7 +26,9 @@ class TakeQuizEasyScreen extends StatelessWidget {
                 height: 90.h,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/bg_take_easy.jpg"),
+                      image: AssetImage(
+                        'assets/images/bg/bg3.jpg',
+                      ),
                       fit: BoxFit.cover),
                 )),
             Container(
@@ -55,13 +59,14 @@ class TakeQuizEasyScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Write',
-                        textBot2: 'numbers',
+                        textBot1: 'write'.tr(),
+                        textBot2: 'number'.tr(),
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.purpleAccent,
                         onPress: () {
-                          Navigator.pushNamed(context, Routers.writeAndCountNumGame);
+                          Navigator.pushNamed(
+                              context, Routers.writeAndCountNumGame);
                         },
                         childTop: Container(
                           height: 14.h,
@@ -73,8 +78,8 @@ class TakeQuizEasyScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Count and',
-                        textBot2: 'write',
+                        textBot1: 'count and'.tr(),
+                        textBot2: 'write'.tr(),
                       ),
                     ],
                   ),
@@ -97,8 +102,8 @@ class TakeQuizEasyScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Write missing',
-                        textBot2: 'numbers',
+                        textBot1: 'write missing'.tr(),
+                        textBot2: 'number'.tr(),
                       ),
                       ItemTakeQuizEasy(
                         bgColor: Colors.pink,
@@ -115,8 +120,8 @@ class TakeQuizEasyScreen extends StatelessWidget {
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
-                        textBot1: 'Match',
-                        textBot2: 'numbers',
+                        textBot1: 'match'.tr(),
+                        textBot2: 'number'.tr(),
                       ),
                     ],
                   ),

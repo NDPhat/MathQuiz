@@ -2,17 +2,20 @@ import 'package:math/data/remote/model/pre_test_req.dart';
 import 'package:math/data/remote/model/quiz_test_req.dart';
 import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/data/remote/model/quiz_test_with_pagination_res.dart';
+import 'package:math/data/remote/model/result_quiz_hw_res_pagi.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:math/data/remote/model/user_api_res.dart';
 
 import '../../model/detail_quiz_hw_req.dart';
 import '../../model/detail_quiz_hw_response.dart';
 import '../../model/pre_quiz_game_req.dart';
+import '../../model/pre_quiz_game_res_pagi.dart';
 import '../../model/pre_quiz_game_response.dart';
 import '../../model/pre_quiz_game_sen_req.dart';
 import '../../model/pre_quiz_game_sen_res.dart';
 import '../../model/pre_quiz_hw_response.dart';
 import '../../model/pre_test_res.dart';
+import '../../model/pre_test_res_pagi.dart';
 import '../../model/quiz_game_req.dart';
 import '../../model/quiz_game_response.dart';
 import '../../model/quiz_game_with_pagination_res.dart';
@@ -36,6 +39,7 @@ abstract class UserAPIRepo {
       ResultQuizHWAPIReq resultQuizHWReq, String resultID);
   Future<bool?> deleteResultHWNotDo(String resultID);
   Future<List<ResultQuizHWAPIModel>?> getALlResultQuizHWByUserID(String uid);
+  Future<ResultQuizHWResPagi?> getALlResultQuizHWByUserIDWithPagi(String uid,int page);
   Future<ResultQuizHWAPIModel?> getResultQuizHWByUserIDAndWeek(
       String uid, String week);
   Future<List<PreQuizHWResAPIModel>?> getALlPreQuizHW();
@@ -46,9 +50,12 @@ abstract class UserAPIRepo {
   Future<List<DetailQuizHWAPIModel>?> getALlQuizDetailByUserIDAndWeek(
       String userID, String week);
   Future<List<QuizGameAPIModel>?> getALlQuizGameByPreGameID(String preID);
-  Future<List<QuizGameAPIPagiModel>?> getALlQuizGameByPreGameIDWithPagination(String preID,int page);
+  Future<List<QuizGameAPIModel>?> getALlQuizGameByPreGameIDWithPagination(
+      String preID, int page);
   Future<List<PreQuizGameAPIModel>?> getALlPreQuizGameByUidandOptionGame(
       String uid, String option);
+  Future<PreQuizGameAPIResPagi?> getALlPreQuizGameByUidandOptionGameWithPagi(
+      String uid, String option, int page);
   Future<List<PreQuizGameAPIModel>?> getALlPreQuizGameByUidandStatus(
       String uid);
   Future<PreQuizGameAPIModel?> createPreQuizGame(PreQuizGameAPIReq preQuizReq);
@@ -65,8 +72,10 @@ abstract class UserAPIRepo {
   Future<bool?> createQuizGame(QuizGameAPIReq quizReq);
   Future<bool?> createQuizTest(QuizTestReq quizReq);
   Future<List<QuizTestAPIRes>?> getALlQuizTestByPreTestID(String preID);
-  Future<List<QuizTestAPIPagiModel>?> getALlQuizTestByPreTestIDWithPagi(String preID ,int page);
+  Future<List<QuizTestAPIRes>?> getALlQuizTestByPreTestIDWithPagi(
+      String preID, int page);
   Future<List<SentencesQuizRes>?> getRandomeListQuiz();
   Future<List<PreTestAPIRes>?> getALlPreQuizTestByUid(String uid);
+  Future<PreTestAPIResPagi?> getALlPreQuizTestByUidWithPagi(String uid,int page);
   Future<bool?> deleteTestingNotDoByPreTestId(String preID);
 }

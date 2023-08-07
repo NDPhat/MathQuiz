@@ -22,7 +22,7 @@ class ChangePassWordScreen extends StatelessWidget {
         Navigator.pop(context);
       },
       colorTextAndIcon: Colors.black,
-      textNow: 'update pass'.tr().toString(),
+      textNow: 'change password'.tr().toString(),
       onPressHome: () {},
       child: SingleChildScrollView(
         child: Container(
@@ -37,10 +37,10 @@ class ChangePassWordScreen extends StatelessWidget {
                 'assets/images/image_update_pass.png',
                 height: 25.h,
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Please enter your new password.',
+                  'change your password.'.tr(),
                   style: s16f400ColorGreyTe,
                 ),
               ),
@@ -56,10 +56,10 @@ class ChangePassWordScreen extends StatelessWidget {
                       return pre.oldPassErrorMessage != now.oldPassErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 'Enter your old password',
+                        hintText: 'enter your old password'.tr(),
                         width: 80.w,
                         height: 8.h,
-                        nameTitle: "Password",
+                        nameTitle: "old password".tr(),
                         onChanged: (value) {
                           context.read<UpdatePassCubit>().oldPassChanged(value);
                         },
@@ -76,10 +76,10 @@ class ChangePassWordScreen extends StatelessWidget {
                       return pre.passErrorMessage != now.passErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 'Enter your new password',
+                        hintText: 'enter your new password'.tr(),
                         width: 80.w,
                         height: 8.h,
-                        nameTitle: "Newp password",
+                        nameTitle: "new password".tr(),
                         onChanged: (value) {
                           context.read<UpdatePassCubit>().passChanged(value);
                         },
@@ -97,10 +97,10 @@ class ChangePassWordScreen extends StatelessWidget {
                           now.confirmPassErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 'Re-enter your password',
+                        hintText: 're-enter your password'.tr(),
                         width: 80.w,
                         height: 8.h,
-                        nameTitle: "Re-password",
+                        nameTitle: "re-new password".tr(),
                         onChanged: (value) {
                           context
                               .read<UpdatePassCubit>()
@@ -140,8 +140,8 @@ class ChangePassWordScreen extends StatelessWidget {
                               ),
                             ),
                           )
-                        : const Text(
-                            'GO',
+                        : Text(
+                            'go'.tr(),
                             style: s20f700ColorSysWhite,
                           ));
               })
