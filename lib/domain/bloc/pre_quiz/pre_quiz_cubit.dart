@@ -68,6 +68,7 @@ class PreQuizCubit extends Cubit<PreQuizState> {
         final entity = PreQuizGameEntityCompanion(
             numQ: const Value(0),
             sign: Value(sign),
+            score: const Value(0),
             option: Value(option),
             dateSave: Value(formatDateInput.format(DateTime.now())));
         //insert task

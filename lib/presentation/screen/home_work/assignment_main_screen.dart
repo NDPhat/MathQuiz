@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,7 @@ import '../../../application/utils/format.dart';
 import '../../../data/model/pre_join_homework.dart';
 import '../../../data/remote/model/result_quiz_hw_req.dart';
 import '../../routers/navigation.dart';
+import '../../widget/bg_list_view.dart';
 import '../../widget/line_item_content_card_home.dart';
 import '../../widget/weak_widget.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
@@ -52,208 +54,179 @@ class AssignmentMainScreen extends StatelessWidget {
         dend: preQuiz.dend,
         dstart: preQuiz.dstart,
       );
-      Navigator.pop(context);
       Navigator.pushNamed(context, Routers.assignmentGameScreen,
           arguments: preJoinHW);
     }
 
-    Future<void> showJoinHWDialog(PreQuizHWResAPIModel dataPre) {
-      return showDialog<void>(
+    showReadyToJoinHWDialog(PreQuizHWResAPIModel dataPre) {
+      return AwesomeDialog(
         context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-              25,
-            )),
-            backgroundColor: const Color(0xff1542bf),
-            title: FittedBox(
-              child: Text("${'ready hw'.tr()}?",
-                  textAlign: TextAlign.center, style: kTitleTS),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  createPreHW(dataPre);
-                },
-                child: Text('go'.tr().toString(), style: s16f700ColorError),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('exit'.tr().toString(), style: s15f700ColorYellow),
-              ),
-            ],
-          );
+        dialogType: DialogType.question,
+        headerAnimationLoop: false,
+        animType: AnimType.topSlide,
+        dismissOnTouchOutside: false,
+        desc: '${"are you ready".tr()} ?',
+        descTextStyle: s20GgBarColorMainTeal,
+        btnCancelOnPress: () {},
+        btnOkOnPress: () {
+          createPreHW(dataPre);
         },
-      );
+      ).show();
     }
 
-    Future<void> showDoneDialog(String idResult) {
-      return showDialog<void>(
+    showReviewHWDialog(String idResult) {
+      return AwesomeDialog(
         context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-              25,
-            )),
-            backgroundColor: const Color(0xff1542bf),
-            title: FittedBox(
-              child: Text("${'review your answer'.tr()}?",
-                  textAlign: TextAlign.center, style: kScoreLabelTextStyle),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.checkAnswerHW,
-                      arguments: idResult);
-                },
-                child: Text('go'.tr().toString(), style: kDialogButtonsTS),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('exit'.tr().toString(), style: kDialogButtonsTS),
-              ),
-            ],
-          );
+        dialogType: DialogType.question,
+        headerAnimationLoop: false,
+        animType: AnimType.topSlide,
+        dismissOnTouchOutside: false,
+        desc: '${'review your answer'.tr()} ?',
+        descTextStyle: s20GgBarColorMainTeal,
+        btnCancelOnPress: () {},
+        btnOkOnPress: () {
+          Navigator.pushNamed(context, Routers.checkAnswerHW,
+              arguments: idResult);
         },
-      );
+      ).show();
     }
 
-    return Scaffold(
-      body: MainPageHomePG(
-          onBack: () {
-            Navigator.pop(context);
-          },
-          colorTextAndIcon: Colors.black,
-          textNow: 'home work'.tr().toString(),
-          onPressHome: () {},
-          child: Padding(
-            padding: EdgeInsets.only(left: 5.w, right: 5.w),
-            child: Column(
-              children: [
-                Column(
-                  children: [
-                    LineContentItem(
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        body: MainPageHomePG(
+            onBack: () {
+              Navigator.pushNamed(context, Routers.homeUser);
+            },
+            colorTextAndIcon: Colors.black,
+            textNow: 'home work'.tr().toString(),
+            onPressHome: () {},
+            child: Padding(
+              padding: EdgeInsets.only(left: 5.w, right: 5.w),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      LineContentItem(
+                          colorBG: colorMainTealPri,
+                          title: 'done'.tr().toString(),
+                          icon: const Icon(Icons.check)),
+                      sizedBox,
+                      BackGroundListView(
                         colorBG: colorMainTealPri,
-                        title: 'done'.tr().toString(),
-                        icon: const Icon(Icons.check)),
-                    SingleChildScrollView(
-                      child: SizedBox(
+                        width: 100.w,
                         height: 50.h,
-                        child: FutureBuilder<List<ResultQuizHWAPIModel>?>(
-                            future: instance
-                                .get<UserAPIRepo>()
-                                .getALlResultQuizHWByUserID(
-                                    instance.get<UserGlobal>().id.toString()),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return SizedBox(
-                                  height: 30.h,
-                                  width: 30.w,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      color: colorMainBlue,
-                                      strokeWidth: 5,
-                                    ),
-                                  ),
-                                );
-                              }
-                              if (snapshot.hasData) {
-                                return CustomScrollView(slivers: [
-                                  SliverList(
-                                      delegate: SliverChildBuilderDelegate(
-                                    childCount: snapshot.data!.length,
-                                    (context, index) {
-                                      snapshot.data!.sort(
-                                          (a, b) => a.week!.compareTo(b.week!));
-                                      return Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 0.5.h, bottom: 0.5.h),
-                                        child: ItemCardHW(
-                                          onTap: () {
-                                            showDoneDialog(
-                                                snapshot.data![index].key!);
-                                          },
-                                          colorBorder: colorMainBlue,
-                                          childRight: Center(
-                                              child: Text(
-                                            'view'.tr().toString(),
-                                            style: GoogleFonts.aclonica(
-                                                color: colorMainBlue,
-                                                fontSize: 20),
-                                          )),
-                                          childLeft: WeakWidget(
-                                            dataResult: snapshot.data![index],
-                                            colorBorder: colorMainBlue,
+                        content: 'history'.tr(),
+                        child: Center(
+                          child: SingleChildScrollView(
+                            child: Container(
+                              padding: EdgeInsets.only(top: 10.h),
+                              height: 50.h,
+                              width: 85.w,
+                              child: FutureBuilder<List<ResultQuizHWAPIModel>?>(
+                                  future: instance
+                                      .get<UserAPIRepo>()
+                                      .getALlResultQuizHWByUserID(
+                                          instance.get<UserGlobal>().id.toString()),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return SizedBox(
+                                        height: 30.h,
+                                        width: 30.w,
+                                        child: const Center(
+                                          child: CircularProgressIndicator(
+                                            color: colorMainTealPri,
+                                            strokeWidth: 5,
                                           ),
                                         ),
                                       );
-                                    },
-                                  ))
-                                ]);
-                              }
+                                    }
+                                    if (snapshot.hasData) {
+                                      return CustomScrollView(slivers: [
+                                        SliverList(
+                                            delegate: SliverChildBuilderDelegate(
+                                          childCount: snapshot.data!.length,
+                                          (context, index) {
+                                            snapshot.data!.sort((a, b) =>
+                                                a.week!.compareTo(b.week!));
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 0.5.h, bottom: 0.5.h),
+                                              child: ItemCardHW(
+                                                onTap: () {
+                                                  showReviewHWDialog(
+                                                      snapshot.data![index].key!);
+                                                },
+                                                colorBorder: colorMainTealPri,
+                                                childRight: Center(
+                                                    child: Text(
+                                                  'view'.tr().toString(),
+                                                  style: GoogleFonts.aBeeZee(
+                                                      color: colorMainTealPri,
+                                                      fontSize: 20),
+                                                )),
+                                                childLeft: WeakWidget(
+                                                  dataResult: snapshot.data![index],
+                                                  colorBorder: colorMainTealPri,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ))
+                                      ]);
+                                    }
 
-                              return Container();
-                            }),
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 2, color: colorGrayBG),
+                                    return Container();
+                                  }),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    LineContentItem(
-                        colorBG: colorErrorPrimary,
-                        title: 'on schedule'.tr().toString(),
-                        icon: const Icon(Icons.do_not_disturb)),
-                    SingleChildScrollView(
-                      child: SizedBox(
-                          height: 20.h,
-                          child: FutureBuilder<PreQuizHWResAPIModel?>(
-                              future: instance
-                                  .get<UserAPIRepo>()
-                                  .getOnGoingPreHWandNotDO(
-                                      instance.get<UserGlobal>().id.toString()),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return SizedBox(
-                                    height: 20.h,
-                                    width: 50.w,
-                                    child: const Center(
-                                      child: CircularProgressIndicator(
-                                        color: colorMainBlue,
-                                        strokeWidth: 5,
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      LineContentItem(
+                          colorBG: colorErrorPrimary,
+                          title: 'on schedule'.tr().toString(),
+                          icon: const Icon(Icons.do_not_disturb)),
+                      SingleChildScrollView(
+                        child: SizedBox(
+                            height: 15.h,
+                            child: FutureBuilder<PreQuizHWResAPIModel?>(
+                                future: instance
+                                    .get<UserAPIRepo>()
+                                    .getOnGoingPreHWandNotDO(instance
+                                        .get<UserGlobal>()
+                                        .id
+                                        .toString()),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return SizedBox(
+                                      height: 20.h,
+                                      width: 50.w,
+                                      child: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: colorMainBlue,
+                                          strokeWidth: 5,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }
-                                if (snapshot.hasData) {
-                                  return ListView.builder(
-                                    itemCount: 1,
-                                    itemBuilder: (context, index) {
-                                      return ItemCardHW(
+                                    );
+                                  }
+                                  if (snapshot.hasData) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(top: 0.5.h),
+                                      child: ItemCardHW(
                                         colorBorder: colorErrorPrimary,
                                         childRight: Center(
                                             child: Text(
                                           "do".tr().toString(),
-                                          style: GoogleFonts.aclonica(
-                                              color: colorMainBlue,
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.aBeeZee(
+                                              color: colorErrorPrimary,
                                               fontSize: 20),
                                         )),
                                         childLeft: WeakWidget(
@@ -261,32 +234,21 @@ class AssignmentMainScreen extends StatelessWidget {
                                           colorBorder: colorErrorPrimary,
                                         ),
                                         onTap: () {
-                                          showJoinHWDialog(snapshot.data!);
+                                          showReadyToJoinHWDialog(
+                                              snapshot.data!);
                                         },
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              })),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          )),
-    );
-  }
-
-  Expanded buildDivider() {
-    return Expanded(
-      child: Transform.rotate(
-        angle: math.pi / 2,
-        child: const Divider(
-          color: colorGreyDisable,
-          height: 5,
-        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                })),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            )),
       ),
     );
   }

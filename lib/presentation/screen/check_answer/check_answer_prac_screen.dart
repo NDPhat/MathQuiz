@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/model/quiz_game_response.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
+import 'package:math/presentation/widget/bg_list_view.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
-import '../../../data/remote/model/quiz_game_with_pagination_res.dart';
+import '../../../data/model/user_global.dart';
 import '../../../main.dart';
+import '../../routers/navigation.dart';
 import '../../widget/answer_widget.dart';
 
 class CheckAnswerPracUserGameScreen extends StatefulWidget {
@@ -20,7 +22,6 @@ class _CheckAnswerPracUserGameScreenState
     extends State<CheckAnswerPracUserGameScreen> {
   int page = 1;
   bool isFirstLoadRunning = false;
-  bool hasNextPage = true;
   ScrollController controller = ScrollController();
   bool isLoadMoreRunning = false;
   late String id;
@@ -55,10 +56,6 @@ class _CheckAnswerPracUserGameScreenState
         setState(() {
           posts!.addAll(fetchedPosts);
         });
-      } else {
-        setState(() {
-          hasNextPage = false;
-        });
       }
       setState(() {
         isLoadMoreRunning = false;
@@ -92,61 +89,74 @@ class _CheckAnswerPracUserGameScreenState
             },
             textNow: 'check answer'.tr().toString(),
             colorTextAndIcon: Colors.black,
-            onPressHome: () {},
-            child: Container(
-                padding: EdgeInsets.only(
-                    top: 5.h, left: 5.w, right: 5.w, bottom: 5.h),
-                child: isFirstLoadRunning
-                    ? SizedBox(
-                        height: 30.h,
-                        width: 30.w,
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            color: colorMainBlue,
-                            strokeWidth: 5,
-                          ),
-                        ),
-                      )
-                    : SizedBox(
-                        height: 80.h,
-                        width: 90.w,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 75.h,
-                              width: 90.w,
-                              child: CustomScrollView(
-                                controller: controller,
-                                slivers: [
-                                  SliverList(
-                                      delegate: SliverChildBuilderDelegate(
-                                          childCount: posts!.length,
-                                          (context, index) {
-                                    return AnswerWidget(
-                                      quiz: posts![index].quiz.toString(),
-                                      answer: posts![index].answer.toString(),
-                                      answerSelect:
-                                          posts![index].answerSelect.toString(),
-                                      quizInfo: posts![index].infoQuiz!,
-                                    );
-                                  }))
-                                ],
-                              ),
+            onPressHome: () {
+              if (instance.get<UserGlobal>().onLogin == true) {
+                Navigator.pushNamed(context, Routers.homeUser);
+              } else {
+                Navigator.pushNamed(context, Routers.homeGuest);
+              }            },
+            homeIcon: const Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
+            child: BackGroundListView(
+              colorBG: colorMainTealPri,
+              width: 90.w,
+              height: 90.h,
+              content: 'check answer'.tr(),
+              child: Padding(
+                  padding: EdgeInsets.only(
+                     left: 5.w, right: 5.w),
+                  child: isFirstLoadRunning
+                      ? Container(
+                          alignment: Alignment.center,
+                          height: 40.h,
+                          width: 90.w,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: colorMainTealPri,
+                              strokeWidth: 5,
                             ),
-                            if (isLoadMoreRunning == true)
-                              SizedBox(
-                                height: 5.h,
-                                width: 30.w,
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: colorMainBlue,
-                                    strokeWidth: 5,
-                                  ),
+                          ),
+                        )
+                      : Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(top: 10.h),
+                            height: 85.h,
+                            width: 90.w,
+                            child: CustomScrollView(
+                              controller: controller,
+                              slivers: [
+                                SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                        childCount: posts!.length,
+                                        (context, index) {
+                                  return AnswerWidget(
+                                    quiz: posts![index].quiz.toString(),
+                                    answer: posts![index].answer.toString(),
+                                    answerSelect: posts![index]
+                                        .answerSelect
+                                        .toString(),
+                                    quizInfo: posts![index].infoQuiz!,
+                                  );
+                                }))
+                              ],
+                            ),
+                          ),
+                          if (isLoadMoreRunning == true)
+                            SizedBox(
+                              height: 3.h,
+                              width: 80.w,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: colorMainBlue,
+                                  strokeWidth: 5,
                                 ),
                               ),
-                            if (hasNextPage == false) Container(),
-                          ],
-                        ),
-                      ))));
+                            ),
+                        ],
+                      )),
+            )));
   }
 }

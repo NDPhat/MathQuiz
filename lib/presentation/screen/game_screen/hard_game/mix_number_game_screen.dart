@@ -1,20 +1,24 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/cons/color.dart';
+import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/pre_test_model.dart';
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/main.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../application/cons/constants.dart';
-import '../../../../application/utils/logic.dart';
+import '../../../../application/utils/format.dart';
 import '../../../../application/utils/make_quiz.dart';
+import '../../../../application/utils/sound.dart';
 import '../../../../data/local/driff/db/db_app.dart';
 import '../../../../data/local/repo/pre_test/pre_test_repo.dart';
+import '../../../../data/model/app_global.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../../data/remote/model/pre_test_req.dart';
@@ -39,15 +43,26 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
   int _totalNumberOfQuizzes = 0;
   bool userAnswer = false;
   final CountDownController _controller = CountDownController();
-
+  final _playerCheck = AudioPlayer();
   @override
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       preTest = ModalRoute.of(context)!.settings.arguments as PreTest;
-      showReadyDialog();
+      showReadyGameDialog();
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    soundDispose();
+  }
+
+  Future<void> soundDispose() async {
+    await _playerCheck.stop();
+    _playerCheck.dispose();
   }
 
   void _startGame() async {
@@ -64,48 +79,37 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
     _totalNumberOfQuizzes++;
     if (userChoice == _quizBrain.quizAnswer) {
       userAnswer = true;
-      playSound('correct-choice.wav');
+      _playerCheck.play(AssetSource('correct-choice.wav'),
+          volume: instance.get<AppGlobal>().volumeApp);
       _score++;
     } else {
       userAnswer = false;
       falseChoose++;
-      playSound('wrong-choice.wav');
+      _playerCheck.play(
+          AssetSource(
+            'wrong-choice.wav',
+          ),
+          volume: instance.get<AppGlobal>().volumeApp);
     }
   }
 
-  Future<void> showOutDialog() {
-    return showDialog<void>(
+  Future<void> showOutPageDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child: Text('${'do you want to quiz'.tr()} ?',
-                textAlign: TextAlign.center, style: kScoreLabelTextStyle),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                updateScore();
-              },
-              child:  Center(child: Text('yes'.tr(), style: kDialogButtonsTS)),
-            ),
-            TextButton(
-              onPressed: () {
-                _controller.resume();
-                Navigator.pop(context);
-              },
-              child:  Center(child: Text('no'.tr(), style: kDialogButtonsTS)),
-            ),
-          ],
-        );
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'do you want to quit'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        _controller.resume();
       },
-    );
+      btnOkOnPress: () {
+        soundDispose();
+        updateScore();
+      },
+    ).show();
   }
 
   void addData(BuildContext context, int value) {
@@ -139,7 +143,7 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
               trueQ: _score,
               falseQ: falseChoose,
               score: _score,
-              dateSave: DateTime.now().toString(),
+              dateSave: formatTimeTestInput.format(DateTime.now()),
               userID: instance.get<UserGlobal>().id),
           preTest.keyServer.toString());
       Navigator.pushNamed(context, Routers.homeUser);
@@ -152,70 +156,42 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
     }
   }
 
-  Future<void> showFinishDialog() {
-    return showDialog<void>(
+  Future<void> showFinishGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext contextBuild) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: const FittedBox(
-            child:
-                Text('GAME OVER', textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          content: Text('Score: $_score | $_totalNumberOfQuizzes',
-              textAlign: TextAlign.center, style: kContentTS),
-          actions: [
-            TextButton(
-              onPressed: () {
-                updateScore();
-              },
-              child: const Center(child: Text('EXIT', style: kDialogButtonsTS)),
-            ),
-          ],
-        );
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      desc: 'score'.tr() + " : " + '$_score | 5',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkOnPress: () {
+        soundDispose();
+        updateScore();
       },
-    );
+    ).show();
   }
 
-  Future<void> showReadyDialog() {
-    return showDialog<void>(
+  Future<void> showReadyGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child: Text('${'are you ready'.tr()} ?',
-                textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _controller.start();
-                _startGame();
-              },
-              child:  Text('go'.tr(), style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                deletePreTest();
-              },
-              child:  Text('exit'.tr(), style: kDialogButtonsTS),
-            ),
-          ],
-        );
+      dialogType: DialogType.question,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'are you ready'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        soundDispose();
+        deletePreTest();
       },
-    );
+      btnOkOnPress: () {
+        _controller.start();
+        _startGame();
+      },
+    ).show();
   }
 
   void deletePreTest() {
@@ -223,11 +199,9 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
       instance
           .get<UserAPIRepo>()
           .deleteTestingNotDoByPreTestId(preTest.keyServer.toString());
-      Navigator.pop(context);
       Navigator.pushNamed(context, Routers.homeUser);
     } else {
       instance.get<PreTestLocalRepo>().deletePreTest(preTest.id!);
-      Navigator.pop(context);
       Navigator.pushNamed(context, Routers.homeGuest);
     }
   }
@@ -241,7 +215,8 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
         colorTextAndIcon: colorSystemYeloow,
         onBack: () {
           _controller.pause();
-          showOutDialog();
+
+          showOutPageDialog();
         },
         child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
           return PortraitModeGame(
@@ -260,7 +235,7 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
             controller: _controller,
             quizNow: _totalNumberOfQuizzes,
             onFinished: () {
-              showFinishDialog();
+              showFinishGameDialog();
             },
           );
         }),

@@ -1,18 +1,20 @@
 import 'dart:math' as math;
+import 'package:audioplayers/audioplayers.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/color.dart';
-import 'package:math/application/utils/logic.dart';
 import 'package:math/application/utils/make_quiz.dart';
+import 'package:math/data/model/app_global.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:math/presentation/widget/board_item_take_easy_game.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../application/cons/cons_rec.dart';
 import '../../../../application/cons/constants.dart';
+import '../../../../application/cons/text_style.dart';
 import '../../../../application/utils/recognizer.dart';
 import '../../../../data/model/prediction.dart';
-import '../../../../data/model/user_global.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
 
@@ -30,10 +32,22 @@ class _DrawingBoardState extends State<WriteNumberBoardGame> {
   final List<Offset?> _points = [];
   List<int> randomList = [];
   int position = 0;
-
+  final _player = AudioPlayer();
+  final _playerCheck = AudioPlayer();
   void _initDataAndModel() async {
     randomList = quizBrain.listWriteNumber;
     await _recognizer.loadModel();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    soundDispose();
+  }
+
+  void playSound() {
+    _player.play(AssetSource("sound_local/Teru.mp3"),
+        volume: instance.get<AppGlobal>().volumeApp);
   }
 
   @override
@@ -41,6 +55,14 @@ class _DrawingBoardState extends State<WriteNumberBoardGame> {
     super.initState();
     quizBrain = QuizBrain();
     _initDataAndModel();
+    playSound();
+  }
+
+  Future<void> soundDispose() async {
+    await _player.stop();
+    await _playerCheck.stop();
+    _player.dispose();
+    _playerCheck.dispose();
   }
 
   void _recognize() async {
@@ -85,43 +107,25 @@ class _DrawingBoardState extends State<WriteNumberBoardGame> {
     );
   }
 
-  Future<void> showFinishDiaLog() {
-    return showDialog<void>(
+  Future<void> showFinishGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext contextBuild) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: FittedBox(
-            child: Text('game over'.tr(),
-                textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child: Text('exit'.tr(), style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                playAgain();
-              },
-              child: Text('play again'.tr(), style: kDialogButtonsTS),
-            )
-          ],
-        );
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        soundDispose();
+        Navigator.pushNamed(context, Routers.takeEasyQuiz);
       },
-    );
+      btnOkText: "play again".tr(),
+      btnOkOnPress: () {
+        playAgain();
+      },
+    ).show();
   }
 
   void playAgain() {
@@ -137,7 +141,8 @@ class _DrawingBoardState extends State<WriteNumberBoardGame> {
         (item1, item2) => item1.confidence > item2.confidence ? item1 : item2);
     if (position < 9) {
       if (int.parse(prediction.label) == randomList[position]) {
-        playSound("correct-choice.wav");
+        _playerCheck.play(AssetSource('correct-choice.wav'),
+            volume: instance.get<AppGlobal>().volumeApp);
         Future.delayed(const Duration(seconds: 1), () {
           setState(() {
             position++;
@@ -146,7 +151,11 @@ class _DrawingBoardState extends State<WriteNumberBoardGame> {
           });
         });
       } else {
-        playSound("wrong-choice.wav");
+        _playerCheck.play(
+            AssetSource(
+              'wrong-choice.wav',
+            ),
+            volume: instance.get<AppGlobal>().volumeApp);
         setState(() {
           _points.clear();
           _prediction.clear();
@@ -154,16 +163,21 @@ class _DrawingBoardState extends State<WriteNumberBoardGame> {
       }
     } else {
       if (int.parse(prediction.label) == randomList[position]) {
-        playSound("correct-choice.wav");
+        _playerCheck.play(AssetSource('correct-choice.wav'),
+            volume: instance.get<AppGlobal>().volumeApp);
         Future.delayed(const Duration(seconds: 1), () {
           setState(() {
             _points.clear();
             _prediction.clear();
           });
         });
-        showFinishDiaLog();
+        showFinishGameDialog();
       } else {
-        playSound("wrong-choice.wav");
+        _playerCheck.play(
+            AssetSource(
+              'wrong-choice.wav',
+            ),
+            volume: instance.get<AppGlobal>().volumeApp);
         setState(() {
           _points.clear();
           _prediction.clear();
@@ -187,7 +201,8 @@ class _DrawingBoardState extends State<WriteNumberBoardGame> {
           textNow: "",
           colorTextAndIcon: colorSystemWhite,
           onBack: () {
-            Navigator.pop(context);
+            soundDispose();
+            Navigator.pushNamed(context, Routers.takeEasyQuiz);
           },
           child: Center(
             child: Column(

@@ -60,7 +60,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
       colorTextAndIcon: Colors.black,
       textNow: "otp code".tr(),
       onBack: () {
-        Navigator.pop(context);
+        Navigator.pushNamed(context, Routers.forgetPass);
       },
       child: SingleChildScrollView(
         child: Container(
@@ -90,7 +90,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                   Container(
                     height: 2.h,
                     alignment: Alignment.centerLeft,
-                    child:  Text(
+                    child: Text(
                       "please enter the verification code.".tr(),
                       style: s16f400ColorGreyTe,
                     ),
@@ -160,7 +160,6 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                           maxLength: 1,
                           onChanged: (value) {
                             context.read<GetOTPCubit>().number5Changed(value);
-
                           },
                           typeText: TextInputType.number,
                           width: 15.w,
@@ -184,7 +183,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                     ),
                     SizedBox(height: 2.h),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                       Text(
+                      Text(
                         "you did not receive the code?".tr(),
                         style: s16f400ColorGreyTe,
                       ),
@@ -207,7 +206,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                                   '${"resend".tr()} $_start',
                                   style: s14f700ColorGreyDevi,
                                 )
-                              :  Text(
+                              : Text(
                                   "resend now".tr(),
                                   style: s14f700ColorMainTealPri,
                                 )),

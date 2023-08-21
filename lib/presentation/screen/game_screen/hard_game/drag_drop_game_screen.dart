@@ -10,9 +10,8 @@ import 'package:math/presentation/screen/game_screen/hard_game/widget/features_t
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import '../../../../application/cons/constants.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import '../../../../application/utils/make_quiz.dart';
-import '../../../../data/model/user_global.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
 
@@ -56,9 +55,7 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
       createTutorialMain();
       showTutorialMain();
     } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        showReadyDialog();
-      });
+      showReadyGameDialog();
     }
   }
 
@@ -81,6 +78,7 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
         userManualKey: userManualKey,
       ),
       colorShadow: colorErrorPrimary,
+      hideSkip: true,
       paddingFocus: 10,
       opacityShadow: 0.5,
       onFinish: () {
@@ -102,14 +100,13 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
           textDrag: "pull and drag this".tr(),
           textDrop: "drop this here".tr()),
       colorShadow: colorErrorPrimary,
+      hideSkip: true,
       paddingFocus: 10,
       opacityShadow: 0.5,
       onFinish: () {
         if (trustShow == false) {
           Navigator.pop(context);
-          WidgetsBinding.instance.addPostFrameCallback((_) async {
-            showReadyDialog();
-          });
+          showReadyGameDialog();
         } else {
           Navigator.pop(context);
           _controller.resume();
@@ -165,48 +162,6 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
         });
   }
 
-  Future<void> showReadyDialog() {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext contextBui) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child: Text('${'are you ready'.tr()} ?',
-                textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _controller.start();
-                initData();
-              },
-              child:  Text('go'.tr(), style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child:  Text('exit'.tr(), style: kDialogButtonsTS),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void initData() {
     setState(() {
       _quizBrain.makeQuizDragDrop();
@@ -227,7 +182,7 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
   void checkEndGame() {
     if (listQuiz.isEmpty) {
       _controller.pause();
-      showFinishDiaLog();
+      showFinishGameDialog();
     }
   }
 
@@ -252,110 +207,63 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
     listAnswer.shuffle();
   }
 
-  Future<void> showOutDialog() {
-    return showDialog<void>(
+  Future<void> showOutPageDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child: Text('${'do you want to quiz'.tr()} ?',
-                textAlign: TextAlign.center, style: kScoreLabelTextStyle),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, Routers.homeUser);
-              },
-              child:  Center(child: Text('yes'.tr(), style: kDialogButtonsTS)),
-            ),
-            TextButton(
-              onPressed: () {
-                _controller.resume();
-                Navigator.pop(context);
-              },
-              child:  Center(child: Text('no'.tr(), style: kDialogButtonsTS)),
-            ),
-          ],
-        );
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'do you want to quit'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        _controller.resume();
       },
-    );
+      btnOkOnPress: () {
+        Navigator.pushNamed(context, Routers.takeHardQuiz);
+      },
+    ).show();
   }
 
-  Future<void> showFinishDiaLog() {
-    return showDialog<void>(
+  Future<void> showReadyGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext contextBuild) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child:
-                Text('game over'.tr(), textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          content: Text('score'.tr()+" : "+ '$_score | 5',
-              textAlign: TextAlign.center, style: kContentTS),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child:  Text('exit'.tr(), style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                playAgain();
-                playerAgain = false;
-              },
-              child:  Text('play again'.tr(), style: kDialogButtonsTS),
-            )
-          ],
-        );
+      dialogType: DialogType.info,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'are you ready'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        Navigator.pushNamed(context, Routers.takeHardQuiz);
       },
-    );
+      btnOkOnPress: () {
+        _controller.start();
+        initData();
+      },
+    ).show();
   }
 
-  Future<void> showErrorForm() {
-    return showDialog<void>(
+  Future<void> showFinishGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext contextBui) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                25,
-              )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child: Text("${"fill all the blank".tr()} ?",
-                textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child:  Text('go'.tr(), style: kDialogButtonsTS),
-            ),
-          ],
-        );
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      desc: 'score'.tr() + " : " + '$_score | 5',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        Navigator.pushNamed(context, Routers.takeHardQuiz);
       },
-    );
+      btnOkText: "play again".tr(),
+      btnOkOnPress: () {
+        playAgain();
+        playerAgain = false;
+      },
+    ).show();
   }
 
   @override
@@ -363,182 +271,195 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
     return Scaffold(
         backgroundColor: colorSystemWhite,
         resizeToAvoidBottomInset: false,
-        body: MainPageHomePG(
-          colorTextAndIcon: Colors.black,
-          onBack: () {
-            _controller.pause();
-            showOutDialog();
-          },
-          child: Column(
-            children: [
-              Container(
-                key: timeKey,
-                height: 10.h,
-                width: 100.w,
-                alignment: Alignment.center,
-                child: CircleAvatar(
-                    radius: 35,
-                    backgroundColor: colorMainBlue,
-                    child: CircularCountDownTimer(
-                      duration: 60,
-                      initialDuration: 0,
-                      controller: _controller,
-                      width: 40,
-                      height: 40,
-                      ringColor: colorSystemWhite,
-                      fillColor: colorSystemWhite,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(
+                  'assets/images/bg/bg2.jpg',
+                ),
+                fit: BoxFit.fill),
+          ),
+          child: MainPageHomePG(
+            colorTextAndIcon: Colors.black,
+            onBack: () {
+              _controller.pause();
+              showOutPageDialog();
+            },
+            child: Column(
+              children: [
+                Container(
+                  key: timeKey,
+                  height: 10.h,
+                  width: 100.w,
+                  alignment: Alignment.center,
+                  child: CircleAvatar(
+                      radius: 35,
                       backgroundColor: colorMainBlue,
-                      backgroundGradient: null,
-                      strokeWidth: 20.0,
-                      strokeCap: StrokeCap.round,
-                      textStyle: const TextStyle(
-                          fontSize: 25,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      textFormat: CountdownTextFormat.S,
-                      autoStart: false,
-                      onStart: () {},
-                      onComplete: () {
-                        if (playerAgain == false) {
-                          showFinishDiaLog();
-                        }
-                      },
-                    )),
-              ),
-              Container(
-                padding: EdgeInsets.only(
-                    bottom: 2.h, top: 2.h, left: 5.w, right: 5.w),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 40.w,
-                          height: 60.h,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: listQuiz.map((e) {
-                                return Draggable(
-                                    feedback: Container(
-                                      width: 40.w,
-                                      height: 10.h,
-                                      decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                          color: colorBGInput),
-                                      child: Center(
-                                        child: Text(
-                                          e.quiz.toString(),
-                                          style: s16f700ColorGreyTe,
+                      child: CircularCountDownTimer(
+                        duration: 60,
+                        initialDuration: 0,
+                        controller: _controller,
+                        width: 40,
+                        height: 40,
+                        ringColor: colorSystemWhite,
+                        fillColor: colorSystemWhite,
+                        backgroundColor: colorMainBlue,
+                        backgroundGradient: null,
+                        strokeWidth: 20.0,
+                        strokeCap: StrokeCap.round,
+                        textStyle: const TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        textFormat: CountdownTextFormat.S,
+                        autoStart: false,
+                        onStart: () {},
+                        onComplete: () {
+                          if (playerAgain == false) {
+                            showFinishGameDialog();
+                          }
+                        },
+                      )),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                      bottom: 2.h, top: 2.h, left: 5.w, right: 5.w),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 40.w,
+                            height: 60.h,
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: listQuiz.map((e) {
+                                  return Draggable(
+                                      feedback: Container(
+                                        width: 40.w,
+                                        height: 10.h,
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                            color: colorBGInput),
+                                        child: Center(
+                                          child: Text(
+                                            e.quiz.toString(),
+                                            style: s16f700ColorGreyTe,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    data: e.value,
-                                    childWhenDragging: SizedBox(
-                                      width: 40.w,
-                                      height: 10.h,
-                                    ),
-                                    child: e.accepting == true
-                                        ? SizedBox(
-                                            width: 40.w,
-                                            height: 10.h,
-                                          )
-                                        : Container(
-                                            width: 40.w,
-                                            height: 10.h,
-                                            decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20)),
-                                                color: colorBGInput),
-                                            child: Center(
-                                              child: Text(
-                                                e.quiz.toString(),
-                                                style: s16f700ColorGreyTe,
+                                      data: e.value,
+                                      childWhenDragging: SizedBox(
+                                        width: 40.w,
+                                        height: 10.h,
+                                      ),
+                                      child: e.accepting == true
+                                          ? SizedBox(
+                                              width: 40.w,
+                                              height: 10.h,
+                                            )
+                                          : Container(
+                                              width: 40.w,
+                                              height: 10.h,
+                                              decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20)),
+                                                  color: colorBGInput),
+                                              child: Center(
+                                                child: Text(
+                                                  e.quiz.toString(),
+                                                  style: s16f700ColorGreyTe,
+                                                ),
                                               ),
-                                            ),
-                                          ));
-                              }).toList()),
-                        ),
-                        SizedBox(
-                          width: 40.w,
-                          height: 60.h,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: listAnswer.map((e) {
-                                return DragTarget(
-                                  builder:
-                                      (context, candidateData, rejectedData) {
-                                    return e.accepting == true
-                                        ? SizedBox(
-                                            width: 40.w,
-                                            height: 10.h,
-                                          )
-                                        : Container(
-                                            width: 40.w,
-                                            height: 10.h,
-                                            decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20)),
-                                                color: colorBGInput),
-                                            child: Center(
-                                              child: Text(
-                                                e.value.toString(),
-                                                style: s16f700ColorGreyTe,
-                                              ),
-                                            ),
-                                          );
-                                  },
-                                  onWillAccept: (data) {
-                                    return data == e.value;
-                                  },
-                                  onAccept: (data) {
-                                    _score++;
-                                    setState(() {
-                                      e.accepting = true;
-                                      int index = listQuiz.indexWhere(
-                                          (element) => element.value == data);
-                                      listQuiz[index].accepting = true;
-                                      listQuiz.removeAt(index);
-                                      listAnswer.remove(e);
-                                    });
-                                    checkEndGame();
-                                  },
-                                );
-                              }).toList()),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 50.w,
-                          height: 5.h,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            trustShow = true;
-                            _controller.pause();
-                            showModalBottomSheetUserManual();
-                          },
-                          child: CircleAvatar(
-                            key: userManualKey,
-                            radius: 20,
-                            child: const Center(
-                              child: Icon(Icons.question_mark),
-                            ),
+                                            ));
+                                }).toList()),
                           ),
-                        )
-                      ],
-                    )
-                  ],
+                          SizedBox(
+                            width: 40.w,
+                            height: 60.h,
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: listAnswer.map((e) {
+                                  return DragTarget(
+                                    builder:
+                                        (context, candidateData, rejectedData) {
+                                      return e.accepting == true
+                                          ? SizedBox(
+                                              width: 40.w,
+                                              height: 10.h,
+                                            )
+                                          : Container(
+                                              width: 40.w,
+                                              height: 10.h,
+                                              decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20)),
+                                                  color: colorBGInput),
+                                              child: Center(
+                                                child: Text(
+                                                  e.value.toString(),
+                                                  style: s16f700ColorGreyTe,
+                                                ),
+                                              ),
+                                            );
+                                    },
+                                    onWillAccept: (data) {
+                                      return data == e.value;
+                                    },
+                                    onAccept: (data) {
+                                      _score++;
+                                      setState(() {
+                                        e.accepting = true;
+                                        int index = listQuiz.indexWhere(
+                                            (element) => element.value == data);
+                                        listQuiz[index].accepting = true;
+                                        listQuiz.removeAt(index);
+                                        listAnswer.remove(e);
+                                      });
+                                      checkEndGame();
+                                    },
+                                  );
+                                }).toList()),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 50.w,
+                            height: 5.h,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              trustShow = true;
+                              _controller.pause();
+                              showModalBottomSheetUserManual();
+                            },
+                            child: CircleAvatar(
+                              key: userManualKey,
+                              radius: 20,
+                              child: const Center(
+                                child: Icon(Icons.question_mark),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

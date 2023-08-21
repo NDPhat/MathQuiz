@@ -13,8 +13,10 @@
   "old password":  "Old password",
   "new password":  "New password",
   "enter your new password": "Enter your new password",
-  "Re-enter your password": "Re-enter your password",
+  "re-enter your password": "Re-enter your password",
   "re-new password":  "Re-new password",
+  "update successful": "Update successful",
+
 
   "check answer": "Check answer",
 
@@ -28,6 +30,7 @@
   "input answer": "Input Answer",
   "truefalse": "True/False",
   "findmissing": "FindMissing",
+  "NOTHING ADDED !!": "NOTHING ADDED !!",
 
   "true": "True",
   "false": "False",
@@ -45,6 +48,7 @@
   "player":"Player",
   "are you ready": "Are you ready",
   "do you want to quit": "Do you want to quit",
+  "time up": "Time up",
   "yes": "Yes",
   "no": "No",
   "play again": "Play again",
@@ -52,14 +56,18 @@
   "draw": "Draw",
 
   "forget password": "Forget password",
-  "please enter your email in the field below\nto send the reset password request.":               "Please enter your email in the field below\nto send the reset password request.",
+  "please enter your email in the field below\nto send the reset password request.":"Please enter your email in the field below\nto send the reset password request.",
   "enter your email": "Enter your email",
 
   "game over": "Game over",
   "fill all the blank":"Fill all the blank",
 
+  "this in time countdown": "This in time countdown",
+  "this in user manual.Click for more information !!": "This in user manual.Click for more information !!",
   "pull and drag this": "Pull and drag this",
   "drop this here":  "Drop this here",
+  "press this to choose number": "Press this to choose number",
+  "press this to choose the cell containing the number": "Press this to choose the cell containing the number",
 
   "otp code": "Otp code",
   "please enter the verification code.":"Please enter the verification code.",
@@ -98,6 +106,8 @@
 
   "gallery": "Gallery",
   "camera": "Camera",
+  "choose one": "Choose one",
+
 
   "your class": "Your class",
   "your phone": "Your phone",
@@ -116,11 +126,14 @@
   "mode": "Mode",
   "localnotifi": "Local Notification",
   "language": "Language",
+  "sound":"Sound",
+
 
   "character": "Character",
   "login": "Login",
 
   "easy quiz":"Easy quiz",
+  "medium quiz": "Medium quiz",
   "hard quiz":"Hard quiz",
   "write": "Write",
   "number": "Number",
@@ -142,6 +155,7 @@
   "your re-password": "Your re-password",
 
   "week": "Week",
+  "from": "From",
   "join": "Join",
   "done": "Done",
   "do": "DO",
@@ -151,8 +165,6 @@
   "go": "Go",
   "exit": "Exit",
   "review your answer" : "Review your answer",
-  "ready for your examination" : "Ready for your testing",
-  "ready hw": "Ready for your home work",
   "view": "View",
   "data detail" : "Data detail",
   "update profile": "Update profile",

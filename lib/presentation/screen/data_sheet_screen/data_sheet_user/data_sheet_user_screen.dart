@@ -26,7 +26,7 @@ class DataSheetUserScreen extends StatelessWidget {
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
           onBack: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, Routers.homeUser);
           },
           colorTextAndIcon: Colors.black,
           textNow: 'data sheet'.tr().toString(),

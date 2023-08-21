@@ -338,7 +338,8 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
                   SizedBox(
                     width: 2.w,
                   ),
-                  DotIndicator(
+                  DotIndicator(                      totalPage: length.toString(),
+
                     colorBorder: colorErrorPrimary,
                     pageIndex: page.toString(),
                   ),

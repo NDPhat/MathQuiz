@@ -9,7 +9,10 @@ import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/text_style.dart';
+import '../../../../data/model/user_global.dart';
 import '../../../../domain/bloc/history/history_cubit.dart';
+import '../../../../main.dart';
+import '../../../routers/navigation.dart';
 import '../../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class DataSheetGuestScreen extends StatelessWidget {
@@ -48,7 +51,7 @@ class DataSheetGuestScreen extends StatelessWidget {
                           color: colorErrorPrimary,
                           width: 80.w,
                           height: 6.h,
-                          child:  Text(
+                          child: Text(
                             "DELETE BY DAY".tr(),
                             style: s16f500ColorSysWhite,
                           ),
@@ -64,7 +67,7 @@ class DataSheetGuestScreen extends StatelessWidget {
                           color: colorGreyTetiary,
                           width: 80.w,
                           height: 6.h,
-                          child:  Text(
+                          child: Text(
                             "DELETE ALL".tr(),
                             style: s16f700ColorBlueMa,
                           ),
@@ -109,7 +112,7 @@ class DataSheetGuestScreen extends StatelessWidget {
                           color: colorErrorPrimary,
                           width: 80.w,
                           height: 6.h,
-                          child:  Text(
+                          child: Text(
                             "DELETE BY DAY".tr(),
                             style: s16f500ColorSysWhite,
                           ),
@@ -125,7 +128,7 @@ class DataSheetGuestScreen extends StatelessWidget {
                           color: colorGreyTetiary,
                           width: 80.w,
                           height: 6.h,
-                          child:  Text(
+                          child: Text(
                             "DELETE ALL".tr(),
                             style: s16f700ColorBlueMa,
                           ),
@@ -143,7 +146,7 @@ class DataSheetGuestScreen extends StatelessWidget {
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
           onBack: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, Routers.homeGuest);
           },
           colorTextAndIcon: Colors.black,
           textNow: 'history'.tr().toString(),

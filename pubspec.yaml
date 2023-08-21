@@ -74,6 +74,9 @@ dependencies:
   flutter_svg: 2.0.7
   image:
   tutorial_coach_mark: 1.2.9
+  awesome_dialog: 3.1.0
+  flutter_shake_animated: ^0.0.5
+
   #  flutter_tflite: 1.0.1
 
 dev_dependencies:
@@ -110,6 +113,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+    - assets/sound_local/
     - assets/images/bg/
     - assets/icons/
     - assets/images/player/

@@ -21,34 +21,31 @@ class ItemCardHW extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        height: 12.h,
         decoration: BoxDecoration(
             border: Border.all(color: colorBorder),
             borderRadius: const BorderRadius.all(Radius.circular(25))),
-        child: SizedBox(
-          height: 13.h,
-          child: Row(
-            children: [
-              SizedBox(
-                height: 13.h,
-                width: 50.w,
-                child: childLeft,
-              ),
-              Expanded(
-                child: Transform.rotate(
-                  angle: math.pi / 2,
-                  child:  Divider(
-                    color: colorBorder,
-                    height: 10,
-                  ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 50.w,
+              child: childLeft,
+            ),
+            Container(
+              alignment: Alignment.center,
+              height: 10.h,
+              width: 10.w,
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(width: 2, color: colorBorder),
                 ),
               ),
-              SizedBox(
-                height: 13.h,
-                width: 20.w,
-                child: childRight,
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              width: 20.w,
+              child: childRight,
+            ),
+          ],
         ),
       ),
     );

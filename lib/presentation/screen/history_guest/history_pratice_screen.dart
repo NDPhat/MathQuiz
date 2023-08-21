@@ -117,7 +117,7 @@ class HistoryPractice extends StatelessWidget {
                                             color: colorErrorPrimary,
                                             width: 80.w,
                                             height: 6.h,
-                                            child:  Text(
+                                            child: Text(
                                               'delete'.tr(),
                                               style: s16f500ColorSysWhite,
                                             ),
@@ -134,7 +134,7 @@ class HistoryPractice extends StatelessWidget {
                                             color: colorGreyTetiary,
                                             width: 80.w,
                                             height: 6.h,
-                                            child:  Text(
+                                            child: Text(
                                               'view'.tr(),
                                               style: s16f700ColorBlueMa,
                                             ),
@@ -151,7 +151,7 @@ class HistoryPractice extends StatelessWidget {
                 } else {
                   return Center(
                     child: Text(
-                      'NOTHING ADDED !!',
+                      'NOTHING ADDED !!'.tr(),
                       style: GoogleFonts.abel(
                           color: colorMainTealPri, fontSize: 16),
                     ),

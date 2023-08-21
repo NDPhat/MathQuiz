@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:drift/drift.dart' as driff;
 import 'package:easy_localization/easy_localization.dart';
@@ -7,11 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../application/cons/color.dart';
-import '../../../../application/cons/constants.dart';
+import '../../../../application/cons/text_style.dart';
 import '../../../../application/utils/format.dart';
-import '../../../../application/utils/logic.dart';
+import '../../../../application/utils/sound.dart';
 import '../../../../data/local/driff/db/db_app.dart';
 import '../../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
+import '../../../../data/model/app_global.dart';
 import '../../../../data/model/make_quiz.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../data/remote/api/Repo/api_user_repo.dart';
@@ -24,7 +27,6 @@ import '../../../../application/utils/make_quiz.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
 import '../../../widget/portrait_mode_game.dart';
-import '../../../widget/show_end_dialog.dart';
 
 class EnterAnswerGameScreen extends StatefulWidget {
   const EnterAnswerGameScreen({Key? key}) : super(key: key);
@@ -45,7 +47,8 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
   bool userAnswer = false;
   final CountDownController _controller = CountDownController();
   bool playAgain = false;
-
+  final _player = AudioPlayer();
+  final _playerCheck = AudioPlayer();
   @override
   void initState() {
     super.initState();
@@ -55,62 +58,59 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreQuizGame;
       _preIdNow = _preQuiz.id!;
       _preIdServerNow = _preQuiz.idServer!;
-      showReadyDialog();
+      showReadyGameDialog();
     });
   }
 
-  Future<void> showReadyDialog() {
-    return showDialog<void>(
+  @override
+  void dispose() {
+    super.dispose();
+    soundDispose();
+  }
+
+  Future<void> soundDispose() async {
+    await _player.stop();
+    await _playerCheck.stop();
+    _player.dispose();
+    _playerCheck.dispose();
+  }
+
+  void playSound() {
+    _player.play(AssetSource("sound_local/Teru.mp3"),
+        volume: instance.get<AppGlobal>().volumeApp);
+  }
+
+  Future<void> showReadyGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext contextBui) {
-        return BlocProvider.value(
-          value: BlocProvider.of<GameCubit>(context),
-          child: AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-              25,
-            )),
-            backgroundColor: const Color(0xff1542bf),
-            title:  FittedBox(
-              child: Text('${'are you ready'.tr()} ?',
-                  textAlign: TextAlign.center, style: kTitleTS),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _controller.start();
-                  _startGame(_preQuiz);
-                },
-                child:  Text('go'.tr(), style: kDialogButtonsTS),
-              ),
-              TextButton(
-                onPressed: () {
-                  deletePreGame();
-                },
-                child:  Text('exit'.tr(), style: kDialogButtonsTS),
-              ),
-            ],
-          ),
-        );
+      dialogType: DialogType.question,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'are you ready'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        deletePreGame();
+        soundDispose();
       },
-    );
+      btnOkOnPress: () {
+        _controller.start();
+        _startGame(_preQuiz);
+        playSound();
+      },
+    ).show();
   }
 
   void deletePreGame() {
     if (instance.get<UserGlobal>().onLogin == true) {
-      context.read<GameCubit>().deletePreGameNow(_preIdServerNow.toString());
-      Navigator.pop(context);
-      Navigator.pushNamed(context, Routers.homeUser);
+      instance.get<UserAPIRepo>().deletePreQuizGame(_preIdServerNow.toString());
     } else {
       PreQuizCubit(
               preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
               userAPIRepo: instance.get<UserAPIRepo>())
           .deletePreQuizGame(_preIdNow);
-      Navigator.pop(context);
-      Navigator.pushNamed(context, Routers.homeGuest);
     }
+    Navigator.pushNamed(context, Routers.takeMediumQuiz);
   }
 
   void _startGame(PreQuizGame _preQuiz) async {
@@ -222,13 +222,18 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
       if (userChoice == _quizBrain.quizAnswer) {
         userAnswer = true;
         _saveData(context);
-        playSound('correct-choice.wav');
+        _playerCheck.play(AssetSource('correct-choice.wav'),
+            volume: instance.get<AppGlobal>().volumeApp);
         _score++;
         _resetScreen();
       } else {
         userAnswer = false;
         _saveData(context);
-        playSound('wrong-choice.wav');
+        _playerCheck.play(
+            AssetSource(
+              'wrong-choice.wav',
+            ),
+            volume: instance.get<AppGlobal>().volumeApp);
         falseChoose++;
         _resetScreen();
       }
@@ -247,55 +252,60 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
       builder: (BuildContext contextBuild) {
         return BlocProvider.value(
             value: BlocProvider.of<GameCubit>(context),
-            child: ShowEndDialog(
-              score: _score,
-              totalNumberOfQuizzes: _totalNumberOfQuizzes,
-              startGame: _startGameAgain,
+            child: AlertDialog(
+              actions: [
+                AnimatedButton(
+                  text: 'game over'.tr(),
+                  buttonTextStyle: s18GgfaBeeColorWhite,
+                  color: colorErrorPrimary,
+                  pressEvent: () {
+                    AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.success,
+                        headerAnimationLoop: false,
+                        animType: AnimType.topSlide,
+                        dismissOnTouchOutside: false,
+                        closeIcon: const Icon(Icons.close_fullscreen_outlined),
+                        desc: 'score'.tr() +
+                            " : " +
+                            '$_score | $_totalNumberOfQuizzes',
+                        descTextStyle: s20GgBarColorMainTeal,
+                        btnOkText: "play again".tr(),
+                        btnOkOnPress: () {
+                          Navigator.pop(context);
+                          _startGameAgain();
+                          context.read<GameCubit>().changeDataPlayAgain();
+                        },
+                        btnCancelOnPress: () {
+                          soundDispose();
+                          Navigator.pushNamed(context, Routers.takeMediumQuiz);
+                        }).show();
+                  },
+                )
+              ],
             ));
       },
     );
   }
 
-  Future<void> showOutDialog() {
-    return showDialog<void>(
+  Future<void> showOutPageDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child: Text('${'do you want to quit'.tr()} ?',
-                textAlign: TextAlign.center, style: kScoreLabelTextStyle),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                updateScore();
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child:  Center(child: Text('yes'.tr(), style: kDialogButtonsTS)),
-            ),
-            TextButton(
-              onPressed: () {
-                _controller.resume();
-                Navigator.pop(context);
-              },
-              child:  Center(child: Text('no'.tr(), style: kDialogButtonsTS)),
-            ),
-          ],
-        );
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'do you want to quit'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        _controller.resume();
       },
-    );
+      btnOkOnPress: () {
+        soundDispose();
+        updateScore();
+        Navigator.pushNamed(context, Routers.takeMediumQuiz);
+      },
+    ).show();
   }
 
   @override
@@ -307,7 +317,7 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
         colorTextAndIcon: colorSystemYeloow,
         onBack: () {
           _controller.pause();
-          showOutDialog();
+          showOutPageDialog();
         },
         child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
           return PortraitModeGame(

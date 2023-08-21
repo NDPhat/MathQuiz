@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
+import 'package:math/data/model/app_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/authen/authen.dart';
 import 'package:math/domain/bloc/add_player/add_player_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
+import 'package:math/domain/bloc/setting/setting_cubit.dart';
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
 import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
 import 'package:math/presentation/screen/add_new_guest_player/add_new_guest_player_screen.dart';
@@ -49,7 +51,6 @@ import '../../domain/bloc/history/history_cubit.dart';
 import '../../domain/bloc/take_hard/take_hard_cubit.dart';
 import '../../main.dart';
 import '../screen/check_answer/check_answer_hw.dart';
-import '../screen/check_answer/check_anwser_screen.dart';
 import '../screen/detail_item_card_home/detail_hw_card_home_screen.dart';
 import '../screen/detail_item_card_home/detail_practices_card_home_screen.dart';
 import '../screen/detail_item_card_home/detail_test_home_screen.dart';
@@ -128,9 +129,10 @@ class Routers {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
-        builder: (context) => route(settings),
-        settings:
-            RouteSettings(name: settings.name, arguments: settings.arguments));
+      builder: (context) => route(settings),
+      settings:
+          RouteSettings(name: settings.name, arguments: settings.arguments),
+    );
   }
 
   static route(RouteSettings settings) {
@@ -183,9 +185,15 @@ class Routers {
       case testDetail:
         return const DetailMixGameScreen();
       case settingScreen:
-        return const SettingMainScreen();
+        return BlocProvider(
+            create: (context) =>
+                SettingCubit(appGlobal: instance.get<AppGlobal>()),
+            child: SettingMainScreen());
       case settingGuestScreen:
-        return const SettingGuestMainScreen();
+        return BlocProvider(
+            create: (context) =>
+                SettingCubit(appGlobal: instance.get<AppGlobal>()),
+            child: SettingGuestMainScreen());
       case practicecardDetail:
         return DetailItemCardPractices();
       case updateProfileUser:
@@ -267,8 +275,6 @@ class Routers {
         return const DetailTestScreen();
       case assignmentMainScreen:
         return const AssignmentMainScreen();
-      case checkAnswer:
-        return const CheckAnswerScreen();
       case detailQuizGame:
         return const DetailQuizGame();
       case historyPra:

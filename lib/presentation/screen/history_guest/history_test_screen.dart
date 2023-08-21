@@ -149,7 +149,7 @@ class HistoryTest extends StatelessWidget {
                   } else {
                     return  Center(
                       child: Text(
-                        '${'NOTHING ADDED'.tr()} !',
+                        'NOTHING ADDED !!'.tr(),
                         style: s20f700ColorMBlue,
                       ),
                     );

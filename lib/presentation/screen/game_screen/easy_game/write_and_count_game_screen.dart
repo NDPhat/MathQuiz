@@ -1,6 +1,9 @@
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:math/application/cons/text_style.dart';
 import 'package:math/application/utils/make_quiz.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
@@ -8,8 +11,9 @@ import 'dart:math' as math;
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/cons_rec.dart';
 import '../../../../application/cons/constants.dart';
-import '../../../../application/utils/logic.dart';
 import '../../../../application/utils/recognizer.dart';
+import '../../../../application/utils/sound.dart';
+import '../../../../data/model/app_global.dart';
 import '../../../../data/model/prediction.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../main.dart';
@@ -38,6 +42,8 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
     Colors.pink,
     colorGreyTetiary
   ];
+  final _player = AudioPlayer();
+  final _playerCheck = AudioPlayer();
   int position = 0;
 
   void _initDataAndModel() async {
@@ -61,10 +67,29 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    soundDispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     quizBrain = QuizBrain();
     _initDataAndModel();
+    playSound();
+  }
+
+  Future<void> soundDispose() async {
+    await _player.stop();
+    await _playerCheck.stop();
+    _player.dispose();
+    _playerCheck.dispose();
+  }
+
+  void playSound() {
+    _player.play(AssetSource("sound_local/Rouge.mp3"),
+        volume: instance.get<AppGlobal>().volumeApp);
   }
 
   void _recognize() async {
@@ -109,43 +134,24 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
     );
   }
 
-  Future<void> showFinishDiaLog() {
-    return showDialog<void>(
+  Future<void> showFinishGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext contextBuild) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: FittedBox(
-            child: Text('game over'.tr(),
-                textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child: Text('exit'.tr(), style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                playAgain();
-              },
-              child: Text('play again'.tr(), style: kDialogButtonsTS),
-            )
-          ],
-        );
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        Navigator.pushNamed(context, Routers.takeEasyQuiz);
       },
-    );
+      btnOkText: "play again".tr(),
+      btnOkOnPress: () {
+        playAgain();
+      },
+    ).show();
   }
 
   void playAgain() {
@@ -162,7 +168,8 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
     if (position < 8) {
       if (int.parse(prediction.label) ==
           randomListValue[position].first.value) {
-        playSound("correct-choice.wav");
+        _playerCheck.play(AssetSource('correct-choice.wav'),
+            volume: instance.get<AppGlobal>().volumeApp);
         Future.delayed(const Duration(seconds: 1), () {
           setState(() {
             position++;
@@ -171,7 +178,11 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
           });
         });
       } else {
-        playSound("wrong-choice.wav");
+        _playerCheck.play(
+            AssetSource(
+              'wrong-choice.wav',
+            ),
+            volume: instance.get<AppGlobal>().volumeApp);
         setState(() {
           _points.clear();
           _prediction.clear();
@@ -179,16 +190,21 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
       }
     } else {
       if (int.parse(prediction.label) == randomList[position]) {
-        playSound("correct-choice.wav");
+        _playerCheck.play(AssetSource('correct-choice.wav'),
+            volume: instance.get<AppGlobal>().volumeApp);
         Future.delayed(const Duration(seconds: 1), () {
           setState(() {
             _points.clear();
             _prediction.clear();
           });
         });
-        showFinishDiaLog();
+        showFinishGameDialog();
       } else {
-        playSound("wrong-choice.wav");
+        _playerCheck.play(
+            AssetSource(
+              'wrong-choice.wav',
+            ),
+            volume: instance.get<AppGlobal>().volumeApp);
         setState(() {
           _points.clear();
           _prediction.clear();
@@ -212,7 +228,8 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
           textNow: "",
           colorTextAndIcon: colorSystemYeloow,
           onBack: () {
-            Navigator.pop(context);
+            soundDispose();
+            Navigator.pushNamed(context, Routers.takeEasyQuiz);
           },
           child: Center(
             child: Column(

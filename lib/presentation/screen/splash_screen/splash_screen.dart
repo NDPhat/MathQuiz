@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import 'package:math/application/di/event_local.dart';
 import 'package:math/data/local/repo/player_local/player_local_repo.dart';
 import 'package:sizer/sizer.dart';
@@ -53,15 +54,12 @@ class SplashScreenState extends State<SplashScreen> {
               .get<AuthenRepository>()
               .getIDLocalHandleAutoLoginApp();
           PlayerLocalEntityData dataLocal;
-          dataLocal =
-              await instance.get<PlayerLocalRepo>().getPlayerLocal(id);
-          if(dataLocal != null) {
+          dataLocal = await instance.get<PlayerLocalRepo>().getPlayerLocal(id);
+          if (dataLocal != null) {
             UserEventLocal.updateUserLocal(dataLocal);
             Navigator.pushNamed(context, Routers.homeGuest);
-          }
-          else{
+          } else {
             Navigator.pushNamed(context, Routers.addPlayer);
-
           }
         } else {
           Navigator.pushNamed(context, Routers.chooseOptionUseApp);
@@ -72,16 +70,17 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: 100.w,
-        height: 100.h,
-        padding: EdgeInsets.all(5.w),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(
-                'assets/images/t.jpg',
-              ),
-              fit: BoxFit.fill),
-        ));
+    return Scaffold(
+        body: ShakeWidget(
+      duration: const Duration(seconds: 2),
+      autoPlay: true,
+      shakeConstant: ShakeDefaultConstant1(),
+      child: Center(
+        child: Image.asset(
+          'assets/images/image_app.png',
+          height: 40.h,
+        ),
+      ),
+    ));
   }
 }

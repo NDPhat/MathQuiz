@@ -345,6 +345,7 @@ class _DetailItemCardPracticesState extends State<DetailItemCardPractices> {
                     width: 2.w,
                   ),
                   DotIndicator(
+                    totalPage: length.toString(),
                     colorBorder: colorErrorPrimary,
                     pageIndex: page.toString(),
                   ),

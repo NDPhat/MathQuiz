@@ -39,7 +39,8 @@ abstract class UserAPIRepo {
       ResultQuizHWAPIReq resultQuizHWReq, String resultID);
   Future<bool?> deleteResultHWNotDo(String resultID);
   Future<List<ResultQuizHWAPIModel>?> getALlResultQuizHWByUserID(String uid);
-  Future<ResultQuizHWResPagi?> getALlResultQuizHWByUserIDWithPagi(String uid,int page);
+  Future<ResultQuizHWResPagi?> getALlResultQuizHWByUserIDWithPagi(
+      String uid, int page);
   Future<ResultQuizHWAPIModel?> getResultQuizHWByUserIDAndWeek(
       String uid, String week);
   Future<List<PreQuizHWResAPIModel>?> getALlPreQuizHW();
@@ -76,6 +77,7 @@ abstract class UserAPIRepo {
       String preID, int page);
   Future<List<SentencesQuizRes>?> getRandomeListQuiz();
   Future<List<PreTestAPIRes>?> getALlPreQuizTestByUid(String uid);
-  Future<PreTestAPIResPagi?> getALlPreQuizTestByUidWithPagi(String uid,int page);
+  Future<PreTestAPIResPagi?> getALlPreQuizTestByUidWithPagi(
+      String uid, int page);
   Future<bool?> deleteTestingNotDoByPreTestId(String preID);
 }

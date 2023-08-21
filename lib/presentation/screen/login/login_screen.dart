@@ -1,15 +1,16 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/color.dart';
-import 'package:math/application/cons/text_style.dart';
 import 'package:math/application/enum/login_status.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/constants.dart';
+import '../../../application/cons/text_style.dart';
 import '../../widget/input_field_widget.dart';
 
 class LoginUserApp extends StatefulWidget {
@@ -29,6 +30,19 @@ class _LoginUserApp extends State<LoginUserApp> {
     });
   }
 
+  Future showLoginFailDialog() {
+    return AwesomeDialog(
+            context: context,
+            dialogType: DialogType.warning,
+            headerAnimationLoop: false,
+            animType: AnimType.topSlide,
+            dismissOnTouchOutside: false,
+            desc: '${'login fail'.tr()} ?',
+            descTextStyle: s20GgBarColorMainTeal,
+            btnCancelOnPress: () {})
+        .show();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +50,7 @@ class _LoginUserApp extends State<LoginUserApp> {
       body: MainPageHomePG(
         colorTextAndIcon: colorSystemYeloow,
         onBack: () {
-          Navigator.pop(context);
+          Navigator.pushNamed(context, Routers.chooseOptionUseApp);
         },
         child: SingleChildScrollView(
           child: Column(
@@ -162,50 +176,7 @@ class _LoginUserApp extends State<LoginUserApp> {
                                         context, Routers.homeUser);
                                   } else if (state.status ==
                                       LoginStatus.error) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (ctx) => Center(
-                                                child: AlertDialog(
-                                              shape: ShapeBorder.lerp(
-                                                  const StadiumBorder(),
-                                                  const StadiumBorder(),
-                                                  100),
-                                              backgroundColor: colorSystemWhite,
-                                              title: const Center(
-                                                child: Text('LOGIN FAIL',
-                                                    style: s16f700ColorError,
-                                                    textAlign:
-                                                        TextAlign.center),
-                                              ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                    child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(15),
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100),
-                                                            border: Border.all(
-                                                                color:
-                                                                    colorSystemYeloow)),
-                                                        child:  Center(
-                                                          child: Text(
-                                                            'exit'.tr(),
-                                                            style:
-                                                                s15f700ColorErrorPri,
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                        )),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    }),
-                                              ],
-                                            )));
+                                    showLoginFailDialog();
                                   }
                                 }, builder: (context, state) {
                                   return CircleAvatar(
@@ -267,7 +238,7 @@ class ForgetPassWidget extends StatelessWidget {
         alignment: Alignment.center,
         child: GestureDetector(
           onTap: onForget,
-          child:  Text('${'forget password'.tr()} ?',
+          child: Text('${'forget password'.tr()} ?',
               style: const TextStyle(
                   decoration: TextDecoration.underline, color: colorMainBlue)),
         ));

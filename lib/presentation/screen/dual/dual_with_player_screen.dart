@@ -1,14 +1,16 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
-import '../../../application/cons/constants.dart';
-import '../../../application/utils/logic.dart';
+import '../../../application/cons/text_style.dart';
 import '../../../application/utils/make_quiz.dart';
-import '../../../data/model/user_global.dart';
+import '../../../application/utils/sound.dart';
+import '../../../data/model/app_global.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/divider_line.dart';
@@ -30,14 +32,22 @@ class _HumanBattleScreenState extends State<PlayerDual> {
   int _falsePlayer2 = 3;
   bool startAgain = false;
   int userChoose = 1;
+  final _player = AudioPlayer();
+  final _playerCheck = AudioPlayer();
   CountDownController controller = CountDownController();
   @override
   void initState() {
     super.initState();
     _quizBrain = QuizBrain();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      showReadyDialog();
+      showReadyGameDialog();
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    disposeAudio();
   }
 
   void _startGame() async {
@@ -61,19 +71,20 @@ class _HumanBattleScreenState extends State<PlayerDual> {
 
   void _checkAnswerPlayer1(int userChoice) async {
     if (userChoice == _quizBrain.quizAnswer) {
-      playSound('correct-choice.wav');
+      playSoundLocal(_playerCheck, 'correct-choice.wav',
+          instance.get<AppGlobal>().volumeApp);
       setState(() {
         _score1++;
       });
       _quizBrain.makeQuizTest();
     } else {
-      playSound('wrong-choice.wav');
-
+      playSoundLocal(_playerCheck, 'wrong-choice.wav',
+          instance.get<AppGlobal>().volumeApp);
       setState(() {
         _falsePlayer1--;
         if (_falsePlayer1 == 0) {
           controller.pause();
-          showEndDialog("Player2 ${'winning'.tr()}");
+          showFinishGameDialog("Player2 ${'winning'.tr()}");
         } else {
           _quizBrain.makeQuizTest();
         }
@@ -83,18 +94,20 @@ class _HumanBattleScreenState extends State<PlayerDual> {
 
   void _checkAnswerPlayer2(int userChoice) async {
     if (userChoice == _quizBrain.quizAnswer) {
-      playSound('correct-choice.wav');
+      playSoundLocal(_playerCheck, 'correct-choice.wav',
+          instance.get<AppGlobal>().volumeApp);
       setState(() {
         _score2++;
       });
       _quizBrain.makeQuizTest();
     } else {
-      playSound('wrong-choice.wav');
+      playSoundLocal(_playerCheck, 'wrong-choice.wav',
+          instance.get<AppGlobal>().volumeApp);
       setState(() {
         _falsePlayer2--;
         if (_falsePlayer2 == 0) {
           controller.pause();
-          showEndDialog("Player1 ${'winning'.tr()}");
+          showFinishGameDialog("Player1 ${'winning'.tr()}");
         } else {
           _quizBrain.makeQuizTest();
         }
@@ -102,140 +115,85 @@ class _HumanBattleScreenState extends State<PlayerDual> {
     }
   }
 
-  Future<void> showReadyDialog() {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: FittedBox(
-            child: Text('${'are you ready'.tr()}?',
-                textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                controller.start();
-                _startGame();
-              },
-              child: Text('go'.tr(), style: kTitleTSReadyDL),
-            ),
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child: Text('exit'.tr(), style: kTitleTSReadyDL),
-            ),
-          ],
-        );
-      },
-    );
+  Future<void> disposeAudio() async {
+    await _player.stop();
+    _player.dispose();
+    await _playerCheck.stop();
+    _playerCheck.dispose();
   }
 
-  Future<void> showEndDialog(String player) {
-    return showDialog<void>(
+  Future<void> showReadyGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: FittedBox(
-            child: Text(player, textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child: Text('exit'.tr(), style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                controller.pause();
-                _startAgainGame();
-                startAgain = false;
-              },
-              child: Text('play again'.tr(), style: kDialogButtonsTS),
-            ),
-          ],
-        );
+      dialogType: DialogType.question,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'are you ready'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        Navigator.pushNamed(context, Routers.battleMainScreen);
       },
-    );
+      btnOkOnPress: () {
+        controller.start();
+        _startGame();
+        _player.play(AssetSource("sound_local/Rouge.mp3"),
+            volume: instance.get<AppGlobal>().volumeApp);
+      },
+    ).show();
+  }
+
+  Future<void> showFinishGameDialog(String player) {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      desc: player,
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        disposeAudio();
+        Navigator.pushNamed(context, Routers.battleMainScreen);
+      },
+      btnOkText: "play again".tr(),
+      btnOkOnPress: () {
+        controller.pause();
+        _startAgainGame();
+        startAgain = false;
+      },
+    ).show();
+  }
+
+  Future<void> showOutPageDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'do you want to quit'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        controller.resume();
+      },
+      btnOkOnPress: () {
+        disposeAudio();
+        Navigator.pushNamed(context, Routers.battleMainScreen);
+      },
+    ).show();
   }
 
   void showEndGame() {
     if (_score2 > _score1) {
-      showEndDialog("Player2 ${"winning".tr()}");
+      showFinishGameDialog("Player2 ${"winning".tr()}");
     } else if (_score2 < _score1) {
-      showEndDialog("PLayer1 ${"winning".tr()}");
+      showFinishGameDialog("PLayer1 ${"winning".tr()}");
     } else {
-      showEndDialog("draw".tr());
+      showFinishGameDialog("draw".tr());
     }
-  }
-
-  Future<void> showOutDialog() {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: FittedBox(
-            child: Text('${'do you want to quiz'.tr()} ?',
-                textAlign: TextAlign.center, style: kScoreLabelTextStyle),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child:
-                  Center(child: Text('yes'.tr(), style: kScoreLabelTextStyle)),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.resume();
-                Navigator.pop(context);
-              },
-              child: Center(child: Text('no'.tr(), style: kTitleTS)),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -247,7 +205,7 @@ class _HumanBattleScreenState extends State<PlayerDual> {
         colorTextAndIcon: colorSystemYeloow,
         onBack: () {
           controller.pause();
-          showOutDialog();
+          showOutPageDialog();
         },
         child: Center(
           child: Column(

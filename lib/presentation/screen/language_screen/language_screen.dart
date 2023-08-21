@@ -4,6 +4,9 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/cons/text_style.dart';
+import '../../../data/model/user_global.dart';
+import '../../../main.dart';
+import '../../routers/navigation.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 import '../restart_app/restart_app_widget.dart';
 import '../setting/widget/setting_widget.dart';
@@ -21,7 +24,11 @@ class _LanguageScreenState extends State<LanguageScreen> {
     return Scaffold(
       body: MainPageHomePG(
         onBack: () {
-          Navigator.pop(context);
+          if (instance.get<UserGlobal>().onLogin == true) {
+            Navigator.pushNamed(context, Routers.settingScreen);
+          } else {
+            Navigator.pushNamed(context, Routers.settingGuestScreen);
+          }
         },
         textNow: "language".tr().toString(),
         onPressHome: () {},

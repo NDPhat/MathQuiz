@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,16 +20,52 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> showDoneDialog() {
+      return AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        headerAnimationLoop: false,
+        animType: AnimType.topSlide,
+        dismissOnTouchOutside: false,
+        closeIcon: const Icon(Icons.close_fullscreen_outlined),
+        title: 'update successful'.tr(),
+        descTextStyle: s20GgBarColorMainTeal,
+        btnOkOnPress: () {
+          Navigator.pushNamed(context, Routers.login);
+        },
+      ).show();
+    }
+
+    Future<void> showOutDialog() {
+      return AwesomeDialog(
+        context: context,
+        dialogType: DialogType.warning,
+        headerAnimationLoop: false,
+        animType: AnimType.topSlide,
+        dismissOnTouchOutside: false,
+        closeIcon: const Icon(Icons.close_fullscreen_outlined),
+        title: 'change password'.tr(),
+        descTextStyle: s20GgBarColorMainTeal,
+        btnOkOnPress: () {},
+      ).show();
+    }
+
     String email = (ModalRoute.of(context)!.settings.arguments as String?) ??
         instance.get<UserGlobal>().email!;
     return Scaffold(
         body: MainPageHomePG(
       onBack: () {
-        Navigator.pop(context);
+        showOutDialog();
       },
       colorTextAndIcon: Colors.black,
       textNow: 'update password'.tr().toString(),
-      onPressHome: () {},
+      onPressHome: () {
+        if (instance.get<UserGlobal>().onLogin == true) {
+          Navigator.pushNamed(context, Routers.homeUser);
+        } else {
+          Navigator.pushNamed(context, Routers.homeGuest);
+        }
+      },
       child: SingleChildScrollView(
         child: Container(
           height: 85.h,
@@ -44,7 +81,7 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
                 'assets/images/image_update_pass.png',
                 height: 25.h,
               ),
-               Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'change your password.'.tr(),
@@ -104,7 +141,7 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
               BlocConsumer<UpdatePassCubit, UpdatePassState>(
                   listener: (context, state) {
                 if (state.status == UpdatePassStatus.success) {
-                  Navigator.pushNamed(context, Routers.homeUser);
+                  showDoneDialog();
                 }
               }, builder: (context, state) {
                 return RoundedButton(
@@ -127,7 +164,7 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
                               ),
                             ),
                           )
-                        :  Text(
+                        : Text(
                             'go'.tr(),
                             style: s20f700ColorSysWhite,
                           ));

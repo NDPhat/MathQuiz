@@ -17,78 +17,6 @@ class RecordGuestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> showDeleteDialog() {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext contextBui) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-              25,
-            )),
-            backgroundColor: const Color(0xff1542bf),
-            title:  FittedBox(
-              child: Text('${'are you want to delete this character'.tr()} ?',
-                  textAlign: TextAlign.center, style: kTitleTS),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  instance.get<AppDb>().deleteLocalPlayer();
-                  RestartWidget.restartApp(context);
-                },
-                child:  Text('yes'.tr(), style: kDialogButtonsTS),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child:  Text('no'.tr(), style: kDialogButtonsTS),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> showCreateNewDialog() {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext contextBui) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-              25,
-            )),
-            backgroundColor: const Color(0xff1542bf),
-            title:  FittedBox(
-              child: Text(
-                  'the current character will be deleted!!'.tr(),
-                  textAlign: TextAlign.center,
-                  style: kTitleTS),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  instance.get<AppDb>().deleteLocalPlayer();
-                  RestartWidget.restartApp(context);
-                },
-                child:  Text('yes'.tr(), style: kDialogButtonsTS),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child:  Text('no'.tr(), style: kDialogButtonsTS),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -231,23 +159,6 @@ class RecordGuestScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 5.h,
-              ),
-              RoundedButton(
-                  press: () {
-                    showCreateNewDialog();
-                  },
-                  color: colorMainBlue,
-                  width: 90.w,
-                  height: 8.h,
-                  child: Center(
-                    child: Text(
-                      "add".tr(),
-                      style: GoogleFonts.aBeeZee(
-                          color: colorSystemWhite, fontSize: 20),
-                    ),
-                  ))
             ],
           ),
         ),

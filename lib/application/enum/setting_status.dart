@@ -1,0 +1,1 @@
+enum SettingStatus { initial,success,save,error}

@@ -1,5 +1,4 @@
 
-
 {
   "new player": "Nhân vật mới",
   "enter your name": "Nhập tên",
@@ -14,8 +13,9 @@
   "old password":  "Mật khẩu cũ",
   "new password":  "Mật khẩu mới",
   "enter your new password": "Nhập mật khẩu mới",
-  "Re-enter your password": "Nhập lại mật khẩu mới",
+  "re-enter your password": "Nhập lại mật khẩu mới",
   "re-new password":  "Mật khẩu mới",
+  "update successful": "Cập nhật thành công",
 
   "check answer": "Xem lại đáp án",
 
@@ -29,6 +29,7 @@
   "input answer": "Nhập liệu",
   "truefalse": "Đúng/Sai",
   "findmissing": "Tìm kiếm",
+  "NOTHING ADDED !!": "Trống",
 
   "true": "Đúng",
   "false": "Sai",
@@ -46,6 +47,7 @@
   "player":"Người chơi",
   "are you ready": "Bạn đã sẵn sàng",
   "do you want to quit": "Bạn có muốn thoát",
+  "time up": "Hết thời gian",
   "yes": "Có",
   "no": "Không",
   "play again": "Chơi lại",
@@ -54,13 +56,17 @@
 
   "forget password": "Quên mật khẩu",
   "please enter your email in the field below\nto send the reset password request.":"Vui lòng điền email của bạn\nđể nhận yêu cầu khôi phục mật khẩu.",
-  "enter your email": "Điền mật khẩu",
+  "enter your email": "Nhập email",
 
   "game over": "Kết thúc",
   "fill all the blank":"Điền vào tất cả khoảng trống",
 
+  "this in time countdown": "Đồng hồ đếm ngược",
+  "this in user manual.Click for more information !!": "Hướng dẫn chơi.Nhấn để biết thêm chi tiết !!",
   "pull and drag this": "Giữ và kéo",
   "drop this here":  "Thả vào đây",
+  "press this to choose number": "Nhấn để chọn số",
+  "press this to choose the cell containing the number": "Nhấn để chọn ô chứa số",
 
   "otp code": "Mã OTP",
   "please enter the verification code.":"Vui lòng điền mã xac thực.",
@@ -71,7 +77,6 @@
   "day": "Ngày",
   "delete": "Xóa",
   "view": "Xem",
-  "NOTHING ADDED":"Trống",
 
   "attendance": "Tham gia",
   "score": "Điểm",
@@ -99,6 +104,7 @@
 
   "gallery": "Thư viện",
   "camera": "Máy ảnh",
+  "choose one": "Chọn một",
 
   "your class": "Lớp",
   "your phone": "Số điện thoại",
@@ -110,12 +116,13 @@
   "record": "Kỉ lục",
   "logout": "Đăng xuất",
 
-  "The current character will be deleted!!": "Nhân vật hiện tại sẽ bị xóa!!",
+  "the current character will be deleted!!": "Nhân vật hiện tại sẽ bị xóa!!",
   "delete": "Xóa",
 
   "mode": "Chế độ",
   "localnotifi": "Local Notification",
   "language": "Ngôn ngữ",
+  "sound":"Âm thanh",
 
   "character": "Nhân vật",
   "login": "Đăng nhập",
@@ -126,7 +133,7 @@
   "write": "Viết",
   "number": "Số",
   "count and": "Đếm và",
-  "write missing": "Viết",
+  "write missing": "Viết thiếu",
   "match": "Nối",
   "puzzle": "Mảnh ghép",
   "connect": "Kết nối",
@@ -137,6 +144,7 @@
   "addition": "Phép cộng",
 
   "week": "Tuần",
+  "from": "Từ",
   "join": "Tham gia",
   "done": "Xong",
   "do": "Thực hiện",
@@ -146,6 +154,7 @@
   "go": "Đi",
   "exit": "Thoát",
   "review your answer" : "Xem lại đáp án",
+  "are you ready" : "Bạn đã sẵn sàng",
   "update profile": "Thay đổi thông tin",
   "sign": "Kí hiệu",
   "skip":"Bỏ qua",

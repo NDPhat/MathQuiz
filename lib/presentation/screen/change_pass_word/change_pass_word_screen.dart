@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,10 +17,27 @@ class ChangePassWordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> showDoneDialog() {
+      return AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        headerAnimationLoop: false,
+        animType: AnimType.topSlide,
+        dismissOnTouchOutside: false,
+        closeIcon: const Icon(Icons.close_fullscreen_outlined),
+        title: 'update successful'.tr(),
+        descTextStyle: s20GgBarColorMainTeal,
+        btnCancelOnPress: () {
+          Navigator.pushNamed(context, Routers.profileScreen);
+        },
+        btnOkOnPress: () {},
+      ).show();
+    }
+
     return Scaffold(
         body: MainPageHomePG(
       onBack: () {
-        Navigator.pop(context);
+        Navigator.pushNamed(context, Routers.profileScreen);
       },
       colorTextAndIcon: Colors.black,
       textNow: 'change password'.tr().toString(),
@@ -117,7 +135,7 @@ class ChangePassWordScreen extends StatelessWidget {
               BlocConsumer<UpdatePassCubit, UpdatePassState>(
                   listener: (context, state) {
                 if (state.status == UpdatePassStatus.success) {
-                  Navigator.pushNamed(context, Routers.homeUser);
+                  showDoneDialog();
                 }
               }, builder: (context, state) {
                 return RoundedButton(

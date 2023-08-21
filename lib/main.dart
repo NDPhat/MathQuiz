@@ -37,6 +37,15 @@ class MathQuizApp extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: MaterialApp(
+            theme: ThemeData.from(
+              colorScheme: const ColorScheme.light(),
+            ).copyWith(
+              pageTransitionsTheme: const PageTransitionsTheme(
+                builders: <TargetPlatform, PageTransitionsBuilder>{
+                  TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                },
+              ),
+            ),
             builder: DevicePreview.appBuilder,
             debugShowCheckedModeBanner: false,
             supportedLocales: context.supportedLocales,

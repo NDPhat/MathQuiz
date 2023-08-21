@@ -19,7 +19,7 @@ class AddPlayerState extends Equatable {
     return AddPlayerState(
         name: "",
         nameError: '',
-        imageUser: '',
+        imageUser: "assets/images/player/player_1.png",
         choose: false,
         status: AddPlayerStatus.initial
         //user: null,

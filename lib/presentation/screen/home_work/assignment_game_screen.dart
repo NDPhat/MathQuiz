@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,7 @@ import 'package:math/data/model/user_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import '../../../application/cons/constants.dart';
-import '../../../application/utils/logic.dart';
+import '../../../application/cons/text_style.dart';
 import '../../../data/model/pre_join_homework.dart';
 import '../../../data/remote/model/detail_quiz_hw_req.dart';
 import '../../../data/remote/model/result_quiz_hw_req.dart';
@@ -34,6 +36,17 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
   bool userAnswer = false;
   int _totalNumberOfQuizzes = 0;
   final CountDownController _controller = CountDownController();
+  final _player = AudioPlayer();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _player.dispose();
+  }
+
+  Future<void> soundDispose() async {
+    _player.dispose();
+  }
 
   @override
   void initState() {
@@ -42,7 +55,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
     _preQuiz = PreJoinQuizHW();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _preQuiz = ModalRoute.of(context)!.settings.arguments as PreJoinQuizHW;
-      showReadyDialog();
+      showReadyGameDialog();
     });
   }
 
@@ -66,37 +79,43 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
   }
 
   void _endGame() {
-    showMyDialog();
+    showFinishGameDialog();
   }
 
-  Future<void> showMyDialog() {
-    return showDialog<void>(
+  Future<void> showReadyGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext contextBuild) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child:
-                Text('game over'.tr(), textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          content: Text('score'.tr() +":" +' $_score | $_totalNumberOfQuizzes',
-              textAlign: TextAlign.center, style: kContentTS),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                updatePreHW();
-              },
-              child:  Center(child: Text('exit'.tr(), style: kDialogButtonsTS)),
-            ),
-          ],
-        );
+      dialogType: DialogType.question,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'are you ready'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        soundDispose();
+        deletePreHW();
       },
-    );
+      btnOkOnPress: () {
+        _controller.start();
+        _startGame(_preQuiz);
+      },
+    ).show();
+  }
+
+  Future<void> showFinishGameDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      title: 'time up'.tr(),
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkOnPress: () {
+        soundDispose();
+        Navigator.pushNamed(context, Routers.assignmentMainScreen);
+      },
+    ).show();
   }
 
   _saveData(int value) {
@@ -112,7 +131,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
     if (userChoice.toString().isNotEmpty) {
       if (userChoice == _quizBrain.quizAnswer) {
         userAnswer = true;
-        playSound('hw_sound.mp3');
+        _player.play(AssetSource('hw_sound.mp3'));
         _score++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
           _endGame();
@@ -122,7 +141,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
       } else {
         userAnswer = false;
         falseChoose++;
-        playSound('hw_sound.mp3');
+        _player.play(AssetSource('hw_sound.mp3'));
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
           _endGame();
         } else {
@@ -155,83 +174,30 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
     Navigator.pushNamed(context, Routers.homeUser);
   }
 
-  Future<void> showOutDialog() {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child: Text('${'do you want to quit'.tr()} ?',
-                textAlign: TextAlign.center, style: kScoreLabelTextStyle),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                updatePreHW();
-              },
-              child:  Center(child: Text('yes'.tr(), style: kDialogButtonsTS)),
-            ),
-            TextButton(
-              onPressed: () {
-                _controller.resume();
-                Navigator.pop(context);
-              },
-              child:  Center(child: Text('no'.tr(), style: kDialogButtonsTS)),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void deletePreHW() {
     instance
         .get<UserAPIRepo>()
         .deleteResultHWNotDo(_preQuiz.resultID.toString());
-    Navigator.pop(context);
     Navigator.pushNamed(context, Routers.homeUser);
   }
 
-  Future<void> showReadyDialog() {
-    return showDialog<void>(
+  Future<void> showOutPageDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title:  FittedBox(
-            child: Text('${'are you ready'.tr()} ?',
-                textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _controller.start();
-                _startGame(_preQuiz);
-              },
-              child:  Text('go'.tr(), style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                deletePreHW();
-              },
-              child:  Text('exit'.tr(), style: kDialogButtonsTS),
-            ),
-          ],
-        );
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'do you want to quit'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        _controller.resume();
       },
-    );
+      btnOkOnPress: () {
+        soundDispose();
+        updatePreHW();
+      },
+    ).show();
   }
 
   @override
@@ -242,7 +208,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
       body: MainPageHomePG(
           onBack: () {
             _controller.pause();
-            showOutDialog();
+            showOutPageDialog();
           },
           textNow: "home work".tr(),
           onPressHome: () {},
@@ -264,7 +230,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
               totalQ: _preQuiz.numQ ?? 1,
               quizNow: state.qNow,
               onFinished: () {
-                showMyDialog();
+                showFinishGameDialog();
               },
               controller: _controller,
             );

@@ -14,114 +14,119 @@ class HomeGuestMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: colorMainBlueChart,
-      body: Column(
-        children: [
-          //we will divide the screen into two parts
-          //fixed height for first half
-          Container(
-            width: 100.w,
-            height: 40.h,
-            padding: const EdgeInsets.all(kDefaultPadding),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    StudentName(),
-                    kHalfSizedBox,
-                    StudentPicture(
-                        picAddress:
-                            instance.get<UserLocal>().imageLink!.isNotEmpty
-                                ? instance.get<UserLocal>().imageLink!
-                                : 'assets/images/profile.png'),
-                  ],
-                ),
-                sizedBox,
-                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    StudentDataCard(
-                      title: 'attendance'.tr(),
-                      value: '90.02%',
-                    ),
-                    StudentDataCard(
-                      title: 'score'.tr(),
-                      value: 'B',
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-
-          //other will use all the remaining height of screen
-          Expanded(
-            child: Container(
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: colorMainBlueChart,
+        body: Column(
+          children: [
+            //we will divide the screen into two parts
+            //fixed height for first half
+            Container(
               width: 100.w,
-              decoration: const BoxDecoration(
-                color: colorSystemWhite,
-                borderRadius: kTopBorderRadius,
+              height: 40.h,
+              padding: const EdgeInsets.all(kDefaultPadding),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      StudentName(),
+                      kHalfSizedBox,
+                      StudentPicture(
+                          picAddress:
+                              instance.get<UserLocal>().imageLink!.isNotEmpty
+                                  ? instance.get<UserLocal>().imageLink!
+                                  : 'assets/images/profile.png'),
+                    ],
+                  ),
+                  sizedBox,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      StudentDataCard(
+                        title: 'attendance'.tr(),
+                        value: '90.02%',
+                      ),
+                      StudentDataCard(
+                        title: 'score'.tr(),
+                        value: 'B',
+                      ),
+                    ],
+                  )
+                ],
               ),
-              child: SingleChildScrollView(
-                //for padding
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    kHalfSizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        HomeCard(
-                          colorBG: colorMainTealPri,
-                          onPress: () {
-                            Navigator.pushNamed(context, Routers.takeQuiz);
-                          },
-                          icon: 'assets/icons/quiz.svg',
-                          title: 'take quiz'.tr(),
-                        ),
-                        HomeCard(
-                          colorBG: colorErrorPrimary,
-                          onPress: () {
-                            Navigator.pushNamed(
-                                context, Routers.battleMainScreen);
-                          },
-                          icon: 'assets/icons/assignment.svg',
-                          title: 'game'.tr(),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        HomeCard(
-                          colorBG: colorSystemYeloow,
-                          onPress: () {
-                            Navigator.pushNamed(
-                                context, Routers.dataSheetGuestScreen);
-                          },
-                          icon: 'assets/icons/datesheet.svg',
-                          title: 'history'.tr().toString(),
-                        ),
-                        HomeCard(
-                          colorBG: Colors.purple,
-                          onPress: () {
-                            Navigator.pushNamed(
-                                context, Routers.settingGuestScreen);
-                          },
-                          icon: 'assets/icons/event.svg',
-                          title: 'setting'.tr(),
-                        ),
-                      ],
-                    ),
-                  ],
+            ),
+
+            //other will use all the remaining height of screen
+            Expanded(
+              child: Container(
+                width: 100.w,
+                decoration: const BoxDecoration(
+                  color: colorSystemWhite,
+                  borderRadius: kTopBorderRadius,
+                ),
+                child: SingleChildScrollView(
+                  //for padding
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      kHalfSizedBox,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          HomeCard(
+                            colorBG: colorMainTealPri,
+                            onPress: () {
+                              Navigator.pushNamed(context, Routers.takeQuiz);
+                            },
+                            icon: 'assets/icons/quiz.svg',
+                            title: 'take quiz'.tr(),
+                          ),
+                          HomeCard(
+                            colorBG: colorErrorPrimary,
+                            onPress: () {
+                              Navigator.pushNamed(
+                                  context, Routers.battleMainScreen);
+                            },
+                            icon: 'assets/icons/assignment.svg',
+                            title: 'game'.tr(),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          HomeCard(
+                            colorBG: colorSystemYeloow,
+                            onPress: () {
+                              Navigator.pushNamed(
+                                  context, Routers.dataSheetGuestScreen);
+                            },
+                            icon: 'assets/icons/datesheet.svg',
+                            title: 'history'.tr().toString(),
+                          ),
+                          HomeCard(
+                            colorBG: Colors.purple,
+                            onPress: () {
+                              Navigator.pushNamed(
+                                  context, Routers.settingGuestScreen);
+                            },
+                            icon: 'assets/icons/event.svg',
+                            title: 'setting'.tr(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

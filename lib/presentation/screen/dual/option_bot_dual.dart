@@ -17,7 +17,7 @@ class OptionModeBotDual extends StatelessWidget {
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
         onBack: () {
-          Navigator.pop(context);
+          Navigator.pushNamed(context, Routers.battleMainScreen);
         },
         textNow: "battle game".tr(),
         onPressHome: () {},
@@ -42,7 +42,7 @@ class OptionModeBotDual extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                             fontSize: 25))),
               ),
-               Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Level_Box(

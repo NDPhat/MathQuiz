@@ -1,15 +1,17 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:math/application/cons/text_style.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
-import '../../../application/cons/constants.dart';
-import '../../../application/utils/logic.dart';
 import '../../../application/utils/make_quiz.dart';
+import '../../../application/utils/sound.dart';
+import '../../../data/model/app_global.dart';
 import '../../../data/model/level_game_bot.dart';
-import '../../../data/model/user_global.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/divider_line.dart';
@@ -32,7 +34,9 @@ class _BOTBattleScreenState extends State<BotDual> {
   double _value = 1;
   int _falsePlayer = 3;
   int userChoose = 1;
-  bool playerAgain = false;
+  final _player = AudioPlayer();
+  final _playerCheck = AudioPlayer();
+  bool playAgain = false;
   CountDownController controller = CountDownController();
   @override
   void initState() {
@@ -40,8 +44,23 @@ class _BOTBattleScreenState extends State<BotDual> {
     _quizBrain = QuizBrain();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       levelGame = ModalRoute.of(context)!.settings.arguments as LevelGameBot;
-      showReadyDialog();
+      showReadyGameDialog();
     });
+  }
+
+  Future<void> disposeAudio() async {
+    timer.cancel();
+    await _player.stop();
+    _player.dispose();
+    await _playerCheck.stop();
+    _playerCheck.dispose();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
+    disposeAudio();
   }
 
   void _startGame() async {
@@ -56,7 +75,7 @@ class _BOTBattleScreenState extends State<BotDual> {
     _scoreHM = 0;
     _value = 1;
     _falsePlayer = 3;
-    playerAgain = true;
+    playAgain = true;
     controller.reset();
     controller.start();
     _quizBrain.makeQuizBOT(levelGame.level);
@@ -93,7 +112,8 @@ class _BOTBattleScreenState extends State<BotDual> {
 
   void _checkAnswerPlayer(int userChoice) async {
     if (userChoice == _quizBrain.quizAnswer) {
-      playSound('correct-choice.wav');
+      _playerCheck.play(AssetSource('correct-choice.wav'),
+          volume: instance.get<AppGlobal>().volumeApp);
       setState(() {
         _scoreHM++;
       });
@@ -102,14 +122,18 @@ class _BOTBattleScreenState extends State<BotDual> {
       });
       doNext();
     } else {
-      playSound('wrong-choice.wav');
+      _playerCheck.play(
+          AssetSource(
+            'wrong-choice.wav',
+          ),
+          volume: instance.get<AppGlobal>().volumeApp);
       setState(() {
         _falsePlayer--;
         timer.cancel();
       });
       if (_falsePlayer == 0) {
         controller.pause();
-        showFinishDialog("BOT Winning");
+        showFinishGameDialog("BOT Winning");
       } else {
         doNext();
       }
@@ -117,154 +141,86 @@ class _BOTBattleScreenState extends State<BotDual> {
   }
 
   void _checkAnswerBot() async {
-    playSound('correct-choice.wav');
+    _playerCheck.play(AssetSource('hw_sound.mp3'),
+        volume: instance.get<AppGlobal>().volumeApp);
     setState(() {
       _scoreBot++;
     });
   }
 
-  Future<void> showReadyDialog() {
-    return showDialog<void>(
+  Future<void> showReadyGameDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: FittedBox(
-            child: Text('${'are you ready'.tr()} ?',
-                textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                controller.start();
-                _startGame();
-              },
-              child: Text('go'.tr(), style: kTitleTSReadyDL),
-            ),
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child: Text('exit'.tr(), style: kTitleTSReadyDL),
-            ),
-          ],
-        );
+      dialogType: DialogType.question,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'are you ready'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        Navigator.pushNamed(context, Routers.battleMainScreen);
       },
-    );
+      btnOkOnPress: () {
+        controller.start();
+        _startGame();
+        _player.play(AssetSource("sound_local/Teru.mp3"),
+            volume: instance.get<AppGlobal>().volumeApp);
+      },
+    ).show();
   }
 
-  Future<void> showOutDialog() {
-    return showDialog<void>(
+  Future<void> showFinishGameDialog(String player) {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: FittedBox(
-            child: Text('${'do you want to quiz'.tr()} ?',
-                textAlign: TextAlign.center, style: kScoreLabelTextStyle),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                timer.cancel();
-                controller.reset();
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child:
-                  Center(child: Text('yes'.tr(), style: kScoreLabelTextStyle)),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.resume();
-                Navigator.pop(context);
-              },
-              child: Center(child: Text('no'.tr(), style: kTitleTS)),
-            ),
-          ],
-        );
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      desc: player,
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        disposeAudio();
+        Navigator.pushNamed(context, Routers.battleMainScreen);
       },
-    );
+      btnOkText: "play again".tr(),
+      btnOkOnPress: () {
+        controller.pause();
+        _startAgainGame();
+        playAgain = false;
+      },
+    ).show();
   }
 
-  Future<void> showFinishDialog(String player) {
-    return showDialog<void>(
+  Future<void> showOutPageDialog() {
+    return AwesomeDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-            25,
-          )),
-          backgroundColor: const Color(0xff1542bf),
-          title: FittedBox(
-            child: Text(player, textAlign: TextAlign.center, style: kTitleTS),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (instance.get<UserGlobal>().onLogin == true) {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeUser);
-                } else {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, Routers.homeGuest);
-                }
-              },
-              child: Text('exit'.tr(), style: kDialogButtonsTS),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _startAgainGame();
-                playerAgain = false;
-              },
-              child: Text('play again'.tr(), style: kDialogButtonsTS),
-            ),
-          ],
-        );
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'do you want to quit'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        controller.resume();
       },
-    );
+      btnOkOnPress: () {
+        disposeAudio();
+        Navigator.pushNamed(context, Routers.optionBot);
+      },
+    ).show();
   }
 
   void showEndGame() {
     timer.cancel();
     if (_scoreBot > _scoreHM) {
-      showFinishDialog("bot".tr() + "wining".tr());
+      showFinishGameDialog("bot".tr() + "wining".tr());
     } else if (_scoreHM > _scoreBot) {
-      showFinishDialog("player".tr() + "wining".tr());
+      showFinishGameDialog("player".tr() + "wining".tr());
     } else {
-      showFinishDialog("draw".tr());
+      showFinishGameDialog("draw".tr());
     }
-  }
-
-  @override
-  void dispose() {
-    timer.cancel();
   }
 
   @override
@@ -284,7 +240,7 @@ class _BOTBattleScreenState extends State<BotDual> {
             colorTextAndIcon: colorMainBlue,
             onBack: () {
               controller.pause();
-              showOutDialog();
+              showOutPageDialog();
             },
             child: Center(
               child: Column(
@@ -311,7 +267,7 @@ class _BOTBattleScreenState extends State<BotDual> {
                               const DivideLine(),
                               Time_Runner(
                                 onFinish: () {
-                                  if (playerAgain == false) {
+                                  if (playAgain == false) {
                                     showEndGame();
                                   }
                                 },

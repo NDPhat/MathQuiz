@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/data/model/user_global.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
+import 'package:math/main.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/item_quiz_easy.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
@@ -22,10 +24,20 @@ class OptionGameModeScreen extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: MainPageHomePG(
           onBack: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, Routers.takeMediumQuiz);
           },
           textNow: 'choose mode'.tr().toString(),
-          onPressHome: () {},
+          onPressHome: () {
+            if (instance.get<UserGlobal>().onLogin == true) {
+              Navigator.pushNamed(context, Routers.homeUser);
+            } else {
+              Navigator.pushNamed(context, Routers.homeGuest);
+            }
+          },
+          homeIcon: const Icon(
+            Icons.home,
+            color: Colors.black,
+          ),
           colorTextAndIcon: Colors.black,
           child: Stack(
             children: [
@@ -132,7 +144,7 @@ class OptionGameModeScreen extends StatelessWidget {
                                         ),
                                       ),
                                       textBot1: "true".tr(),
-                                      textBot2: "False".tr())),
+                                      textBot2: "false".tr())),
                               SizedBox(
                                 height: 5.h,
                               ),

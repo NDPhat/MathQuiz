@@ -18,11 +18,11 @@ class ForgetPassScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: MainPageHomePG(
-        textNow: "forget pass".tr().toString(),
+        textNow: "forget password".tr().toString(),
         colorTextAndIcon: Colors.black,
         onPressHome: () {},
         onBack: () {
-          Navigator.pop(context);
+          Navigator.pushNamed(context, Routers.login);
         },
         child: Container(
           padding:

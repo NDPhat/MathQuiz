@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -23,7 +24,7 @@ List<TargetFocus> listTargetFocusMainDrag({
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "This in time countdown",
+                    "this in time countdown".tr(),
                     style: GoogleFonts.aclonica(
                         color: colorMainBlue, fontSize: 16),
                     textAlign: TextAlign.center,
@@ -46,7 +47,7 @@ List<TargetFocus> listTargetFocusMainDrag({
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "This in user manual.Click for more information !!",
+                    "this in user manual.Click for more information !!".tr(),
                     style: GoogleFonts.aclonica(
                         color: colorMainBlue, fontSize: 16),
                     textAlign: TextAlign.center,

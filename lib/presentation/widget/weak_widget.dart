@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/data/remote/model/result_quiz_hw_response.dart';
+import 'package:sizer/sizer.dart';
 import '../../application/cons/text_style.dart';
 import '../../data/remote/model/pre_quiz_hw_response.dart';
 
@@ -15,18 +16,18 @@ class WeakWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Container(
-          alignment: Alignment.center,
-          child: Text(
-            '${'week'.tr()} ${dataResult == null ? dataPre!.week : dataResult!.week}',
-            style: GoogleFonts.saira(color: colorBorder, fontSize: 20),
-          ),
-        ),
-        dataResult != null
-            ? Container(
+    return dataResult != null
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  '${'week'.tr()} ${dataResult == null ? dataPre!.week : dataResult!.week}',
+                  style: GoogleFonts.saira(color: colorBorder, fontSize: 20),
+                ),
+              ),
+              Container(
                 alignment: Alignment.center,
                 child: (Text(
                   '${'score'.tr()} : ${dataResult!.score!} / ${dataResult!.numQ!}',
@@ -34,8 +35,39 @@ class WeakWidget extends StatelessWidget {
                       GoogleFonts.songMyung(color: colorBorder, fontSize: 14),
                 )),
               )
-            : Container(),
-      ],
-    );
+            ],
+          )
+        : Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                height: 5.h,
+                alignment: Alignment.center,
+                child: (Text(
+                  '${"from".tr()} : ${dataPre!.dstart!}\n${"to".tr()} : ${dataPre!.dend!}',
+                  style:
+                      GoogleFonts.songMyung(color: colorBorder, fontSize: 14),
+                )),
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: 40.w,
+                height: 1.h,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 2, color: colorBorder),
+                  ),
+                ),
+              ),
+              Container(
+                height: 5.h,
+                alignment: Alignment.center,
+                child: Text(
+                  '${'week'.tr()} ${dataResult == null ? dataPre!.week : dataResult!.week}',
+                  style: GoogleFonts.saira(color: colorBorder, fontSize: 20),
+                ),
+              ),
+            ],
+          );
   }
 }

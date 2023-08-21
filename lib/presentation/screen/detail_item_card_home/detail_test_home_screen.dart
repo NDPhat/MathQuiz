@@ -158,7 +158,7 @@ class _DetailMixGameScreenState extends State<DetailMixGameScreen> {
                                   child: ItemAsyncDataDetail(
                                     colorBorder: colorSystemYeloow,
                                     textTitle:
-                                        "${'task'.tr()} ${index + 1 + (page - 1) * 5}}",
+                                        "${'task'.tr()} ${index + 1 + (page - 1) * 5}",
                                     childRight: SizedBox(
                                       width: 45.w,
                                       child: FutureBuilder<
@@ -333,6 +333,7 @@ class _DetailMixGameScreenState extends State<DetailMixGameScreen> {
                       width: 2.w,
                     ),
                     DotIndicator(
+                      totalPage: length.toString(),
                       colorBorder: colorErrorPrimary,
                       pageIndex: page.toString(),
                     ),
