@@ -29,7 +29,7 @@
   "input answer": "Nhập liệu",
   "truefalse": "Đúng/Sai",
   "findmissing": "Tìm kiếm",
-  "NOTHING ADDED !!": "Trống",
+  "NOTHING ADDED !!": "Trống !!",
 
   "true": "Đúng",
   "false": "Sai",
@@ -40,6 +40,9 @@
   "task":"Bài",
   "detailed test data":"Dữ liệu kiểm tra chi tiết",
   "detailed data":"Dữ liệu chi tiết",
+  "sort": "Sắp xếp",
+  "filter": "Lọc",
+  "day": "Ngày",
 
   "battle game": "ĐỐi kháng",
   "SELECT MODE GAME": "Chọn chế độ",
@@ -74,7 +77,6 @@
   "resend now":"Gửi lại ngay",
   "resend": "Gửi lại",
 
-  "day": "Ngày",
   "delete": "Xóa",
   "view": "Xem",
 

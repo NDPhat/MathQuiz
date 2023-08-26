@@ -65,4 +65,46 @@ class PreQuizLocalRepoImpl extends PreQuizGameRepo {
           ..where((t) => t.dateSave.equals(dateSave)))
         .go();
   }
+
+  @override
+  Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDayWithPagination(
+      String day, int page) async* {
+    List<PreQuizGameEntityData> dataConvert =
+        await (appDb.select(appDb.preQuizGameEntity)
+              ..where((tbl) => tbl.dateSave.equals(day)))
+            .get();
+    int length = dataConvert.length;
+    List<PreQuizGameEntityData> newData = [];
+    int start = (page - 1) * 5;
+    int end = start + 5;
+    if (end <= length) {
+      for (int i = start; i < end; i++) {
+        PreQuizGameEntityData model = dataConvert[i];
+        if (model != null) {
+          newData.add(model);
+        } else {
+          yield* Stream.fromFuture(Future.value(newData));
+        }
+      }
+    } else {
+      for (int i = start; i < length; i++) {
+        PreQuizGameEntityData model = dataConvert[i];
+        if (model != null) {
+          newData.add(model);
+        } else {
+          yield* Stream.fromFuture(Future.value(newData));
+        }
+      }
+    }
+    yield* Stream.fromFuture(Future.value(newData));
+  }
+
+  @override
+  Future<int> getLengthAllPreQuizGameByDay(String day) async {
+    List<PreQuizGameEntityData> data =
+        await (appDb.select(appDb.preQuizGameEntity)
+              ..where((tbl) => tbl.dateSave.equals(day)))
+            .get();
+    return data.length;
+  }
 }

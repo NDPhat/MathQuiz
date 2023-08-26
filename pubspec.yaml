@@ -76,6 +76,7 @@ dependencies:
   tutorial_coach_mark: 1.2.9
   awesome_dialog: 3.1.0
   flutter_shake_animated: ^0.0.5
+  multiselect: 0.1.0
 
   #  flutter_tflite: 1.0.1
 

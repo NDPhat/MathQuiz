@@ -106,12 +106,6 @@ class HomeProfileUserScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 3.h),
                   ProfileMenuWidget(
-                    title: "record".tr().toString(),
-                    icon: LineAwesomeIcons.record_vinyl,
-                    onPress: () {},
-                  ),
-                  SizedBox(height: 3.h),
-                  ProfileMenuWidget(
                     title: "logout".tr().toString(),
                     icon: LineAwesomeIcons.alternate_sign_out,
                     onPress: () {

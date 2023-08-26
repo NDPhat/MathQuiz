@@ -87,24 +87,15 @@ class SettingMainScreen extends StatelessWidget {
           children: [
             sizedBox,
             SettingMenuWidget(
-              title: "mode".tr().toString(),
-              widget: const Icon(
-                LineAwesomeIcons.modx,
-                size: 30,
-                color: colorSystemYeloow,
-              ),
-              textStyle: s16f700ColorGreyTe,
-              onPress: () {},
-            ),
-            SizedBox(height: 5.h),
-            SettingMenuWidget(
               title: "localnotifi".tr().toString(),
               widget: const Icon(
                 LineAwesomeIcons.bell,
                 size: 30,
                 color: colorErrorPrimary,
               ),
-              onPress: () {},
+              onPress: () {
+                Navigator.pushNamed(context, Routers.notifiScreen);
+              },
               textStyle: s16f700ColorGreyTe,
             ),
             SizedBox(height: 5.h),

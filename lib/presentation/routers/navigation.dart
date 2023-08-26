@@ -5,11 +5,14 @@ import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/model/app_global.dart';
 import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/authen/authen.dart';
+import 'package:math/domain/bloc/add_notifi/add_notify_cubit.dart';
 import 'package:math/domain/bloc/add_player/add_player_cubit.dart';
+import 'package:math/domain/bloc/detail_test/detail_test_cubit.dart';
 import 'package:math/domain/bloc/forget_pass/forget_pass_cubit.dart';
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
+import 'package:math/domain/bloc/notify_main/notify_main_cubit.dart';
 import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/setting/setting_cubit.dart';
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
@@ -44,9 +47,11 @@ import 'package:math/presentation/screen/splash_screen/splash_screen.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/take_quiz_hard_screen.dart';
 import 'package:math/presentation/screen/take_quiz_user_screen/widget/take_quiz_medium_screen.dart';
 import 'package:math/presentation/screen/update_forget%20_pass_word/update_forget_pass_screen.dart';
+import '../../data/local/repo/detail_notifi/notify_task_repo.dart';
 import '../../data/local/repo/player_local/player_local_repo.dart';
 import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../data/local/repo/test/quiz_test_repo.dart';
+import '../../domain/bloc/detail_practices/detail_practices_cubit.dart';
 import '../../domain/bloc/history/history_cubit.dart';
 import '../../domain/bloc/take_hard/take_hard_cubit.dart';
 import '../../main.dart';
@@ -65,6 +70,7 @@ import '../screen/history_guest/history_test_screen.dart';
 import '../screen/home/guest_home_screen/home_guest_screen.dart';
 import '../screen/home/user_home_screen/home_user_screen.dart';
 import '../screen/home_work/assignment_main_screen.dart';
+import '../screen/notificaiton/widget/add_notifi_local_screen.dart';
 import '../screen/option_game_mode/option_game_mode_screen.dart';
 import '../screen/profile_user/home_profile_user_screen.dart';
 import '../screen/profile_user/my_account/profile_myaccount.dart';
@@ -152,7 +158,7 @@ class Routers {
       case writeMissing:
         return WriteMissingNumberGameScreen();
       case profileScreen:
-        return HomeProfileUserScreen();
+        return const HomeProfileUserScreen();
       case matchNumber:
         return const MatchNumberGameScreen();
       case changePassScreen:
@@ -163,6 +169,11 @@ class Routers {
             child: const ChangePassWordScreen());
       case takeMediumQuiz:
         return const TakeQuizMediumScreen();
+      case addNotifiScreen:
+        return BlocProvider(
+            create: (context) => AddNotifyCubit(
+                notifyTaskRepo: instance.get<NotifyTaskLocalRepo>()),
+            child: AddNotifyScreen());
       case takeHardQuiz:
         return BlocProvider(
             create: (context) => TakeHardCubit(
@@ -170,9 +181,12 @@ class Routers {
                 preTestLocalRepo: instance.get<PreTestLocalRepo>()),
             child: const TakeQuizHardScreen());
       case checkAnswerPracUserGame:
-        return const CheckAnswerPracUserGameScreen();
+        return  const CheckAnswerPracUserGameScreen();
       case notifiScreen:
-        return const LocalNotifiMainScreen();
+        return BlocProvider(
+            create: (context) => NotifyMainCubit(
+                notifyTaskLocalRepo: instance.get<NotifyTaskLocalRepo>()),
+            child: const LocalNotifyMainScreen());
       case addPlayer:
         return BlocProvider(
             create: (context) => AddPlayerCubit(
@@ -183,7 +197,10 @@ class Routers {
       case takeQuiz:
         return const TakeQuizUserScreen();
       case testDetail:
-        return const DetailMixGameScreen();
+        return BlocProvider(
+            create: (context) =>
+                DetailTestCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+            child: DetailMixGameScreen());
       case settingScreen:
         return BlocProvider(
             create: (context) =>
@@ -195,7 +212,10 @@ class Routers {
                 SettingCubit(appGlobal: instance.get<AppGlobal>()),
             child: SettingGuestMainScreen());
       case practicecardDetail:
-        return DetailItemCardPractices();
+        return BlocProvider(
+            create: (context) =>
+                DetailPracticesCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+            child: const DetailItemCardPractices());
       case updateProfileUser:
         return BlocProvider(
             create: (context) =>
@@ -272,7 +292,7 @@ class Routers {
                 quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
             child: const MixNumberGameScreen());
       case detailTest:
-        return const DetailTestScreen();
+        return DetailTestScreen();
       case assignmentMainScreen:
         return const AssignmentMainScreen();
       case detailQuizGame:

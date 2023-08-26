@@ -39,8 +39,9 @@ class _CheckAnswerPracUserGameScreenState
 
   @override
   void dispose() {
-    mounted;
     super.dispose();
+    controller.dispose();
+
   }
 
   void loadMore() async {

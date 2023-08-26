@@ -1,33 +1,76 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/extension/to_get_test_model.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
+import 'package:math/presentation/widget/pre_test_widget.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
+import '../../../application/utils/format.dart';
+import '../../../application/utils/func.dart';
 import '../../../domain/bloc/history/history_cubit.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
-import '../../widget/button_custom.dart';
-import '../../widget/pre_test_widget.dart';
+import '../../widget/dot_page_indicator.dart';
+import '../../widget/indicator.dart';
 
-class HistoryTest extends StatelessWidget {
+class HistoryTest extends StatefulWidget {
   const HistoryTest({Key? key}) : super(key: key);
+  @override
+  State<HistoryTest> createState() => HistoryTestState();
+}
+
+class HistoryTestState extends State<HistoryTest> {
+  @override
+  void initState() {
+    super.initState();
+    initData();
+  }
+
+  void initData() {
+    context
+        .read<HistoryCubit>()
+        .getLengthTest(formatDateInput.format(DateTime.now()));
+  }
+
+  showInfoDialog(int id) {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.info,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      desc: "choose one".tr(),
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkText: "view".tr(),
+      btnCancelText: "delete".tr(),
+      btnOkOnPress: () {
+        Navigator.pushNamed(context, Routers.detailTest, arguments: id);
+      },
+      btnCancelOnPress: () {
+        context.read<HistoryCubit>().deletePreTest(id);
+      },
+    ).show();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 50.h,
-      child: Padding(
-        padding: EdgeInsets.only(top: 2.h, left: 5.w, right: 5.w, bottom: 2.h),
+      padding: EdgeInsets.only(top: 2.h, left: 5.w, right: 5.w, bottom: 2.h),
+      child: Container(
+        decoration:
+            BoxDecoration(border: Border.all(color: colorMainBlue, width: 2)),
         child: Column(
           children: [
+            /// LINE CONTENT
             SizedBox(
-              height: 04.h,
+              height: 4.h,
               width: 100.w,
               child: BlocBuilder<HistoryCubit, HistoryState>(
                   buildWhen: (previousState, state) {
@@ -42,19 +85,23 @@ class HistoryTest extends StatelessWidget {
                       ),
                       child: Text(
                         'day'.tr(),
-                        style: s18f700ColorBlueMa,
+                        style: GoogleFonts.abel(
+                            color: colorMainBlue, fontSize: 18),
                       ),
                     ),
                     SizedBox(
                       child: Text(
                         state.timeTestNow,
-                        style: s18f700ColorBlueMa,
+                        style: GoogleFonts.abel(
+                            color: colorMainBlue, fontSize: 18),
                       ),
                     ),
                   ],
                 );
               }),
             ),
+
+            ///BLOC DAY
             BlocBuilder<HistoryCubit, HistoryState>(builder: (context, state) {
               return DatePicker(
                 DateTime.now().subtract(const Duration(days: 6)),
@@ -67,14 +114,19 @@ class HistoryTest extends StatelessWidget {
                 },
               );
             }),
+
+            /// BLOC DATA
             BlocBuilder<HistoryCubit, HistoryState>(buildWhen: (pre, now) {
-              return pre.timeTestNow != now.timeTestNow;
+              return pre.timeTestNow != now.timeTestNow ||
+                  pre.pageTestNow != now.pageTestNow ||
+                  pre.lengthTest != now.lengthTest;
             }, builder: (context, state) {
               return Expanded(
                   child: StreamBuilder<List<PreTestEntityData>>(
                 stream: instance
                     .get<PreTestLocalRepo>()
-                    .getAllPreTestByDay(state.timeTestNow.toString()),
+                    .getAllPreTestByDayWithPagination(
+                        state.timeTestNow.toString(), state.pageTestNow),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     return CustomScrollView(slivers: [
@@ -85,61 +137,7 @@ class HistoryTest extends StatelessWidget {
                         return SizedBox(
                             child: GestureDetector(
                           onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(25)),
-                                ),
-                                builder: (_) {
-                                  return Container(
-                                    padding:
-                                        EdgeInsets.only(bottom: 2.h, top: 2.h),
-                                    height: 18.h,
-                                    child: AnimationConfiguration.staggeredList(
-                                        position: index,
-                                        child: SlideAnimation(
-                                            child: Column(
-                                          children: [
-                                            RoundedButton(
-                                              press: () {
-                                                context
-                                                    .read<HistoryCubit>()
-                                                    .deletePreTest(snapshot
-                                                        .data![index].id);
-                                                Navigator.pop(context);
-                                              },
-                                              color: colorErrorPrimary,
-                                              width: 80.w,
-                                              height: 6.h,
-                                              child:  Text(
-                                                'delete'.tr(),
-                                                style: s16f500ColorSysWhite,
-                                              ),
-                                            ),
-                                            SizedBox(height: 2.h),
-                                            RoundedButton(
-                                              press: () {
-                                                Navigator.pop(context);
-
-                                                Navigator.pushNamed(
-                                                    context, Routers.detailTest,
-                                                    arguments: snapshot
-                                                        .data![index].id);
-                                              },
-                                              color: colorGreyTetiary,
-                                              width: 80.w,
-                                              height: 6.h,
-                                              child:  Text(
-                                                'view'.tr(),
-                                                style: s16f700ColorBlueMa,
-                                              ),
-                                            ),
-                                          ],
-                                        ))),
-                                  );
-                                });
+                            showInfoDialog(snapshot.data![index].id);
                           },
                           child: PreTestTitle(
                               snapshot.data![index].toGetTestModel()),
@@ -147,16 +145,70 @@ class HistoryTest extends StatelessWidget {
                       }))
                     ]);
                   } else {
-                    return  Center(
+                    return Center(
                       child: Text(
                         'NOTHING ADDED !!'.tr(),
-                        style: s20f700ColorMBlue,
+                        style: GoogleFonts.abel(
+                            color: colorMainBlue, fontSize: 20),
                       ),
                     );
                   }
                 },
               ));
             }),
+            Container(
+              padding: EdgeInsets.only(right: 5.w),
+              width: 100.w,
+              child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                BlocBuilder<HistoryCubit, HistoryState>(buildWhen: (pre, now) {
+                  return pre.pageTestNow != now.pageTestNow;
+                }, builder: (context, state) {
+                  return DotPageIndicator(
+                    colorBorder: colorMainBlue,
+                    icon: SvgPicture.asset(
+                      "assets/icon/back.svg",
+                      color: colorMainBlue,
+                      fit: BoxFit.cover,
+                    ),
+                    onTap: () {
+                      context.read<HistoryCubit>().pageTestMinus();
+                    },
+                  );
+                }),
+                SizedBox(
+                  width: 2.w,
+                ),
+                BlocBuilder<HistoryCubit, HistoryState>(buildWhen: (pre, now) {
+                  return pre.timeTestNow != now.timeTestNow ||
+                      pre.lengthTest != now.lengthTest ||
+                      pre.pageTestNow != now.pageTestNow;
+                }, builder: (context, state) {
+                  return DotIndicator(
+                    totalPage: findLength(state.lengthTest).toString(),
+                    colorBorder: colorMainBlue,
+                    pageIndex: state.pageTestNow.toString(),
+                  );
+                }),
+                SizedBox(
+                  width: 2.w,
+                ),
+                BlocBuilder<HistoryCubit, HistoryState>(buildWhen: (pre, now) {
+                  return pre.pageTestNow != now.pageTestNow;
+                }, builder: (context, state) {
+                  return DotPageIndicator(
+                    colorBorder: colorMainBlue,
+                    icon: SvgPicture.asset(
+                      "assets/icon/next.svg",
+                      color: colorMainBlue,
+                      fit: BoxFit.cover,
+                    ),
+                    onTap: () {
+                      context.read<HistoryCubit>().pageTestPlus();
+                    },
+                  );
+                })
+              ]),
+            ),
           ],
         ),
       ),

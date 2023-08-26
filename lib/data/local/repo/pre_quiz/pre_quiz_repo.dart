@@ -12,7 +12,10 @@ abstract class PreQuizGameRepo {
   Future<void> deletePreQuizGame(int id);
   Future<void> deletePreQuizGameByDay(String dateSave);
   Future<void> deleteAllPreQuiz();
-  Future<void> updatePreQuizGame(int id, int score,int numQ);
+  Future<void> updatePreQuizGame(int id, int score, int numQ);
   Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDay(String day);
+  Future<int> getLengthAllPreQuizGameByDay(String day);
+  Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDayWithPagination(
+      String day, int page);
   Stream<List<PreQuizGameEntityData>> getAllPreQuizGame();
 }

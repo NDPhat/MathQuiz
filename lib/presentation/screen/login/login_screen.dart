@@ -46,6 +46,7 @@ class _LoginUserApp extends State<LoginUserApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: colorMainBlue,
       body: MainPageHomePG(
         colorTextAndIcon: colorSystemYeloow,
@@ -113,7 +114,7 @@ class _LoginUserApp extends State<LoginUserApp> {
                               },
                               validateText: state.emailError,
                               isHidden: state.emailError != "",
-                              icon: Icon(Icons.email_outlined),
+                              icon: const Icon(Icons.email_outlined),
                             );
                           }),
                           SizedBox(

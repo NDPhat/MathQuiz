@@ -34,7 +34,6 @@ class ChartSeasonPra extends StatelessWidget {
                   dataList.add(ChartDataSheet(i + 1, snapshot.data![i].score!,
                       snapshot.data![i].numQ! - snapshot.data![i].score!));
                 }
-
                 return SfCartesianChart(
                     plotAreaBorderColor: colorMainBlue,
                     plotAreaBorderWidth: 0,
@@ -78,7 +77,12 @@ class ChartSeasonPra extends StatelessWidget {
                       ),
                     ]);
               } else {
-                return Container();
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: colorMainTealPri,
+                    strokeWidth: 5,
+                  ),
+                );
               }
             }));
   }

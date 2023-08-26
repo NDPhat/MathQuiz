@@ -18,12 +18,14 @@ class _IntroScreenState extends State<IntroScreen> {
   late PageController _pageController;
   final List<Onboard> listOnboard = <Onboard>[];
 
-  String titlePageIntro1 = 'Math tracker';
-  String titlePageIntro2 = 'Math trends';
-  String titlePageIntro3 = 'Math reminder';
-  String bodyPageIntro1 = 'Without mathematics, there’s nothing you can do.';
-  String bodyPageIntro2 = 'Everything around you is mathematics.';
-  String bodyPageIntro3 = 'Everything around you is numbers.';
+  String titlePageIntro1 = 'Math around you';
+  String titlePageIntro2 = 'Why you should learn math';
+  String titlePageIntro3 = 'Our application';
+  String bodyPageIntro1 =
+      'Math is used in various everyday situations,such as budgeting,calculating discounts and taxes,understanding measurements,calculating distance and time and interpreting data and statistics.';
+  String bodyPageIntro2 =
+      'Without mathematics,there’s nothing you can do.Everything around you is mathematics.Everything around you is numbers.';
+  String bodyPageIntro3 = 'Our application fully meets these requirements.';
   int _pageIndex = 0;
   @override
   void initState() {
@@ -73,7 +75,8 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
             Column(
               children: [
-                SizedBox(
+                Container(
+                  padding: EdgeInsets.only(top: 5.h),
                   height: 80.h,
                   width: 100.w,
                   child: PageView.builder(
@@ -166,9 +169,12 @@ class IntroBody extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 40.h,
-          child: Image.asset(
-            pathImage,
+          child: Center(
+            child: Image.asset(
+              pathImage,
+              height: 35.h,
+              fit: BoxFit.fill,
+            ),
           ),
         ),
         SizedBox(
@@ -184,7 +190,7 @@ class IntroBody extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   height: 2.h,
-                  color: colorBlueQuaternery,
+                  color: colorMainTealPri,
                 ),
               ),
               Container(
@@ -193,7 +199,11 @@ class IntroBody extends StatelessWidget {
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: s22f700colorGreyPri,
+                  style:  const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: colorErrorPrimary,
+                  ),
                 ),
               ),
             ],
@@ -203,7 +213,15 @@ class IntroBody extends StatelessWidget {
           height: 2.h,
         ),
         SizedBox(
-          child: Text(subtitle, style: s14f400ColorGreyTe),
+          child: Text(
+            subtitle,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: colorSystemYeloow,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ],
     );

@@ -1,17 +1,31 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:math/presentation/screen/restart_app/restart_app_widget.dart';
 import 'package:sizer/sizer.dart';
 import 'application/di/setupProject.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 GetIt instance = GetIt.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  /// PERMISSION LOCAL NOTIFICATION
+  await Permission.notification.isDenied.then((value) {
+    if (value) {
+      Permission.notification.request();
+    }
+  });
+
+  ///INIT DB AND DECLARE VARIABLE
   setUpProject();
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  /// LANGUAGE
   runApp(DevicePreview(
     builder: (context) => EasyLocalization(
         supportedLocales: const [

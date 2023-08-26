@@ -1,5 +1,4 @@
 import 'package:drift/drift.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 
 import '../../driff/db/db_app.dart';
@@ -56,5 +55,46 @@ class PreTestLocalRepoImpl extends PreTestLocalRepo {
     await (appDb.delete(appDb.preTestEntity)
           ..where((t) => t.dateSave.equals(dateSave)))
         .go();
+  }
+
+  @override
+  Stream<List<PreTestEntityData>> getAllPreTestByDayWithPagination(
+      String day, int page) async* {
+    List<PreTestEntityData> dataConvert =
+        await (appDb.select(appDb.preTestEntity)
+              ..where((tbl) => tbl.dateSave.equals(day)))
+            .get();
+    int length = dataConvert.length;
+    List<PreTestEntityData> newData = [];
+    int start = (page - 1) * 5;
+    int end = start + 5;
+    if (end <= length) {
+      for (int i = start; i < end; i++) {
+        PreTestEntityData model = dataConvert[i];
+        if (model != null) {
+          newData.add(model);
+        } else {
+          yield* Stream.fromFuture(Future.value(newData));
+        }
+      }
+    } else {
+      for (int i = start; i < length; i++) {
+        PreTestEntityData model = dataConvert[i];
+        if (model != null) {
+          newData.add(model);
+        } else {
+          yield* Stream.fromFuture(Future.value(newData));
+        }
+      }
+    }
+    yield* Stream.fromFuture(Future.value(newData));
+  }
+
+  @override
+  Future<int> getLengthAllPreTestByDay(String day) async {
+    List<PreTestEntityData> data = await (appDb.select(appDb.preTestEntity)
+          ..where((tbl) => tbl.dateSave.equals(day)))
+        .get();
+    return data.length;
   }
 }

@@ -1,6 +1,6 @@
-part of 'add_notifi_cubit.dart';
+part of 'add_notify_cubit.dart';
 
-class AddNotifiState extends Equatable {
+class AddNotifyState extends Equatable {
   String color;
   String title;
   String note;
@@ -13,7 +13,7 @@ class AddNotifiState extends Equatable {
   int indexRemind;
   String remind;
 
-  AddNotifiState({
+  AddNotifyState({
     required this.color,
     required this.status,
     required this.dateSaveTask,
@@ -28,10 +28,10 @@ class AddNotifiState extends Equatable {
 
     //this.user,
   });
-  factory AddNotifiState.initial() {
-    return AddNotifiState(
+  factory AddNotifyState.initial() {
+    return AddNotifyState(
       indexRemind: 0,
-      remind: '5 minutes early',
+      remind: '0 minutes early',
       color: 'blue',
       note: '',
       title: '',
@@ -62,7 +62,7 @@ class AddNotifiState extends Equatable {
         remind,
       ];
 
-  AddNotifiState copyWith(
+  AddNotifyState copyWith(
       {String? color,
       AddNotifiStatus? status,
       String? dateSave,
@@ -76,7 +76,7 @@ class AddNotifiState extends Equatable {
       String? timeStart
       // auth.user? user,
       }) {
-    return AddNotifiState(
+    return AddNotifyState(
       timeEnd: timeEnd ?? this.timeEnd,
       timeStart: timeStart ?? this.timeStart,
       color: color ?? this.color,

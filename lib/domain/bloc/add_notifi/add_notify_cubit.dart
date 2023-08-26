@@ -3,20 +3,18 @@ import 'package:drift/drift.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/detail_notifi/detail_notifi_repo.dart';
-
 import '../../../application/enum/add_notifi_status.dart';
 import '../../../application/utils/format.dart';
+import '../../../data/local/repo/detail_notifi/notify_task_repo.dart';
 
-part 'add_notifi_state.dart';
+part 'add_notify_state.dart';
 
-class AddNotifiCubit extends Cubit<AddNotifiState> {
+class AddNotifyCubit extends Cubit<AddNotifyState> {
   String titleMess = "";
   String noteMess = "";
-  final DetailNotifiLocalRepo detailNotifiLocalRepo;
-  AddNotifiCubit({required DetailNotifiLocalRepo detailNotifiLocalRepo})
-      : detailNotifiLocalRepo = detailNotifiLocalRepo,
-        super(AddNotifiState.initial());
+  final NotifyTaskLocalRepo notifyTaskRepo;
+  AddNotifyCubit({required this.notifyTaskRepo})
+      : super(AddNotifyState.initial());
   void colorChange(String color) {
     emit(state.copyWith(color: color, status: AddNotifiStatus.initial));
   }
@@ -109,10 +107,11 @@ class AddNotifiCubit extends Cubit<AddNotifiState> {
   Future<void> saveTaskToLocal() async {
     if (isFormValid()) {
       try {
-        final entity = DetailNotifiEntityCompanion(
+        final entity = NotifyTaskCompanion(
           title: Value(state.title),
           note: Value(state.note),
-          dateSave: Value(state.dateSaveTask.toString()),
+          ringDay: Value(state.dateSaveTask.toString()),
+          daySave: Value(formatDateInput.format(DateTime.now())),
           startTime: Value(state.timeStart),
           endTime: Value(state.timeEnd),
           remind: Value(state.remind),
@@ -120,7 +119,7 @@ class AddNotifiCubit extends Cubit<AddNotifiState> {
           color: Value(state.color),
         );
         //insert task
-        await detailNotifiLocalRepo.insertDetailNotifiLocal(entity);
+        await notifyTaskRepo.insert(entity);
         emit(state.copyWith(status: AddNotifiStatus.success));
       } on Exception catch (e) {
         print(e.toString());

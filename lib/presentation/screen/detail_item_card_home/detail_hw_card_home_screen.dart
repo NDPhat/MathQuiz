@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:math/application/cons/text_style.dart';
+import 'package:math/application/utils/func.dart';
 import 'package:math/data/model/chart_data_week.dart';
 import 'package:math/data/remote/model/detail_quiz_hw_response.dart';
 import 'package:math/data/remote/model/result_quiz_hw_res_pagi.dart';
@@ -22,6 +23,7 @@ import '../home/user_home_screen/widget/main_home_page_bg.dart';
 import 'chart/chart_season_hw.dart';
 
 class DetailItemCardHomeWork extends StatefulWidget {
+  const DetailItemCardHomeWork({Key? key}) : super(key: key);
   @override
   State<DetailItemCardHomeWork> createState() => _DetailItemCardHomeWorkState();
 }
@@ -64,11 +66,7 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
         instance.get<UserGlobal>().id.toString(), page);
     final List<ResultQuizHWAPIModel>? fetchedPosts = data!.data;
     length = data!.total!;
-    if (length % 5 > 0) {
-      length = length ~/ 5 + 1;
-    } else {
-      length = length ~/ 5;
-    }
+    length=findLength(length);
     if (fetchedPosts!.isNotEmpty) {
       setState(() {
         posts!.addAll(fetchedPosts);
@@ -101,7 +99,7 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
                 icon: const Icon(Icons.calendar_month),
                 colorBG: colorMainBlue,
               ),
-               Column(
+              Column(
                 children: [
                   const ChartSeasonHW(),
                   Center(
@@ -313,7 +311,7 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
                   ///
                   ),
 
-              /// Stop
+              /// DOT INDICATOR
               Container(
                 padding: EdgeInsets.only(right: 5.w),
                 width: 100.w,
@@ -338,8 +336,8 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
                   SizedBox(
                     width: 2.w,
                   ),
-                  DotIndicator(                      totalPage: length.toString(),
-
+                  DotIndicator(
+                    totalPage: length.toString(),
                     colorBorder: colorErrorPrimary,
                     pageIndex: page.toString(),
                   ),

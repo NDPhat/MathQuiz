@@ -12,10 +12,10 @@ class NotifyHelper {
     configTimeZone();
     tz.initializeTimeZones();
 
-    final AndroidInitializationSettings initializationSettingsAndroid =
+    const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings("appicon");
 
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
     );
@@ -26,11 +26,14 @@ class NotifyHelper {
   }
 
   displayNotification({required String title, required String body}) async {
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
         'your channel id', 'your channel name',
-        importance: Importance.max, priority: Priority.high);
+        sound: UriAndroidNotificationSound("sound"),
+        playSound: true,
+        importance: Importance.max,
+        priority: Priority.high);
     var platformChannelSpecifics =
-        new NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
       0,
       title,
@@ -48,13 +51,15 @@ class NotifyHelper {
     }
   }
 
-  scheduledNotification(int hour, int minute, TaskNotifi task) async {
+  scheduledNotification(int hour, int minute, TaskNotify task) async {
+    int year = int.parse(task.ringDay!.split("/")[2]);
+    int day = int.parse(task.ringDay!.split("/")[1]);
+    int month = int.parse(task.ringDay!.split("/")[0]);
     await flutterLocalNotificationsPlugin.zonedSchedule(
         task.id!.toInt(),
         task.title.toString(),
         task.note.toString(),
-        _convertTime(hour, minute),
-        // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+        _convertTime(year, month, day, hour, minute),
         const NotificationDetails(
             android: AndroidNotificationDetails('channel id 3', 'channel.name',
                 sound: UriAndroidNotificationSound("sound"), playSound: true)),
@@ -66,7 +71,7 @@ class NotifyHelper {
   }
 
   scheduledRepeatNotification(
-      int dayMore, int hour, int minute, TaskNotifi task) async {
+      int dayMore, int hour, int minute, TaskNotify task) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         task.id!.toInt(),
         task.title.toString(),
@@ -89,10 +94,11 @@ class NotifyHelper {
     tz.setLocalLocation(tz.getLocation(timeZone));
   }
 
-  tz.TZDateTime _convertTime(int hour, int minute) {
+  tz.TZDateTime _convertTime(
+      int year, int month, int day, int hour, int minute) {
     final tz.TZDateTime timeNow = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime schedule = tz.TZDateTime(
-        tz.local, timeNow.year, timeNow.month, timeNow.day, hour, minute);
+    tz.TZDateTime schedule =
+        tz.TZDateTime(tz.local, year, month, day, hour, minute);
     if (schedule.isBefore(timeNow)) {
       schedule = schedule.add(const Duration(days: 1));
     }

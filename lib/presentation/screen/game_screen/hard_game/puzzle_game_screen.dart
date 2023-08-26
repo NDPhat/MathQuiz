@@ -11,10 +11,8 @@ import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_
 import 'package:math/presentation/widget/button_custom.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import '../../../../application/cons/constants.dart';
 import '../../../../application/utils/make_quiz.dart';
 import '../../../../data/model/item_value_puzzle.dart';
-import '../../../../data/model/user_global.dart';
 import '../../../../data/remote/authen/authen.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
@@ -392,7 +390,9 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
       dismissOnTouchOutside: false,
       desc: "${"fill all the blank".tr()} ?",
       descTextStyle: s20GgBarColorMainTeal,
-      btnOkOnPress: () {},
+      btnOkOnPress: () {
+        _controller.resume();
+      },
     ).show();
   }
 

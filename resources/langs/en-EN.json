@@ -29,8 +29,8 @@
   "home work":"Home work",
   "input answer": "Input Answer",
   "truefalse": "True/False",
-  "findmissing": "FindMissing",
-  "NOTHING ADDED !!": "NOTHING ADDED !!",
+  "findmissing": "Find Missing",
+  "NOTHING ADDED !!": "EMPTY !!",
 
   "true": "True",
   "false": "False",
@@ -41,6 +41,9 @@
   "task":"TASK",
   "detailed test data":"Detailed test data",
   "detailed data":"Detailed data",
+  "sort": "Sort",
+  "filter": "Filter",
+  "day": "Day",
 
   "battle game": "Battle game",
   "SELECT MODE GAME": "SELECT MODE GAME",

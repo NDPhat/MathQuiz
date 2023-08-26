@@ -3,16 +3,12 @@ int getSign({required String quiz}) {
   switch (sign) {
     case "+":
       return 0;
-      break;
     case "-":
       return 1;
-      break;
     case "x":
       return 2;
-      break;
     case "/":
       return 3;
-      break;
   }
   return 0;
 }

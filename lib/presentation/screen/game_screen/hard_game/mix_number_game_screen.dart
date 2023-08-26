@@ -146,13 +146,13 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
               dateSave: formatTimeTestInput.format(DateTime.now()),
               userID: instance.get<UserGlobal>().id),
           preTest.keyServer.toString());
-      Navigator.pushNamed(context, Routers.homeUser);
+      Navigator.pushNamed(context, Routers.takeHardQuiz);
     } else {
       Navigator.pop(context);
       instance
           .get<PreTestLocalRepo>()
           .updatePreTest(_score, _totalNumberOfQuizzes, preTest.id!);
-      Navigator.pushNamed(context, Routers.homeGuest);
+      Navigator.pushNamed(context, Routers.takeHardQuiz);
     }
   }
 
