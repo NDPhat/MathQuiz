@@ -209,7 +209,6 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorMainBlue,
       body: MainPageHomePG(
         textNow: "",
         colorTextAndIcon: colorSystemYeloow,

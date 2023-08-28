@@ -12,8 +12,6 @@ import 'package:math/domain/bloc/notify_main/notify_main_cubit.dart';
 import 'package:math/main.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
-import '../../../application/utils/format.dart';
-import '../../../data/local/notifi/notifi_helper.dart';
 import '../../../data/model/task_notifi.dart';
 import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
@@ -32,9 +30,11 @@ class LocalNotifyMainScreen extends StatelessWidget {
         animType: AnimType.topSlide,
         desc: "choose one".tr(),
         descTextStyle: s20GgBarColorMainTeal,
-        btnOkText: "view".tr(),
+        btnOkText: "done".tr(),
         btnCancelText: "delete".tr(),
-        btnOkOnPress: () {},
+        btnOkOnPress: () {
+          context.read<NotifyMainCubit>().completeNotifyTask(id);
+        },
         btnCancelOnPress: () {
           context.read<NotifyMainCubit>().delete(id);
         },
@@ -43,7 +43,7 @@ class LocalNotifyMainScreen extends StatelessWidget {
 
     return Scaffold(
         body: MainPageHomePG(
-            textNow: 'Notification',
+            textNow: 'localnotifi'.tr(),
             onBack: () {
               Navigator.pushNamed(context, Routers.homeUser);
             },
@@ -158,18 +158,6 @@ class LocalNotifyMainScreen extends StatelessWidget {
                                     delegate: SliverChildBuilderDelegate(
                                         childCount: snapshot.data!.length,
                                         (context, index) {
-                                  TaskNotify task =
-                                      snapshot.data![index].toGetNotifyTask();
-                                  int timeRemind = 2;
-                                  NotifyHelper().scheduledNotification(
-                                      int.parse(task.startTime
-                                          .toString()
-                                          .split(":")[0]),
-                                      int.parse(task.startTime
-                                              .toString()
-                                              .split(":")[1]) -
-                                          timeRemind,
-                                      task);
                                   return Padding(
                                     padding: EdgeInsets.only(
                                         top: 0.5.h, bottom: 0.5.h),
@@ -264,7 +252,7 @@ class TaskTile extends StatelessWidget {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10),
             height: 10.h,
-            width: 2.w,
+            width: 1.w,
             color: Colors.grey[200]!.withOpacity(0.7),
           ),
           RotatedBox(

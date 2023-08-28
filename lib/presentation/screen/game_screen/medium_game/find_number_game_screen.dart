@@ -314,7 +314,6 @@ class _FindMissingNumberGameScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorMainBlue,
       body: MainPageHomePG(
         textNow: "",
         colorTextAndIcon: colorSystemYeloow,

@@ -5,7 +5,10 @@
   "your name": "Your name",
   "choose your player":"Choose your player",
   "add": "Add",
+  "choose": "Choose",
   "welcome to": "Welcome to",
+  "minutes early": "minutes early",
+
 
   "change password": "Change password",
   "change your password.": "Change your  password.",
@@ -50,6 +53,7 @@
   "bot": "Bot",
   "player":"Player",
   "are you ready": "Are you ready",
+  "quiz": "Quiz",
   "do you want to quit": "Do you want to quit",
   "time up": "Time up",
   "yes": "Yes",

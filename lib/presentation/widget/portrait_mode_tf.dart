@@ -44,25 +44,28 @@ class PortraitModeTF extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.only(top: 2.h),
-                height: 73.h,
-                color: colorMainTealPri,
+                height: 70.h,
                 child: Column(
                   children: [
                     Stack(
                       children: [
-                        Image.asset(
-                          "assets/images/table_quiz.png",
-                          fit: BoxFit.fill,
+                        Container(
+                          padding: EdgeInsets.only(top: 10.h),
+                          child: Image.asset(
+                            "assets/images/bee_table.png",
+                            fit: BoxFit.cover,
+                            height: 30.h,
+                          ),
                         ),
                         Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                          padding: EdgeInsets.only(top: 10.h),
+                          alignment: Alignment.centerRight,
                           child: QuizBodyHW(quizBrainObject: quizBrainObject),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 8.h,
+                      height: 10.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,7 +76,7 @@ class PortraitModeTF extends StatelessWidget {
                           },
                           color: colorSystemWhite,
                           width: 42.w,
-                          height: 13.h,
+                          height: 15.h,
                           child: Image.asset('assets/images/true.png'),
                         ),
                         RoundedButton(
@@ -82,7 +85,7 @@ class PortraitModeTF extends StatelessWidget {
                           },
                           color: colorSystemWhite,
                           width: 42.w,
-                          height: 13.h,
+                          height: 15.h,
                           child: Image.asset('assets/images/false.png'),
                         ),
                       ],

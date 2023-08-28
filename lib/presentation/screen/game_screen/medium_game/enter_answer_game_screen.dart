@@ -311,7 +311,6 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorMainBlue,
       body: MainPageHomePG(
         textNow: "",
         colorTextAndIcon: colorSystemYeloow,

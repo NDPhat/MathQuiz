@@ -7,7 +7,6 @@ import 'package:sizer/sizer.dart';
 import '../../application/cons/color.dart';
 import '../../application/utils/make_quiz.dart';
 
-
 class PortraitModeGame extends StatelessWidget {
   final highscore;
   final int score;
@@ -32,7 +31,7 @@ class PortraitModeGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height:90.h,
+      height: 90.h,
       child: Column(
         children: [
           UserTableScore(
@@ -42,29 +41,26 @@ class PortraitModeGame extends StatelessWidget {
             onFinished: onFinished,
             quizNow: quizNow,
           ),
-          Container(
-            padding: EdgeInsets.only(top: 2.h),
-            height: 73.h,
-            color: colorMainTealPri,
+          SizedBox(
+            height: 70.h,
             child: Column(
               children: [
-                Container(
-                  color: colorMainTealPri,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        "assets/images/table_quiz.png",
-                        fit: BoxFit.fill,
+                Stack(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: Image.asset(
+                        "assets/images/bee_table.png",
+                        fit: BoxFit.cover,
+                        height: 35.h,
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.only(
-                            top: 20.h, left: 20.w),
-                        child: QuizBodyHW(
-                            quizBrainObject: quizBrainObject),
-                      ),
-                    ],
-                  ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 10.h),
+                      alignment: Alignment.centerRight,
+                      child: QuizBodyHW(quizBrainObject: quizBrainObject),
+                    ),
+                  ],
                 ),
                 AnswerTable(
                   quizBrainObject: quizBrainObject,

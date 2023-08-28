@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/data/local/notifi/notifi_helper.dart';
 import 'package:math/data/local/repo/detail_notifi/notify_task_repo.dart';
 
 import '../../../application/utils/format.dart';
@@ -18,6 +19,12 @@ class NotifyMainCubit extends Cubit<NotifyMainState> {
 
   void delete(int id) async {
     notifyTaskLocalRepo.delete(id);
+    NotifyHelper().doneNotify(id);
+  }
+
+  void completeNotifyTask(int id) async {
+    notifyTaskLocalRepo.completeNotifyTask(id);
+    NotifyHelper().doneNotify(id);
   }
 
   void deleteByDay(String dateSave) async {}

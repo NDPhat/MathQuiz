@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import 'package:math/application/di/event_local.dart';
 import 'package:math/data/local/repo/player_local/player_local_repo.dart';
 import 'package:sizer/sizer.dart';
@@ -71,16 +70,12 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ShakeWidget(
-      duration: const Duration(seconds: 2),
-      autoPlay: true,
-      shakeConstant: ShakeDefaultConstant1(),
-      child: Center(
-        child: Image.asset(
-          'assets/images/image_app.png',
-          height: 40.h,
-        ),
-      ),
-    ));
+        body: Center(
+          child: Image.asset(
+            "assets/images/splash icon.png",
+            height: 40.h,
+            fit: BoxFit.cover,
+          ),
+        ));
   }
 }

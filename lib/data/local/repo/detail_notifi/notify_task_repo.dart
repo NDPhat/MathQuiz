@@ -6,9 +6,10 @@ abstract class NotifyTaskLocalRepo {
   //Constructor
   NotifyTaskLocalRepo(this.appDb);
   Future<void> insert(NotifyTaskCompanion entityCompanion);
-  Future<void> update(int id);
+  Future<void> completeNotifyTask(int id);
   Future<NotifyTaskCompanion> getNotifyTask(int id);
   Stream<List<NotifyTaskData>> getAllTaskByDay(String dayNeeded);
   Stream<List<NotifyTaskData>> getAllTask();
+  Future<NotifyTaskData> getLatestTask();
   Future<void> delete(int id);
 }

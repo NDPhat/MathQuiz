@@ -46,19 +46,23 @@ class PortraitModeHomeWork extends StatelessWidget {
             controller: controller,
           ),
           Container(
-            height: 73.h,
-            color: colorWaringText,
+            padding: EdgeInsets.only(bottom: 3.h),
+            height: 70.h,
             child: Column(
               children: [
                 Stack(
                   children: [
-                    Image.asset(
-                      "assets/images/table_quiz.png",
-                      fit: BoxFit.fill,
+                    Container(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: Image.asset(
+                        "assets/images/bee_table.png",
+                        fit: BoxFit.cover,
+                        height: 35.h,
+                      ),
                     ),
                     Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(top: 20.h, left: 20.w),
+                      padding: EdgeInsets.only(top: 10.h),
+                      alignment: Alignment.centerRight,
                       child: QuizBodyHW(quizBrainObject: quizBrainObject),
                     ),
                   ],

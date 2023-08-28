@@ -1,5 +1,6 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../application/cons/color.dart';
@@ -22,99 +23,76 @@ class UserTableScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 17.h,
+      height: 20.h,
       child: Stack(
         alignment: Alignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 2.h),
-            padding: EdgeInsets.only(top: 1.h, left: 5.w, right: 5.w),
-            height: 15.h,
-            decoration: const BoxDecoration(
-                color: colorBlueQuaternery,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50))),
-            child: Row(
+            width: 90.w,
+            margin: EdgeInsets.only(top: 3.h),
+            padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 2.h),
+            decoration: BoxDecoration(
+                border: Border.all(color: colorSystemYeloow),
+                borderRadius: BorderRadius.all(Radius.circular(10.w))),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.update),
-                    SizedBox(
-                      height: 0.1.h,
-                    ),
-                    (Text(
-                      'Quiz : $quizNow',
-                      style: s16f700ColorGreyTe,
-                    ))
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 8.h),
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Score : ',
-                        style: s20f700ColorErrorPro,
+                    Padding(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: Column(
+                        children: [
+                          Text(
+                            trueQ.toString(),
+                            style: GoogleFonts.aclonica(
+                                color: colorSystemYeloow, fontSize: 20),
+                          ),
+                          Image.asset(
+                            "assets/images/happy.png",
+                            width: 50,
+                            height: 7.h,
+                          ),
+                        ],
                       ),
-                      Text(
-                        trueQ.toString(),
-                        style: s20f700ColorErrorPro,
-                      )
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        const CircleAvatar(
-                            radius: 8,
-                            child: Icon(
-                              Icons.check,
-                              size: 8,
-                            )),
-                        SizedBox(
-                          width: 0.5.w,
-                        ),
-                        Text(
-                          trueQ.toString(),
-                          style: s16f700ColorBlueMa,
-                        )
-                      ],
                     ),
-                    SizedBox(
-                      height: 0.1.w,
-                    ),
-                    Row(
-                      children: [
-                        const CircleAvatar(
-                            backgroundColor: colorErrorPrimary,
-                            radius: 8,
-                            child: Icon(
-                              Icons.close,
-                              size: 8,
-                            )),
-                        SizedBox(
-                          width: 0.5.w,
-                        ),
-                        Text(
-                          falseQ.toString(),
-                          style: s16f700ColorError,
-                        )
-                      ],
-                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: Column(
+                        children: [
+                          Text(
+                            falseQ.toString(),
+                            style: GoogleFonts.aclonica(
+                                color: colorSystemYeloow, fontSize: 20),
+                          ),
+                          Image.asset(
+                            "assets/images/sad.png",
+                            width: 50,
+                            height: 7.h,
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
+                SizedBox(
+                  width: 90.w,
+                  child: Text(
+                    trueQ.toString(),
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.aclonica(
+                        color: colorSystemYeloow, fontSize: 30),
+                  ),
+                )
               ],
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 8.h),
+            alignment: Alignment.topCenter,
             child: CircleAvatar(
                 radius: 40,
-                backgroundColor: colorSystemWhite,
+                backgroundColor: colorSystemYeloow,
                 child: CircularCountDownTimer(
                   duration: 60,
                   initialDuration: 0,
@@ -123,13 +101,12 @@ class UserTableScore extends StatelessWidget {
                   height: 50,
                   ringColor: colorSystemWhite,
                   fillColor: colorSystemWhite,
-                  backgroundColor: colorGrayBG,
-                  backgroundGradient: null,
+                  backgroundColor: colorSystemWhite,
                   strokeWidth: 20.0,
                   strokeCap: StrokeCap.round,
                   textStyle: const TextStyle(
                       fontSize: 25,
-                      color: Colors.white,
+                      color: colorSystemYeloow,
                       fontWeight: FontWeight.bold),
                   textFormat: CountdownTextFormat.S,
                   autoStart: false,

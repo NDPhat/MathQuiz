@@ -2,9 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:math/application/extension/notifi_model.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
+import 'package:math/data/model/task_notifi.dart';
 import '../../../application/enum/add_notifi_status.dart';
 import '../../../application/utils/format.dart';
+import '../../../data/local/notifi/notifi_helper.dart';
 import '../../../data/local/repo/detail_notifi/notify_task_repo.dart';
 
 part 'add_notify_state.dart';
@@ -104,6 +107,10 @@ class AddNotifyCubit extends Cubit<AddNotifyState> {
     return false;
   }
 
+  void completeNotifyTask(int id) async {
+    notifyTaskRepo.completeNotifyTask(id);
+  }
+
   Future<void> saveTaskToLocal() async {
     if (isFormValid()) {
       try {
@@ -120,6 +127,12 @@ class AddNotifyCubit extends Cubit<AddNotifyState> {
         );
         //insert task
         await notifyTaskRepo.insert(entity);
+        NotifyTaskData task = await notifyTaskRepo.getLatestTask();
+        int timeRemind = int.parse(state.remind.split(" ")[0]);
+        NotifyHelper().scheduledNotification(
+            int.parse(task.startTime.toString().split(":")[0]),
+            int.parse(task.startTime.toString().split(":")[1]) - timeRemind,
+            task.toGetNotifyTask());
         emit(state.copyWith(status: AddNotifiStatus.success));
       } on Exception catch (e) {
         print(e.toString());

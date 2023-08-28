@@ -5,7 +5,9 @@
   "your name": "Tên",
   "choose your player":"Chọn nhân vật",
   "add": "Thêm",
+  "choose": "Chọn",
   "welcome to": "Chào mừng đến",
+  "minutes early": "phút sớm",
 
   "change password": "Thay đổi mật khẩu",
   "change your password.": "Thay đổi mật khẩu của bạn.",
@@ -49,6 +51,8 @@
   "bot": "Máy",
   "player":"Người chơi",
   "are you ready": "Bạn đã sẵn sàng",
+  "quiz": "Câu",
+
   "do you want to quit": "Bạn có muốn thoát",
   "time up": "Hết thời gian",
   "yes": "Có",

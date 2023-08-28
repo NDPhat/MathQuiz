@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/text_style.dart';
 import '../../../../application/utils/format.dart';
-import '../../../../application/utils/sound.dart';
 import '../../../../data/local/driff/db/db_app.dart';
 import '../../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../../data/model/app_global.dart';
@@ -311,7 +310,6 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorMainBlue,
       resizeToAvoidBottomInset: false,
       body: MainPageHomePG(
         textNow: "",

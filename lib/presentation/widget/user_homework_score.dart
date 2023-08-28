@@ -1,4 +1,5 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -21,32 +22,58 @@ class UserHWScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 17.h,
+      height: 20.h,
       child: Stack(
+        alignment: Alignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 2.h),
-            padding:
-                EdgeInsets.only(top: 1.h, left: 5.w, right: 5.w, bottom: 2.h),
-            alignment: Alignment.bottomCenter,
-            height: 15.h,
-            decoration: const BoxDecoration(
-                color: colorSystemPurple,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50))),
-            child: Text(
-              "$quizNow/$totalQuiz",
-              style:
-                  GoogleFonts.aclonica(color: colorErrorPrimary, fontSize: 20),
+            width: 90.w,
+            margin: EdgeInsets.only(top: 3.h),
+            padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 2.h),
+            decoration: BoxDecoration(
+                border: Border.all(color: colorSystemYeloow),
+                borderRadius: BorderRadius.all(Radius.circular(10.w))),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: Image.asset(
+                        "assets/images/happy.png",
+                        width: 50,
+                        height: 7.h,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: Image.asset(
+                        "assets/images/sad.png",
+                        width: 50,
+                        height: 7.h,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: 90.w,
+                  child: Text(
+                    "${"quiz".tr()} :$quizNow",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.aclonica(
+                        color: colorSystemYeloow, fontSize: 27),
+                  ),
+                )
+              ],
             ),
           ),
           Container(
-            alignment: Alignment.bottomCenter,
-            margin: EdgeInsets.only(bottom: 10.h),
+            alignment: Alignment.topCenter,
             child: CircleAvatar(
                 radius: 40,
-                backgroundColor: colorSystemWhite,
+                backgroundColor: colorSystemYeloow,
                 child: CircularCountDownTimer(
                   duration: 60,
                   initialDuration: 0,
@@ -55,13 +82,12 @@ class UserHWScore extends StatelessWidget {
                   height: 50,
                   ringColor: colorSystemWhite,
                   fillColor: colorSystemWhite,
-                  backgroundColor: colorGrayBG,
-                  backgroundGradient: null,
+                  backgroundColor: colorSystemWhite,
                   strokeWidth: 20.0,
                   strokeCap: StrokeCap.round,
                   textStyle: const TextStyle(
                       fontSize: 25,
-                      color: Colors.white,
+                      color: colorSystemYeloow,
                       fontWeight: FontWeight.bold),
                   textFormat: CountdownTextFormat.S,
                   autoStart: false,

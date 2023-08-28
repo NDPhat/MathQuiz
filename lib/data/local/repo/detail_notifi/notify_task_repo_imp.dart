@@ -25,7 +25,7 @@ class NotifyTaskRepoImpl extends NotifyTaskLocalRepo {
   }
 
   @override
-  Future<void> update(int id) async {
+  Future<void> completeNotifyTask(int id) async {
     // TODO: implement update
     (appDb.update(appDb.notifyTask)..where((tbl) => tbl.id.equals(id)))
         .write(const NotifyTaskCompanion(isCompleted: Value(1)));
@@ -42,5 +42,14 @@ class NotifyTaskRepoImpl extends NotifyTaskLocalRepo {
     yield* (appDb.select(appDb.notifyTask)
           ..where((tbl) => tbl.daySave.equals(dayNeeded)))
         .watch();
+  }
+
+  @override
+  Future<NotifyTaskData> getLatestTask() async {
+    List<NotifyTaskData> list = await (appDb.select(appDb.notifyTask)
+          ..orderBy(
+              [(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+        .get();
+    return list.first;
   }
 }

@@ -203,7 +203,6 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorMainBlue,
       resizeToAvoidBottomInset: false,
       body: MainPageHomePG(
           onBack: () {

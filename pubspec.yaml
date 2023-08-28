@@ -75,7 +75,6 @@ dependencies:
   image:
   tutorial_coach_mark: 1.2.9
   awesome_dialog: 3.1.0
-  flutter_shake_animated: ^0.0.5
   multiselect: 0.1.0
 
   #  flutter_tflite: 1.0.1
@@ -87,6 +86,12 @@ dev_dependencies:
   drift_dev:  ^2.8.2
   injectable_generator: ^2.1.5
   analyzer: ^5.12.0
+  flutter_launcher_icons: 0.9.2
+flutter_icons:
+  android: true
+  image_path: "assets/logo/logo_app.jpg"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/logo/logo_foreground.png"
 dependency_overrides:
   intl: any
   # The "flutter_lints" package below contains a set of recommended lints to

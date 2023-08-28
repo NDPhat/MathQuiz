@@ -1,5 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:math/data/local/repo/detail_notifi/notify_task_repo.dart';
+import 'package:math/main.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -22,10 +24,21 @@ class NotifyHelper {
     // await flutterLocalNotificationsPlugin.initialize(
     //     initializationSettings,
     //     onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
   }
 
-  displayNotification({required String title, required String body}) async {
+  void onDidReceiveNotificationResponse(
+      NotificationResponse notificationResponse) async {
+    if (notificationResponse.id != null) {
+      flutterLocalNotificationsPlugin.cancel(notificationResponse.id!);
+      instance
+          .get<NotifyTaskLocalRepo>()
+          .completeNotifyTask(notificationResponse.id!);
+    }
+  }
+
+  displayNotification({required TaskNotify task}) async {
     var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
         'your channel id', 'your channel name',
         sound: UriAndroidNotificationSound("sound"),
@@ -35,11 +48,11 @@ class NotifyHelper {
     var platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-      0,
-      title,
-      body,
+      task.id!,
+      task.title,
+      task.note,
       platformChannelSpecifics,
-      payload: 'It could be anything you pass',
+      payload: "${task.title}" "${task.note}",
     );
   }
 
@@ -68,6 +81,10 @@ class NotifyHelper {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         payload: "${task.title}" "${task.note}");
+  }
+
+  Future<void> doneNotify(int id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
   }
 
   scheduledRepeatNotification(
