@@ -12,8 +12,8 @@ import '../../data/remote/api/Repo/api_user_repo.dart';
 import '../../data/remote/model/result_quiz_hw_response.dart';
 import '../../main.dart';
 
-class ChildRightHomeInput extends StatelessWidget {
-  ChildRightHomeInput({
+class ChildRightHomePractice extends StatelessWidget {
+  ChildRightHomePractice({
     Key? key,
     this.deTail,
     required this.typeGame,
@@ -62,9 +62,6 @@ class ChildRightHomeInput extends StatelessWidget {
                                   chart.x.toString(),
                               yValueMapper: (ChartDataSheet chart, _) =>
                                   chart.t,
-                              dataLabelSettings: DataLabelSettings(
-                                  isVisible: true,
-                                  textStyle: GoogleFonts.abel(fontSize: 13)),
                             ),
                             ColumnSeries<ChartDataSheet, String>(
                               color: colorErrorPrimary,
@@ -73,9 +70,6 @@ class ChildRightHomeInput extends StatelessWidget {
                                   chart.x.toString(),
                               yValueMapper: (ChartDataSheet chart, _) =>
                                   chart.f,
-                              dataLabelSettings: DataLabelSettings(
-                                  isVisible: true,
-                                  textStyle: GoogleFonts.abel(fontSize: 13)),
                             )
                           ]
                         : <ChartSeries<ChartDataSheet, String>>[

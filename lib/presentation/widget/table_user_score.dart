@@ -30,7 +30,7 @@ class UserTableScore extends StatelessWidget {
           Container(
             width: 90.w,
             margin: EdgeInsets.only(top: 3.h),
-            padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 2.h),
+            padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 1.h),
             decoration: BoxDecoration(
                 border: Border.all(color: colorSystemYeloow),
                 borderRadius: BorderRadius.all(Radius.circular(10.w))),
@@ -47,7 +47,7 @@ class UserTableScore extends StatelessWidget {
                           Text(
                             trueQ.toString(),
                             style: GoogleFonts.aclonica(
-                                color: colorSystemYeloow, fontSize: 20),
+                                color: colorMainBlue, fontSize: 20),
                           ),
                           Image.asset(
                             "assets/images/happy.png",
@@ -64,7 +64,7 @@ class UserTableScore extends StatelessWidget {
                           Text(
                             falseQ.toString(),
                             style: GoogleFonts.aclonica(
-                                color: colorSystemYeloow, fontSize: 20),
+                                color: colorErrorPrimary, fontSize: 20),
                           ),
                           Image.asset(
                             "assets/images/sad.png",

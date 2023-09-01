@@ -99,6 +99,7 @@
   "profile": "Profile",
 
   "sign in to continue": "Sign in to continue",
+  "login fail": "Login fail",
   "your email": "Your email",
   "enter your password": "Enter your password",
   "your password": "Your password",
@@ -138,6 +139,7 @@
 
   "character": "Character",
   "login": "Login",
+  "your trophy": "Your trophy",
 
   "easy quiz":"Easy quiz",
   "medium quiz": "Medium quiz",

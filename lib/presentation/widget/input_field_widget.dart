@@ -44,9 +44,10 @@ class InputFieldWidget extends StatelessWidget {
         validateText: validateText == null ? '' : validateText!,
         isHidden: isHidden == null ? false : isHidden!,
         child: TextField(
+          cursorColor: colorMainBlue,
           readOnly: readOnly == null ? false : readOnly!,
           textInputAction: TextInputAction.next,
-          style: s16f700ColorGreyTe,
+          style: s16f700ColorBlueMa,
           controller: controller != null ? controller : null,
           keyboardType: typeText == null ? null : typeText,
           maxLength: maxLength == null ? null : maxLength,
@@ -54,12 +55,21 @@ class InputFieldWidget extends StatelessWidget {
           decoration: InputDecoration(
             prefixIcon: icon ?? null,
             hintText: hintText,
+            hintStyle: s14f500ColorYel,
+            prefixIconColor: colorSystemYeloow,
             counterText: "",
             suffixIcon: iconRight ?? null,
-            fillColor: colorBGInput,
+            suffixIconColor: colorSystemYeloow,
+            fillColor: colorSystemWhite,
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                borderSide: const BorderSide(color: colorSystemYeloow)),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(color: Colors.black)),
+                borderSide: const BorderSide(color: colorSystemYeloow)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: const BorderSide(color: colorSystemYeloow)),
             filled: true,
           ),
           onChanged: onChanged,

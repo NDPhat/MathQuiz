@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:math/application/cons/color.dart';
 import 'package:sizer/sizer.dart';
 
 class SettingMenuWidget extends StatelessWidget {
@@ -41,7 +42,7 @@ class SettingMenuWidget extends StatelessWidget {
                   ],
                 )),
             const Icon(LineAwesomeIcons.angle_right,
-                size: 30.0, color: Colors.grey)
+                size: 30.0, color:colorWaringText)
           ],
         ),
       ),

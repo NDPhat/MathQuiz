@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:math/application/extension/precsision_double.dart';
 import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 
 import '../../driff/db/db_app.dart';
@@ -105,6 +106,27 @@ class PreQuizLocalRepoImpl extends PreQuizGameRepo {
         await (appDb.select(appDb.preQuizGameEntity)
               ..where((tbl) => tbl.dateSave.equals(day)))
             .get();
+    return data.length;
+  }
+
+  @override
+  Future<double> getAverageScore() async {
+    int score = 0;
+    int quiz = 0;
+    List<PreQuizGameEntityData> data =
+        await (appDb.select(appDb.preQuizGameEntity)).get();
+    data.forEach((element) {
+      score = score + element.score!;
+      quiz = element.numQ + quiz;
+    });
+    double value = (score / quiz).toPrecision(1) * 10; // 2.3
+    return value;
+  }
+
+  @override
+  Future<int> getLengthAllPreQuizGame() async {
+    List<PreQuizGameEntityData> data =
+        await (appDb.select(appDb.preQuizGameEntity)).get();
     return data.length;
   }
 }

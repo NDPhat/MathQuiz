@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.2"
+  animations:
+    dependency: "direct main"
+    description:
+      name: animations
+      sha256: b8c936e61719a595bebdd6291c591e7b104d0ab9d471627d532746b2b279a4f2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   archive:
     dependency: transitive
     description:

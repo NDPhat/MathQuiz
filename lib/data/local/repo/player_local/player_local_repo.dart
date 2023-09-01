@@ -6,7 +6,7 @@ abstract class PlayerLocalRepo {
   //Constructor
   PlayerLocalRepo(this.appDb);
   Future<int> insertPlayerLocal(PlayerLocalEntityCompanion entityCompanion);
-  Future<void> updatePlayerLocal(PlayerLocalEntityData entityData, int id);
+  Future<void> updatePlayerLocal(PlayerLocalEntityCompanion entityData, int id);
   Future<PlayerLocalEntityData> getPlayerLocal(int id);
   Future<void> deletePlayerLocal(int id);
 }

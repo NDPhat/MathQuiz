@@ -231,13 +231,13 @@ class _BOTBattleScreenState extends State<BotDual> {
           decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage(
-                  'assets/images/bg/bg12.jpg',
+                  'assets/images/bg_bot.jpg',
                 ),
                 fit: BoxFit.fill),
           ),
           child: MainPageHomePG(
             textNow: "",
-            colorTextAndIcon: colorMainBlue,
+            colorTextAndIcon: colorErrorPrimary,
             onBack: () {
               controller.pause();
               showOutPageDialog();

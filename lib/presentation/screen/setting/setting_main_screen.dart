@@ -6,13 +6,10 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/constants.dart';
 import 'package:math/application/cons/text_style.dart';
-import 'package:math/data/model/app_global.dart';
 import 'package:math/domain/bloc/setting/setting_cubit.dart';
-import 'package:math/main.dart';
 import 'package:math/presentation/screen/setting/widget/setting_widget.dart';
 import 'package:math/presentation/widget/button_custom.dart';
 import 'package:sizer/sizer.dart';
-import '../../../data/model/user_global.dart';
 import '../../routers/navigation.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
@@ -76,55 +73,63 @@ class SettingMainScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      body: MainPageHomePG(
-        onBack: () {
-          Navigator.pushNamed(context, Routers.homeUser);
-        },
-        colorTextAndIcon: Colors.black,
-        textNow: 'setting'.tr().toString(),
-        onPressHome: () {},
-        child: Column(
-          children: [
-            sizedBox,
-            SettingMenuWidget(
-              title: "localnotifi".tr().toString(),
-              widget: const Icon(
-                LineAwesomeIcons.bell,
-                size: 30,
-                color: colorErrorPrimary,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/home_user.jpg"),
+              fit: BoxFit.cover),
+          color: colorSystemWhite,
+        ),
+        child: MainPageHomePG(
+          onBack: () {
+            Navigator.pushNamed(context, Routers.homeUser);
+          },
+          colorTextAndIcon: Colors.black,
+          textNow: 'setting'.tr().toString(),
+          onPressHome: () {},
+          child: Column(
+            children: [
+              sizedBox,
+              SettingMenuWidget(
+                title: "localnotifi".tr().toString(),
+                widget: const Icon(
+                  LineAwesomeIcons.bell,
+                  size: 30,
+                  color: colorErrorPrimary,
+                ),
+                onPress: () {
+                  Navigator.pushNamed(context, Routers.notifiScreen);
+                },
+                textStyle: s16f700ColorGreyTe,
               ),
-              onPress: () {
-                Navigator.pushNamed(context, Routers.notifiScreen);
-              },
-              textStyle: s16f700ColorGreyTe,
-            ),
-            SizedBox(height: 5.h),
-            SettingMenuWidget(
-              title: "sound".tr().toString(),
-              widget: const Icon(
-                Icons.volume_down_outlined,
-                size: 30,
-                color: colorErrorPrimary,
+              SizedBox(height: 5.h),
+              SettingMenuWidget(
+                title: "sound".tr().toString(),
+                widget: const Icon(
+                  Icons.volume_down_outlined,
+                  size: 30,
+                  color: colorErrorPrimary,
+                ),
+                onPress: () {
+                  showVolumeDialog();
+                },
+                textStyle: s16f700ColorGreyTe,
               ),
-              onPress: () {
-                showVolumeDialog();
-              },
-              textStyle: s16f700ColorGreyTe,
-            ),
-            SizedBox(height: 5.h),
-            SettingMenuWidget(
-              title: "language".tr().toString(),
-              widget: const Icon(
-                LineAwesomeIcons.language,
-                size: 30,
-                color: colorMainBlue,
-              ),
-              onPress: () {
-                Navigator.pushNamed(context, Routers.languageScreen);
-              },
-              textStyle: s16f700ColorGreyTe,
-            )
-          ],
+              SizedBox(height: 5.h),
+              SettingMenuWidget(
+                title: "language".tr().toString(),
+                widget: const Icon(
+                  LineAwesomeIcons.language,
+                  size: 30,
+                  color: colorMainBlue,
+                ),
+                onPress: () {
+                  Navigator.pushNamed(context, Routers.languageScreen);
+                },
+                textStyle: s16f700ColorGreyTe,
+              )
+            ],
+          ),
         ),
       ),
     );

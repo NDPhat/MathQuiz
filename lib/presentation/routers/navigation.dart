@@ -134,8 +134,22 @@ class Routers {
   static const String changePassScreen = '/changePassScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    return MaterialPageRoute(
-      builder: (context) => route(settings),
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => route(settings),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = const Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var tween = Tween(begin: begin, end: end);
+        var curvedAnimation = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOut,
+        );
+
+        return SlideTransition(
+          position: tween.animate(curvedAnimation),
+          child: child,
+        );
+      },
       settings:
           RouteSettings(name: settings.name, arguments: settings.arguments),
     );
@@ -181,7 +195,7 @@ class Routers {
                 preTestLocalRepo: instance.get<PreTestLocalRepo>()),
             child: const TakeQuizHardScreen());
       case checkAnswerPracUserGame:
-        return  const CheckAnswerPracUserGameScreen();
+        return const CheckAnswerPracUserGameScreen();
       case notifiScreen:
         return BlocProvider(
             create: (context) => NotifyMainCubit(
@@ -195,7 +209,8 @@ class Routers {
       case hwcardDetail:
         return DetailItemCardHomeWork();
       case takeQuiz:
-        return const TakeQuizUserScreen();
+        return TakeQuizUserScreen();
+
       case testDetail:
         return BlocProvider(
             create: (context) =>

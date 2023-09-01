@@ -14,6 +14,8 @@ abstract class PreTestLocalRepo {
   Future<int> getLengthAllPreTestByDay(String day);
   Stream<List<PreTestEntityData>> getAllPreTestByDayWithPagination(
       String day, int page);
+  Future<int> getLengthAllPreTest();
+  Future<double> getAverageScore();
   Stream<List<PreTestEntityData>> getAllPreTest();
   Future<PreTestEntityData> getLatestPreTest();
 

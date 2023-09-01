@@ -15,6 +15,8 @@ abstract class PreQuizGameRepo {
   Future<void> updatePreQuizGame(int id, int score, int numQ);
   Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDay(String day);
   Future<int> getLengthAllPreQuizGameByDay(String day);
+  Future<int> getLengthAllPreQuizGame();
+  Future<double> getAverageScore();
   Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDayWithPagination(
       String day, int page);
   Stream<List<PreQuizGameEntityData>> getAllPreQuizGame();

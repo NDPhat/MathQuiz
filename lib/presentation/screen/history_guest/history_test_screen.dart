@@ -107,6 +107,9 @@ class HistoryTestState extends State<HistoryTest> {
                 DateTime.now().subtract(const Duration(days: 6)),
                 height: 10.h,
                 width: 11.5.w,
+                dateTextStyle: const TextStyle(fontSize: 12),
+                dayTextStyle: const TextStyle(fontSize: 10),
+                monthTextStyle: const TextStyle(fontSize: 12),
                 initialSelectedDate: DateTime.now(),
                 selectionColor: colorMainBlue,
                 onDateChange: (date) {

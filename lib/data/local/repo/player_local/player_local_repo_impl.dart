@@ -11,8 +11,8 @@ class PlayerLocalRepoImpl extends PlayerLocalRepo {
   }
 
   @override
-  Future<PlayerLocalEntityData> getPlayerLocal(int id) {
-    return (appDb.select(appDb.playerLocalEntity)
+  Future<PlayerLocalEntityData> getPlayerLocal(int id) async{
+    return await (appDb.select(appDb.playerLocalEntity)
           ..where((tbl) => tbl.id.equals(id)))
         .getSingle();
   }
@@ -25,8 +25,10 @@ class PlayerLocalRepoImpl extends PlayerLocalRepo {
 
   @override
   Future<void> updatePlayerLocal(
-      PlayerLocalEntityData entityData, int id) async {
-    (appDb.update(appDb.playerLocalEntity)..where((tbl) => tbl.id.equals(id)))
-        .write(entityData);
+      PlayerLocalEntityCompanion entityData, int id) async {
+    await (appDb.update(appDb.playerLocalEntity)..where((tbl) => tbl.id.equals(id)))
+        .write(PlayerLocalEntityCompanion(
+      score: entityData.score , join:  entityData.join
+    ));
   }
 }

@@ -200,82 +200,92 @@ class _HumanBattleScreenState extends State<PlayerDual> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorSystemWhite,
-      body: MainPageHomePG(
-        textNow: "",
-        colorTextAndIcon: colorSystemYeloow,
-        onBack: () {
-          controller.pause();
-          showOutPageDialog();
-        },
-        child: Center(
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  SizedBox(
-                    height: 35.h,
-                    child: Column(
-                      children: [
-                        RotatedBox(
-                          quarterTurns: -2,
-                          child: PlayerDualScreen(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                'assets/images/bg_bot.jpg',
+              ),
+              fit: BoxFit.fill),
+        ),
+        child: MainPageHomePG(
+          textNow: "",
+          colorTextAndIcon: colorErrorPrimary,
+          onBack: () {
+            controller.pause();
+            showOutPageDialog();
+          },
+          child: Center(
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 35.h,
+                      child: Column(
+                        children: [
+                          RotatedBox(
+                            quarterTurns: -2,
+                            child: PlayerDualScreen(
+                              quizBrain: _quizBrain,
+                              onTap: (int value) {
+                                _checkAnswerPlayer1(value);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 100.w,
+                            child: RotatedBox(
+                                quarterTurns: -2,
+                                child: Info_Player_Line(
+                                    falsePlayer: _falsePlayer1,
+                                    score: _score1,
+                                    namePlayer: "Player 1")),
+                          ),
+                          Row(children: <Widget>[
+                            const DivideLine(),
+                            Time_Runner(
+                              onFinish: () {
+                                if (startAgain == false) {
+                                  showEndGame();
+                                }
+                              },
+                              controller: controller,
+                            ),
+                            const DivideLine()
+                          ]),
+                          Info_Player_Line(
+                            falsePlayer: _falsePlayer2,
+                            score: _score2,
+                            namePlayer: 'Player 2',
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 35.h,
+                      child: Column(
+                        children: [
+                          PlayerDualScreen(
                             quizBrain: _quizBrain,
                             onTap: (int value) {
-                              _checkAnswerPlayer1(value);
+                              _checkAnswerPlayer2(value);
                             },
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          child: RotatedBox(
-                              quarterTurns: -2,
-                              child: Info_Player_Line(
-                                  falsePlayer: _falsePlayer1,
-                                  score: _score1,
-                                  namePlayer: "Player 1")),
-                        ),
-                        Row(children: <Widget>[
-                          const DivideLine(),
-                          Time_Runner(
-                            onFinish: () {
-                              if (startAgain == false) {
-                                showEndGame();
-                              }
-                            },
-                            controller: controller,
-                          ),
-                          const DivideLine()
-                        ]),
-                        Info_Player_Line(
-                          falsePlayer: _falsePlayer2,
-                          score: _score2,
-                          namePlayer: 'Player 2',
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 35.h,
-                    child: Column(
-                      children: [
-                        PlayerDualScreen(
-                          quizBrain: _quizBrain,
-                          onTap: (int value) {
-                            _checkAnswerPlayer2(value);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

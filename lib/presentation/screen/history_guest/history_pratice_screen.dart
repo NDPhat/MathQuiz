@@ -67,7 +67,8 @@ class HistoryPracticeState extends State<HistoryPractice> {
       height: 50.h,
       padding: EdgeInsets.only(top: 2.h, left: 5.w, right: 5.w, bottom: 2.h),
       child: Container(
-        decoration: BoxDecoration(border: Border.all(color: colorMainTealPri,width: 2)),
+        decoration: BoxDecoration(
+            border: Border.all(color: colorMainTealPri, width: 2)),
         child: Column(
           children: [
             /// LINE CONTENT
@@ -107,6 +108,9 @@ class HistoryPracticeState extends State<HistoryPractice> {
                 DateTime.now().subtract(const Duration(days: 6)),
                 height: 10.h,
                 width: 11.5.w,
+                dateTextStyle: const TextStyle(fontSize: 12),
+                dayTextStyle: const TextStyle(fontSize: 10),
+                monthTextStyle: const TextStyle(fontSize: 12),
                 initialSelectedDate: DateTime.now(),
                 selectionColor: colorMainTealPri,
                 onDateChange: (date) {
@@ -139,7 +143,8 @@ class HistoryPracticeState extends State<HistoryPractice> {
                           onTap: () {
                             showInfoDialog(snapshot.data![index].id);
                           },
-                          child: PreQuizTitle(snapshot.data![index].toGetModel()),
+                          child:
+                              PreQuizTitle(snapshot.data![index].toGetModel()),
                         ));
                       }))
                     ]);

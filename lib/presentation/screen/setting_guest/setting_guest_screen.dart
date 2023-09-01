@@ -73,80 +73,77 @@ class SettingGuestMainScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      body: MainPageHomePG(
-        onBack: () {
-          Navigator.pushNamed(context, Routers.homeGuest);
-        },
-        colorTextAndIcon: Colors.black,
-        textNow: 'setting'.tr().toString(),
-        onPressHome: () {},
-        child: Column(
-          children: [
-            sizedBox,
-            SettingMenuWidget(
-              title: "mode".tr().toString(),
-              widget: const Icon(
-                LineAwesomeIcons.modx,
-                size: 30,
-                color: colorSystemYeloow,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/home_user.jpg"),
+              fit: BoxFit.cover),
+          color: colorSystemWhite,
+        ),
+        child: MainPageHomePG(
+          onBack: () {
+            Navigator.pushNamed(context, Routers.homeGuest);
+          },
+          colorTextAndIcon: Colors.black,
+          textNow: 'setting'.tr().toString(),
+          onPressHome: () {},
+          child: Column(
+            children: [
+              sizedBox,
+              SettingMenuWidget(
+                title: "language".tr().toString(),
+                widget: const Icon(
+                  LineAwesomeIcons.language,
+                  size: 30,
+                  color: colorMainBlue,
+                ),
+                onPress: () {
+                  Navigator.pushNamed(context, Routers.languageScreen);
+                },
+                textStyle: s16f700ColorGreyTe,
               ),
-              textStyle: s16f700ColorGreyTe,
-              onPress: () {},
-            ),
-            SizedBox(height: 5.h),
-            SettingMenuWidget(
-              title: "language".tr().toString(),
-              widget: const Icon(
-                LineAwesomeIcons.language,
-                size: 30,
-                color: colorMainBlue,
+              SizedBox(height: 5.h),
+              SettingMenuWidget(
+                title: "sound".tr().toString(),
+                widget: const Icon(
+                  Icons.volume_down_outlined,
+                  size: 30,
+                  color: colorErrorPrimary,
+                ),
+                onPress: () {
+                  showVolumeDialog();
+                },
+                textStyle: s16f700ColorGreyTe,
               ),
-              onPress: () {
-                Navigator.pushNamed(context, Routers.languageScreen);
-              },
-              textStyle: s16f700ColorGreyTe,
-            ),
-            SizedBox(height: 5.h),
-            SettingMenuWidget(
-              title: "sound".tr().toString(),
-              widget: const Icon(
-                Icons.volume_down_outlined,
-                size: 30,
-                color: colorErrorPrimary,
+              SizedBox(height: 5.h),
+              SettingMenuWidget(
+                title: "character".tr().toString(),
+                widget: const Icon(
+                  LineAwesomeIcons.user,
+                  size: 30,
+                  color: colorMainBlue,
+                ),
+                onPress: () {
+                  Navigator.pushNamed(context, Routers.recordGuest);
+                },
+                textStyle: s16f700ColorGreyTe,
               ),
-              onPress: () {
-                showVolumeDialog();
-              },
-              textStyle: s16f700ColorGreyTe,
-            ),
-            SizedBox(height: 5.h),
-            SettingMenuWidget(
-              title: "character".tr().toString(),
-              widget: const Icon(
-                LineAwesomeIcons.user,
-                size: 30,
-                color: colorMainBlue,
+              SizedBox(height: 5.h),
+              SettingMenuWidget(
+                title: "login".tr().toString(),
+                widget: const Icon(
+                  LineAwesomeIcons.lock,
+                  size: 30,
+                  color: colorMainTealPri,
+                ),
+                onPress: () {
+                  Navigator.pushNamed(context, Routers.login);
+                },
+                textStyle: s16f700ColorGreyTe,
               ),
-              onPress: () {
-                Navigator.pushNamed(context, Routers.recordGuest);
-              },
-              textStyle: s16f700ColorGreyTe,
-            ),
-            SizedBox(height: 5.h),
-            SettingMenuWidget(
-              title: "login".tr().toString(),
-              widget: const Icon(
-                LineAwesomeIcons.lock,
-                size: 30,
-                color: colorMainBlue,
-              ),
-              onPress: () {
-                Navigator.pushNamed(context, Routers.login);
-              },
-              textStyle: s16f700ColorGreyTe,
-            ),
-            SizedBox(height: 5.h),
-          ],
+              SizedBox(height: 5.h),
+            ],
+          ),
         ),
       ),
     );

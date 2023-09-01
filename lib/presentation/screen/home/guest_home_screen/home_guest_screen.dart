@@ -7,6 +7,7 @@ import 'package:math/presentation/screen/home/user_home_screen/widget/student_da
 import 'package:sizer/sizer.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
+import '../../../../application/utils/func.dart';
 import '../../../widget/home_card.dart';
 
 class HomeGuestMainScreen extends StatelessWidget {
@@ -19,7 +20,7 @@ class HomeGuestMainScreen extends StatelessWidget {
         return false;
       },
       child: Scaffold(
-        backgroundColor: colorMainBlueChart,
+        backgroundColor: colorSystemYeloow,
         body: Column(
           children: [
             //we will divide the screen into two parts
@@ -49,11 +50,12 @@ class HomeGuestMainScreen extends StatelessWidget {
                     children: [
                       StudentDataCard(
                         title: 'attendance'.tr(),
-                        value: '90.02%',
+                        value: instance.get<UserLocal>().join.toString(),
                       ),
                       StudentDataCard(
                         title: 'score'.tr(),
-                        value: 'B',
+                        value: findScoreLocal(instance.get<UserLocal>().score!)
+                            .toString(),
                       ),
                     ],
                   )
@@ -65,13 +67,18 @@ class HomeGuestMainScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 width: 100.w,
+                height: 50.h,
                 decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                        'assets/images/home_guest.png',
+                      ),
+                      fit: BoxFit.cover),
                   color: colorSystemWhite,
                   borderRadius: kTopBorderRadius,
                 ),
                 child: SingleChildScrollView(
                   //for padding
-                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
                       kHalfSizedBox,
@@ -79,7 +86,7 @@ class HomeGuestMainScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           HomeCard(
-                            colorBG: colorMainTealPri,
+                            colorBorder: colorMainTealPri,
                             onPress: () {
                               Navigator.pushNamed(context, Routers.takeQuiz);
                             },
@@ -87,7 +94,7 @@ class HomeGuestMainScreen extends StatelessWidget {
                             title: 'take quiz'.tr(),
                           ),
                           HomeCard(
-                            colorBG: colorErrorPrimary,
+                            colorBorder: colorErrorPrimary,
                             onPress: () {
                               Navigator.pushNamed(
                                   context, Routers.battleMainScreen);
@@ -101,7 +108,7 @@ class HomeGuestMainScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           HomeCard(
-                            colorBG: colorSystemYeloow,
+                            colorBorder: colorSystemYeloow,
                             onPress: () {
                               Navigator.pushNamed(
                                   context, Routers.dataSheetGuestScreen);
@@ -110,7 +117,7 @@ class HomeGuestMainScreen extends StatelessWidget {
                             title: 'history'.tr().toString(),
                           ),
                           HomeCard(
-                            colorBG: Colors.purple,
+                            colorBorder: Colors.purple,
                             onPress: () {
                               Navigator.pushNamed(
                                   context, Routers.settingGuestScreen);

@@ -12,8 +12,8 @@ import '../../data/remote/api/Repo/api_user_repo.dart';
 import '../../data/remote/model/result_quiz_hw_response.dart';
 import '../../main.dart';
 
-class ChildRightHW extends StatelessWidget {
-  ChildRightHW({
+class ChildRightHWAndTest extends StatelessWidget {
+  const ChildRightHWAndTest({
     Key? key,
     required this.type,
   }) : super(key: key);
@@ -112,10 +112,6 @@ class ChildRightHW extends StatelessWidget {
                             xValueMapper: (ChartDataSheet chart, _) =>
                                 chart.x.toString(),
                             yValueMapper: (ChartDataSheet chart, _) => chart.t,
-                            dataLabelSettings: DataLabelSettings(
-                                showZeroValue: true,
-                                isVisible: true,
-                                textStyle: GoogleFonts.abel(fontSize: 13)),
                           ),
                           ColumnSeries<ChartDataSheet, String>(
                             color: colorErrorPrimary,
@@ -123,10 +119,6 @@ class ChildRightHW extends StatelessWidget {
                             xValueMapper: (ChartDataSheet chart, _) =>
                                 chart.x.toString(),
                             yValueMapper: (ChartDataSheet chart, _) => chart.f,
-                            dataLabelSettings: DataLabelSettings(
-                                showZeroValue: true,
-                                isVisible: true,
-                                textStyle: GoogleFonts.abel(fontSize: 13)),
                           ),
                         ]);
                   } else {

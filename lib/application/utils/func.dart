@@ -26,6 +26,19 @@ String findAveScoreTest(int score, int totalQ) {
   return "C";
 }
 
+String findScoreLocal(double score) {
+  if (score < 5) {
+    return "D";
+  } else if (score > 5 && score < 7) {
+    return "C";
+  } else if (score > 7 && score < 8) {
+    return "B";
+  } else if (score > 8) {
+    return "A";
+  }
+  return "C";
+}
+
 int findPos(String sign) {
   switch (sign) {
     case "+":

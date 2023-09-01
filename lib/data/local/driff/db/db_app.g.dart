@@ -1911,8 +1911,18 @@ class $PlayerLocalEntityTable extends PlayerLocalEntity
   late final GeneratedColumn<String> imageUser = GeneratedColumn<String>(
       'imageUser', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _scoreMeta = const VerificationMeta('score');
   @override
-  List<GeneratedColumn> get $columns => [id, name, imageUser];
+  late final GeneratedColumn<double> score = GeneratedColumn<double>(
+      'score', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _joinMeta = const VerificationMeta('join');
+  @override
+  late final GeneratedColumn<int> join = GeneratedColumn<int>(
+      'join', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, name, imageUser, score, join];
   @override
   String get aliasedName => _alias ?? 'player_local_entity';
   @override
@@ -1938,6 +1948,16 @@ class $PlayerLocalEntityTable extends PlayerLocalEntity
     } else if (isInserting) {
       context.missing(_imageUserMeta);
     }
+    if (data.containsKey('score')) {
+      context.handle(
+          _scoreMeta, score.isAcceptableOrUnknown(data['score']!, _scoreMeta));
+    }
+    if (data.containsKey('join')) {
+      context.handle(
+          _joinMeta, join.isAcceptableOrUnknown(data['join']!, _joinMeta));
+    } else if (isInserting) {
+      context.missing(_joinMeta);
+    }
     return context;
   }
 
@@ -1953,6 +1973,10 @@ class $PlayerLocalEntityTable extends PlayerLocalEntity
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       imageUser: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}imageUser'])!,
+      score: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}score']),
+      join: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}join'])!,
     );
   }
 
@@ -1967,14 +1991,24 @@ class PlayerLocalEntityData extends DataClass
   final int id;
   final String name;
   final String imageUser;
+  final double? score;
+  final int join;
   const PlayerLocalEntityData(
-      {required this.id, required this.name, required this.imageUser});
+      {required this.id,
+      required this.name,
+      required this.imageUser,
+      this.score,
+      required this.join});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
     map['imageUser'] = Variable<String>(imageUser);
+    if (!nullToAbsent || score != null) {
+      map['score'] = Variable<double>(score);
+    }
+    map['join'] = Variable<int>(join);
     return map;
   }
 
@@ -1983,6 +2017,9 @@ class PlayerLocalEntityData extends DataClass
       id: Value(id),
       name: Value(name),
       imageUser: Value(imageUser),
+      score:
+          score == null && nullToAbsent ? const Value.absent() : Value(score),
+      join: Value(join),
     );
   }
 
@@ -1993,6 +2030,8 @@ class PlayerLocalEntityData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       imageUser: serializer.fromJson<String>(json['imageUser']),
+      score: serializer.fromJson<double?>(json['score']),
+      join: serializer.fromJson<int>(json['join']),
     );
   }
   @override
@@ -2002,34 +2041,47 @@ class PlayerLocalEntityData extends DataClass
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'imageUser': serializer.toJson<String>(imageUser),
+      'score': serializer.toJson<double?>(score),
+      'join': serializer.toJson<int>(join),
     };
   }
 
-  PlayerLocalEntityData copyWith({int? id, String? name, String? imageUser}) =>
+  PlayerLocalEntityData copyWith(
+          {int? id,
+          String? name,
+          String? imageUser,
+          Value<double?> score = const Value.absent(),
+          int? join}) =>
       PlayerLocalEntityData(
         id: id ?? this.id,
         name: name ?? this.name,
         imageUser: imageUser ?? this.imageUser,
+        score: score.present ? score.value : this.score,
+        join: join ?? this.join,
       );
   @override
   String toString() {
     return (StringBuffer('PlayerLocalEntityData(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('imageUser: $imageUser')
+          ..write('imageUser: $imageUser, ')
+          ..write('score: $score, ')
+          ..write('join: $join')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, imageUser);
+  int get hashCode => Object.hash(id, name, imageUser, score, join);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PlayerLocalEntityData &&
           other.id == this.id &&
           other.name == this.name &&
-          other.imageUser == this.imageUser);
+          other.imageUser == this.imageUser &&
+          other.score == this.score &&
+          other.join == this.join);
 }
 
 class PlayerLocalEntityCompanion
@@ -2037,35 +2089,52 @@ class PlayerLocalEntityCompanion
   final Value<int> id;
   final Value<String> name;
   final Value<String> imageUser;
+  final Value<double?> score;
+  final Value<int> join;
   const PlayerLocalEntityCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.imageUser = const Value.absent(),
+    this.score = const Value.absent(),
+    this.join = const Value.absent(),
   });
   PlayerLocalEntityCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required String imageUser,
+    this.score = const Value.absent(),
+    required int join,
   })  : name = Value(name),
-        imageUser = Value(imageUser);
+        imageUser = Value(imageUser),
+        join = Value(join);
   static Insertable<PlayerLocalEntityData> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? imageUser,
+    Expression<double>? score,
+    Expression<int>? join,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (imageUser != null) 'imageUser': imageUser,
+      if (score != null) 'score': score,
+      if (join != null) 'join': join,
     });
   }
 
   PlayerLocalEntityCompanion copyWith(
-      {Value<int>? id, Value<String>? name, Value<String>? imageUser}) {
+      {Value<int>? id,
+      Value<String>? name,
+      Value<String>? imageUser,
+      Value<double?>? score,
+      Value<int>? join}) {
     return PlayerLocalEntityCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       imageUser: imageUser ?? this.imageUser,
+      score: score ?? this.score,
+      join: join ?? this.join,
     );
   }
 
@@ -2081,6 +2150,12 @@ class PlayerLocalEntityCompanion
     if (imageUser.present) {
       map['imageUser'] = Variable<String>(imageUser.value);
     }
+    if (score.present) {
+      map['score'] = Variable<double>(score.value);
+    }
+    if (join.present) {
+      map['join'] = Variable<int>(join.value);
+    }
     return map;
   }
 
@@ -2089,7 +2164,9 @@ class PlayerLocalEntityCompanion
     return (StringBuffer('PlayerLocalEntityCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('imageUser: $imageUser')
+          ..write('imageUser: $imageUser, ')
+          ..write('score: $score, ')
+          ..write('join: $join')
           ..write(')'))
         .toString();
   }

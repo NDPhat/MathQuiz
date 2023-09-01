@@ -12,8 +12,8 @@ import '../../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../../data/remote/model/pre_quiz_game_response.dart';
 import '../../../../data/remote/model/result_quiz_hw_response.dart';
 import '../../../../main.dart';
-import '../../../widget/child_right_home_practices_input.dart';
-import '../../../widget/child_right_item_card_home.dart';
+import '../../../widget/child_right_home_practices.dart';
+import '../../../widget/child_right_home_hw_test.dart';
 import '../../../widget/line_item_content_card_home.dart';
 import '../../home/user_home_screen/widget/main_home_page_bg.dart';
 
@@ -79,7 +79,7 @@ class DataSheetUserScreen extends StatelessWidget {
                                 totalQ: totalQ.toString(),
                                 trueAve:
                                     ((score / totalQ) * 100).toStringAsFixed(2),
-                                childRight: ChildRightHW(
+                                childRight: ChildRightHWAndTest(
                                   type: "hw",
                                 ),
                                 timeNow:
@@ -133,7 +133,7 @@ class DataSheetUserScreen extends StatelessWidget {
                               totalQ: totalQ.toString(),
                               trueAve:
                                   ((score / totalQ) * 100).toStringAsFixed(2),
-                              childRight: ChildRightHomeInput(
+                              childRight: ChildRightHomePractice(
                                 typeGame: "input",
                               ),
                               timeNow:
@@ -181,7 +181,7 @@ class DataSheetUserScreen extends StatelessWidget {
                                 totalQ: totalQ.toString(),
                                 trueAve:
                                     ((score / totalQ) * 100).toStringAsFixed(2),
-                                childRight: ChildRightHomeInput(
+                                childRight: ChildRightHomePractice(
                                   typeGame: "true/false",
                                 ),
                                 timeNow:
@@ -228,7 +228,7 @@ class DataSheetUserScreen extends StatelessWidget {
                                 totalQ: totalQ.toString(),
                                 trueAve:
                                     ((score / totalQ) * 100).toStringAsFixed(2),
-                                childRight: ChildRightHomeInput(
+                                childRight: ChildRightHomePractice(
                                   typeGame: "missing",
                                 ),
                                 timeNow:
@@ -279,7 +279,7 @@ class DataSheetUserScreen extends StatelessWidget {
                                 totalQ: totalQ.toString(),
                                 trueAve:
                                     ((score / totalQ) * 100).toStringAsFixed(2),
-                                childRight: ChildRightHW(
+                                childRight: ChildRightHWAndTest(
                                   type: "test",
                                 ),
                                 timeNow:

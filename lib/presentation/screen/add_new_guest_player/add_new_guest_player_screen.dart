@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,13 +33,13 @@ class _AddNewGuestPlayerScreenState extends State<AddNewGuestPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: colorBlueQuaternery,
+        backgroundColor: colorSystemYeloow,
         resizeToAvoidBottomInset: false,
         body: MainPageHomePG(
             onBack: () {
               Navigator.pop(context);
             },
-            textNow: 'New player',
+            textNow: 'new player'.tr(),
             onPressHome: () {},
             colorTextAndIcon: Colors.black,
             child: Column(
@@ -59,7 +60,7 @@ class _AddNewGuestPlayerScreenState extends State<AddNewGuestPlayerScreen> {
                               color: colorErrorPrimary,
                               fontSize: 20,
                               fontWeight: FontWeight.w700)),
-                      Text('Welcome to MATHQUIZ',
+                      Text('Welcome to Pee Quiz',
                           style: GoogleFonts.cabin(
                               color: colorErrorPrimary,
                               fontSize: 20,
@@ -90,8 +91,8 @@ class _AddNewGuestPlayerScreenState extends State<AddNewGuestPlayerScreen> {
                           return pre.nameError != now.nameError;
                         }, builder: (BuildContext context, state) {
                           return InputFieldWidget(
-                            hintText: 'Enter your name',
-                            nameTitle: 'Your name',
+                            hintText: 'enter your name'.tr(),
+                            nameTitle: 'your name'.tr(),
                             width: 80.w,
                             height: 8.h,
                             onChanged: (value) {
@@ -104,7 +105,7 @@ class _AddNewGuestPlayerScreenState extends State<AddNewGuestPlayerScreen> {
                         }),
                       ),
                       Text(
-                        "Choose your player",
+                        "choose your player".tr(),
                         style: GoogleFonts.saira(
                             color: colorErrorPrimary, fontSize: 20),
                       ),
@@ -171,14 +172,15 @@ class _AddNewGuestPlayerScreenState extends State<AddNewGuestPlayerScreen> {
                                   .read<AddPlayerCubit>()
                                   .addPlayerToLocal(state.imageUser);
                             },
-                            color: colorMainBlue,
+                            color: colorSystemWhite,
+                            colorBorder: colorSystemYeloow,
                             width: 80.w,
                             height: 8.h,
                             child: Center(
                               child: Text(
-                                "Add",
+                                "add".tr(),
                                 style: GoogleFonts.saira(
-                                    color: colorSystemWhite, fontSize: 20),
+                                    color: colorSystemYeloow, fontSize: 20),
                               ),
                             ));
                       }),

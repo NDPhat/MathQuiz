@@ -8,7 +8,6 @@ import 'package:math/main.dart';
 import '../../../application/enum/add_player_status.dart';
 import '../../../data/local/driff/db/db_app.dart';
 import '../../../data/local/repo/player_local/player_local_repo.dart';
-import '../../../data/model/user_local.dart';
 part 'add_player_state.dart';
 
 class AddPlayerCubit extends Cubit<AddPlayerState> {
@@ -22,9 +21,16 @@ class AddPlayerCubit extends Cubit<AddPlayerState> {
       try {
         int userID = await playerLocalRepo.insertPlayerLocal(
             PlayerLocalEntityCompanion(
-                name: Value(state.name), imageUser: Value(imageLink)));
+                name: Value(state.name),
+                imageUser: Value(imageLink),
+                score: const Value(0),
+                join: const Value(0)));
         UserEventLocal.updateUserLocal(PlayerLocalEntityData(
-            id: userID, name: state.name, imageUser: imageLink));
+            id: userID,
+            name: state.name,
+            imageUser: imageLink,
+            score: 0,
+            join: 0));
         instance.get<AuthenRepository>().handleLocalAutoLoginApp(true);
         instance.get<AuthenRepository>().handleIDLocalPlayerLoginApp(userID);
         emit(state.copyWith(status: AddPlayerStatus.success));

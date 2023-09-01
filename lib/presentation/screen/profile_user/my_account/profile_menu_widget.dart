@@ -10,13 +10,14 @@ class ProfileMenuWidget extends StatelessWidget {
       required this.icon,
       required this.onPress,
       this.textColor,
+        this.iconColor
       })
       : super(key: key);
 
   final String title;
   final IconData icon;
   final VoidCallback onPress;
-  final Color? textColor;
+  final Color? textColor,iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class ProfileMenuWidget extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(icon, color: colorMainBlue),
+                    Icon(icon, color: textColor),
                     SizedBox(
                       width: 5.w,
                     ),

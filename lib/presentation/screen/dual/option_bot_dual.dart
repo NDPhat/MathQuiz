@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../routers/navigation.dart';
+import '../../widget/box_level.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class OptionModeBotDual extends StatelessWidget {
@@ -15,93 +16,72 @@ class OptionModeBotDual extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorSystemWhite,
-      body: MainPageHomePG(
-        onBack: () {
-          Navigator.pushNamed(context, Routers.battleMainScreen);
-        },
-        textNow: "battle game".tr(),
-        onPressHome: () {},
-        colorTextAndIcon: Colors.black,
-        child: Container(
-          width: 100.w,
-          height: 80.h,
-          padding: EdgeInsets.only(left: 5.w, right: 5.w),
-          decoration: const BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(
-                width: 100.w,
-                height: 10.h,
-                child: Center(
-                    child: Text("SELECT MODE GAME".tr(),
-                        style: GoogleFonts.abrilFatface(
-                            color: colorSystemWhite,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 25))),
-              ),
-              Column(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/batlle_game_bg.jpg"),
+              fit: BoxFit.fill),
+          color: colorSystemWhite,
+        ),
+        child: MainPageHomePG(
+          onBack: () {
+            Navigator.pushNamed(context, Routers.battleMainScreen);
+          },
+          textNow: "battle game".tr(),
+          onPressHome: () {},
+          colorTextAndIcon: Colors.black,
+          child: Container(
+            width: 100.w,
+            height: 90.h,
+            alignment: Alignment.center,
+            child: Container(
+              width: 90.w,
+              height: 40.h,
+              padding: EdgeInsets.only(left: 5.w, right: 5.w),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Level_Box(
                     level: "easy".tr(),
-                    time: 5,
-                    style: kTitleTSBold1,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routers.battleBOT,
+                          arguments: LevelGameBot(level: "easy", time: 5));
+                    },
+                    imageLink: "assets/images/easy_lv.png",
+                    style: GoogleFonts.barlow(
+                        fontSize: 20, color: colorMainTealPri),
                     colorBG: colorMainTealPri,
                   ),
                   sizedBox,
                   Level_Box(
                     level: "medium".tr(),
-                    time: 4,
-                    style: kTitleTSBold1,
+                    imageLink: "assets/images/medium_lv.jpg",
+                    style:
+                        GoogleFonts.barlow(fontSize: 20, color: colorMainBlue),
                     colorBG: colorMainBlue,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routers.battleBOT,
+                          arguments: LevelGameBot(level: "medium", time: 4));
+                    },
                   ),
                   sizedBox,
                   Level_Box(
                     level: "hard".tr(),
-                    time: 3,
-                    style: kTitleTSBold1,
+                    imageLink: "assets/images/hard_lv.jpg",
+                    style: GoogleFonts.barlow(
+                        fontSize: 20, color: colorErrorPrimary),
                     colorBG: colorErrorPrimary,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routers.battleBOT,
+                          arguments: LevelGameBot(level: "hard", time: 3));
+                    },
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
-  }
-}
-
-class Level_Box extends StatelessWidget {
-  const Level_Box(
-      {super.key,
-      required this.level,
-      required this.style,
-      required this.time,
-      required this.colorBG});
-
-  final String level;
-  final int time;
-  final Color colorBG;
-  final TextStyle style;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, Routers.battleBOT,
-              arguments: LevelGameBot(level: level, time: time));
-        },
-        child: Container(
-            height: 17.h,
-            width: 80.w,
-            decoration: BoxDecoration(
-                color: colorBG,
-                border: Border.all(color: colorGrayBG),
-                borderRadius: const BorderRadius.all(Radius.circular(15))),
-            child: Center(child: Text(level.toUpperCase(), style: style))));
   }
 }

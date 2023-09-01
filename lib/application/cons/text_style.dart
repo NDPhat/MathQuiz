@@ -89,6 +89,11 @@ const s16f700ColorBlueMa = TextStyle(
   fontSize: 16,
   color: colorMainBlue,
 );
+const s16f700ColorSysYel = TextStyle(
+  fontWeight: font700,
+  fontSize: 16,
+  color: colorSystemYeloow,
+);
 const s16f700ColorSysWhite = TextStyle(
   fontWeight: font700,
   fontSize: 16,

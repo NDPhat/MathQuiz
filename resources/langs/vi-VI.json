@@ -96,6 +96,7 @@
   "profile": "Cá nhân",
 
   "sign in to continue": "Đăng nhập để tiếp tục",
+  "login fail": "Đăng nhập thất bại",
   "your email": "Email",
   "enter your password": "Nhập mật khẩu",
   "your password": "Mật khẩu",
@@ -132,6 +133,8 @@
 
   "character": "Nhân vật",
   "login": "Đăng nhập",
+  "your trophy": "Thành tựu",
+
 
   "easy quiz":"Câu hỏi dễ",
   "medium quiz":"Câu hỏi vừa",

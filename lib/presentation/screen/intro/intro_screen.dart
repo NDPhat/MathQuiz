@@ -66,7 +66,7 @@ class _IntroScreenState extends State<IntroScreen> {
               child: GestureDetector(
                 child: Text(
                   'skip'.tr().toString(),
-                  style: s16f700ColorGreyTe,
+                  style: s16f700ColorMainTealPri,
                 ),
                 onTap: () {
                   Navigator.pushNamed(context, Routers.chooseOptionUseApp);
@@ -119,13 +119,11 @@ class _IntroScreenState extends State<IntroScreen> {
                               curve: Curves.ease);
                         }
                       },
-                      color: colorMainBlue,
+                      colorBorder: colorSystemYeloow,
+                      color: colorSystemWhite,
                       width: 36.w,
                       height: 5.h,
-                      child: Text(
-                        "go".tr().toString(),
-                        style: s20f700ColorSysWhite,
-                      ),
+                      child: Text("go".tr().toString(), style: s16f700ColorSysYel),
                     )
                   ],
                 )
@@ -147,7 +145,7 @@ class DotIndicator extends StatelessWidget {
       width: isActive ? 7.w : 5.w,
       height: 1.h,
       decoration: BoxDecoration(
-          color: isActive ? colorMainBlue : colorGreyTetiary,
+          color: isActive ? colorWaringText : colorMainTealPri,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
     );
   }
@@ -178,7 +176,7 @@ class IntroBody extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 6.h,
+          height: 8.h,
         ),
         SizedBox(
           width: 87.5.w,
@@ -189,7 +187,7 @@ class IntroBody extends StatelessWidget {
                 height: 4.h,
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  height: 2.h,
+                  height: 1.7.h,
                   color: colorMainTealPri,
                 ),
               ),
@@ -199,10 +197,10 @@ class IntroBody extends StatelessWidget {
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
-                  style:  const TextStyle(
+                  style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
-                    color: colorErrorPrimary,
+                    color: colorWaringText,
                   ),
                 ),
               ),
@@ -210,7 +208,7 @@ class IntroBody extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 2.h,
+          height: 4.h,
         ),
         SizedBox(
           child: Text(
@@ -218,7 +216,7 @@ class IntroBody extends StatelessWidget {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: colorSystemYeloow,
+              color: colorWaringText,
             ),
             textAlign: TextAlign.center,
           ),

@@ -24,14 +24,22 @@ class NotifyHelper {
     // await flutterLocalNotificationsPlugin.initialize(
     //     initializationSettings,
     //     onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+
+    /// INIT
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
   }
 
+
+  /// HANDLE NOTIFY RECEIVE
   void onDidReceiveNotificationResponse(
       NotificationResponse notificationResponse) async {
     if (notificationResponse.id != null) {
+
+      /// CANCEL NOTIFY
       flutterLocalNotificationsPlugin.cancel(notificationResponse.id!);
+
+      /// UPDATE STATUS
       instance
           .get<NotifyTaskLocalRepo>()
           .completeNotifyTask(notificationResponse.id!);

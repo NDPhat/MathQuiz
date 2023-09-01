@@ -1,3 +1,7 @@
+import 'package:drift/drift.dart';
+import 'package:math/data/local/repo/player_local/player_local_repo.dart';
+import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
+import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/remote/model/user_api_res.dart';
 
 import '../../data/local/driff/db/db_app.dart';
@@ -20,9 +24,30 @@ class UserEventLocal {
     instance.get<UserGlobal>().password = a.password;
   }
 
+  static Future<void> getScoreAndJoinForLocal() async {
+    double scoreGame = await instance.get<PreQuizGameRepo>().getAverageScore();
+    int intGame =
+        await instance.get<PreQuizGameRepo>().getLengthAllPreQuizGame();
+    if (scoreGame.isNaN) {
+      scoreGame = 0;
+    }
+    if (intGame.isNaN) {
+      intGame = 0;
+    }
+    instance.get<UserLocal>().score = scoreGame;
+    instance.get<UserLocal>().join = intGame;
+    instance.get<PlayerLocalRepo>().updatePlayerLocal(
+        PlayerLocalEntityCompanion(
+            score: Value(scoreGame), join: Value(intGame)),
+        instance.get<UserLocal>().id!);
+  }
+
   static void updateUserLocal(PlayerLocalEntityData a) {
+    getScoreAndJoinForLocal();
     instance.get<UserLocal>().id = a.id;
     instance.get<UserLocal>().name = a.name;
     instance.get<UserLocal>().imageLink = a.imageUser;
+    instance.get<UserLocal>().score = a.score;
+    instance.get<UserLocal>().join = a.join;
   }
 }

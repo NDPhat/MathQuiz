@@ -17,7 +17,7 @@ class HomeUserScreen extends StatelessWidget {
         return false;
       },
       child: Scaffold(
-        backgroundColor: colorMainBlueChart,
+        backgroundColor: colorSystemYeloow,
         body: Column(
           children: [
             //we will divide the screen into two parts
@@ -76,10 +76,10 @@ class HomeUserScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
                 width: 100.w,
                 height: 65.h,
-                decoration: const BoxDecoration(
+                decoration:  const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(
-                        'assets/images/bg_home_user.png',
+                        'assets/images/home_user.jpg',
                       ),
                       fit: BoxFit.fill),
                   color: colorSystemWhite,
@@ -100,10 +100,10 @@ class HomeUserScreen extends StatelessWidget {
                             },
                             icon: 'assets/icons/quiz.svg',
                             title: 'take quiz'.tr().toString(),
-                            colorBG: colorMainBlueChart,
+                            colorBorder: colorMainBlueChart,
                           ),
                           HomeCard(
-                            colorBG: colorErrorPrimary,
+                            colorBorder: colorErrorPrimary,
                             onPress: () {
                               Navigator.pushNamed(
                                   context, Routers.assignmentMainScreen);
@@ -118,7 +118,7 @@ class HomeUserScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           HomeCard(
-                            colorBG: colorMainTealPri,
+                            colorBorder: colorMainTealPri,
                             onPress: () {
                               Navigator.pushNamed(
                                   context, Routers.battleMainScreen);
@@ -127,7 +127,7 @@ class HomeUserScreen extends StatelessWidget {
                             title: 'game'.tr().toString(),
                           ),
                           HomeCard(
-                            colorBG: colorSystemYeloow,
+                            colorBorder: colorSystemYeloow,
                             onPress: () {
                               Navigator.pushNamed(
                                   context, Routers.dataSheetScreen);
@@ -142,7 +142,7 @@ class HomeUserScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           HomeCard(
-                            colorBG: Colors.pink,
+                            colorBorder: Colors.pink,
                             onPress: () {
                               Navigator.pushNamed(
                                   context, Routers.settingScreen);
@@ -151,7 +151,7 @@ class HomeUserScreen extends StatelessWidget {
                             title: 'setting'.tr().toString(),
                           ),
                           HomeCard(
-                            colorBG: Colors.orange,
+                            colorBorder: Colors.orange,
                             onPress: () {
                               Navigator.pushNamed(
                                   context, Routers.profileScreen);

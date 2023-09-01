@@ -7,7 +7,7 @@ import '../../../application/cons/constants.dart';
 import '../../../data/model/user_global.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
-import '../../widget/item_take_quiz_widget.dart';
+import '../../widget/box_level.dart';
 import '../home/user_home_screen/widget/main_home_page_bg.dart';
 
 class DualMainScreen extends StatelessWidget {
@@ -21,56 +21,63 @@ class DualMainScreen extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: colorSystemWhite,
-        body: MainPageHomePG(
-          onBack: () {
-            if (instance.get<UserGlobal>().onLogin == true) {
-              Navigator.pushNamed(context, Routers.homeUser);
-            } else {
-              Navigator.pushNamed(context, Routers.homeGuest);
-            }
-          },
-          textNow: 'battle game'.tr(),
-          onPressHome: () {},
-          colorTextAndIcon: Colors.black,
-          child: Container(
-            width: 100.w,
-            height: 80.h,
-            padding: EdgeInsets.only(left: 5.w, right: 5.w),
-            decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(
-                  width: 100.w,
-                  height: 10.h,
-                  child: Center(
-                      child: Text("SELECT MODE GAME".tr(),
-                          style: GoogleFonts.abrilFatface(
-                              color: colorSystemWhite,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 25))),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ItemTakeQuiz(
-                        bgColor: colorMainTealPri,
-                        onPress: () {
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/batlle_game_bg.jpg"),
+                fit: BoxFit.fill),
+            color: colorSystemWhite,
+          ),
+          child: MainPageHomePG(
+            onBack: () {
+              if (instance.get<UserGlobal>().onLogin == true) {
+                Navigator.pushNamed(context, Routers.homeUser);
+              } else {
+                Navigator.pushNamed(context, Routers.homeGuest);
+              }
+            },
+            textNow: "",
+            onPressHome: () {},
+            colorTextAndIcon: colorSystemYeloow,
+            child: Container(
+              alignment: Alignment.center,
+              width: 100.w,
+              height: 80.h,
+              padding: EdgeInsets.only(left: 5.w, right: 5.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Level_Box(
+                        level: "bot".tr(),
+                        onTap: () {
                           Navigator.pushNamed(context, Routers.optionBot);
                         },
-                        textTitle: "bot".tr()),
-                    sizedBox,
-                    ItemTakeQuiz(
-                        onPress: () {
+                        imageLink: "assets/images/bee_bot.png",
+                        style: GoogleFonts.barlow(
+                            fontSize: 20, color: colorMainBlue),
+                        colorBG: colorMainBlue,
+                      ),
+                      sizedBox,
+                      Level_Box(
+                        level: "player".tr(),
+                        onTap: () {
                           Navigator.pushNamed(context, Routers.battleHuman);
                         },
-                        bgColor: colorMainBlue,
-                        textTitle: "player".tr()),
-                  ],
-                ),
-              ],
+                        imageLink: "assets/images/medium_lv.jpg",
+                        style: GoogleFonts.barlow(
+                            fontSize: 20, color: colorMainBlue),
+                        colorBG: colorMainBlue,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

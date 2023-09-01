@@ -60,8 +60,8 @@ class Info_Player_Line extends StatelessWidget {
                     ),
                     SizedBox(
                       width: 30.w,
-                      child: Text(
-                        namePlayer,
+                      child: const Text(
+                        "",
                         style: s16f700ColorError,
                       ),
                     ),

@@ -274,7 +274,6 @@ class _DetailItemCardPracticesState extends State<DetailItemCardPractices> {
                     delegate: SliverChildBuilderDelegate(
                   childCount: state.posts!.length,
                   (context, index) {
-                    // posts!.sort((a, b) => a.dateSave!.compareTo(b.dateSave!));
                     return Padding(
                       padding: EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
                       child: ItemAsyncDataDetail(
