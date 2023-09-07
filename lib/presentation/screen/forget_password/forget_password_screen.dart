@@ -51,7 +51,7 @@ class ForgetPassScreen extends StatelessWidget {
                       state.emailErrorMessage;
                 }, builder: (context, state) {
                   return InputFieldWidget(
-                    hintText: "enter your email".tr(),
+                    hintText: "your email".tr(),
                     icon: const Icon(Icons.email_outlined),
                     onChanged: (value) {
                       context.read<ForgetPassCubit>().emailChanged(value);
@@ -80,7 +80,8 @@ class ForgetPassScreen extends StatelessWidget {
                             .read<ForgetPassCubit>()
                             .submitEmailForGetOTPResetPass(state.email);
                       },
-                      color: colorMainBlue,
+                      color: colorSystemWhite,
+                      colorBorder: colorSystemYeloow,
                       width: 90.w,
                       height: 8.h,
                       child: state.status == ForgetPassStatus.onLoading
@@ -88,14 +89,14 @@ class ForgetPassScreen extends StatelessWidget {
                               height: 8.h,
                               child: const Center(
                                 child: CircularProgressIndicator(
-                                  color: colorSystemWhite,
+                                  color: colorSystemYeloow,
                                   strokeWidth: 3,
                                 ),
                               ),
                             )
                           : Text(
                               'go'.tr().toString(),
-                              style: s20f700ColorSysWhite,
+                              style: s16f700ColorSysYel,
                             ));
                 })
               ],

@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
+import 'package:math/data/remote/api/Repo/user_repo.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/constants.dart';
@@ -9,7 +10,6 @@ import '../../../application/di/event_local.dart';
 import '../../../data/local/driff/db/db_app.dart';
 import '../../../data/local/repo/player_local/player_local_repo.dart';
 import '../../../data/model/user_global.dart';
-import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../data/remote/authen/authen.dart';
 import '../../../main.dart';
 
@@ -29,7 +29,7 @@ class OptionUseApp extends StatelessWidget {
       if (isUserSignIn == true) {
         String email =
             await instance.get<AuthenRepository>().getMailHandleAutoLoginApp();
-        await instance.get<UserAPIRepo>().getUserByEmail(email);
+        await instance.get<UserRepo>().getUserByEmail(email);
         Navigator.pushNamed(context, Routers.homeUser);
       }
       // user local

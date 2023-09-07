@@ -1,16 +1,17 @@
-import 'package:math/data/remote/model/quiz_test_res.dart';
+import 'package:math/data/remote/model/pre_pra_res.dart';
 
-class QuizTestPagiAPIRes {
-  List<QuizTestAPIRes>? data;
+class PrePraAPIResPagi {
+  List<PrePraAPIModel>? data;
   int? total;
   int? count;
-  QuizTestPagiAPIRes({this.data, this.total, this.count});
 
-  QuizTestPagiAPIRes.fromJson(Map<String, dynamic> json) {
+  PrePraAPIResPagi({this.data, this.total, this.count});
+
+  PrePraAPIResPagi.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <QuizTestAPIRes>[];
+      data = <PrePraAPIModel>[];
       json['data'].forEach((v) {
-        data!.add(new QuizTestAPIRes.fromJson(v));
+        data!.add(new PrePraAPIModel.fromJson(v));
       });
     }
     total = json['total'];

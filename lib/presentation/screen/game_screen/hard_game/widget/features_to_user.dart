@@ -26,7 +26,7 @@ List<TargetFocus> listTargetFocusMainDrag({
                   Text(
                     "this in time countdown".tr(),
                     style: GoogleFonts.aclonica(
-                        color: colorMainBlue, fontSize: 16),
+                        color: colorErrorPrimary, fontSize: 16),
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -49,7 +49,7 @@ List<TargetFocus> listTargetFocusMainDrag({
                   Text(
                     "this in user manual.Click for more information !!".tr(),
                     style: GoogleFonts.aclonica(
-                        color: colorMainBlue, fontSize: 16),
+                        color: colorErrorPrimary, fontSize: 16),
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -83,7 +83,7 @@ List<TargetFocus> listTargetFocusUserManDrag({
                   Text(
                     textDrag,
                     style: GoogleFonts.aclonica(
-                        color: colorMainBlue, fontSize: 16),
+                        color: colorErrorPrimary, fontSize: 14),
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -106,7 +106,7 @@ List<TargetFocus> listTargetFocusUserManDrag({
                   Text(
                     textDrop,
                     style: GoogleFonts.aclonica(
-                        color: colorMainBlue, fontSize: 16),
+                        color: colorErrorPrimary, fontSize: 14),
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -139,7 +139,7 @@ List<TargetFocus> listTargetFocusMainPuzzle({
                   Text(
                     "This in time countdown",
                     style: GoogleFonts.aclonica(
-                        color: colorMainBlue, fontSize: 16),
+                        color: colorErrorPrimary, fontSize: 16),
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -162,7 +162,7 @@ List<TargetFocus> listTargetFocusMainPuzzle({
                   Text(
                     "This in user manual.Click for more information !!",
                     style: GoogleFonts.aclonica(
-                        color: colorMainBlue, fontSize: 16),
+                        color: colorErrorPrimary, fontSize: 16),
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -185,7 +185,7 @@ List<TargetFocus> listTargetFocusMainPuzzle({
                   Text(
                     "Press to check answer !!",
                     style: GoogleFonts.aclonica(
-                        color: colorMainBlue, fontSize: 16),
+                        color: colorErrorPrimary, fontSize: 16),
                     textAlign: TextAlign.center,
                   )
                 ],

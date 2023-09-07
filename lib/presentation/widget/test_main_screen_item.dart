@@ -8,7 +8,7 @@ class TestmainScreenItemCard extends StatelessWidget {
       {Key? key, required this.dataResult, required this.index})
       : super(key: key);
   final int index;
-  final PreTestAPIRes dataResult;
+  final PreTestAPIModel dataResult;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class TestmainScreenItemCard extends StatelessWidget {
         Container(
           alignment: Alignment.center,
           child: (Text(
-            'SCORE : ${dataResult.score!} / ${dataResult.sumQ!}',
+            'SCORE : ${dataResult.score!} / ${dataResult.numQ!}',
             style: s14f500ColorMainTe,
           )),
         )

@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/data/remote/api/Repo/pre_pra_repo.dart';
 import '../../../application/utils/func.dart';
 import '../../../data/model/user_global.dart';
-import '../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../data/remote/model/pre_quiz_game_res_pagi.dart';
-import '../../../data/remote/model/pre_quiz_game_response.dart';
+import '../../../data/remote/model/pre_pra_res.dart';
+import '../../../data/remote/model/pre_pra_res_pagi.dart';
 import '../../../main.dart';
 
 part 'detail_practices_state.dart';
 
 class DetailPracticesCubit extends Cubit<DetailPracticesState> {
-  final UserAPIRepo userAPIRepo;
-  DetailPracticesCubit({required this.userAPIRepo})
+  final PrePraRepo prePraRepo;
+  DetailPracticesCubit({required this.prePraRepo})
       : super(DetailPracticesState.initial());
 
   Future<void> signChange(List<String> signList, String type) async {
-    List<PreQuizGameAPIModel>? newPost = [];
+    List<PrePraAPIModel>? newPost = [];
     if (signList.isNotEmpty) {
       String valueSign = signList.reduce((value, element) => '$value,$element');
       newPost = state.posts;
@@ -33,8 +33,8 @@ class DetailPracticesCubit extends Cubit<DetailPracticesState> {
 
   Future<void> dayChoose(String type) async {
     bool choose = state.dayChoose;
-    List<PreQuizGameAPIModel>? newPost = [];
-    List<PreQuizGameAPIModel>? oldPost = [...state.posts!];
+    List<PrePraAPIModel>? newPost = [];
+    List<PrePraAPIModel>? oldPost = [...state.posts!];
 
     ///FALSE - > TRUE
     if (choose == false) {
@@ -58,8 +58,8 @@ class DetailPracticesCubit extends Cubit<DetailPracticesState> {
 
   Future<void> scoreChoose(String type) async {
     bool choose = state.scoreChoose;
-    List<PreQuizGameAPIModel>? newPost = [];
-    List<PreQuizGameAPIModel>? oldPost = [...state.posts!];
+    List<PrePraAPIModel>? newPost = [];
+    List<PrePraAPIModel>? oldPost = [...state.posts!];
 
     ///FALSE - > TRUE
     if (choose == false) {
@@ -84,7 +84,7 @@ class DetailPracticesCubit extends Cubit<DetailPracticesState> {
 
   Future<void> pagePlus(String type) async {
     if (state.pageNow < findLength((state.lengthNow))) {
-      List<PreQuizGameAPIModel>? dataList = [...state.posts!];
+      List<PrePraAPIModel>? dataList = [...state.posts!];
       dataList.clear();
       int pageNow = state.pageNow;
       pageNow = pageNow + 1;
@@ -100,11 +100,10 @@ class DetailPracticesCubit extends Cubit<DetailPracticesState> {
   }
 
   Future<void> initPage(String type) async {
-    late PreQuizGameAPIResPagi? dataPagination;
-    List<PreQuizGameAPIModel>? dataList = [...state.posts!];
-    dataPagination = await instance
-        .get<UserAPIRepo>()
-        .getALlPreQuizGameByUidandOptionGameWithPagi(
+    late PrePraAPIResPagi? dataPagination;
+    List<PrePraAPIModel>? dataList = [...state.posts!];
+    dataPagination =
+        await prePraRepo.getALlPreQuizGameByUidandOptionGameWithPagi(
             instance.get<UserGlobal>().id.toString(), type, state.pageNow);
     dataList = dataPagination!.data;
     int length = dataPagination.total!;
@@ -113,12 +112,11 @@ class DetailPracticesCubit extends Cubit<DetailPracticesState> {
     }
   }
 
-  Future<List<PreQuizGameAPIModel>?> getBackList(String type) async {
-    late PreQuizGameAPIResPagi? dataPagination;
-    List<PreQuizGameAPIModel>? dataList = [];
-    dataPagination = await instance
-        .get<UserAPIRepo>()
-        .getALlPreQuizGameByUidandOptionGameWithPagi(
+  Future<List<PrePraAPIModel>?> getBackList(String type) async {
+    late PrePraAPIResPagi? dataPagination;
+    List<PrePraAPIModel>? dataList = [];
+    dataPagination =
+        await prePraRepo.getALlPreQuizGameByUidandOptionGameWithPagi(
             instance.get<UserGlobal>().id.toString(), type, state.pageNow);
     dataList = dataPagination!.data;
     if (dataList!.isNotEmpty) {
@@ -127,13 +125,12 @@ class DetailPracticesCubit extends Cubit<DetailPracticesState> {
     return null;
   }
 
-  Future<List<PreQuizGameAPIModel>?> getMoreData(String type) async {
-    late PreQuizGameAPIResPagi? dataPagination;
-    List<PreQuizGameAPIModel>? dataList = [...state.posts!];
+  Future<List<PrePraAPIModel>?> getMoreData(String type) async {
+    late PrePraAPIResPagi? dataPagination;
+    List<PrePraAPIModel>? dataList = [...state.posts!];
     dataList.clear();
-    dataPagination = await instance
-        .get<UserAPIRepo>()
-        .getALlPreQuizGameByUidandOptionGameWithPagi(
+    dataPagination =
+        await prePraRepo.getALlPreQuizGameByUidandOptionGameWithPagi(
             instance.get<UserGlobal>().id.toString(), type, state.pageNow);
     dataList = dataPagination!.data;
     if (dataList!.isNotEmpty) {
@@ -144,7 +141,7 @@ class DetailPracticesCubit extends Cubit<DetailPracticesState> {
 
   Future<void> pageMinus(String type) async {
     if (state.pageNow != 1) {
-      List<PreQuizGameAPIModel>? dataList = [...state.posts!];
+      List<PrePraAPIModel>? dataList = [...state.posts!];
       dataList.clear();
       int pageNow = state.pageNow;
       pageNow = pageNow - 1;

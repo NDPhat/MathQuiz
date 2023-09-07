@@ -1,8 +1,8 @@
 
 {
   "new player": "New player",
-  "enter your name": "Enter your name",
   "your name": "Your name",
+  "name": "Name",
   "choose your player":"Choose your player",
   "add": "Add",
   "choose": "Choose",
@@ -11,15 +11,14 @@
 
 
   "change password": "Change password",
-  "change your password.": "Change your  password.",
-  "enter your old password": "Enter your old password",
+  "change your password.": "Change your password.",
+  "your old password": "Your old password",
   "old password":  "Old password",
   "new password":  "New password",
-  "enter your new password": "Enter your new password",
-  "re-enter your password": "Re-enter your password",
-  "re-new password":  "Re-new password",
+  "your new password": "Your new password",
+  "re-new password": "Re-new password",
+  "re-your new password": "Re-your new password",
   "update successful": "Update successful",
-
 
   "check answer": "Check answer",
 
@@ -36,6 +35,7 @@
   "NOTHING ADDED !!": "EMPTY !!",
 
   "true": "True",
+  "enter": "Enter",
   "false": "False",
   "data season": "Data season",
   "detailed homework data":"Detailed homework data",
@@ -64,7 +64,6 @@
 
   "forget password": "Forget password",
   "please enter your email in the field below\nto send the reset password request.":"Please enter your email in the field below\nto send the reset password request.",
-  "enter your email": "Enter your email",
 
   "game over": "Game over",
   "fill all the blank":"Fill all the blank",
@@ -100,12 +99,12 @@
 
   "sign in to continue": "Sign in to continue",
   "login fail": "Login fail",
+  "password": "Password",
+  "email": "Email",
   "your email": "Your email",
-  "enter your password": "Enter your password",
   "your password": "Your password",
 
   "choose mode": "Choose mode",
-  "enter": "Enter",
   "answer": "answer",
   "find": "Find",
   "missing": "Missing",
@@ -118,9 +117,13 @@
 
 
   "your class": "Your class",
+  "class": "Class",
   "your phone": "Your phone",
+  "phone": "Phone",
   "your address": "Your address",
+  "address": "Address",
   "your birthday": "Your birthday",
+  "birthday":"Birthday",
   "choose gender": "Choose gender",
   "myacc": "My account",
   "update password": "Update password",
@@ -156,12 +159,6 @@
   "multiple": "Multiple",
   "subtraction": "Subtraction",
   "addition": "Addition",
-
-
-  "change your password." : "Change your password.",
-  "enter your password": "Enter your password",
-  "re-enter your password":"Re-enter your password",
-  "your re-password": "Your re-password",
 
   "week": "Week",
   "from": "From",

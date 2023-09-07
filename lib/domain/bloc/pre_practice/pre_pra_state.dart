@@ -1,20 +1,20 @@
-part of 'pre_quiz_cubit.dart';
+part of 'pre_pra_cubit.dart';
 
-class PreQuizState extends Equatable {
+class PrePraState extends Equatable {
   int id;
   String? optionGame;
   String? idServer;
   PreQuizStatus status;
 
-  PreQuizState({
+  PrePraState({
     required this.optionGame,
     required this.id,
     this.idServer,
     required this.status,
     //this.user,
   });
-  factory PreQuizState.initial() {
-    return PreQuizState(
+  factory PrePraState.initial() {
+    return PrePraState(
       idServer: '',
       optionGame: "input",
       status: PreQuizStatus.initial,
@@ -27,13 +27,13 @@ class PreQuizState extends Equatable {
   @override
   List<Object?> get props => [id, idServer, status, optionGame];
 
-  PreQuizState copyWith({
+  PrePraState copyWith({
     int? id,
     String? idServer,
     String? optionGame,
     PreQuizStatus? status,
   }) {
-    return PreQuizState(
+    return PrePraState(
       id: id ?? this.id,
       optionGame: optionGame ?? this.optionGame,
       idServer: idServer ?? this.idServer,

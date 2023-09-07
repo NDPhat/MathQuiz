@@ -1,7 +1,7 @@
 import 'package:math/data/remote/model/pre_test_res.dart';
 
 class PreTestAPIResPagi {
-  List<PreTestAPIRes>? data;
+  List<PreTestAPIModel>? data;
   int? total;
   int? count;
 
@@ -9,9 +9,9 @@ class PreTestAPIResPagi {
 
   PreTestAPIResPagi.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <PreTestAPIRes>[];
+      data = <PreTestAPIModel>[];
       json['data'].forEach((v) {
-        data!.add(new PreTestAPIRes.fromJson(v));
+        data!.add(new PreTestAPIModel.fromJson(v));
       });
     }
     total = json['total'];

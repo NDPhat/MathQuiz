@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:math/data/remote/api/Repo/pre_test_repo.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 import '../../application/cons/color.dart';
-import '../../data/model/chart_data.dart';
 import '../../data/model/chart_data_datasheet.dart';
 import '../../data/model/user_global.dart';
-import '../../data/remote/api/Repo/api_user_repo.dart';
-import '../../data/remote/model/result_quiz_hw_response.dart';
+import '../../data/remote/api/Repo/result_hw_repo.dart';
+import '../../data/remote/model/result_hw_res.dart';
 import '../../main.dart';
 
 class ChildRightHWAndTest extends StatelessWidget {
@@ -24,8 +23,8 @@ class ChildRightHWAndTest extends StatelessWidget {
         width: 46.w,
         height: 9.h,
         child: type == "hw"
-            ? FutureBuilder<List<ResultQuizHWAPIModel>?>(
-                future: instance.get<UserAPIRepo>().getALlResultQuizHWByUserID(
+            ? FutureBuilder<List<ResultHWAPIModel>?>(
+                future: instance.get<ResultHWRepo>().getALlResultQuizHWByUserID(
                     instance.get<UserGlobal>().id.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -79,8 +78,8 @@ class ChildRightHWAndTest extends StatelessWidget {
                     return Container();
                   }
                 })
-            : FutureBuilder<List<PreTestAPIRes>?>(
-                future: instance.get<UserAPIRepo>().getALlPreQuizTestByUid(
+            : FutureBuilder<List<PreTestAPIModel>?>(
+                future: instance.get<PreTestRepo>().getALlPreQuizTestByUid(
                     instance.get<UserGlobal>().id.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -89,7 +88,7 @@ class ChildRightHWAndTest extends StatelessWidget {
                       dataListPre.add(ChartDataSheet(
                           i + 1,
                           snapshot.data![i].score!,
-                          snapshot.data![i].sumQ! - snapshot.data![i].score!));
+                          snapshot.data![i].numQ! - snapshot.data![i].score!));
                     }
 
                     return SfCartesianChart(

@@ -1,17 +1,17 @@
-class GetQuizTestAPIRes {
+class QuizTestAPIRes {
   int? iCount;
   Null? nLast;
-  List<QuizTestAPIRes>? lItems;
+  List<QuizTestAPIModel>? lItems;
 
-  GetQuizTestAPIRes({this.iCount, this.nLast, this.lItems});
+  QuizTestAPIRes({this.iCount, this.nLast, this.lItems});
 
-  GetQuizTestAPIRes.fromJson(Map<String, dynamic> json) {
+  QuizTestAPIRes.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <QuizTestAPIRes>[];
+      lItems = <QuizTestAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new QuizTestAPIRes.fromJson(v));
+        lItems!.add(new QuizTestAPIModel.fromJson(v));
       });
     }
   }
@@ -27,28 +27,28 @@ class GetQuizTestAPIRes {
   }
 }
 
-class QuizTestAPIRes {
+class QuizTestAPIModel {
   int? answer;
   int? answerSelect;
   bool? infoQuiz;
   String? key;
-  String? preTestID;
+  String? preTestId;
   String? quiz;
 
-  QuizTestAPIRes(
+  QuizTestAPIModel(
       {this.answer,
         this.answerSelect,
         this.infoQuiz,
         this.key,
-        this.preTestID,
+        this.preTestId,
         this.quiz});
 
-  QuizTestAPIRes.fromJson(Map<String, dynamic> json) {
+  QuizTestAPIModel.fromJson(Map<String, dynamic> json) {
     answer = json['answer'];
     answerSelect = json['answerSelect'];
     infoQuiz = json['infoQuiz'];
     key = json['key'];
-    preTestID = json['preTestID'];
+    preTestId = json['preTestId'];
     quiz = json['quiz'];
   }
 
@@ -58,7 +58,7 @@ class QuizTestAPIRes {
     data['answerSelect'] = this.answerSelect;
     data['infoQuiz'] = this.infoQuiz;
     data['key'] = this.key;
-    data['preTestID'] = this.preTestID;
+    data['preTestId'] = this.preTestId;
     data['quiz'] = this.quiz;
     return data;
   }

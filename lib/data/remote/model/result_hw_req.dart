@@ -1,4 +1,4 @@
-class ResultQuizHWAPIReq {
+class ResultHWAPIReq {
   String? week;
   int? numQ;
   String? name;
@@ -9,7 +9,7 @@ class ResultQuizHWAPIReq {
   String? lop;
   String? dateSave;
 
-  ResultQuizHWAPIReq(
+  ResultHWAPIReq(
       {this.week,
       this.numQ,
       this.name,
@@ -20,7 +20,7 @@ class ResultQuizHWAPIReq {
       this.lop,
       this.dateSave});
 
-  ResultQuizHWAPIReq.fromJson(Map<String, dynamic> json) {
+  ResultHWAPIReq.fromJson(Map<String, dynamic> json) {
     week = json['week'];
     numQ = json['numQ'];
     name = json['name'];

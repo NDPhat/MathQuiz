@@ -5,7 +5,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../application/cons/color.dart';
 import '../../application/cons/constants.dart';
-import '../../application/cons/text_style.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard(

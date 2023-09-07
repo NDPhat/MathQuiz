@@ -1,17 +1,17 @@
-class ResultQuizHWAPIResponse {
+class ResultHWAPIRes {
   int? iCount;
   Null? nLast;
-  List<ResultQuizHWAPIModel>? lItems;
+  List<ResultHWAPIModel>? lItems;
 
-  ResultQuizHWAPIResponse({this.iCount, this.nLast, this.lItems});
+  ResultHWAPIRes({this.iCount, this.nLast, this.lItems});
 
-  ResultQuizHWAPIResponse.fromJson(Map<String, dynamic> json) {
+  ResultHWAPIRes.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <ResultQuizHWAPIModel>[];
+      lItems = <ResultHWAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new ResultQuizHWAPIModel.fromJson(v));
+        lItems!.add(new ResultHWAPIModel.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class ResultQuizHWAPIResponse {
   }
 }
 
-class ResultQuizHWAPIModel {
+class ResultHWAPIModel {
   String? dateSave;
   int? falseQ;
   String? key;
@@ -39,7 +39,7 @@ class ResultQuizHWAPIModel {
   String? userId;
   String? week;
 
-  ResultQuizHWAPIModel(
+  ResultHWAPIModel(
       {this.dateSave,
       this.falseQ,
       this.key,
@@ -51,7 +51,7 @@ class ResultQuizHWAPIModel {
       this.userId,
       this.week});
 
-  ResultQuizHWAPIModel.fromJson(Map<String, dynamic> json) {
+  ResultHWAPIModel.fromJson(Map<String, dynamic> json) {
     dateSave = json['dateSave'];
     falseQ = json['falseQ'];
     key = json['key'];

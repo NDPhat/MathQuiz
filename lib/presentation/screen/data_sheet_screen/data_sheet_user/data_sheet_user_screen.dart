@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:math/data/remote/api/Repo/pre_test_repo.dart';
+import 'package:math/data/remote/api/Repo/result_hw_repo.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/widget/card_data_item_home.dart';
@@ -8,9 +10,9 @@ import 'package:sizer/sizer.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/constants.dart';
 import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../../data/remote/model/pre_quiz_game_response.dart';
-import '../../../../data/remote/model/result_quiz_hw_response.dart';
+import '../../../../data/remote/api/Repo/pre_pra_repo.dart';
+import '../../../../data/remote/model/pre_pra_res.dart';
+import '../../../../data/remote/model/result_hw_res.dart';
 import '../../../../main.dart';
 import '../../../widget/child_right_home_practices.dart';
 import '../../../widget/child_right_home_hw_test.dart';
@@ -43,9 +45,9 @@ class DataSheetUserScreen extends StatelessWidget {
                       icon: const Icon(LineAwesomeIcons.book),
                     ),
                     sizedBox,
-                    FutureBuilder<List<ResultQuizHWAPIModel>?>(
+                    FutureBuilder<List<ResultHWAPIModel>?>(
                         future: instance
-                            .get<UserAPIRepo>()
+                            .get<ResultHWRepo>()
                             .getALlResultQuizHWByUserID(
                                 instance.get<UserGlobal>().id.toString()),
                         builder: (context, snapshot) {
@@ -95,9 +97,9 @@ class DataSheetUserScreen extends StatelessWidget {
                       icon: const Icon(Icons.dashboard),
                     ),
                     sizedBox,
-                    FutureBuilder<List<PreQuizGameAPIModel>?>(
+                    FutureBuilder<List<PrePraAPIModel>?>(
                         future: instance
-                            .get<UserAPIRepo>()
+                            .get<PrePraRepo>()
                             .getALlPreQuizGameByUidandOptionGame(
                                 instance.get<UserGlobal>().id.toString(),
                                 "input"),
@@ -143,9 +145,9 @@ class DataSheetUserScreen extends StatelessWidget {
                           return Container();
                         }),
                     sizedBox,
-                    FutureBuilder<List<PreQuizGameAPIModel>?>(
+                    FutureBuilder<List<PrePraAPIModel>?>(
                         future: instance
-                            .get<UserAPIRepo>()
+                            .get<PrePraRepo>()
                             .getALlPreQuizGameByUidandOptionGame(
                                 instance.get<UserGlobal>().id.toString(),
                                 "true/false"),
@@ -190,9 +192,9 @@ class DataSheetUserScreen extends StatelessWidget {
                           return Container();
                         }),
                     sizedBox,
-                    FutureBuilder<List<PreQuizGameAPIModel>?>(
+                    FutureBuilder<List<PrePraAPIModel>?>(
                         future: instance
-                            .get<UserAPIRepo>()
+                            .get<PrePraRepo>()
                             .getALlPreQuizGameByUidandOptionGame(
                                 instance.get<UserGlobal>().id.toString(),
                                 "missing"),
@@ -243,9 +245,9 @@ class DataSheetUserScreen extends StatelessWidget {
                       icon: const Icon(Icons.task),
                     ),
                     sizedBox,
-                    FutureBuilder<List<PreTestAPIRes>?>(
+                    FutureBuilder<List<PreTestAPIModel>?>(
                         future: instance
-                            .get<UserAPIRepo>()
+                            .get<PreTestRepo>()
                             .getALlPreQuizTestByUid(
                                 instance.get<UserGlobal>().id.toString()),
                         builder: (context, snapshot) {
@@ -266,7 +268,7 @@ class DataSheetUserScreen extends StatelessWidget {
                             int totalQ = 0;
                             int score = 0;
                             for (var element in snapshot.data!) {
-                              totalQ = totalQ + element.sumQ!;
+                              totalQ = totalQ + element.numQ!;
                               score = score + element.score!;
                             }
                             return ItemAsyncDataPageHome(

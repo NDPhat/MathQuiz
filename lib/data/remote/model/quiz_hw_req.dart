@@ -1,18 +1,18 @@
-class DetailQuizHWAPIReq {
+class QuizHWAPIReq {
   int? answer;
   int? answerSelect;
   bool? infoQuiz;
   String? quiz;
   String? resultHWID;
 
-  DetailQuizHWAPIReq(
+  QuizHWAPIReq(
       {this.answer,
       this.answerSelect,
       this.infoQuiz,
       this.quiz,
       this.resultHWID});
 
-  DetailQuizHWAPIReq.fromJson(Map<String, dynamic> json) {
+  QuizHWAPIReq.fromJson(Map<String, dynamic> json) {
     answer = json['answer'];
     answerSelect = json['answerSelect'];
     infoQuiz = json['infoQuiz'];

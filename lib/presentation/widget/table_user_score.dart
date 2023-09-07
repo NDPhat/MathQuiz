@@ -2,9 +2,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../application/cons/color.dart';
-import '../../application/cons/text_style.dart';
 
 class UserTableScore extends StatelessWidget {
   UserTableScore(

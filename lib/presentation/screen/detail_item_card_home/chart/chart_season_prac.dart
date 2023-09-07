@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:math/data/remote/model/pre_quiz_game_response.dart';
+import 'package:math/data/remote/api/Repo/pre_pra_repo.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../application/cons/color.dart';
 import '../../../../data/model/chart_data_datasheet.dart';
 import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../../data/remote/model/pre_pra_res.dart';
 import '../../../../main.dart';
 
 class ChartSeasonPra extends StatelessWidget {
@@ -22,9 +22,9 @@ class ChartSeasonPra extends StatelessWidget {
     return SizedBox(
         width: 100.w,
         height: 30.h,
-        child: FutureBuilder<List<PreQuizGameAPIModel>?>(
+        child: FutureBuilder<List<PrePraAPIModel>?>(
             future: instance
-                .get<UserAPIRepo>()
+                .get<PrePraRepo>()
                 .getALlPreQuizGameByUidandOptionGame(
                     instance.get<UserGlobal>().id.toString(), typeGame),
             builder: (context, snapshot) {

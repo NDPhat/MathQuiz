@@ -6,16 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/application/utils/func.dart';
 import 'package:math/data/model/chart_data_week.dart';
+import 'package:math/data/remote/api/Repo/quiz_test_repo.dart';
 import 'package:math/data/remote/model/quiz_test_res.dart';
 import 'package:math/domain/bloc/detail_test/detail_test_cubit.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/detail_item_card_home/chart/chart_season_test.dart';
-import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/utils/count_sign.dart';
-import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../main.dart';
 import '../../widget/async_data_detail.dart';
 import '../../widget/button_custom.dart';
@@ -128,7 +127,7 @@ class _DetailMixGameScreenState extends State<DetailMixGameScreen> {
                                   int totalQ = 0;
                                   int score = 0;
                                   for (var element in state.posts!) {
-                                    totalQ = totalQ + element.sumQ!;
+                                    totalQ = totalQ + element.numQ!;
                                     score = score + element.score!;
                                   }
                                   return Padding(
@@ -141,9 +140,9 @@ class _DetailMixGameScreenState extends State<DetailMixGameScreen> {
                                       childRight: SizedBox(
                                         width: 45.w,
                                         child: FutureBuilder<
-                                                List<QuizTestAPIRes>?>(
+                                                List<QuizTestAPIModel>?>(
                                             future: instance
-                                                .get<UserAPIRepo>()
+                                                .get<QuizTestRepo>()
                                                 .getALlQuizTestByPreTestID(
                                                     state.posts![index].key!),
                                             builder: (context, snapshotChild) {

@@ -1,9 +1,6 @@
 import 'dart:math';
 import 'package:math/data/model/make_quiz.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/main.dart';
 import '../../data/model/pre_join_homework.dart';
-import '../../data/remote/model/sentences_quiz_res.dart';
 
 class QuizBrain {
   int _quizAnswer = 0;
@@ -34,7 +31,7 @@ class QuizBrain {
   List<int> listAnswerDD = [];
   List<String> listQuizDD = [];
   String _quiz = '';
-  Random _random = Random();
+  final Random _random = Random();
 
   void makeQuiz(PreQuizGame preQuiz) {
     int firstNumber = _random.nextInt(9) + 1;
@@ -158,8 +155,8 @@ class QuizBrain {
   }
 
   void makeQuizTest() {
-    List<String> _listOfSigns = ['+', '-', 'x', '/'];
-    var selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
+    List<String> listOfSigns = ['+', '-', 'x', '/'];
+    var selectedSign = listOfSigns[_random.nextInt(listOfSigns.length)];
     var firstNumber = _random.nextInt(9) + 1; // from 10 upto 19
     var secondNumber = _random.nextInt(9) + 1; // from 1 upto 9  (9 included)
     switch (selectedSign) {
@@ -211,14 +208,14 @@ class QuizBrain {
     listAnswer.add(anwser3);
     listAnswer.add(_quizAnswer);
     listAnswer.shuffle();
-    _quiz = '$firstNumber ${selectedSign} $secondNumber =';
+    _quiz = '$firstNumber $selectedSign $secondNumber =';
   }
 
   // tao take_hard theo 1 sign
 
   void makeQuizBOT(String level) {
-    List<String> _listOfSigns = ['+', '-', 'x', '/'];
-    var selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
+    List<String> listOfSigns = ['+', '-', 'x', '/'];
+    var selectedSign = listOfSigns[_random.nextInt(listOfSigns.length)];
     int firstNumber = 1;
     int secondNumber = 10;
     switch (level) {
@@ -288,7 +285,7 @@ class QuizBrain {
     listAnswer.add(anwser3);
     listAnswer.add(_quizAnswer);
     listAnswer.shuffle();
-    _quiz = '$firstNumber ${selectedSign} $secondNumber = ?';
+    _quiz = '$firstNumber $selectedSign $secondNumber = ?';
   }
 
   void makeQuizTrueFalse(PreQuizGame preQuiz) {
@@ -325,7 +322,7 @@ class QuizBrain {
         }
     }
     var falseMaker = [-3, -2, -1, 1, 2, 3];
-    var _quizWrong = _quizAnswer;
+    var quizWrong = _quizAnswer;
     // so lam de sai
     var randomlyChosen = falseMaker[_random.nextInt(falseMaker.length)];
 
@@ -335,11 +332,11 @@ class QuizBrain {
     quizTrueFalse = 'TRUE';
     if (trueOrFalseDecision == 0) {
       quizTrueFalse = 'FALSE';
-      _quizWrong = _quizAnswer + randomlyChosen;
-      if (_quizWrong < 0) _quizWrong = _quizAnswer + _random.nextInt(2) + 4;
+      quizWrong = _quizAnswer + randomlyChosen;
+      if (quizWrong < 0) quizWrong = _quizAnswer + _random.nextInt(2) + 4;
     }
 
-    _quiz = '$firstNumber ${preQuiz.sign!} $secondNumber = $_quizWrong';
+    _quiz = '$firstNumber ${preQuiz.sign!} $secondNumber = $quizWrong';
   }
 
   void makeQuizHomeWork(PreJoinQuizHW preQuiz) {
@@ -398,77 +395,6 @@ class QuizBrain {
     _quiz = '$firstNumber $signChoose $secondNumber =';
   }
 
-  Future<List<SentencesQuizRes>?> getDataForFirstQuizSentences() async {
-    List<SentencesQuizRes>? listData =
-        await instance.get<UserAPIRepo>().getRandomeListQuiz();
-    return listData;
-  }
-
-  void makeFirstQuizSentences(List<SentencesQuizRes>? listData) {
-    int pos = _random.nextInt(9);
-    _quiz = listData![pos].quiz!;
-    _quizAnswer = int.parse(listData![pos].answer!);
-    int anwser1 = 0;
-    int anwser2 = 0;
-    int anwser3 = 0;
-    do {
-      anwser1 = _random.nextInt(_quizAnswer + 20);
-    } while (anwser1 == _quizAnswer);
-    do {
-      anwser2 = _random.nextInt(_quizAnswer + 20);
-    } while (anwser2 == _quizAnswer || anwser2 == anwser1);
-
-    do {
-      anwser3 = _random.nextInt(_quizAnswer + 20);
-    } while (
-        anwser3 == _quizAnswer || anwser3 == anwser1 || anwser3 == anwser2);
-    listAnswer = [];
-    listAnswer.add(anwser1);
-    listAnswer.add(anwser2);
-    listAnswer.add(anwser3);
-    listAnswer.add(_quizAnswer);
-    listAnswer.shuffle();
-  }
-
-  void makeOtherQuizSentences(
-      int posPast, String pastQuiz, List<SentencesQuizRes>? listData) {
-    List<String> listQuiz = [];
-    List<String> toRemove = [];
-    listData!.forEach((element) {
-      listQuiz.add(element.quiz!);
-    });
-    for (String e in listQuiz) {
-      if (e == pastQuiz) {
-        toRemove.add(e);
-      }
-    }
-    // reomove quiz cu k de trung
-    listQuiz.removeWhere((value) => toRemove.contains(value));
-    int pos = _random.nextInt(posPast);
-    _quiz = listData![pos].quiz!;
-    _quizAnswer = int.parse(listData![pos].answer!);
-    int anwser1 = 0;
-    int anwser2 = 0;
-    int anwser3 = 0;
-    do {
-      anwser1 = _random.nextInt(_quizAnswer + 20);
-    } while (anwser1 == _quizAnswer);
-    do {
-      anwser2 = _random.nextInt(_quizAnswer + 20);
-    } while (anwser2 == _quizAnswer || anwser2 == anwser1);
-
-    do {
-      anwser3 = _random.nextInt(_quizAnswer + 20);
-    } while (
-        anwser3 == _quizAnswer || anwser3 == anwser1 || anwser3 == anwser2);
-    listAnswer = [];
-    listAnswer.add(anwser1);
-    listAnswer.add(anwser2);
-    listAnswer.add(anwser3);
-    listAnswer.add(_quizAnswer);
-    listAnswer.shuffle();
-  }
-
   void makeQuizPuzzle() {
     listNumPuzzle1 = [];
     listNumPuzzle2 = [];
@@ -476,8 +402,8 @@ class QuizBrain {
     listSignHardGame = [];
     int count = 0;
     do {
-      List<String> _listOfSigns = ['+', '-', 'x', '/'];
-      String selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
+      List<String> listOfSigns = ['+', '-', 'x', '/'];
+      String selectedSign = listOfSigns[_random.nextInt(listOfSigns.length)];
       int firstNumber = _random.nextInt(9) + 1;
       int secondNumber = _random.nextInt(9) + 1;
       switch (selectedSign) {
@@ -522,8 +448,8 @@ class QuizBrain {
     listQuizDD.clear();
     int count = 0;
     do {
-      List<String> _listOfSigns = ['+', '-', 'x', '/'];
-      String selectedSign = _listOfSigns[_random.nextInt(_listOfSigns.length)];
+      List<String> listOfSigns = ['+', '-', 'x', '/'];
+      String selectedSign = listOfSigns[_random.nextInt(listOfSigns.length)];
       int firstNumber = _random.nextInt(9) + 1;
       int secondNumber = _random.nextInt(9) + 1;
       switch (selectedSign) {

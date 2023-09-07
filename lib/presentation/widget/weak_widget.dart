@@ -1,17 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:math/data/remote/model/result_quiz_hw_response.dart';
 import 'package:sizer/sizer.dart';
-import '../../application/cons/text_style.dart';
-import '../../data/remote/model/pre_quiz_hw_response.dart';
+
+import '../../data/remote/model/pre_hw_res.dart';
+import '../../data/remote/model/result_hw_res.dart';
 
 class WeakWidget extends StatelessWidget {
   const WeakWidget(
       {Key? key, this.dataResult, this.dataPre, required this.colorBorder})
       : super(key: key);
-  final ResultQuizHWAPIModel? dataResult;
-  final PreQuizHWResAPIModel? dataPre;
+  final ResultHWAPIModel? dataResult;
+  final PreHWAPIModel? dataPre;
   final Color colorBorder;
 
   @override

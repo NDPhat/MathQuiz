@@ -38,10 +38,7 @@ class HomeGuestMainScreen extends StatelessWidget {
                       StudentName(),
                       kHalfSizedBox,
                       StudentPicture(
-                          picAddress:
-                              instance.get<UserLocal>().imageLink!.isNotEmpty
-                                  ? instance.get<UserLocal>().imageLink!
-                                  : 'assets/images/profile.png'),
+                          picAddress: instance.get<UserLocal>().imageLink!),
                     ],
                   ),
                   sizedBox,

@@ -1,5 +1,5 @@
-class PreQuizGameAPIReq {
-  String? userID;
+class PrePraAPIReq {
+  String? userId;
   String? sign;
   String? optionGame;
   String? dateSave;
@@ -7,8 +7,8 @@ class PreQuizGameAPIReq {
   int? score;
   String? status;
 
-  PreQuizGameAPIReq(
-      {this.userID,
+  PrePraAPIReq(
+      {this.userId,
       this.sign,
       this.optionGame,
       this.dateSave,
@@ -16,8 +16,8 @@ class PreQuizGameAPIReq {
       this.score,
       this.status});
 
-  PreQuizGameAPIReq.fromJson(Map<String, dynamic> json) {
-    userID = json['userID'];
+  PrePraAPIReq.fromJson(Map<String, dynamic> json) {
+    userId = json['userId'];
     sign = json['sign'];
     optionGame = json['optionGame'];
     dateSave = json['dateSave'];
@@ -28,7 +28,7 @@ class PreQuizGameAPIReq {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userID'] = this.userID;
+    data['userId'] = this.userId;
     data['sign'] = this.sign;
     data['optionGame'] = this.optionGame;
     data['dateSave'] = this.dateSave;

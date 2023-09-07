@@ -6,9 +6,7 @@ import 'package:drift/drift.dart' as driff;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/data/remote/model/pre_quiz_game_req.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/text_style.dart';
 import '../../../../application/utils/format.dart';
@@ -17,12 +15,13 @@ import '../../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../../data/model/app_global.dart';
 import '../../../../data/model/make_quiz.dart';
 import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../../data/remote/model/pre_quiz_game_response.dart';
-import '../../../../data/remote/model/quiz_game_req.dart';
+import '../../../../data/remote/api/Repo/pre_pra_repo.dart';
+import '../../../../data/remote/model/pre_pra_res.dart';
+import '../../../../data/remote/model/pre_pra_req.dart';
+import '../../../../data/remote/model/quiz_pra_req.dart';
 import '../../../../domain/bloc/game/game_cubit.dart';
-import '../../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../../application/utils/make_quiz.dart';
+import '../../../../domain/bloc/pre_practice/pre_pra_cubit.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
 import '../../../widget/portrait_mode_tf.dart';
@@ -86,7 +85,6 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
     });
     _score = 0;
     _totalNumberOfQuizzes = 1;
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
   }
 
   void _makeNewQuiz() async {
@@ -110,14 +108,14 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
 
   Future<void> addNewDataPlayAgain() async {
     if (instance.get<UserGlobal>().onLogin == true) {
-      PreQuizGameAPIModel? newData =
-          await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
+      PrePraAPIModel? newData =
+          await context.read<GameCubit>().createPrePraServer(PrePraAPIReq(
               numQ: _preQuiz.numQ,
               status: "GOING",
               sign: _preQuiz.sign,
               score: 0,
               optionGame: _preQuiz.option,
-              userID: instance.get<UserGlobal>().id,
+              userId: instance.get<UserGlobal>().id,
               dateSave: formatDateInput.format(
                 DateTime.now(),
               )));
@@ -145,8 +143,8 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
 
   void _saveData(BuildContext context) {
     if (instance.get<UserGlobal>().onLogin == true) {
-      context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
-          prequizGameID: _preIdServerNow,
+      context.read<GameCubit>().addQuizToServer(QuizPraAPIReq(
+          prePraId: _preIdServerNow,
           sign: _preQuiz.sign!,
           quiz: _quizBrain.quiz,
           infoQuiz: userAnswer,
@@ -170,14 +168,14 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
 
   updateScore() {
     if (instance.get<UserGlobal>().onLogin == true) {
-      instance.get<UserAPIRepo>().updatePreQuizGameByID(
-          PreQuizGameAPIReq(
-              score: _score, status: "DONE", numQ: _totalNumberOfQuizzes),
-          _preIdServerNow);
+      context.read<GameCubit>().updatePrePraServer(
+          _preIdServerNow,
+          PrePraAPIReq(
+              score: _score, status: "DONE", numQ: _totalNumberOfQuizzes));
     } else {
-      PreQuizCubit(
+      PrePraCubit(
               preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-              userAPIRepo: instance.get<UserAPIRepo>())
+              prePraRepo: instance.get<PrePraRepo>())
           .updateScoreQuizGame(_score, _preIdNow, _totalNumberOfQuizzes);
     }
   }
@@ -205,11 +203,11 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
 
   void deletePreGame() {
     if (instance.get<UserGlobal>().onLogin == true) {
-      instance.get<UserAPIRepo>().deletePreQuizGame(_preIdServerNow.toString());
+      context.read<GameCubit>().deletePreGameNow(_preIdServerNow.toString());
     } else {
-      PreQuizCubit(
+      PrePraCubit(
               preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-              userAPIRepo: instance.get<UserAPIRepo>())
+              prePraRepo: instance.get<PrePraRepo>())
           .deletePreQuizGame(_preIdNow);
     }
     Navigator.pushNamed(context, Routers.takeMediumQuiz);

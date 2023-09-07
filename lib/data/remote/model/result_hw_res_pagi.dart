@@ -1,16 +1,18 @@
-import 'package:math/data/remote/model/quiz_game_response.dart';
 
-class QuizGamePagiAPIRes {
-  List<QuizGameAPIModel>? data;
+import 'package:math/data/remote/model/result_hw_res.dart';
+
+class ResultHWAPIResPagi {
+  List<ResultHWAPIModel>? data;
   int? total;
   int? count;
-  QuizGamePagiAPIRes({this.data, this.total, this.count});
 
-  QuizGamePagiAPIRes.fromJson(Map<String, dynamic> json) {
+  ResultHWAPIResPagi({this.data, this.total, this.count});
+
+  ResultHWAPIResPagi.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <QuizGameAPIModel>[];
+      data = <ResultHWAPIModel>[];
       json['data'].forEach((v) {
-        data!.add(new QuizGameAPIModel.fromJson(v));
+        data!.add(new ResultHWAPIModel.fromJson(v));
       });
     }
     total = json['total'];

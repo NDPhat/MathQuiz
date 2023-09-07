@@ -9,19 +9,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/pre_test_model.dart';
+import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/main.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../application/utils/format.dart';
 import '../../../../application/utils/make_quiz.dart';
-import '../../../../application/utils/sound.dart';
 import '../../../../data/local/driff/db/db_app.dart';
 import '../../../../data/local/repo/pre_test/pre_test_repo.dart';
 import '../../../../data/model/app_global.dart';
 import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../../data/remote/model/pre_test_req.dart';
 import '../../../../data/remote/model/quiz_test_req.dart';
 import '../../../routers/navigation.dart';
 import '';
@@ -37,7 +34,6 @@ class MixNumberGameScreen extends StatefulWidget {
 class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
-  int _highScore = 0;
   int falseChoose = 0;
   late PreTest preTest;
   int _totalNumberOfQuizzes = 0;
@@ -71,8 +67,6 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
     });
     _score = 0;
     _totalNumberOfQuizzes = 1;
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    _highScore = preferences.getInt('highscore') ?? 0;
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {
@@ -114,12 +108,12 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
 
   void addData(BuildContext context, int value) {
     if (instance.get<UserGlobal>().onLogin == true) {
-      context.read<GameCubit>().addQuizTestToServer(QuizTestReq(
+      context.read<GameCubit>().addQuizTestToServer(QuizTestAPIReq(
           quiz: _quizBrain.quiz.toString(),
           answerSelect: value,
           answer: _quizBrain.quizAnswer,
           infoQuiz: userAnswer,
-          preTestID: preTest.keyServer));
+          preTestId: preTest.keyServer));
     } else {
       context.read<GameCubit>().addQuizMixToLocal(QuizTestEntityCompanion(
           preId: drift.Value(preTest.id!),
@@ -137,15 +131,15 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
   void updateScore() async {
     if (instance.get<UserGlobal>().onLogin == true) {
       Navigator.pop(context);
-      instance.get<UserAPIRepo>().updatePreQuizTestByID(
-          PreTestReq(
-              sumQ: _totalNumberOfQuizzes,
+      context.read<GameCubit>().updatePreTestServer(
+          preTest.keyServer.toString(),
+          PreTestAPIModel(
+              numQ: _totalNumberOfQuizzes,
               trueQ: _score,
               falseQ: falseChoose,
               score: _score,
               dateSave: formatTimeTestInput.format(DateTime.now()),
-              userID: instance.get<UserGlobal>().id),
-          preTest.keyServer.toString());
+              userId: instance.get<UserGlobal>().id));
       Navigator.pushNamed(context, Routers.takeHardQuiz);
     } else {
       Navigator.pop(context);
@@ -196,10 +190,8 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
 
   void deletePreTest() {
     if (instance.get<UserGlobal>().onLogin == true) {
-      instance
-          .get<UserAPIRepo>()
-          .deleteTestingNotDoByPreTestId(preTest.keyServer.toString());
-      Navigator.pushNamed(context, Routers.homeUser);
+      context.read<GameCubit>().deletePreTestNow(preTest.keyServer.toString());
+      Navigator.pushNamed(context, Routers.takeHardQuiz);
     } else {
       instance.get<PreTestLocalRepo>().deletePreTest(preTest.id!);
       Navigator.pushNamed(context, Routers.homeGuest);
@@ -219,7 +211,6 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
         },
         child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
           return PortraitModeGame(
-            highscore: _highScore,
             score: _score,
             quizBrainObject: _quizBrain,
             onTap: (int value) {

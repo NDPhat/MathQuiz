@@ -91,8 +91,8 @@ class _AddNewGuestPlayerScreenState extends State<AddNewGuestPlayerScreen> {
                           return pre.nameError != now.nameError;
                         }, builder: (BuildContext context, state) {
                           return InputFieldWidget(
-                            hintText: 'enter your name'.tr(),
-                            nameTitle: 'your name'.tr(),
+                            hintText: 'your name'.tr(),
+                            nameTitle: 'name'.tr(),
                             width: 80.w,
                             height: 8.h,
                             onChanged: (value) {
@@ -142,7 +142,7 @@ class _AddNewGuestPlayerScreenState extends State<AddNewGuestPlayerScreen> {
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(20)),
                                         color: (e.accept == true)
-                                            ? colorMainBlue
+                                            ? colorSystemYeloow
                                             : colorBGInput),
                                     child: Center(
                                       child: Image.asset(

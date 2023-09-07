@@ -5,15 +5,13 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/application/cons/color.dart';
 import 'package:math/data/model/user_global.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/data/remote/api/Repo/result_hw_repo.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
-import '../../../application/cons/constants.dart';
 import '../../../application/cons/text_style.dart';
 import '../../../data/model/pre_join_homework.dart';
-import '../../../data/remote/model/detail_quiz_hw_req.dart';
-import '../../../data/remote/model/result_quiz_hw_req.dart';
+import '../../../data/remote/model/quiz_hw_req.dart';
+import '../../../data/remote/model/result_hw_req.dart';
 import '../../../domain/bloc/game/game_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../../main.dart';
@@ -119,7 +117,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
   }
 
   _saveData(int value) {
-    context.read<GameCubit>().addQuizHWToServer(DetailQuizHWAPIReq(
+    context.read<GameCubit>().addQuizHWToServer(QuizHWAPIReq(
         quiz: _quizBrain.quiz.toString(),
         answerSelect: value,
         answer: _quizBrain.quizAnswer,
@@ -160,8 +158,8 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
 
   void updatePreHW() {
     Navigator.pop(context);
-    instance.get<UserAPIRepo>().updateInfoHomeWorkWeek(
-        ResultQuizHWAPIReq(
+    instance.get<ResultHWRepo>().updateInfoHomeWorkWeek(
+        ResultHWAPIReq(
             week: _preQuiz.week,
             numQ: _preQuiz.numQ,
             trueQ: _score,
@@ -176,7 +174,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
 
   void deletePreHW() {
     instance
-        .get<UserAPIRepo>()
+        .get<ResultHWRepo>()
         .deleteResultHWNotDo(_preQuiz.resultID.toString());
     Navigator.pushNamed(context, Routers.homeUser);
   }

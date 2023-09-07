@@ -66,10 +66,15 @@ class StudentPicture extends StatelessWidget {
         padding: const EdgeInsets.all(8), // Border radius
         child: ClipOval(
             child: instance.get<UserGlobal>().onLogin == true
-                ? Image.network(
-                    instance.get<UserGlobal>().linkImage!,
-                    fit: BoxFit.cover,
-                  )
+                ? (instance.get<UserGlobal>().linkImage!.isNotEmpty
+                    ? Image.network(
+                        instance.get<UserGlobal>().linkImage!,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        picAddress,
+                        fit: BoxFit.cover,
+                      ))
                 : Image.asset(
                     picAddress,
                     fit: BoxFit.cover,

@@ -1,23 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:math/data/model/user_global.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/main.dart';
 
 import '../../../application/enum/update_pass_status.dart';
-import '../../../data/remote/model/user_api_res.dart';
+import '../../../data/remote/api/Repo/user_repo.dart';
+import '../../../data/remote/model/user_res.dart';
 
 part 'update_pass_state.dart';
 
 class UpdatePassCubit extends Cubit<UpdatePassState> {
-  final UserAPIRepo userAPIRepo;
+  final UserRepo userRepo;
   String confirmPassMessage = "";
   String passMessage = "";
   String oldPassMessage = "";
 
-  UpdatePassCubit({required UserAPIRepo userAPIRepo})
-      : userAPIRepo = userAPIRepo,
-        super(UpdatePassState.initial());
+  UpdatePassCubit({required this.userRepo}) : super(UpdatePassState.initial());
 
   void passChanged(String value) {
     state.password = value;
@@ -83,7 +81,7 @@ class UpdatePassCubit extends Cubit<UpdatePassState> {
   Future<void> updatePassWithCredentials(String email) async {
     emit(state.copyWith(status: UpdatePassStatus.onLoading));
     if (formValidatorForgetPass()) {
-      bool updateDone = await userAPIRepo.updatePasswordUser(
+      bool updateDone = await userRepo.updatePasswordUser(
           email, UserAPIModel(password: state.password));
       if (updateDone) {
         emit(state.copyWith(
@@ -107,7 +105,7 @@ class UpdatePassCubit extends Cubit<UpdatePassState> {
   Future<void> changePassWithCredentials() async {
     emit(state.copyWith(status: UpdatePassStatus.onLoading));
     if (formValidatorChangePass()) {
-      bool updateDone = await userAPIRepo.updatePasswordUser(
+      bool updateDone = await userRepo.updatePasswordUser(
           instance.get<UserGlobal>().email!.toString(),
           UserAPIModel(password: state.password));
       if (updateDone) {

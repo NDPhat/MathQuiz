@@ -1,24 +1,24 @@
-class QuizGameAPIReq {
+class QuizPraAPIReq {
   String? quiz;
-  String? prequizGameID;
+  String? prePraId;
   int? answer;
   String? userId;
   String? sign;
   int? answerSelect;
   bool? infoQuiz;
 
-  QuizGameAPIReq(
+  QuizPraAPIReq(
       {this.quiz,
-      this.prequizGameID,
+      this.prePraId,
       this.answer,
       this.userId,
       this.sign,
       this.answerSelect,
       this.infoQuiz});
 
-  QuizGameAPIReq.fromJson(Map<String, dynamic> json) {
+  QuizPraAPIReq.fromJson(Map<String, dynamic> json) {
     quiz = json['quiz'];
-    prequizGameID = json['prequizGameID'];
+    prePraId = json['prePraId'];
     answer = json['answer'];
     userId = json['userId'];
     sign = json['sign'];
@@ -29,7 +29,7 @@ class QuizGameAPIReq {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['quiz'] = this.quiz;
-    data['prequizGameID'] = this.prequizGameID;
+    data['prePraId'] = this.prePraId;
     data['answer'] = this.answer;
     data['userId'] = this.userId;
     data['sign'] = this.sign;

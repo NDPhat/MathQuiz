@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:math/data/remote/api/Repo/result_hw_repo.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../application/cons/color.dart';
 import '../../../../data/model/chart_data_datasheet.dart';
 import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../../data/remote/model/result_quiz_hw_response.dart';
+import '../../../../data/remote/model/result_hw_res.dart';
 import '../../../../main.dart';
 
 class ChartSeasonHW extends StatelessWidget {
@@ -20,8 +20,8 @@ class ChartSeasonHW extends StatelessWidget {
     return SizedBox(
         width: 100.w,
         height: 30.h,
-        child: FutureBuilder<List<ResultQuizHWAPIModel>?>(
-            future: instance.get<UserAPIRepo>().getALlResultQuizHWByUserID(
+        child: FutureBuilder<List<ResultHWAPIModel>?>(
+            future: instance.get<ResultHWRepo>().getALlResultQuizHWByUserID(
                 instance.get<UserGlobal>().id.toString()),
             builder: (context, snapshot) {
               if (snapshot.hasData) {

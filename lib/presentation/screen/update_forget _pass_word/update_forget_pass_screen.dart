@@ -68,18 +68,17 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
       },
       child: SingleChildScrollView(
         child: Container(
-          height: 85.h,
+          height: 90.h,
           padding: EdgeInsets.only(
             left: 10.w,
             right: 10.w,
-            top: 5.h,
             bottom: 5.h,
           ),
           child: Column(
             children: [
               Image.asset(
                 'assets/images/image_update_pass.png',
-                height: 25.h,
+                height: 30.h,
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -89,7 +88,7 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 2.h,
+                height: 3.h,
               ),
               SizedBox(
                 height: 35.h,
@@ -100,10 +99,10 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
                       return pre.passErrorMessage != now.passErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 'enter your password'.tr(),
+                        hintText: 'your new password'.tr(),
                         width: 80.w,
                         height: 8.h,
-                        nameTitle: "your new password".tr(),
+                        nameTitle: "new password".tr(),
                         onChanged: (value) {
                           context.read<UpdatePassCubit>().passChanged(value);
                         },
@@ -121,10 +120,10 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
                           now.confirmPassErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 're-enter your password'.tr(),
+                        hintText: 're-your new password'.tr(),
                         width: 80.w,
                         height: 8.h,
-                        nameTitle: "your re-password".tr(),
+                        nameTitle: "re-new password".tr(),
                         onChanged: (value) {
                           context
                               .read<UpdatePassCubit>()
@@ -151,7 +150,8 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
                           .read<UpdatePassCubit>()
                           .updatePassWithCredentials(email);
                     },
-                    color: colorMainBlue,
+                    color: colorSystemWhite,
+                    colorBorder: colorSystemYeloow,
                     width: 80.w,
                     height: 8.h,
                     child: state.status == UpdatePassStatus.onLoading
@@ -159,14 +159,14 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
                             height: 10.h,
                             child: const Center(
                               child: CircularProgressIndicator(
-                                color: colorSystemWhite,
+                                color: colorSystemYeloow,
                                 strokeWidth: 3,
                               ),
                             ),
                           )
                         : Text(
                             'go'.tr(),
-                            style: s20f700ColorSysWhite,
+                            style: s16f700ColorSysYel,
                           ));
               })
             ],

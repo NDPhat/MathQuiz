@@ -1,8 +1,8 @@
 
 {
   "new player": "Nhân vật mới",
-  "enter your name": "Nhập tên",
-  "your name": "Tên",
+  "name": "Tên",
+  "your name": "Tên của bạn",
   "choose your player":"Chọn nhân vật",
   "add": "Thêm",
   "choose": "Chọn",
@@ -11,11 +11,11 @@
 
   "change password": "Thay đổi mật khẩu",
   "change your password.": "Thay đổi mật khẩu của bạn.",
-  "enter your old password": "Nhập mật khẩu cũ",
+  "your old password": "Nhập mật khẩu cũ",
   "old password":  "Mật khẩu cũ",
   "new password":  "Mật khẩu mới",
-  "enter your new password": "Nhập mật khẩu mới",
-  "re-enter your password": "Nhập lại mật khẩu mới",
+  "your new password": "Nhập mật khẩu mới",
+  "re-your new password": "Nhập lại mật khẩu mới",
   "re-new password":  "Mật khẩu mới",
   "update successful": "Cập nhật thành công",
 
@@ -35,6 +35,7 @@
 
   "true": "Đúng",
   "false": "Sai",
+  "enter": "Nhập",
   "data season": "Dữ liệu kì",
   "detailed homework data":"Dữ liệu bài tập chi tiết",
   "weekly data": "Dữ liệu hàng tuần",
@@ -63,7 +64,8 @@
 
   "forget password": "Quên mật khẩu",
   "please enter your email in the field below\nto send the reset password request.":"Vui lòng điền email của bạn\nđể nhận yêu cầu khôi phục mật khẩu.",
-  "enter your email": "Nhập email",
+  "your email": "Email của bạn",
+  "email": "Email",
 
   "game over": "Kết thúc",
   "fill all the blank":"Điền vào tất cả khoảng trống",
@@ -97,12 +99,10 @@
 
   "sign in to continue": "Đăng nhập để tiếp tục",
   "login fail": "Đăng nhập thất bại",
-  "your email": "Email",
-  "enter your password": "Nhập mật khẩu",
-  "your password": "Mật khẩu",
+  "password": "Mật khẩu",
+  "your password": "Mật khẩu của bạn",
 
   "choose mode": "Chọn chế độ",
-  "enter": "Nhập",
   "answer": "đáp án",
   "find": "Tìm",
   "missing": "thiếu",
@@ -114,9 +114,13 @@
   "choose one": "Chọn một",
 
   "your class": "Lớp",
+  "class": "Lớp",
   "your phone": "Số điện thoại",
+  "phone": "Số điện thoại",
   "your address": "Địa chỉ",
+  "address": "Địa chỉ",
   "your birthday": "Ngày sinh",
+  "birthday": "Ngày sinh",
   "choose gender": "Giới tính",
   "myacc": "Tài khoản",
   "update password": "Cập nhật mật khẩu",
@@ -127,7 +131,7 @@
   "delete": "Xóa",
 
   "mode": "Chế độ",
-  "localnotifi": "Local Notification",
+  "localnotifi": "Cài đặt thông báo",
   "language": "Ngôn ngữ",
   "sound":"Âm thanh",
 

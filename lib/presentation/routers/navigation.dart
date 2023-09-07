@@ -3,7 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/model/app_global.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+import 'package:math/data/remote/api/Repo/pre_test_repo.dart';
+import 'package:math/data/remote/api/Repo/quiz_hw_repo.dart';
+import 'package:math/data/remote/api/Repo/quiz_pra_repo.dart';
+import 'package:math/data/remote/api/Repo/quiz_test_repo.dart';
+import 'package:math/data/remote/api/Repo/result_hw_repo.dart';
+import 'package:math/data/remote/api/Repo/user_repo.dart';
 import 'package:math/data/remote/authen/authen.dart';
 import 'package:math/domain/bloc/add_notifi/add_notify_cubit.dart';
 import 'package:math/domain/bloc/add_player/add_player_cubit.dart';
@@ -13,7 +18,6 @@ import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/domain/bloc/notify_main/notify_main_cubit.dart';
-import 'package:math/domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import 'package:math/domain/bloc/setting/setting_cubit.dart';
 import 'package:math/domain/bloc/update_pass/update_pass_cubit.dart';
 import 'package:math/domain/bloc/update_profile/update_profile_cubit.dart';
@@ -51,8 +55,10 @@ import '../../data/local/repo/detail_notifi/notify_task_repo.dart';
 import '../../data/local/repo/player_local/player_local_repo.dart';
 import '../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../data/local/repo/test/quiz_test_repo.dart';
+import '../../data/remote/api/Repo/pre_pra_repo.dart';
 import '../../domain/bloc/detail_practices/detail_practices_cubit.dart';
 import '../../domain/bloc/history/history_cubit.dart';
+import '../../domain/bloc/pre_practice/pre_pra_cubit.dart';
 import '../../domain/bloc/take_hard/take_hard_cubit.dart';
 import '../../main.dart';
 import '../screen/check_answer/check_answer_hw.dart';
@@ -178,7 +184,7 @@ class Routers {
       case changePassScreen:
         return BlocProvider(
             create: (context) => UpdatePassCubit(
-                  userAPIRepo: instance.get<UserAPIRepo>(),
+                  userRepo: instance.get<UserRepo>(),
                 ),
             child: const ChangePassWordScreen());
       case takeMediumQuiz:
@@ -191,7 +197,7 @@ class Routers {
       case takeHardQuiz:
         return BlocProvider(
             create: (context) => TakeHardCubit(
-                userAPIRepo: instance.get<UserAPIRepo>(),
+                preTestRepo: instance.get<PreTestRepo>(),
                 preTestLocalRepo: instance.get<PreTestLocalRepo>()),
             child: const TakeQuizHardScreen());
       case checkAnswerPracUserGame:
@@ -207,55 +213,55 @@ class Routers {
                 playerLocalRepo: instance.get<PlayerLocalRepo>()),
             child: const AddNewGuestPlayerScreen());
       case hwcardDetail:
-        return DetailItemCardHomeWork();
+        return const DetailItemCardHomeWork();
       case takeQuiz:
-        return TakeQuizUserScreen();
+        return const TakeQuizUserScreen();
 
       case testDetail:
         return BlocProvider(
             create: (context) =>
-                DetailTestCubit(userAPIRepo: instance.get<UserAPIRepo>()),
-            child: DetailMixGameScreen());
+                DetailTestCubit(preTestRepo: instance.get<PreTestRepo>()),
+            child: const DetailMixGameScreen());
       case settingScreen:
         return BlocProvider(
             create: (context) =>
                 SettingCubit(appGlobal: instance.get<AppGlobal>()),
-            child: SettingMainScreen());
+            child: const SettingMainScreen());
       case settingGuestScreen:
         return BlocProvider(
             create: (context) =>
                 SettingCubit(appGlobal: instance.get<AppGlobal>()),
-            child: SettingGuestMainScreen());
+            child: const SettingGuestMainScreen());
       case practicecardDetail:
         return BlocProvider(
             create: (context) =>
-                DetailPracticesCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+                DetailPracticesCubit(prePraRepo: instance.get<PrePraRepo>()),
             child: const DetailItemCardPractices());
       case updateProfileUser:
         return BlocProvider(
             create: (context) =>
-                UpdateProfileCubit(userAPIRepo: instance.get<UserAPIRepo>()),
-            child: UpdateProfileUserScreen());
+                UpdateProfileCubit(userRepo: instance.get<UserRepo>()),
+            child: const UpdateProfileUserScreen());
       case login:
         return BlocProvider(
             create: (context) => LoginCubit(
-                userAPIRepo: instance.get<UserAPIRepo>(),
+                userAPIRepo: instance.get<UserRepo>(),
                 authenRepository: instance.get<AuthenRepository>()),
             child: const LoginUserApp());
       case forgetPass:
         return BlocProvider(
             create: (context) =>
-                ForgetPassCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+                ForgetPassCubit(userRepo: instance.get<UserRepo>()),
             child: const ForgetPassScreen());
       case getOTP:
         return BlocProvider(
             create: (context) =>
-                GetOTPCubit(userAPIRepo: instance.get<UserAPIRepo>()),
-            child: GetOTPScreen());
+                GetOTPCubit(userRepo: instance.get<UserRepo>()),
+            child: const GetOTPScreen());
       case updatePass:
         return BlocProvider(
             create: (context) =>
-                UpdatePassCubit(userAPIRepo: instance.get<UserAPIRepo>()),
+                UpdatePassCubit(userRepo: instance.get<UserRepo>()),
             child: const UpdateForgetPasswordScreen());
       case chooseOptionUseApp:
         return const OptionUseApp();
@@ -263,7 +269,12 @@ class Routers {
         return BlocProvider(
             create: (context) => GameCubit(
                   quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                  userAPIRepo: instance.get<UserAPIRepo>(),
+                  preTestRepo: instance.get<PreTestRepo>(),
+                  prePraRepo: instance.get<PrePraRepo>(),
+                  quizTestRepo: instance.get<QuizTestRepo>(),
+                  quizPraRepo: instance.get<QuizPraRepo>(),
+                  resultHWRepo: instance.get<ResultHWRepo>(),
+                  quizHWRepo: instance.get<QuizHWRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const AssignmentGameScreen());
@@ -286,14 +297,14 @@ class Routers {
             create: (context) => HistoryCubit(
                 preTestLocalRepo: instance.get<PreTestLocalRepo>(),
                 preQuizLocalRepo: instance.get<PreQuizGameRepo>()),
-            child: DataSheetGuestScreen());
+            child: const DataSheetGuestScreen());
       case optionBot:
-        return OptionModeBotDual();
+        return const OptionModeBotDual();
       case chooseOption:
         return BlocProvider(
-            create: (context) => PreQuizCubit(
+            create: (context) => PrePraCubit(
                 preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-                userAPIRepo: instance.get<UserAPIRepo>()),
+                prePraRepo: instance.get<PrePraRepo>()),
             child: const OptionGameModeScreen());
       case battleMainScreen:
         return const DualMainScreen();
@@ -302,12 +313,18 @@ class Routers {
       case mixGame:
         return BlocProvider(
             create: (context) => GameCubit(
-                userAPIRepo: instance.get<UserAPIRepo>(),
-                quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
-                quizPraLocalRepo: instance.get<QuizGameLocalRepo>()),
+                  quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
+                  preTestRepo: instance.get<PreTestRepo>(),
+                  prePraRepo: instance.get<PrePraRepo>(),
+                  quizTestRepo: instance.get<QuizTestRepo>(),
+                  quizPraRepo: instance.get<QuizPraRepo>(),
+                  resultHWRepo: instance.get<ResultHWRepo>(),
+                  quizHWRepo: instance.get<QuizHWRepo>(),
+                  quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
+                ),
             child: const MixNumberGameScreen());
       case detailTest:
-        return DetailTestScreen();
+        return const DetailTestScreen();
       case assignmentMainScreen:
         return const AssignmentMainScreen();
       case detailQuizGame:
@@ -328,7 +345,12 @@ class Routers {
         return BlocProvider(
             create: (context) => GameCubit(
                   quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                  userAPIRepo: instance.get<UserAPIRepo>(),
+                  preTestRepo: instance.get<PreTestRepo>(),
+                  prePraRepo: instance.get<PrePraRepo>(),
+                  quizTestRepo: instance.get<QuizTestRepo>(),
+                  quizPraRepo: instance.get<QuizPraRepo>(),
+                  resultHWRepo: instance.get<ResultHWRepo>(),
+                  quizHWRepo: instance.get<QuizHWRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const EnterAnswerGameScreen());
@@ -336,7 +358,12 @@ class Routers {
         return BlocProvider(
             create: (context) => GameCubit(
                   quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                  userAPIRepo: instance.get<UserAPIRepo>(),
+                  preTestRepo: instance.get<PreTestRepo>(),
+                  prePraRepo: instance.get<PrePraRepo>(),
+                  quizTestRepo: instance.get<QuizTestRepo>(),
+                  quizPraRepo: instance.get<QuizPraRepo>(),
+                  resultHWRepo: instance.get<ResultHWRepo>(),
+                  quizHWRepo: instance.get<QuizHWRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const TrueFalseGameScreen());
@@ -344,7 +371,12 @@ class Routers {
         return BlocProvider(
             create: (context) => GameCubit(
                   quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                  userAPIRepo: instance.get<UserAPIRepo>(),
+                  preTestRepo: instance.get<PreTestRepo>(),
+                  prePraRepo: instance.get<PrePraRepo>(),
+                  quizTestRepo: instance.get<QuizTestRepo>(),
+                  quizPraRepo: instance.get<QuizPraRepo>(),
+                  resultHWRepo: instance.get<ResultHWRepo>(),
+                  quizHWRepo: instance.get<QuizHWRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const FindMissingNumberGameScreen());
@@ -352,7 +384,12 @@ class Routers {
         return BlocProvider(
             create: (context) => GameCubit(
                   quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                  userAPIRepo: instance.get<UserAPIRepo>(),
+                  preTestRepo: instance.get<PreTestRepo>(),
+                  prePraRepo: instance.get<PrePraRepo>(),
+                  quizTestRepo: instance.get<QuizTestRepo>(),
+                  quizPraRepo: instance.get<QuizPraRepo>(),
+                  resultHWRepo: instance.get<ResultHWRepo>(),
+                  quizHWRepo: instance.get<QuizHWRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const PuzzleGameScreen());
@@ -360,7 +397,12 @@ class Routers {
         return BlocProvider(
             create: (context) => GameCubit(
                   quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                  userAPIRepo: instance.get<UserAPIRepo>(),
+                  preTestRepo: instance.get<PreTestRepo>(),
+                  prePraRepo: instance.get<PrePraRepo>(),
+                  quizTestRepo: instance.get<QuizTestRepo>(),
+                  quizPraRepo: instance.get<QuizPraRepo>(),
+                  resultHWRepo: instance.get<ResultHWRepo>(),
+                  quizHWRepo: instance.get<QuizHWRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const DragDropGameScreen());

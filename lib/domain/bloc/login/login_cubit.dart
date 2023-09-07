@@ -1,23 +1,23 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/data/remote/authen/authen.dart';
 
 import '../../../application/enum/login_status.dart';
 import '../../../data/model/user_global.dart';
+import '../../../data/remote/api/Repo/user_repo.dart';
 import '../../../main.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final UserAPIRepo userAPIRepo;
+  final UserRepo userRepo;
   final AuthenRepository authenRepository;
   String emailMess = "";
   String passMess = "";
   LoginCubit(
-      {required UserAPIRepo userAPIRepo,
+      {required UserRepo userAPIRepo,
       required AuthenRepository authenRepository})
-      : userAPIRepo = userAPIRepo,
+      : userRepo = userAPIRepo,
         authenRepository = authenRepository,
         super(LoginState.initial());
   void emailChanged(String value) {
@@ -35,19 +35,17 @@ class LoginCubit extends Cubit<LoginState> {
   void passChanged(String value) {
     state.pass = value;
   }
-  void clearData(){
+
+  void clearData() {
     emit(state.copyWith(
-      emailError: "",
-      passError: "",
-      status: LoginStatus.clear
-    ));
+        emailError: "", passError: "", status: LoginStatus.clear));
   }
 
   Future<void> loginAppWithEmailAndPass() async {
     emit(state.copyWith(status: LoginStatus.onLoading));
     if (isEmailValid(state.email)) {
       final user =
-          await userAPIRepo.getUserByEmailAndPass(state.email, state.pass);
+          await userRepo.getUserByEmailAndPass(state.email, state.pass);
       if (user != null) {
         authenRepository.handleAutoLoginApp(true);
         authenRepository.handleMailLoginApp(state.email.toString());

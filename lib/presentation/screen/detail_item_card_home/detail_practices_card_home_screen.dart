@@ -6,18 +6,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/application/utils/func.dart';
 import 'package:math/data/model/chart_data_week.dart';
-import 'package:math/data/remote/model/quiz_game_response.dart';
+import 'package:math/data/remote/api/Repo/quiz_pra_repo.dart';
 import 'package:math/domain/bloc/detail_practices/detail_practices_cubit.dart';
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:math/presentation/widget/button_custom.dart';
-import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:multiselect/multiselect.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/utils/count_sign.dart';
-import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/quiz_pra_res.dart';
 import '../../../main.dart';
 import '../../widget/async_data_detail.dart';
 import '../../widget/dot_page_indicator.dart';
@@ -283,9 +282,9 @@ class _DetailItemCardPracticesState extends State<DetailItemCardPractices> {
                         childRight: SizedBox(
                           height: 20.h,
                           width: 45.w,
-                          child: FutureBuilder<List<QuizGameAPIModel>?>(
+                          child: FutureBuilder<List<QuizPraAPIModel>?>(
                               future: instance
-                                  .get<UserAPIRepo>()
+                                  .get<QuizPraRepo>()
                                   .getALlQuizGameByPreGameID(
                                       state.posts![index].key!),
                               builder: (context, snapshotChild) {

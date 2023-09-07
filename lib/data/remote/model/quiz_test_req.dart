@@ -1,20 +1,20 @@
-class QuizTestReq {
+class QuizTestAPIReq {
   String? quiz;
-  String? preTestID;
+  String? preTestId;
   int? answer;
   int? answerSelect;
   bool? infoQuiz;
 
-  QuizTestReq(
+  QuizTestAPIReq(
       {this.quiz,
-      this.preTestID,
+      this.preTestId,
       this.answer,
       this.answerSelect,
       this.infoQuiz});
 
-  QuizTestReq.fromJson(Map<String, dynamic> json) {
+  QuizTestAPIReq.fromJson(Map<String, dynamic> json) {
     quiz = json['quiz'];
-    preTestID = json['preTestID'];
+    preTestId = json['preTestId'];
     answer = json['answer'];
     answerSelect = json['answerSelect'];
     infoQuiz = json['infoQuiz'];
@@ -23,7 +23,7 @@ class QuizTestReq {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['quiz'] = this.quiz;
-    data['preTestID'] = this.preTestID;
+    data['preTestId'] = this.preTestId;
     data['answer'] = this.answer;
     data['answerSelect'] = this.answerSelect;
     data['infoQuiz'] = this.infoQuiz;

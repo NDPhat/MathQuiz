@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/model/quiz_game_response.dart';
+import 'package:math/data/remote/api/Repo/quiz_pra_repo.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:math/presentation/widget/bg_list_view.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../data/model/user_global.dart';
+import '../../../data/remote/model/quiz_pra_res.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/answer_widget.dart';
@@ -25,7 +25,7 @@ class _CheckAnswerPracUserGameScreenState
   ScrollController controller = ScrollController();
   bool isLoadMoreRunning = false;
   late String id;
-  List<QuizGameAPIModel>? posts = [];
+  List<QuizPraAPIModel>? posts = [];
 
   @override
   void initState() {
@@ -41,7 +41,6 @@ class _CheckAnswerPracUserGameScreenState
   void dispose() {
     super.dispose();
     controller.dispose();
-
   }
 
   void loadMore() async {
@@ -50,8 +49,8 @@ class _CheckAnswerPracUserGameScreenState
         isLoadMoreRunning = true; // Display a progress indicator at the bottom
       });
       page += 1; // Increase _page by 1
-      final List<QuizGameAPIModel>? fetchedPosts = await instance
-          .get<UserAPIRepo>()
+      final List<QuizPraAPIModel>? fetchedPosts = await instance
+          .get<QuizPraRepo>()
           .getALlQuizGameByPreGameIDWithPagination(id, page);
       if (fetchedPosts!.isNotEmpty) {
         setState(() {
@@ -68,8 +67,8 @@ class _CheckAnswerPracUserGameScreenState
     setState(() {
       isFirstLoadRunning = true;
     });
-    final List<QuizGameAPIModel>? fetchedPosts = await instance
-        .get<UserAPIRepo>()
+    final List<QuizPraAPIModel>? fetchedPosts = await instance
+        .get<QuizPraRepo>()
         .getALlQuizGameByPreGameIDWithPagination(id, page);
     if (fetchedPosts!.isNotEmpty) {
       setState(() {
@@ -95,7 +94,8 @@ class _CheckAnswerPracUserGameScreenState
                 Navigator.pushNamed(context, Routers.homeUser);
               } else {
                 Navigator.pushNamed(context, Routers.homeGuest);
-              }            },
+              }
+            },
             homeIcon: const Icon(
               Icons.home,
               color: Colors.black,
@@ -106,8 +106,7 @@ class _CheckAnswerPracUserGameScreenState
               height: 90.h,
               content: 'check answer'.tr(),
               child: Padding(
-                  padding: EdgeInsets.only(
-                     left: 5.w, right: 5.w),
+                  padding: EdgeInsets.only(left: 5.w, right: 5.w),
                   child: isFirstLoadRunning
                       ? Container(
                           alignment: Alignment.center,
@@ -121,43 +120,42 @@ class _CheckAnswerPracUserGameScreenState
                           ),
                         )
                       : Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(top: 10.h),
-                            height: 85.h,
-                            width: 90.w,
-                            child: CustomScrollView(
-                              controller: controller,
-                              slivers: [
-                                SliverList(
-                                    delegate: SliverChildBuilderDelegate(
-                                        childCount: posts!.length,
-                                        (context, index) {
-                                  return AnswerWidget(
-                                    quiz: posts![index].quiz.toString(),
-                                    answer: posts![index].answer.toString(),
-                                    answerSelect: posts![index]
-                                        .answerSelect
-                                        .toString(),
-                                    quizInfo: posts![index].infoQuiz!,
-                                  );
-                                }))
-                              ],
-                            ),
-                          ),
-                          if (isLoadMoreRunning == true)
-                            SizedBox(
-                              height: 3.h,
-                              width: 80.w,
-                              child: const Center(
-                                child: CircularProgressIndicator(
-                                  color: colorMainBlue,
-                                  strokeWidth: 5,
-                                ),
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(top: 10.h),
+                              height: 85.h,
+                              width: 90.w,
+                              child: CustomScrollView(
+                                controller: controller,
+                                slivers: [
+                                  SliverList(
+                                      delegate: SliverChildBuilderDelegate(
+                                          childCount: posts!.length,
+                                          (context, index) {
+                                    return AnswerWidget(
+                                      quiz: posts![index].quiz.toString(),
+                                      answer: posts![index].answer.toString(),
+                                      answerSelect:
+                                          posts![index].answerSelect.toString(),
+                                      quizInfo: posts![index].infoQuiz!,
+                                    );
+                                  }))
+                                ],
                               ),
                             ),
-                        ],
-                      )),
+                            if (isLoadMoreRunning == true)
+                              SizedBox(
+                                height: 3.h,
+                                width: 80.w,
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: colorMainBlue,
+                                    strokeWidth: 5,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        )),
             )));
   }
 }

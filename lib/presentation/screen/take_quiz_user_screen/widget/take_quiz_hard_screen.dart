@@ -25,7 +25,7 @@ class TakeQuizHardScreen extends StatelessWidget {
           decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage(
-                  'assets/images/bg/bg2.jpg',
+                  'assets/images/bg/bg6.jpg',
                 ),
                 fit: BoxFit.fill),
           ),
@@ -70,7 +70,7 @@ class TakeQuizHardScreen extends StatelessWidget {
                           decoration: const BoxDecoration(
                             color: colorSystemWhite,
                             image: DecorationImage(
-                                image: AssetImage("assets/images/write.png"),
+                                image: AssetImage("assets/images/puzzle.png"),
                                 fit: BoxFit.scaleDown),
                           ),
                         ),
@@ -88,7 +88,7 @@ class TakeQuizHardScreen extends StatelessWidget {
                           decoration: const BoxDecoration(
                             color: colorSystemWhite,
                             image: DecorationImage(
-                                image: AssetImage("assets/images/count.png"),
+                                image: AssetImage("assets/images/connect.png"),
                                 fit: BoxFit.scaleDown),
                           ),
                         ),

@@ -267,7 +267,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         width: 90.w,
                         height: 8.h,
                         controller: TextEditingController(text: state.fullName),
-                        hintText: 'your name'.tr(),
+                        hintText: 'name'.tr(),
                         nameTitle: 'your name'.tr(),
                         onChanged: (value) {
                           context.read<UpdateProfileCubit>().nameChanged(value);
@@ -287,7 +287,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       return InputFieldWidget(
                         controller: TextEditingController(text: state.lop),
                         readOnly: true,
-                        nameTitle: 'your class'.tr(),
+                        nameTitle: 'class'.tr(),
                         hintText: 'your class'.tr(),
                         width: 90.w,
                         height: 8.h,
@@ -398,7 +398,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         width: 90.w,
                         height: 8.h,
                         typeText: TextInputType.number,
-                        hintText: 'your phone'.tr(),
+                        hintText: 'phone'.tr(),
                         nameTitle: 'your phone'.tr(),
                         icon: const Icon(
                           LineAwesomeIcons.phone,
@@ -419,7 +419,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         readOnly: true,
                         width: 90.w,
                         height: 8.h,
-                        hintText: "your birthday".tr(),
+                        hintText: "birthday".tr(),
                         nameTitle: 'your birthday'.tr(),
                         isHidden: state.birthDateError != "",
                         validateText: state.birthDateError,
@@ -525,7 +525,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         width: 90.w,
                         height: 8.h,
                         hintText: 'your email'.tr(),
-                        nameTitle: 'your email'.tr(),
+                        nameTitle: 'email'.tr(),
                         icon: const Icon(
                           LineAwesomeIcons.mail_bulk,
                           color: Colors.black,
@@ -542,7 +542,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                       return InputFieldWidget(
                         width: 90.w,
                         height: 8.h,
-                        hintText: 'your address'.tr(),
+                        hintText: 'address'.tr(),
                         nameTitle: 'your address'.tr(),
                         isHidden: state.addError != "",
                         validateText: state.addError,
@@ -577,7 +577,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                 .updateProfileUser(
                                     linkImage, deleteHash, _imageFile);
                           },
-                          color: colorMainBlue,
+                          color: colorSystemWhite,
+                          colorBorder: colorSystemYeloow,
                           width: 80.w,
                           height: 8.h,
                           child: state.status == UpdateProfileStatus.onLoading
@@ -585,14 +586,14 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                                   height: 10.h,
                                   child: const Center(
                                     child: CircularProgressIndicator(
-                                      color: colorSystemWhite,
+                                      color: colorSystemYeloow,
                                       strokeWidth: 3,
                                     ),
                                   ),
                                 )
                               : Text(
                                   'go'.tr().toString(),
-                                  style: s16f700ColorSysWhite,
+                                  style: s16f700ColorSysYel,
                                 ));
                     })
                   ],

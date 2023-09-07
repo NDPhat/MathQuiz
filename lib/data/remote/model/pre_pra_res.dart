@@ -1,17 +1,17 @@
-class PreQuizGameSenAPIRes {
+class PrePraAPIRes {
   int? iCount;
   Null? nLast;
-  List<PreQuizGameSenModelRes>? lItems;
+  List<PrePraAPIModel>? lItems;
 
-  PreQuizGameSenAPIRes({this.iCount, this.nLast, this.lItems});
+  PrePraAPIRes({this.iCount, this.nLast, this.lItems});
 
-  PreQuizGameSenAPIRes.fromJson(Map<String, dynamic> json) {
+  PrePraAPIRes.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <PreQuizGameSenModelRes>[];
+      lItems = <PrePraAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new PreQuizGameSenModelRes.fromJson(v));
+        lItems!.add(new PrePraAPIModel.fromJson(v));
       });
     }
   }
@@ -26,30 +26,48 @@ class PreQuizGameSenAPIRes {
     return data;
   }
 }
-class PreQuizGameSenModelRes{
+
+class PrePraAPIModel {
   String? dateSave;
   String? key;
+  int? numQ;
+  String? optionGame;
   int? score;
+  String? sign;
   String? status;
-  String? userID;
+  String? userId;
 
-  PreQuizGameSenModelRes({this.dateSave, this.key, this.score, this.status, this.userID});
+  PrePraAPIModel(
+      {this.dateSave,
+        this.key,
+        this.numQ,
+        this.optionGame,
+        this.score,
+        this.sign,
+        this.status,
+        this.userId});
 
-  PreQuizGameSenModelRes.fromJson(Map<String, dynamic> json) {
+  PrePraAPIModel.fromJson(Map<String, dynamic> json) {
     dateSave = json['dateSave'];
     key = json['key'];
+    numQ = json['numQ'];
+    optionGame = json['optionGame'];
     score = json['score'];
+    sign = json['sign'];
     status = json['status'];
-    userID = json['userID'];
+    userId = json['userId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['dateSave'] = this.dateSave;
     data['key'] = this.key;
+    data['numQ'] = this.numQ;
+    data['optionGame'] = this.optionGame;
     data['score'] = this.score;
+    data['sign'] = this.sign;
     data['status'] = this.status;
-    data['userID'] = this.userID;
+    data['userId'] = this.userId;
     return data;
   }
 }

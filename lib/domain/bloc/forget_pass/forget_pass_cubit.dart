@@ -1,17 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-
 import '../../../application/enum/foget_pass_status.dart';
+import '../../../data/remote/api/Repo/user_repo.dart';
 
 part 'forget_pass_state.dart';
 
 class ForgetPassCubit extends Cubit<ForgetPassState> {
   String emailMessage = "";
-  final UserAPIRepo userAPIRepo;
-  ForgetPassCubit({required UserAPIRepo userAPIRepo})
-      : userAPIRepo = userAPIRepo,
-        super(ForgetPassState.initial());
+  final UserRepo userRepo;
+  ForgetPassCubit({required this.userRepo}) : super(ForgetPassState.initial());
   bool isEmailValid(email) {
     String p =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -31,8 +28,7 @@ class ForgetPassCubit extends Cubit<ForgetPassState> {
   Future<void> submitEmailForGetOTPResetPass(String email) async {
     emit(state.copyWith(status: ForgetPassStatus.onLoading));
     if (isEmailValid(email)) {
-      print(email);
-      final userModel = await userAPIRepo.submitEmailForGetOTPForgetPass(email);
+      final userModel = await userRepo.submitEmailForGetOTPForgetPass(email);
       if (userModel != null) {
         emailMessage = "";
         emit(state.copyWith(

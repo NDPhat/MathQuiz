@@ -5,7 +5,7 @@ class DetailTestState extends Equatable {
   int lengthNow;
   bool scoreChoose;
   bool dayChoose;
-  List<PreTestAPIRes>? posts;
+  List<PreTestAPIModel>? posts;
   DetailTestState({
     required this.pageNow,
     required this.scoreChoose,
@@ -34,7 +34,7 @@ class DetailTestState extends Equatable {
     int? lengthNow,
     bool? scoreChoose,
     bool? dayChoose,
-    List<PreTestAPIRes>? posts,
+    List<PreTestAPIModel>? posts,
 
     // auth.user? user,
   }) {

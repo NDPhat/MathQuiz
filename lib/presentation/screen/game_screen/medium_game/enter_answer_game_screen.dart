@@ -6,24 +6,22 @@ import 'package:drift/drift.dart' as driff;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math/data/remote/api/Repo/pre_pra_repo.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/text_style.dart';
 import '../../../../application/utils/format.dart';
-import '../../../../application/utils/sound.dart';
 import '../../../../data/local/driff/db/db_app.dart';
 import '../../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../../data/model/app_global.dart';
 import '../../../../data/model/make_quiz.dart';
 import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../../data/remote/model/pre_quiz_game_req.dart';
-import '../../../../data/remote/model/pre_quiz_game_response.dart';
-import '../../../../data/remote/model/quiz_game_req.dart';
+import '../../../../data/remote/model/pre_pra_res.dart';
+import '../../../../data/remote/model/pre_pra_req.dart';
+import '../../../../data/remote/model/quiz_pra_req.dart';
 import '../../../../domain/bloc/game/game_cubit.dart';
-import '../../../../domain/bloc/pre_quiz/pre_quiz_cubit.dart';
 import '../../../../application/utils/make_quiz.dart';
+import '../../../../domain/bloc/pre_practice/pre_pra_cubit.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
 import '../../../widget/portrait_mode_game.dart';
@@ -37,7 +35,6 @@ class EnterAnswerGameScreen extends StatefulWidget {
 class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
-  int _highScore = 0;
   late PreQuizGame _preQuiz;
   int _preIdNow = 0;
   String _preIdServerNow = "";
@@ -103,11 +100,11 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
 
   void deletePreGame() {
     if (instance.get<UserGlobal>().onLogin == true) {
-      instance.get<UserAPIRepo>().deletePreQuizGame(_preIdServerNow.toString());
+      context.read<GameCubit>().deletePreGameNow(_preIdServerNow.toString());
     } else {
-      PreQuizCubit(
+      PrePraCubit(
               preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-              userAPIRepo: instance.get<UserAPIRepo>())
+              prePraRepo: instance.get<PrePraRepo>())
           .deletePreQuizGame(_preIdNow);
     }
     Navigator.pushNamed(context, Routers.takeMediumQuiz);
@@ -119,8 +116,6 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
     });
     _score = 0;
     _totalNumberOfQuizzes = 1;
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
-    _highScore = _preferences.getInt('highscore') ?? 0;
   }
 
   void _makeNewQuiz() async {
@@ -129,25 +124,24 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
 
   Future<void> addNewDataPlayAgain() async {
     if (instance.get<UserGlobal>().onLogin == true) {
-      PreQuizGameAPIModel? newData =
-          await instance.get<UserAPIRepo>().createPreQuizGame(PreQuizGameAPIReq(
+      PrePraAPIModel? newData =
+          await context.read<GameCubit>().createPrePraServer(PrePraAPIReq(
               numQ: 0,
               status: "GOING",
               sign: _preQuiz.sign,
               score: 0,
               optionGame: _preQuiz.option,
-              userID: instance.get<UserGlobal>().id,
+              userId: instance.get<UserGlobal>().id,
               dateSave: formatDateInput.format(
                 DateTime.now(),
               )));
       _preIdServerNow = newData!.key!;
     } else {
-      instance.get<PreQuizGameRepo>().insertPreQuizGame(
-          PreQuizGameEntityCompanion(
-              numQ: driff.Value(0),
-              sign: driff.Value(_preQuiz.sign!),
-              option: driff.Value(_preQuiz.option!),
-              dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
+      context.read<PrePraCubit>().createPrePraLocal(PreQuizGameEntityCompanion(
+          numQ: const driff.Value(0),
+          sign: driff.Value(_preQuiz.sign!),
+          option: driff.Value(_preQuiz.option!),
+          dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
       final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
       // cap nhap lai id
       _preIdNow = data.id;
@@ -180,8 +174,8 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
 
   void _saveData(BuildContext context) {
     if (instance.get<UserGlobal>().onLogin == true) {
-      context.read<GameCubit>().addQuizToServer(QuizGameAPIReq(
-          prequizGameID: _preIdServerNow,
+      context.read<GameCubit>().addQuizToServer(QuizPraAPIReq(
+          prePraId: _preIdServerNow,
           sign: _preQuiz.sign!,
           quiz: _quizBrain.quiz,
           infoQuiz: userAnswer,
@@ -205,14 +199,13 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
 
   updateScore() {
     if (instance.get<UserGlobal>().onLogin == true) {
-      instance.get<UserAPIRepo>().updatePreQuizGameByID(
-          PreQuizGameAPIReq(
-              score: _score, status: "DONE", numQ: _totalNumberOfQuizzes),
-          _preIdServerNow);
+      context.read<GameCubit>().updatePrePraServer(
+          _preIdServerNow,
+          PrePraAPIReq(
+              score: _score, status: "DONE", numQ: _totalNumberOfQuizzes));
     } else {
-      PreQuizCubit(
-              preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-              userAPIRepo: instance.get<UserAPIRepo>())
+      instance
+          .get<PrePraCubit>()
           .updateScoreQuizGame(_score, _preIdNow, _totalNumberOfQuizzes);
     }
   }
@@ -320,7 +313,6 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
         },
         child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
           return PortraitModeGame(
-            highscore: _highScore,
             score: _score,
             quizBrainObject: _quizBrain,
             onTap: (int value) {

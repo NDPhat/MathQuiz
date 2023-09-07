@@ -4,9 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/application/utils/func.dart';
 import 'package:math/data/model/chart_data_week.dart';
-import 'package:math/data/remote/model/detail_quiz_hw_response.dart';
-import 'package:math/data/remote/model/result_quiz_hw_res_pagi.dart';
-import 'package:math/data/remote/model/result_quiz_hw_response.dart';
+import 'package:math/data/remote/api/Repo/quiz_hw_repo.dart';
+import 'package:math/data/remote/api/Repo/result_hw_repo.dart';
+
 import 'package:math/presentation/routers/navigation.dart';
 import 'package:math/presentation/widget/line_item_content_card_home.dart';
 import 'package:sizer/sizer.dart';
@@ -14,7 +14,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/utils/count_sign.dart';
 import '../../../data/model/user_global.dart';
-import '../../../data/remote/api/Repo/api_user_repo.dart';
+import '../../../data/remote/model/quiz_hw_res.dart';
+import '../../../data/remote/model/result_hw_res.dart';
+import '../../../data/remote/model/result_hw_res_pagi.dart';
 import '../../../main.dart';
 import '../../widget/async_data_detail.dart';
 import '../../widget/dot_page_indicator.dart';
@@ -33,8 +35,8 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
   bool isFirstLoadRunning = false;
   bool hasNextPage = true;
   int length = 1;
-  List<ResultQuizHWAPIModel>? posts = [];
-  ResultQuizHWResPagi? data;
+  List<ResultHWAPIModel>? posts = [];
+  ResultHWAPIResPagi? data;
 
   @override
   void initState() {
@@ -44,9 +46,11 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
 
   void getMore() async {
     posts!.clear();
-    data = await instance.get<UserAPIRepo>().getALlResultQuizHWByUserIDWithPagi(
-        instance.get<UserGlobal>().id.toString(), page);
-    final List<ResultQuizHWAPIModel>? fetchedPosts = data!.data;
+    data = await instance
+        .get<ResultHWRepo>()
+        .getALlResultQuizHWByUserIDWithPagi(
+            instance.get<UserGlobal>().id.toString(), page);
+    final List<ResultHWAPIModel>? fetchedPosts = data!.data;
     if (fetchedPosts!.isNotEmpty) {
       setState(() {
         posts!.addAll(fetchedPosts);
@@ -62,11 +66,13 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
     setState(() {
       isFirstLoadRunning = true;
     });
-    data = await instance.get<UserAPIRepo>().getALlResultQuizHWByUserIDWithPagi(
-        instance.get<UserGlobal>().id.toString(), page);
-    final List<ResultQuizHWAPIModel>? fetchedPosts = data!.data;
+    data = await instance
+        .get<ResultHWRepo>()
+        .getALlResultQuizHWByUserIDWithPagi(
+            instance.get<UserGlobal>().id.toString(), page);
+    final List<ResultHWAPIModel>? fetchedPosts = data!.data;
     length = data!.total!;
-    length=findLength(length);
+    length = findLength(length);
     if (fetchedPosts!.isNotEmpty) {
       setState(() {
         posts!.addAll(fetchedPosts);
@@ -159,10 +165,9 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
                                   childRight: SizedBox(
                                     height: 20.h,
                                     width: 45.w,
-                                    child: FutureBuilder<
-                                            List<DetailQuizHWAPIModel>?>(
+                                    child: FutureBuilder<List<QuizHWAPIModel>?>(
                                         future: instance
-                                            .get<UserAPIRepo>()
+                                            .get<QuizHWRepo>()
                                             .getALlQuizDetailByUserIDAndWeek(
                                                 instance
                                                     .get<UserGlobal>()

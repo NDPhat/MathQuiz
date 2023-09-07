@@ -8,7 +8,6 @@ import '../../application/cons/color.dart';
 import '../../application/utils/make_quiz.dart';
 
 class PortraitModeGame extends StatelessWidget {
-  final highscore;
   final int score;
   final int trueQ, falseQ;
   final int quizNow;
@@ -17,7 +16,6 @@ class PortraitModeGame extends StatelessWidget {
   CountDownController? controller;
   VoidCallback? onFinished;
   PortraitModeGame({
-    required this.highscore,
     required this.score,
     required this.trueQ,
     required this.falseQ,

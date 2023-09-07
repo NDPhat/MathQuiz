@@ -1,17 +1,17 @@
-class PreQuizHWAPIResponse {
+class PreHWAPIRes {
   int? iCount;
   Null? nLast;
-  List<PreQuizHWResAPIModel>? lItems;
+  List<PreHWAPIModel>? lItems;
 
-  PreQuizHWAPIResponse({this.iCount, this.nLast, this.lItems});
+  PreHWAPIRes({this.iCount, this.nLast, this.lItems});
 
-  PreQuizHWAPIResponse.fromJson(Map<String, dynamic> json) {
+  PreHWAPIRes.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <PreQuizHWResAPIModel>[];
+      lItems = <PreHWAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new PreQuizHWResAPIModel.fromJson(v));
+        lItems!.add(new PreHWAPIModel.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class PreQuizHWAPIResponse {
   }
 }
 
-class PreQuizHWResAPIModel {
+class PreHWAPIModel {
   String? color;
   String? dend;
   String? dstart;
@@ -41,7 +41,7 @@ class PreQuizHWResAPIModel {
   String? week;
   String? lop;
 
-  PreQuizHWResAPIModel(
+  PreHWAPIModel(
       {this.color,
       this.dend,
       this.dstart,
@@ -49,12 +49,12 @@ class PreQuizHWResAPIModel {
       this.key,
       this.numQ,
       this.sNum,
-        this.lop,
+      this.lop,
       this.sign,
       this.status,
       this.week});
 
-  PreQuizHWResAPIModel.fromJson(Map<String, dynamic> json) {
+  PreHWAPIModel.fromJson(Map<String, dynamic> json) {
     color = json['color'];
     dend = json['dend'];
     dstart = json['dstart'];

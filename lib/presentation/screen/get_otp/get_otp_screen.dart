@@ -125,6 +125,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                             context.read<GetOTPCubit>().number2Changed(value);
                             if (value.length == 1) {
                               FocusScope.of(context).nextFocus();
+                            } else if (value.isEmpty) {
+                              // If the input field is empty, move to previous field
+                              FocusScope.of(context).previousFocus();
                             }
                           },
                           typeText: TextInputType.number,
@@ -137,6 +140,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                             context.read<GetOTPCubit>().number3Changed(value);
                             if (value.length == 1) {
                               FocusScope.of(context).nextFocus();
+                            } else if (value.isEmpty) {
+                              // If the input field is empty, move to previous field
+                              FocusScope.of(context).previousFocus();
                             }
                           },
                           typeText: TextInputType.number,
@@ -149,6 +155,9 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                             context.read<GetOTPCubit>().number4Changed(value);
                             if (value.length == 1) {
                               FocusScope.of(context).nextFocus();
+                            } else if (value.isEmpty) {
+                              // If the input field is empty, move to previous field
+                              FocusScope.of(context).previousFocus();
                             }
                           },
                           typeText: TextInputType.number,
@@ -241,7 +250,8 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                       context.read<GetOTPCubit>().clearData();
                       context.read<GetOTPCubit>().checkOTPCode(email, code);
                     },
-                    color: colorMainBlue,
+                    color: colorSystemWhite,
+                    colorBorder: colorSystemYeloow,
                     width: 80.w,
                     height: 8.h,
                     child: state.status == GetOTPStatus.onLoading
@@ -249,14 +259,14 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                             height: 10.h,
                             child: const Center(
                               child: CircularProgressIndicator(
-                                color: colorSystemWhite,
+                                color: colorSystemYeloow,
                                 strokeWidth: 3,
                               ),
                             ),
                           )
                         : Text(
                             'go'.tr().toString(),
-                            style: s20f700ColorSysWhite,
+                            style: s16f700ColorSysYel,
                           ));
               })
             ],

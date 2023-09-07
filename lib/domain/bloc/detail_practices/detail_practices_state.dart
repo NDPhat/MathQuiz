@@ -6,7 +6,7 @@ class DetailPracticesState extends Equatable {
   bool scoreChoose;
   bool dayChoose;
   List<String> signFilter;
-  List<PreQuizGameAPIModel>? posts;
+  List<PrePraAPIModel>? posts;
   DetailPracticesState({
     required this.pageNow,
     required this.scoreChoose,
@@ -38,7 +38,7 @@ class DetailPracticesState extends Equatable {
     bool? scoreChoose,
     bool? dayChoose,
     List<String>? signFilter,
-    List<PreQuizGameAPIModel>? posts,
+    List<PrePraAPIModel>? posts,
 
     // auth.user? user,
   }) {

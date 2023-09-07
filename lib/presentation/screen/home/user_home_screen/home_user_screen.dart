@@ -48,7 +48,7 @@ class HomeUserScreen extends StatelessWidget {
                       ),
                       kHalfSizedBox,
                       StudentPicture(
-                        picAddress: 'assets/images/profile.png',
+                        picAddress: "assets/images/profile.png"
                       ),
                     ],
                   ),
@@ -76,7 +76,7 @@ class HomeUserScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
                 width: 100.w,
                 height: 65.h,
-                decoration:  const BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(
                         'assets/images/home_user.jpg',

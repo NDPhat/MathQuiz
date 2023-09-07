@@ -2,34 +2,65 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/data/local/repo/test/quiz_test_repo.dart';
-import 'package:math/data/remote/model/pre_quiz_game_sen_req.dart';
-import 'package:math/data/remote/model/quiz_game_req.dart';
+import 'package:math/data/remote/api/Repo/pre_test_repo.dart';
+import 'package:math/data/remote/api/Repo/quiz_hw_repo.dart';
+import 'package:math/data/remote/api/Repo/quiz_pra_repo.dart';
+import 'package:math/data/remote/api/Repo/quiz_test_repo.dart';
+import 'package:math/data/remote/api/Repo/result_hw_repo.dart';
+import 'package:math/data/remote/model/pre_test_req.dart';
+import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:math/data/remote/model/quiz_test_req.dart';
 import '../../../application/enum/game_status.dart';
 import '../../../data/local/driff/db/db_app.dart';
-import '../../../data/remote/api/Repo/api_user_repo.dart';
-import '../../../data/remote/model/detail_quiz_hw_req.dart';
+import '../../../data/remote/api/Repo/pre_pra_repo.dart';
+import '../../../data/remote/model/pre_pra_req.dart';
+import '../../../data/remote/model/pre_pra_res.dart';
+import '../../../data/remote/model/quiz_hw_req.dart';
+import '../../../data/remote/model/quiz_pra_req.dart';
 part 'game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
   final QuizGameLocalRepo quizPraLocalRepo;
   final QuizTestLocalRepo quizTestLocalRepo;
-  final UserAPIRepo userAPIRepo;
+  final PrePraRepo prePraRepo;
+  final PreTestRepo preTestRepo;
+  final QuizPraRepo quizPraRepo;
+  final ResultHWRepo resultHWRepo;
+  final QuizHWRepo quizHWRepo;
+  final QuizTestRepo quizTestRepo;
 
   GameCubit(
-      {required QuizGameLocalRepo quizPraLocalRepo,
-      required QuizTestLocalRepo quizTestLocalRepo,
-      required UserAPIRepo userAPIRepo})
-      : quizPraLocalRepo = quizPraLocalRepo,
-        userAPIRepo = userAPIRepo,
-        quizTestLocalRepo = quizTestLocalRepo,
-        super(GameState.initial());
+      {required this.quizPraLocalRepo,
+      required this.quizTestLocalRepo,
+      required this.quizPraRepo,
+      required this.preTestRepo,
+      required this.resultHWRepo,
+      required this.quizHWRepo,
+      required this.quizTestRepo,
+      required this.prePraRepo})
+      : super(GameState.initial());
   void addQuizGameToLocal(QuizGameEntityCompanion entityCompanion) {
     quizPraLocalRepo.insertQuizGame(entityCompanion);
   }
 
   void addQuizMixToLocal(QuizTestEntityCompanion entityCompanion) {
     quizTestLocalRepo.insertTest(entityCompanion);
+  }
+
+  Future<void> updatePrePraServer(String id, PrePraAPIReq data) async {
+    try {
+      await prePraRepo.updatePreQuizGameByID(data, id);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> updatePreTestServer(String id, PreTestAPIModel data) async {
+    try {
+      await preTestRepo.updatePreQuizTestByID(data, id);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 
   void changeDataAfterDoneQ(int trueQ, int falseQ, int score, int quizNow) {
@@ -52,27 +83,31 @@ class GameCubit extends Cubit<GameState> {
     emit(state.copyWith(trueQ: 0, falseQ: 0, qNow: 1, score: 0));
   }
 
-  void addQuizHWToServer(DetailQuizHWAPIReq data) {
-    userAPIRepo.saveQuizDetailHW(data);
+  Future<PrePraAPIModel?> createPrePraServer(PrePraAPIReq prePraAPIReq) async {
+    try {
+      await prePraRepo.createPreQuizGame(prePraAPIReq);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 
-  void addQuizTestToServer(QuizTestReq data) {
-    userAPIRepo.createQuizTest(data);
+  void addQuizHWToServer(QuizHWAPIReq data) {
+    quizHWRepo.saveQuizDetailHW(data);
   }
 
-  void addQuizToServer(QuizGameAPIReq data) {
-    userAPIRepo.createQuizGame(data);
+  void addQuizTestToServer(QuizTestAPIReq data) {
+    quizTestRepo.createQuizTest(data);
+  }
+
+  void addQuizToServer(QuizPraAPIReq data) {
+    quizPraRepo.createQuizGame(data);
   }
 
   void deletePreGameNow(String id) async {
-    await userAPIRepo.deletePreQuizGame(id);
+    await prePraRepo.deletePreQuizGame(id);
   }
 
-  void deletePreGameSenNow(String id) async {
-    await userAPIRepo.deletePreQuizSenGame(id);
-  }
-
-  void updatePreGameSenNowById(String id, PreQuizGameSenReq req) async {
-    await userAPIRepo.updatePreQuizSenGameByID(req, id);
+  void deletePreTestNow(String id) async {
+    await preTestRepo.deleteTestingNotDoByPreTestId(id);
   }
 }

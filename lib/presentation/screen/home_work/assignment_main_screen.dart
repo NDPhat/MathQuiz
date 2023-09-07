@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/data/model/user_global.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/model/pre_quiz_hw_response.dart';
-import 'package:math/data/remote/model/result_quiz_hw_response.dart';
+import 'package:math/data/remote/api/Repo/result_hw_repo.dart';
+
 import 'package:math/main.dart';
 import 'package:math/presentation/widget/item_card_hw.dart';
 import 'package:sizer/sizer.dart';
@@ -15,7 +14,9 @@ import '../../../application/cons/color.dart';
 import '../../../application/cons/constants.dart';
 import '../../../application/utils/format.dart';
 import '../../../data/model/pre_join_homework.dart';
-import '../../../data/remote/model/result_quiz_hw_req.dart';
+import '../../../data/remote/model/pre_hw_res.dart';
+import '../../../data/remote/model/result_hw_req.dart';
+import '../../../data/remote/model/result_hw_res.dart';
 import '../../routers/navigation.dart';
 import '../../widget/bg_list_view.dart';
 import '../../widget/line_item_content_card_home.dart';
@@ -27,14 +28,14 @@ class AssignmentMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> createPreHW(PreQuizHWResAPIModel dataPre) async {
-      PreQuizHWResAPIModel? preQuiz = await instance
-          .get<UserAPIRepo>()
+    Future<void> createPreHW(PreHWAPIModel dataPre) async {
+      PreHWAPIModel? preQuiz = await instance
+          .get<ResultHWRepo>()
           .getPreQuizHWByWeek(dataPre.week.toString());
 
-      ResultQuizHWAPIModel? data = await instance
-          .get<UserAPIRepo>()
-          .createResultHomeWorkWeek(ResultQuizHWAPIReq(
+      ResultHWAPIModel? data = await instance
+          .get<ResultHWRepo>()
+          .createResultHomeWorkWeek(ResultHWAPIReq(
               week: dataPre.week.toString(),
               numQ: dataPre.numQ,
               trueQ: 0,
@@ -58,7 +59,7 @@ class AssignmentMainScreen extends StatelessWidget {
           arguments: preJoinHW);
     }
 
-    showReadyToJoinHWDialog(PreQuizHWResAPIModel dataPre) {
+    showReadyToJoinHWDialog(PreHWAPIModel dataPre) {
       return AwesomeDialog(
         context: context,
         dialogType: DialogType.question,
@@ -125,11 +126,13 @@ class AssignmentMainScreen extends StatelessWidget {
                               padding: EdgeInsets.only(top: 10.h),
                               height: 50.h,
                               width: 85.w,
-                              child: FutureBuilder<List<ResultQuizHWAPIModel>?>(
+                              child: FutureBuilder<List<ResultHWAPIModel>?>(
                                   future: instance
-                                      .get<UserAPIRepo>()
-                                      .getALlResultQuizHWByUserID(
-                                          instance.get<UserGlobal>().id.toString()),
+                                      .get<ResultHWRepo>()
+                                      .getALlResultQuizHWByUserID(instance
+                                          .get<UserGlobal>()
+                                          .id
+                                          .toString()),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
@@ -147,7 +150,8 @@ class AssignmentMainScreen extends StatelessWidget {
                                     if (snapshot.hasData) {
                                       return CustomScrollView(slivers: [
                                         SliverList(
-                                            delegate: SliverChildBuilderDelegate(
+                                            delegate:
+                                                SliverChildBuilderDelegate(
                                           childCount: snapshot.data!.length,
                                           (context, index) {
                                             snapshot.data!.sort((a, b) =>
@@ -157,8 +161,8 @@ class AssignmentMainScreen extends StatelessWidget {
                                                   top: 0.5.h, bottom: 0.5.h),
                                               child: ItemCardHW(
                                                 onTap: () {
-                                                  showReviewHWDialog(
-                                                      snapshot.data![index].key!);
+                                                  showReviewHWDialog(snapshot
+                                                      .data![index].key!);
                                                 },
                                                 colorBorder: colorMainTealPri,
                                                 childRight: Center(
@@ -169,7 +173,8 @@ class AssignmentMainScreen extends StatelessWidget {
                                                       fontSize: 20),
                                                 )),
                                                 childLeft: WeakWidget(
-                                                  dataResult: snapshot.data![index],
+                                                  dataResult:
+                                                      snapshot.data![index],
                                                   colorBorder: colorMainTealPri,
                                                 ),
                                               ),
@@ -195,9 +200,9 @@ class AssignmentMainScreen extends StatelessWidget {
                       SingleChildScrollView(
                         child: SizedBox(
                             height: 15.h,
-                            child: FutureBuilder<PreQuizHWResAPIModel?>(
+                            child: FutureBuilder<PreHWAPIModel?>(
                                 future: instance
-                                    .get<UserAPIRepo>()
+                                    .get<ResultHWRepo>()
                                     .getOnGoingPreHWandNotDO(instance
                                         .get<UserGlobal>()
                                         .id

@@ -236,15 +236,6 @@ class _DrawingBoardState extends State<WriteNumberBoardGame> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.clear),
-        onPressed: () {
-          setState(() {
-            _points.clear();
-            _prediction.clear();
-          });
-        },
-      ),
     );
   }
 }

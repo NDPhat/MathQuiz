@@ -1,17 +1,17 @@
-class GetPreTestAPIRes {
+class PreTestAPIRes {
   int? iCount;
   Null? nLast;
-  List<PreTestAPIRes>? lItems;
+  List<PreTestAPIModel>? lItems;
 
-  GetPreTestAPIRes({this.iCount, this.nLast, this.lItems});
+  PreTestAPIRes({this.iCount, this.nLast, this.lItems});
 
-  GetPreTestAPIRes.fromJson(Map<String, dynamic> json) {
+  PreTestAPIRes.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <PreTestAPIRes>[];
+      lItems = <PreTestAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new PreTestAPIRes.fromJson(v));
+        lItems!.add(new PreTestAPIModel.fromJson(v));
       });
     }
   }
@@ -27,32 +27,32 @@ class GetPreTestAPIRes {
   }
 }
 
-class PreTestAPIRes {
+class PreTestAPIModel {
   String? dateSave;
   int? falseQ;
   String? key;
   int? score;
-  int? sumQ;
+  int? numQ;
   int? trueQ;
-  String? userID;
+  String? userId;
 
-  PreTestAPIRes(
+  PreTestAPIModel(
       {this.dateSave,
       this.falseQ,
       this.key,
       this.score,
-      this.sumQ,
+      this.numQ,
       this.trueQ,
-      this.userID});
+      this.userId});
 
-  PreTestAPIRes.fromJson(Map<String, dynamic> json) {
+  PreTestAPIModel.fromJson(Map<String, dynamic> json) {
     dateSave = json['dateSave'];
     falseQ = json['falseQ'];
     key = json['key'];
     score = json['score'];
-    sumQ = json['sumQ'];
+    numQ = json['numQ'];
     trueQ = json['trueQ'];
-    userID = json['userID'];
+    userId = json['userId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -61,9 +61,9 @@ class PreTestAPIRes {
     data['falseQ'] = this.falseQ;
     data['key'] = this.key;
     data['score'] = this.score;
-    data['sumQ'] = this.sumQ;
+    data['numQ'] = this.numQ;
     data['trueQ'] = this.trueQ;
-    data['userID'] = this.userID;
+    data['userId'] = this.userId;
     return data;
   }
 }

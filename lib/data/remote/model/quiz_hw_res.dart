@@ -1,17 +1,17 @@
-class QuizGameAPIResponse {
+class QuizHWAPIRes {
   int? iCount;
   Null? nLast;
-  List<QuizGameAPIModel>? lItems;
+  List<QuizHWAPIModel>? lItems;
 
-  QuizGameAPIResponse({this.iCount, this.nLast, this.lItems});
+  QuizHWAPIRes({this.iCount, this.nLast, this.lItems});
 
-  QuizGameAPIResponse.fromJson(Map<String, dynamic> json) {
+  QuizHWAPIRes.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <QuizGameAPIModel>[];
+      lItems = <QuizHWAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new QuizGameAPIModel.fromJson(v));
+        lItems!.add(new QuizHWAPIModel.fromJson(v));
       });
     }
   }
@@ -27,32 +27,29 @@ class QuizGameAPIResponse {
   }
 }
 
-class QuizGameAPIModel {
+class QuizHWAPIModel {
   int? answer;
   int? answerSelect;
   bool? infoQuiz;
   String? key;
-  String? prequizGameID;
   String? quiz;
-  String? userId;
+  String? resultHWID;
 
-  QuizGameAPIModel(
+  QuizHWAPIModel(
       {this.answer,
-        this.answerSelect,
-        this.infoQuiz,
-        this.key,
-        this.prequizGameID,
-        this.quiz,
-        this.userId});
+      this.answerSelect,
+      this.infoQuiz,
+      this.key,
+      this.quiz,
+      this.resultHWID});
 
-  QuizGameAPIModel.fromJson(Map<String, dynamic> json) {
+  QuizHWAPIModel.fromJson(Map<String, dynamic> json) {
     answer = json['answer'];
     answerSelect = json['answerSelect'];
     infoQuiz = json['infoQuiz'];
     key = json['key'];
-    prequizGameID = json['prequizGameID'];
     quiz = json['quiz'];
-    userId = json['userId'];
+    resultHWID = json['resultHWID'];
   }
 
   Map<String, dynamic> toJson() {
@@ -61,9 +58,8 @@ class QuizGameAPIModel {
     data['answerSelect'] = this.answerSelect;
     data['infoQuiz'] = this.infoQuiz;
     data['key'] = this.key;
-    data['prequizGameID'] = this.prequizGameID;
     data['quiz'] = this.quiz;
-    data['userId'] = this.userId;
+    data['resultHWID'] = this.resultHWID;
     return data;
   }
 }

@@ -54,7 +54,7 @@ class HomeProfileUserScreen extends StatelessWidget {
                             height: 10.h,
                             decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(60)),
+                                    const BorderRadius.all(Radius.circular(60)),
                                 border: Border.all(color: colorSystemYeloow),
                                 color: colorSystemWhite),
                             child: CircleAvatar(
@@ -80,14 +80,14 @@ class HomeProfileUserScreen extends StatelessWidget {
                     Text(
                       instance.get<UserGlobal>().fullName!,
                       style: GoogleFonts.abel(
-                          color: colorMainBlue,
+                          color: colorSystemYeloow,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
                     Text(
                       'It\'s never too late to learn',
                       style: GoogleFonts.abel(
-                          color: colorMainBlue,
+                          color: colorSystemYeloow,
                           fontWeight: FontWeight.w300,
                           fontSize: 14),
                     ),

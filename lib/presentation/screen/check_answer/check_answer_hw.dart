@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
 import 'package:math/presentation/widget/bg_list_view.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
-import '../../../data/remote/model/detail_quiz_hw_response.dart';
+import '../../../data/remote/api/Repo/quiz_hw_repo.dart';
+import '../../../data/remote/model/quiz_hw_res.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
 import '../../widget/answer_widget.dart';
@@ -36,9 +36,9 @@ class CheckAnswerHWScreen extends StatelessWidget {
               content: 'check answer'.tr(),
               child: Padding(
                 padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10.h),
-                child: FutureBuilder<List<DetailQuizHWAPIModel>?>(
+                child: FutureBuilder<List<QuizHWAPIModel>?>(
                     future: instance
-                        .get<UserAPIRepo>()
+                        .get<QuizHWRepo>()
                         .getALlQuizDetailByResultID(key),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {

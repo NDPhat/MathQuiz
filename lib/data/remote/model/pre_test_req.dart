@@ -1,34 +1,34 @@
-class PreTestReq {
-  int? sumQ;
+class PreTestAPIReq {
+  int? numQ;
   int? score;
   int? trueQ;
-  String? userID;
+  String? userId;
   int? falseQ;
   String? dateSave;
 
-  PreTestReq(
-      {this.sumQ,
+  PreTestAPIReq(
+      {this.numQ,
         this.score,
         this.trueQ,
-        this.userID,
+        this.userId,
         this.falseQ,
         this.dateSave});
 
-  PreTestReq.fromJson(Map<String, dynamic> json) {
-    sumQ = json['sumQ'];
+  PreTestAPIReq.fromJson(Map<String, dynamic> json) {
+    numQ = json['numQ'];
     score = json['score'];
     trueQ = json['trueQ'];
-    userID = json['userID'];
+    userId = json['userId'];
     falseQ = json['falseQ'];
     dateSave = json['dateSave'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['sumQ'] = this.sumQ;
+    data['numQ'] = this.numQ;
     data['score'] = this.score;
     data['trueQ'] = this.trueQ;
-    data['userID'] = this.userID;
+    data['userId'] = this.userId;
     data['falseQ'] = this.falseQ;
     data['dateSave'] = this.dateSave;
     return data;

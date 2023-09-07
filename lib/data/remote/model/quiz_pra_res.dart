@@ -1,17 +1,17 @@
-class DetailQuizHWAPIResponse {
+class QuizPraAPIRes {
   int? iCount;
   Null? nLast;
-  List<DetailQuizHWAPIModel>? lItems;
+  List<QuizPraAPIModel>? lItems;
 
-  DetailQuizHWAPIResponse({this.iCount, this.nLast, this.lItems});
+  QuizPraAPIRes({this.iCount, this.nLast, this.lItems});
 
-  DetailQuizHWAPIResponse.fromJson(Map<String, dynamic> json) {
+  QuizPraAPIRes.fromJson(Map<String, dynamic> json) {
     iCount = json['_count'];
     nLast = json['_last'];
     if (json['_items'] != null) {
-      lItems = <DetailQuizHWAPIModel>[];
+      lItems = <QuizPraAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new DetailQuizHWAPIModel.fromJson(v));
+        lItems!.add(new QuizPraAPIModel.fromJson(v));
       });
     }
   }
@@ -27,29 +27,32 @@ class DetailQuizHWAPIResponse {
   }
 }
 
-class DetailQuizHWAPIModel {
+class QuizPraAPIModel {
   int? answer;
   int? answerSelect;
   bool? infoQuiz;
   String? key;
+  String? prePraId;
   String? quiz;
-  String? resultHWID;
+  String? userId;
 
-  DetailQuizHWAPIModel(
+  QuizPraAPIModel(
       {this.answer,
-      this.answerSelect,
-      this.infoQuiz,
-      this.key,
-      this.quiz,
-      this.resultHWID});
+        this.answerSelect,
+        this.infoQuiz,
+        this.key,
+        this.prePraId,
+        this.quiz,
+        this.userId});
 
-  DetailQuizHWAPIModel.fromJson(Map<String, dynamic> json) {
+  QuizPraAPIModel.fromJson(Map<String, dynamic> json) {
     answer = json['answer'];
     answerSelect = json['answerSelect'];
     infoQuiz = json['infoQuiz'];
     key = json['key'];
+    prePraId = json['prePraId'];
     quiz = json['quiz'];
-    resultHWID = json['resultHWID'];
+    userId = json['userId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -58,8 +61,9 @@ class DetailQuizHWAPIModel {
     data['answerSelect'] = this.answerSelect;
     data['infoQuiz'] = this.infoQuiz;
     data['key'] = this.key;
+    data['prePraId'] = this.prePraId;
     data['quiz'] = this.quiz;
-    data['resultHWID'] = this.resultHWID;
+    data['userId'] = this.userId;
     return data;
   }
 }

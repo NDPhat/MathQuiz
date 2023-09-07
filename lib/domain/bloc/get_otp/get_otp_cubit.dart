@@ -1,16 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:math/application/enum/get_otp_status.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
+
+import '../../../data/remote/api/Repo/user_repo.dart';
 
 part 'get_otp_state.dart';
 
 class GetOTPCubit extends Cubit<GetOTPState> {
   String codeMessage = "";
-  final UserAPIRepo userAPIRepo;
+  final UserRepo userRepo;
 
-  GetOTPCubit({required UserAPIRepo userAPIRepo})
-      : userAPIRepo = userAPIRepo,
+  GetOTPCubit({required UserRepo userRepo})
+      : userRepo = userRepo,
         super(GetOTPState.initial());
 
   bool codeValidator(String code) {
@@ -44,7 +45,7 @@ class GetOTPCubit extends Cubit<GetOTPState> {
   }
 
   Future<void> reSendOTPCode(String emailReset) async {
-    await userAPIRepo.reSendOTPMAIL(emailReset);
+    await userRepo.reSendOTPMAIL(emailReset);
   }
 
   void clearData() {
@@ -55,7 +56,7 @@ class GetOTPCubit extends Cubit<GetOTPState> {
   Future<void> checkOTPCode(String emailReset, String otp) async {
     emit(state.copyWith(status: GetOTPStatus.onLoading));
     if (codeValidator(otp)) {
-      final userModel = await userAPIRepo.checkOTPCode(emailReset, otp);
+      final userModel = await userRepo.checkOTPCode(emailReset, otp);
       if (userModel != null) {
         emit(state.copyWith(
             verificationErrorMessage: codeMessage,

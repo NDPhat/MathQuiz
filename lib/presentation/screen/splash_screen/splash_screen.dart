@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:math/application/di/event_local.dart';
 import 'package:math/data/local/repo/player_local/player_local_repo.dart';
+import 'package:math/data/remote/api/Repo/user_repo.dart';
 import 'package:sizer/sizer.dart';
 import '../../../data/local/driff/db/db_app.dart';
 import '../../../data/model/user_global.dart';
-import '../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../data/remote/authen/authen.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
@@ -43,7 +43,7 @@ class SplashScreenState extends State<SplashScreen> {
       if (isUserSignIn == true) {
         String email =
             await instance.get<AuthenRepository>().getMailHandleAutoLoginApp();
-        await instance.get<UserAPIRepo>().getUserByEmail(email);
+        await instance.get<UserRepo>().getUserByEmail(email);
         Navigator.pushNamed(context, Routers.homeUser);
       }
       // user local

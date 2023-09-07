@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:math/data/remote/model/pre_quiz_game_response.dart';
 import '../../../../application/cons/text_style.dart';
+import '../../../../data/remote/model/pre_pra_res.dart';
 
 class PracticeMainScreenItemCard extends StatelessWidget {
   const PracticeMainScreenItemCard(
@@ -12,7 +12,7 @@ class PracticeMainScreenItemCard extends StatelessWidget {
       : super(key: key);
   final Size size;
   final int index;
-  final PreQuizGameAPIModel dataResult;
+  final PrePraAPIModel dataResult;
 
   @override
   Widget build(BuildContext context) {

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:math/data/remote/model/pre_quiz_game_response.dart';
+import 'package:math/data/remote/api/Repo/pre_pra_repo.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../application/cons/color.dart';
-import '../../data/model/chart_data.dart';
 import '../../data/model/chart_data_datasheet.dart';
 import '../../data/model/user_global.dart';
-import '../../data/remote/api/Repo/api_user_repo.dart';
-import '../../data/remote/model/result_quiz_hw_response.dart';
+import '../../data/remote/model/pre_pra_res.dart';
 import '../../main.dart';
 
 class ChildRightHomePractice extends StatelessWidget {
@@ -25,9 +23,9 @@ class ChildRightHomePractice extends StatelessWidget {
     return SizedBox(
         width: deTail == null ? 46.w : 100.w,
         height: deTail == null ? 9.h : 30.h,
-        child: FutureBuilder<List<PreQuizGameAPIModel>?>(
+        child: FutureBuilder<List<PrePraAPIModel>?>(
             future: instance
-                .get<UserAPIRepo>()
+                .get<PrePraRepo>()
                 .getALlPreQuizGameByUidandOptionGame(
                     instance.get<UserGlobal>().id.toString(), typeGame),
             builder: (context, snapshot) {
@@ -81,10 +79,9 @@ class ChildRightHomePractice extends StatelessWidget {
                                   chart.x.toString(),
                               yValueMapper: (ChartDataSheet chart, _) =>
                                   chart.t,
-                              dataLabelSettings:  DataLabelSettings(
+                              dataLabelSettings: DataLabelSettings(
                                   isVisible: true,
-                                  textStyle:
-                                  GoogleFonts.abel(fontSize: 13)),
+                                  textStyle: GoogleFonts.abel(fontSize: 13)),
                             )
                           ]);
               } else {

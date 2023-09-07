@@ -37,7 +37,7 @@ class _LoginUserApp extends State<LoginUserApp> {
             headerAnimationLoop: false,
             animType: AnimType.topSlide,
             dismissOnTouchOutside: false,
-            desc: '${'login fail'.tr()} ?',
+            desc: 'login fail'.tr(),
             descTextStyle: s20GgBarColorMainTeal,
             btnCancelOnPress: () {})
         .show();
@@ -105,8 +105,8 @@ class _LoginUserApp extends State<LoginUserApp> {
                             return pre.emailError != now.emailError;
                           }, builder: (BuildContext context, state) {
                             return InputFieldWidget(
-                              hintText: 'enter your email'.tr(),
-                              nameTitle: 'your email'.tr(),
+                              hintText: 'your email'.tr(),
+                              nameTitle: 'email'.tr(),
                               width: 80.w,
                               height: 8.h,
                               onChanged: (value) {
@@ -125,8 +125,8 @@ class _LoginUserApp extends State<LoginUserApp> {
                             return pre.passError != now.passError;
                           }, builder: (BuildContext context, state) {
                             return InputFieldWidget(
-                              hintText: 'enter your password'.tr(),
-                              nameTitle: 'your password'.tr(),
+                              hintText: 'your password'.tr(),
+                              nameTitle: 'password'.tr(),
                               width: 80.w,
                               height: 8.h,
                               onChanged: (value) {

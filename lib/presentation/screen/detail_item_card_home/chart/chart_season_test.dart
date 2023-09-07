@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:math/data/remote/api/Repo/pre_test_repo.dart';
 import 'package:math/data/remote/model/pre_test_res.dart';
 import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -8,7 +9,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../data/model/chart_data_datasheet.dart';
 import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/api/Repo/api_user_repo.dart';
 import '../../../../main.dart';
 
 class ChartSeasonTest extends StatelessWidget {
@@ -20,8 +20,8 @@ class ChartSeasonTest extends StatelessWidget {
     return SizedBox(
         width: 100.w,
         height: 30.h,
-        child: FutureBuilder<List<PreTestAPIRes>?>(
-            future: instance.get<UserAPIRepo>().getALlPreQuizTestByUid(
+        child: FutureBuilder<List<PreTestAPIModel>?>(
+            future: instance.get<PreTestRepo>().getALlPreQuizTestByUid(
                 instance.get<UserGlobal>().id.toString()),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -30,7 +30,7 @@ class ChartSeasonTest extends StatelessWidget {
                   dataListPre.add(ChartDataSheet(
                       i + 1,
                       snapshot.data![i].score!,
-                      snapshot.data![i].sumQ! - snapshot.data![i].score!));
+                      snapshot.data![i].numQ! - snapshot.data![i].score!));
                 }
                 return SfCartesianChart(
                     plotAreaBorderColor: colorMainBlue,

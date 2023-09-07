@@ -74,7 +74,7 @@ class ChangePassWordScreen extends StatelessWidget {
                       return pre.oldPassErrorMessage != now.oldPassErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 'enter your old password'.tr(),
+                        hintText: 'your old password'.tr(),
                         width: 80.w,
                         height: 8.h,
                         nameTitle: "old password".tr(),
@@ -94,7 +94,7 @@ class ChangePassWordScreen extends StatelessWidget {
                       return pre.passErrorMessage != now.passErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 'enter your new password'.tr(),
+                        hintText: 'your new password'.tr(),
                         width: 80.w,
                         height: 8.h,
                         nameTitle: "new password".tr(),
@@ -115,7 +115,7 @@ class ChangePassWordScreen extends StatelessWidget {
                           now.confirmPassErrorMessage;
                     }, builder: (BuildContext context, state) {
                       return InputFieldWidget(
-                        hintText: 're-enter your password'.tr(),
+                        hintText: 're-your new password'.tr(),
                         width: 80.w,
                         height: 8.h,
                         nameTitle: "re-new password".tr(),

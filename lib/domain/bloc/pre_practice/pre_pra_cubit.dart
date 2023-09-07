@@ -3,24 +3,20 @@ import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:math/application/utils/format.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/remote/api/Repo/api_user_repo.dart';
-import 'package:math/data/remote/model/pre_quiz_game_response.dart';
+import 'package:math/data/remote/api/Repo/pre_pra_repo.dart';
 import '../../../application/enum/pre_status.dart';
 import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../data/model/user_global.dart';
-import '../../../data/remote/model/pre_quiz_game_req.dart';
+import '../../../data/remote/model/pre_pra_req.dart';
+import '../../../data/remote/model/pre_pra_res.dart';
 import '../../../main.dart';
-part 'pre_quiz_state.dart';
+part 'pre_pra_state.dart';
 
-class PreQuizCubit extends Cubit<PreQuizState> {
+class PrePraCubit extends Cubit<PrePraState> {
   final PreQuizGameRepo preQuizLocalRepo;
-  final UserAPIRepo userAPIRepo;
-  PreQuizCubit(
-      {required PreQuizGameRepo preQuizLocalRepo,
-      required UserAPIRepo userAPIRepo})
-      : preQuizLocalRepo = preQuizLocalRepo,
-        userAPIRepo = userAPIRepo,
-        super(PreQuizState.initial());
+  final PrePraRepo prePraRepo;
+  PrePraCubit({required this.preQuizLocalRepo, required this.prePraRepo})
+      : super(PrePraState.initial());
 
   void clearOldDataErrorForm() {
     emit(state.copyWith(status: PreQuizStatus.initial));
@@ -42,21 +38,49 @@ class PreQuizCubit extends Cubit<PreQuizState> {
     }
   }
 
-  void addPuzzle() {
-    emit(state.copyWith(status: PreQuizStatus.success));
+  void deletePrePraServer(String id) async {
+    try {
+      await prePraRepo.deletePreQuizGame(id);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<PrePraAPIModel?> createPrePraServer(PrePraAPIReq prePraAPIReq) async {
+    try {
+      await prePraRepo.createPreQuizGame(prePraAPIReq);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> createPrePraLocal(PreQuizGameEntityCompanion data) async {
+    try {
+      await preQuizLocalRepo.insertPreQuizGame(data);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> updatePrePraServer(String id, PrePraAPIReq data) async {
+    try {
+      await prePraRepo.updatePreQuizGameByID(data, id);
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 
   void addPreQuizGame(String sign, String option) async {
     try {
       if (instance.get<UserGlobal>().onLogin == true) {
-        PreQuizGameAPIModel? dataServer =
-            await userAPIRepo.createPreQuizGame(PreQuizGameAPIReq(
+        PrePraAPIModel? dataServer =
+            await prePraRepo.createPreQuizGame(PrePraAPIReq(
                 numQ: 0,
                 status: "GOING",
                 sign: sign,
                 score: 0,
                 optionGame: option,
-                userID: instance.get<UserGlobal>().id,
+                userId: instance.get<UserGlobal>().id,
                 dateSave: formatDateInput.format(
                   DateTime.now(),
                 )));
