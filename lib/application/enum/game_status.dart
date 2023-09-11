@@ -1,1 +1,1 @@
-enum GameStatus { initial,success,save,error}
+enum GameStatus { initial,success,save,error,errorServer}

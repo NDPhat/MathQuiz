@@ -7,15 +7,9 @@ import 'package:sizer/sizer.dart';
 import '../../application/cons/color.dart';
 
 class UserHWScore extends StatelessWidget {
-  UserHWScore(
-      {Key? key,
-      this.totalQuiz,
-      this.quizNow,
-      this.onFinished,
-      this.controller})
+  UserHWScore({Key? key, this.quizNow, this.onFinished, this.controller})
       : super(key: key);
   int? quizNow;
-  int? totalQuiz;
   CountDownController? controller;
   VoidCallback? onFinished;
   @override

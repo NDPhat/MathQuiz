@@ -103,9 +103,22 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
       headerAnimationLoop: false,
       animType: AnimType.topSlide,
       dismissOnTouchOutside: false,
-      desc: '${'update successful'.tr()} ?',
+      desc: '${'update successful'.tr()}',
       descTextStyle: s20GgBarColorMainTeal,
-      btnCancelOnPress: () {},
+      btnOkOnPress: () {},
+    ).show();
+  }
+
+  showUpdateFailDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'update fail'.tr()}',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkOnPress: () {},
     ).show();
   }
 
@@ -563,6 +576,8 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
                         listener: (context, state) {
                       if (state.status == UpdateProfileStatus.success) {
                         showUpdateDoneDialog();
+                      } else if (state.status == UpdateProfileStatus.error) {
+                        showUpdateFailDialog();
                       }
                     }, builder: (context, state) {
                       return RoundedButton(

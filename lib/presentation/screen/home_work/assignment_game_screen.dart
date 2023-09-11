@@ -6,13 +6,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/data/model/user_global.dart';
-import 'package:math/data/remote/api/Repo/result_hw_repo.dart';
+import 'package:math/domain/bloc/hw/hw_cubit.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import '../../../application/cons/text_style.dart';
 import '../../../data/model/pre_join_homework.dart';
 import '../../../data/remote/model/quiz_hw_req.dart';
 import '../../../data/remote/model/result_hw_req.dart';
-import '../../../domain/bloc/game/game_cubit.dart';
 import '../../../application/utils/make_quiz.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
@@ -28,7 +27,6 @@ class AssignmentGameScreen extends StatefulWidget {
 class _GameHWScreenState extends State<AssignmentGameScreen> {
   late QuizBrain _quizBrain;
   int _score = 0;
-  int _highScore = 0;
   late PreJoinQuizHW _preQuiz;
   int falseChoose = 0;
   bool userAnswer = false;
@@ -90,8 +88,8 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
       desc: '${'are you ready'.tr()} ?',
       descTextStyle: s20GgBarColorMainTeal,
       btnCancelOnPress: () {
+        deleteResultHW();
         soundDispose();
-        deletePreHW();
       },
       btnOkOnPress: () {
         _controller.start();
@@ -110,6 +108,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
       title: 'time up'.tr(),
       descTextStyle: s20GgBarColorMainTeal,
       btnOkOnPress: () {
+        updatePreHW();
         soundDispose();
         Navigator.pushNamed(context, Routers.assignmentMainScreen);
       },
@@ -117,7 +116,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
   }
 
   _saveData(int value) {
-    context.read<GameCubit>().addQuizHWToServer(QuizHWAPIReq(
+    context.read<HWCubit>().addQuizHWToServer(QuizHWAPIReq(
         quiz: _quizBrain.quiz.toString(),
         answerSelect: value,
         answer: _quizBrain.quizAnswer,
@@ -125,7 +124,7 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
         resultHWID: _preQuiz.resultID));
   }
 
-  void _checkAnswer(int userChoice, BuildContext context) async {
+  void _checkAnswer(int userChoice) async {
     if (userChoice.toString().isNotEmpty) {
       if (userChoice == _quizBrain.quizAnswer) {
         userAnswer = true;
@@ -157,14 +156,14 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
   }
 
   void updatePreHW() {
-    Navigator.pop(context);
-    instance.get<ResultHWRepo>().updateInfoHomeWorkWeek(
+    context.read<HWCubit>().updateResultHW(
         ResultHWAPIReq(
             week: _preQuiz.week,
             numQ: _preQuiz.numQ,
             trueQ: _score,
             lop: instance.get<UserGlobal>().lop.toString(),
             falseQ: falseChoose,
+            status: "DONE",
             name: instance.get<UserGlobal>().fullName,
             score: _score,
             userId: instance.get<UserGlobal>().id),
@@ -172,10 +171,8 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
     Navigator.pushNamed(context, Routers.homeUser);
   }
 
-  void deletePreHW() {
-    instance
-        .get<ResultHWRepo>()
-        .deleteResultHWNotDo(_preQuiz.resultID.toString());
+  void deleteResultHW() {
+    context.read<HWCubit>().deleteResultHW(_preQuiz.resultID.toString());
     Navigator.pushNamed(context, Routers.homeUser);
   }
 
@@ -210,21 +207,19 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
           textNow: "home work".tr(),
           onPressHome: () {},
           colorTextAndIcon: Colors.black,
-          child: BlocBuilder<GameCubit, GameState>(builder: (context, state) {
+          child: BlocBuilder<HWCubit, HWState>(builder: (context, state) {
             return PortraitModeHomeWork(
-              highscore: _highScore,
               score: _score,
               quizBrainObject: _quizBrain,
               onTap: (int value) {
-                _checkAnswer(value, context);
+                _checkAnswer(value);
                 _saveData(value);
                 _makeNewQuiz();
-                context.read<GameCubit>().changeDataAfterDoneQ(
+                context.read<HWCubit>().changeDataAfterDoneQ(
                     _score, falseChoose, _score, _totalNumberOfQuizzes);
               },
               trueQ: state.trueQ,
               falseQ: state.falseQ,
-              totalQ: _preQuiz.numQ ?? 1,
               quizNow: state.qNow,
               onFinished: () {
                 showFinishGameDialog();

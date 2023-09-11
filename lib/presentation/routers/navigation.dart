@@ -16,6 +16,7 @@ import 'package:math/domain/bloc/detail_test/detail_test_cubit.dart';
 import 'package:math/domain/bloc/forget_pass/forget_pass_cubit.dart';
 import 'package:math/domain/bloc/game/game_cubit.dart';
 import 'package:math/domain/bloc/get_otp/get_otp_cubit.dart';
+import 'package:math/domain/bloc/hw/hw_cubit.dart';
 import 'package:math/domain/bloc/login/login_cubit.dart';
 import 'package:math/domain/bloc/notify_main/notify_main_cubit.dart';
 import 'package:math/domain/bloc/setting/setting_cubit.dart';
@@ -267,15 +268,9 @@ class Routers {
         return const OptionUseApp();
       case assignmentGameScreen:
         return BlocProvider(
-            create: (context) => GameCubit(
-                  quizPraLocalRepo: instance.get<QuizGameLocalRepo>(),
-                  preTestRepo: instance.get<PreTestRepo>(),
-                  prePraRepo: instance.get<PrePraRepo>(),
-                  quizTestRepo: instance.get<QuizTestRepo>(),
-                  quizPraRepo: instance.get<QuizPraRepo>(),
+            create: (context) => HWCubit(
                   resultHWRepo: instance.get<ResultHWRepo>(),
                   quizHWRepo: instance.get<QuizHWRepo>(),
-                  quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const AssignmentGameScreen());
       case homeGuest:
@@ -296,14 +291,14 @@ class Routers {
         return BlocProvider(
             create: (context) => HistoryCubit(
                 preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-                preQuizLocalRepo: instance.get<PreQuizGameRepo>()),
+                preQuizLocalRepo: instance.get<PrePraLocalRepo>()),
             child: const DataSheetGuestScreen());
       case optionBot:
         return const OptionModeBotDual();
       case chooseOption:
         return BlocProvider(
             create: (context) => PrePraCubit(
-                preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
+                preQuizLocalRepo: instance.get<PrePraLocalRepo>(),
                 prePraRepo: instance.get<PrePraRepo>()),
             child: const OptionGameModeScreen());
       case battleMainScreen:
@@ -318,8 +313,8 @@ class Routers {
                   prePraRepo: instance.get<PrePraRepo>(),
                   quizTestRepo: instance.get<QuizTestRepo>(),
                   quizPraRepo: instance.get<QuizPraRepo>(),
-                  resultHWRepo: instance.get<ResultHWRepo>(),
-                  quizHWRepo: instance.get<QuizHWRepo>(),
+                  prePraLocalRepo: instance.get<PrePraLocalRepo>(),
+                  preTestLocalRepo: instance.get<PreTestLocalRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const MixNumberGameScreen());
@@ -333,13 +328,13 @@ class Routers {
         return BlocProvider(
             create: (context) => HistoryCubit(
                 preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-                preQuizLocalRepo: instance.get<PreQuizGameRepo>()),
+                preQuizLocalRepo: instance.get<PrePraLocalRepo>()),
             child: const HistoryPractice());
       case historyTest:
         return BlocProvider(
             create: (context) => HistoryCubit(
                 preTestLocalRepo: instance.get<PreTestLocalRepo>(),
-                preQuizLocalRepo: instance.get<PreQuizGameRepo>()),
+                preQuizLocalRepo: instance.get<PrePraLocalRepo>()),
             child: const HistoryTest());
       case enterAnswerGame:
         return BlocProvider(
@@ -349,8 +344,8 @@ class Routers {
                   prePraRepo: instance.get<PrePraRepo>(),
                   quizTestRepo: instance.get<QuizTestRepo>(),
                   quizPraRepo: instance.get<QuizPraRepo>(),
-                  resultHWRepo: instance.get<ResultHWRepo>(),
-                  quizHWRepo: instance.get<QuizHWRepo>(),
+                  prePraLocalRepo: instance.get<PrePraLocalRepo>(),
+                  preTestLocalRepo: instance.get<PreTestLocalRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const EnterAnswerGameScreen());
@@ -362,8 +357,8 @@ class Routers {
                   prePraRepo: instance.get<PrePraRepo>(),
                   quizTestRepo: instance.get<QuizTestRepo>(),
                   quizPraRepo: instance.get<QuizPraRepo>(),
-                  resultHWRepo: instance.get<ResultHWRepo>(),
-                  quizHWRepo: instance.get<QuizHWRepo>(),
+                  prePraLocalRepo: instance.get<PrePraLocalRepo>(),
+                  preTestLocalRepo: instance.get<PreTestLocalRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const TrueFalseGameScreen());
@@ -375,8 +370,8 @@ class Routers {
                   prePraRepo: instance.get<PrePraRepo>(),
                   quizTestRepo: instance.get<QuizTestRepo>(),
                   quizPraRepo: instance.get<QuizPraRepo>(),
-                  resultHWRepo: instance.get<ResultHWRepo>(),
-                  quizHWRepo: instance.get<QuizHWRepo>(),
+                  prePraLocalRepo: instance.get<PrePraLocalRepo>(),
+                  preTestLocalRepo: instance.get<PreTestLocalRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const FindMissingNumberGameScreen());
@@ -388,8 +383,8 @@ class Routers {
                   prePraRepo: instance.get<PrePraRepo>(),
                   quizTestRepo: instance.get<QuizTestRepo>(),
                   quizPraRepo: instance.get<QuizPraRepo>(),
-                  resultHWRepo: instance.get<ResultHWRepo>(),
-                  quizHWRepo: instance.get<QuizHWRepo>(),
+                  prePraLocalRepo: instance.get<PrePraLocalRepo>(),
+                  preTestLocalRepo: instance.get<PreTestLocalRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const PuzzleGameScreen());
@@ -401,8 +396,8 @@ class Routers {
                   prePraRepo: instance.get<PrePraRepo>(),
                   quizTestRepo: instance.get<QuizTestRepo>(),
                   quizPraRepo: instance.get<QuizPraRepo>(),
-                  resultHWRepo: instance.get<ResultHWRepo>(),
-                  quizHWRepo: instance.get<QuizHWRepo>(),
+                  prePraLocalRepo: instance.get<PrePraLocalRepo>(),
+                  preTestLocalRepo: instance.get<PreTestLocalRepo>(),
                   quizTestLocalRepo: instance.get<QuizTestLocalRepo>(),
                 ),
             child: const DragDropGameScreen());

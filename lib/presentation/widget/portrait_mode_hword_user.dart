@@ -10,21 +10,17 @@ import '../../application/utils/make_quiz.dart';
 import 'answer_table_hw.dart';
 
 class PortraitModeHomeWork extends StatelessWidget {
-  final highscore;
   final int score;
   final int trueQ, falseQ;
-  int? totalQ;
   final int quizNow;
   final QuizBrain quizBrainObject;
   final onTap;
   CountDownController? controller;
   VoidCallback? onFinished;
   PortraitModeHomeWork({
-    required this.highscore,
     required this.score,
     required this.trueQ,
     required this.falseQ,
-    this.totalQ,
     required this.quizNow,
     required this.quizBrainObject,
     required this.onTap,
@@ -40,7 +36,6 @@ class PortraitModeHomeWork extends StatelessWidget {
       child: Column(
         children: [
           UserHWScore(
-            totalQuiz: totalQ,
             quizNow: quizNow,
             onFinished: onFinished,
             controller: controller,

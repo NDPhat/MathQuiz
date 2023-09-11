@@ -6,13 +6,12 @@ import 'package:drift/drift.dart' as driff;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/data/remote/api/Repo/pre_pra_repo.dart';
+import 'package:math/application/enum/game_status.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/text_style.dart';
 import '../../../../application/utils/format.dart';
 import '../../../../data/local/driff/db/db_app.dart';
-import '../../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../../data/model/app_global.dart';
 import '../../../../data/model/make_quiz.dart';
 import '../../../../data/model/user_global.dart';
@@ -21,7 +20,6 @@ import '../../../../data/remote/model/pre_pra_req.dart';
 import '../../../../data/remote/model/quiz_pra_req.dart';
 import '../../../../domain/bloc/game/game_cubit.dart';
 import '../../../../application/utils/make_quiz.dart';
-import '../../../../domain/bloc/pre_practice/pre_pra_cubit.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
 import '../../../widget/portrait_mode_game.dart';
@@ -98,15 +96,94 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
     ).show();
   }
 
+  Future<void> showFinishDiaLog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext contextBuild) {
+        return AlertDialog(
+          actions: [
+            AnimatedButton(
+              text: 'game over'.tr(),
+              buttonTextStyle: s18GgfaBeeColorWhite,
+              color: colorErrorPrimary,
+              pressEvent: () {
+                AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.success,
+                    headerAnimationLoop: false,
+                    animType: AnimType.topSlide,
+                    dismissOnTouchOutside: false,
+                    closeIcon: const Icon(Icons.close_fullscreen_outlined),
+                    desc: 'score'.tr() +
+                        " : " +
+                        '$_score | $_totalNumberOfQuizzes',
+                    descTextStyle: s20GgBarColorMainTeal,
+                    btnOkText: "play again".tr(),
+                    btnOkOnPress: () {
+                      Navigator.pop(context);
+                      _startGameAgain();
+                      context.read<GameCubit>().changeDataPlayAgain();
+                    },
+                    btnCancelOnPress: () {
+                      soundDispose();
+                      Navigator.pushNamed(context, Routers.takeMediumQuiz);
+                    }).show();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showOutPageDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'do you want to quit'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelOnPress: () {
+        _controller.resume();
+      },
+      btnOkOnPress: () {
+        soundDispose();
+        updateScore();
+        Navigator.pushNamed(context, Routers.takeMediumQuiz);
+      },
+    ).show();
+  }
+
+  Future<void> showServerErrorDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'error server'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkOnPress: () {
+        soundDispose();
+        deletePreGameNotDoing();
+      },
+    ).show();
+  }
+
   void deletePreGame() {
     if (instance.get<UserGlobal>().onLogin == true) {
       context.read<GameCubit>().deletePreGameNow(_preIdServerNow.toString());
     } else {
-      PrePraCubit(
-              preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-              prePraRepo: instance.get<PrePraRepo>())
-          .deletePreQuizGame(_preIdNow);
+      context.read<GameCubit>().deletePreGameLocalNow(_preIdNow);
     }
+    Navigator.pushNamed(context, Routers.takeMediumQuiz);
+  }
+
+  void deletePreGameNotDoing() {
+    context.read<GameCubit>().deletePreGameNowError();
     Navigator.pushNamed(context, Routers.takeMediumQuiz);
   }
 
@@ -122,33 +199,38 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
     _quizBrain.makeQuiz(_preQuiz);
   }
 
-  Future<void> addNewDataPlayAgain() async {
+  addNewDataPlayAgain() async {
     if (instance.get<UserGlobal>().onLogin == true) {
-      PrePraAPIModel? newData =
-          await context.read<GameCubit>().createPrePraServer(PrePraAPIReq(
-              numQ: 0,
-              status: "GOING",
-              sign: _preQuiz.sign,
-              score: 0,
-              optionGame: _preQuiz.option,
-              userId: instance.get<UserGlobal>().id,
-              dateSave: formatDateInput.format(
-                DateTime.now(),
-              )));
-      _preIdServerNow = newData!.key!;
+      context.read<GameCubit>().createPrePraServer(PrePraAPIReq(
+          numQ: 0,
+          status: "GOING",
+          sign: _preQuiz.sign,
+          score: 0,
+          optionGame: _preQuiz.option,
+          userId: instance.get<UserGlobal>().id,
+          dateSave: formatDateInput.format(
+            DateTime.now(),
+          )));
+      PrePraAPIModel? dataServer =
+          await context.read<GameCubit>().getPrePraServerOnDoing();
+      if (dataServer != null) {
+        _preIdServerNow = dataServer.key!;
+      } else {
+        showServerErrorDialog();
+      }
     } else {
-      context.read<PrePraCubit>().createPrePraLocal(PreQuizGameEntityCompanion(
+      context.read<GameCubit>().createPrePraLocal(PreQuizGameEntityCompanion(
           numQ: const driff.Value(0),
           sign: driff.Value(_preQuiz.sign!),
           option: driff.Value(_preQuiz.option!),
           dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
-      final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
+      final data = await context.read<GameCubit>().getLatestPreQuizGame();
       // cap nhap lai id
-      _preIdNow = data.id;
+      _preIdNow = data!.id;
     }
   }
 
-  void _startGameAgain() {
+  _startGameAgain() {
     setState(() {
       falseChoose = 0;
       _score = 0;
@@ -160,7 +242,6 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
     _controller.reset();
     _controller.start();
     _quizBrain.makeQuiz(_preQuiz);
-    _score = 0;
     _totalNumberOfQuizzes = 1;
     playAgain = false;
   }
@@ -179,7 +260,6 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
           sign: _preQuiz.sign!,
           quiz: _quizBrain.quiz,
           infoQuiz: userAnswer,
-          userId: instance.get<UserGlobal>().id!,
           answer: _quizBrain.quizAnswer,
           answerSelect: userChoose));
     } else {
@@ -204,9 +284,9 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
           PrePraAPIReq(
               score: _score, status: "DONE", numQ: _totalNumberOfQuizzes));
     } else {
-      instance
-          .get<PrePraCubit>()
-          .updateScoreQuizGame(_score, _preIdNow, _totalNumberOfQuizzes);
+      context
+          .read<GameCubit>()
+          .updateScoreQuizGameLocal(_score, _preIdNow, _totalNumberOfQuizzes);
     }
   }
 
@@ -236,69 +316,6 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
       falseChoose++;
       _resetScreen();
     }
-  }
-
-  Future<void> showFinishDiaLog() {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext contextBuild) {
-        return BlocProvider.value(
-            value: BlocProvider.of<GameCubit>(context),
-            child: AlertDialog(
-              actions: [
-                AnimatedButton(
-                  text: 'game over'.tr(),
-                  buttonTextStyle: s18GgfaBeeColorWhite,
-                  color: colorErrorPrimary,
-                  pressEvent: () {
-                    AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.success,
-                        headerAnimationLoop: false,
-                        animType: AnimType.topSlide,
-                        dismissOnTouchOutside: false,
-                        closeIcon: const Icon(Icons.close_fullscreen_outlined),
-                        desc: 'score'.tr() +
-                            " : " +
-                            '$_score | $_totalNumberOfQuizzes',
-                        descTextStyle: s20GgBarColorMainTeal,
-                        btnOkText: "play again".tr(),
-                        btnOkOnPress: () {
-                          Navigator.pop(context);
-                          _startGameAgain();
-                          context.read<GameCubit>().changeDataPlayAgain();
-                        },
-                        btnCancelOnPress: () {
-                          soundDispose();
-                          Navigator.pushNamed(context, Routers.takeMediumQuiz);
-                        }).show();
-                  },
-                )
-              ],
-            ));
-      },
-    );
-  }
-
-  Future<void> showOutPageDialog() {
-    return AwesomeDialog(
-      context: context,
-      dialogType: DialogType.warning,
-      headerAnimationLoop: false,
-      animType: AnimType.topSlide,
-      dismissOnTouchOutside: false,
-      desc: '${'do you want to quit'.tr()} ?',
-      descTextStyle: s20GgBarColorMainTeal,
-      btnCancelOnPress: () {
-        _controller.resume();
-      },
-      btnOkOnPress: () {
-        soundDispose();
-        updateScore();
-        Navigator.pushNamed(context, Routers.takeMediumQuiz);
-      },
-    ).show();
   }
 
   @override

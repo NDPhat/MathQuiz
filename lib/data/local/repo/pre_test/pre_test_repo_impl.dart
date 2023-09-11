@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:math/application/extension/precsision_double.dart';
 import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
-
+import '../../../../application/utils/format.dart';
 import '../../driff/db/db_app.dart';
 
 class PreTestLocalRepoImpl extends PreTestLocalRepo {
@@ -119,5 +119,16 @@ class PreTestLocalRepoImpl extends PreTestLocalRepo {
     List<PreTestEntityData> data =
         await (appDb.select(appDb.preTestEntity)).get();
     return data.length;
+  }
+
+  @override
+  Future<void> deleteAllPreTestAfter7DaysFromNow() async {
+    final now = DateTime.now();
+    String expirationDate =
+        formatDateInput.format(now.subtract(const Duration(days: 6)));
+
+    await (appDb.delete(appDb.preTestEntity)
+          ..where((t) => t.dateSave.isSmallerThanValue(expirationDate)))
+        .go();
   }
 }

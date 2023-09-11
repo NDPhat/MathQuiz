@@ -139,4 +139,45 @@ class PrePraRepoImpl extends PrePraRepo {
       return null;
     }
   }
+
+  @override
+  Future<PrePraAPIModel?> getPreQuizGameByUidOnGoing(String uid) async {
+    try {
+      final url = "${endpoint}getPreQuizGameByUidOnGoing?uid=$uid";
+      final req = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        Map<String, dynamic> parsed = json.decode(req.body);
+        List<PrePraAPIModel>? result = PrePraAPIRes.fromJson(parsed).lItems;
+        int length = PrePraAPIRes.fromJson(parsed).iCount!;
+        if (length != 0 && result!.isNotEmpty) {
+          return result.first;
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } on SocketException catch (_) {
+      return Future.error('No network found');
+    } catch (_) {
+      return Future.error('Something occurred');
+    }
+  }
+
+  @override
+  Future<bool?> deletePreQuizGameErrorServer(String uId) async {
+    try {
+      final url = "${endpoint}deletePreGameByUIdAndDoing?userID=$uId";
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
 }

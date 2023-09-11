@@ -9,19 +9,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/text_style.dart';
+import '../../../../application/enum/game_status.dart';
 import '../../../../application/utils/format.dart';
 import '../../../../data/local/driff/db/db_app.dart';
-import '../../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../../data/model/app_global.dart';
 import '../../../../data/model/make_quiz.dart';
 import '../../../../data/model/user_global.dart';
-import '../../../../data/remote/api/Repo/pre_pra_repo.dart';
 import '../../../../data/remote/model/pre_pra_res.dart';
 import '../../../../data/remote/model/pre_pra_req.dart';
 import '../../../../data/remote/model/quiz_pra_req.dart';
 import '../../../../domain/bloc/game/game_cubit.dart';
 import '../../../../application/utils/make_quiz.dart';
-import '../../../../domain/bloc/pre_practice/pre_pra_cubit.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
 import '../../../widget/portrait_mode_tf.dart';
@@ -93,44 +91,65 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
 
   void _startGameAgain() async {
     setState(() {
-      _preIdNow++;
       falseChoose = 0;
       _score = 0;
       _totalNumberOfQuizzes = 0;
     });
+    addNewDataPlayAgain();
+    // them tren server
     playAgain = true;
     _controller.reset();
     _controller.start();
-    addNewDataPlayAgain();
     _quizBrain.makeQuizTrueFalse(_preQuiz);
+    _totalNumberOfQuizzes = 1;
     playAgain = false;
   }
 
-  Future<void> addNewDataPlayAgain() async {
+  Future<void> showServerErrorDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      desc: '${'error server'.tr()} ?',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkOnPress: () {
+        soundDispose();
+        deletePreGameNotDoing();
+      },
+    ).show();
+  }
+
+  addNewDataPlayAgain() async {
     if (instance.get<UserGlobal>().onLogin == true) {
-      PrePraAPIModel? newData =
-          await context.read<GameCubit>().createPrePraServer(PrePraAPIReq(
-              numQ: _preQuiz.numQ,
-              status: "GOING",
-              sign: _preQuiz.sign,
-              score: 0,
-              optionGame: _preQuiz.option,
-              userId: instance.get<UserGlobal>().id,
-              dateSave: formatDateInput.format(
-                DateTime.now(),
-              )));
-      _preIdServerNow = newData!.key!;
+      context.read<GameCubit>().createPrePraServer(PrePraAPIReq(
+          numQ: _preQuiz.numQ,
+          status: "GOING",
+          sign: _preQuiz.sign,
+          score: 0,
+          optionGame: _preQuiz.option,
+          userId: instance.get<UserGlobal>().id,
+          dateSave: formatDateInput.format(
+            DateTime.now(),
+          )));
+      PrePraAPIModel? dataServer =
+          await context.read<GameCubit>().getPrePraServerOnDoing();
+      if (dataServer != null) {
+        _preIdServerNow = dataServer.key!;
+      } else {
+        showServerErrorDialog();
+      }
     } else {
-      instance.get<PreQuizGameRepo>().insertPreQuizGame(
-          PreQuizGameEntityCompanion(
-              numQ: driff.Value(_preQuiz.numQ!),
-              sign: driff.Value(_preQuiz.sign!),
-              option: driff.Value(_preQuiz.option!),
-              dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
-      final data = await instance.get<PreQuizGameRepo>().getLatestPreQuizGame();
+      context.read<GameCubit>().createPrePraLocal(PreQuizGameEntityCompanion(
+          numQ: driff.Value(_preQuiz.numQ!),
+          sign: driff.Value(_preQuiz.sign!),
+          option: driff.Value(_preQuiz.option!),
+          dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
+      final data = await context.read<GameCubit>().getLatestPreQuizGame();
 
       // cap nhap lai id
-      _preIdNow = data.id;
+      _preIdNow = data!.id;
     }
   }
 
@@ -148,7 +167,6 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
           sign: _preQuiz.sign!,
           quiz: _quizBrain.quiz,
           infoQuiz: userAnswer,
-          userId: instance.get<UserGlobal>().id!,
           answer: _quizBrain.quizTrueFalse == "TRUE" ? 1 : 0,
           answerSelect: userChoose == _quizBrain.quizTrueFalse ? 1 : 0));
     } else {
@@ -173,10 +191,9 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
           PrePraAPIReq(
               score: _score, status: "DONE", numQ: _totalNumberOfQuizzes));
     } else {
-      PrePraCubit(
-              preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-              prePraRepo: instance.get<PrePraRepo>())
-          .updateScoreQuizGame(_score, _preIdNow, _totalNumberOfQuizzes);
+      context
+          .read<GameCubit>()
+          .updateScoreQuizGameLocal(_score, _preIdNow, _totalNumberOfQuizzes);
     }
   }
 
@@ -205,10 +222,7 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
     if (instance.get<UserGlobal>().onLogin == true) {
       context.read<GameCubit>().deletePreGameNow(_preIdServerNow.toString());
     } else {
-      PrePraCubit(
-              preQuizLocalRepo: instance.get<PreQuizGameRepo>(),
-              prePraRepo: instance.get<PrePraRepo>())
-          .deletePreQuizGame(_preIdNow);
+      context.read<GameCubit>().deletePreGameLocalNow(_preIdNow);
     }
     Navigator.pushNamed(context, Routers.takeMediumQuiz);
   }
@@ -242,45 +256,49 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
     }
   }
 
+  void deletePreGameNotDoing() {
+    context.read<GameCubit>().deletePreGameNowError();
+    Navigator.pushNamed(context, Routers.takeMediumQuiz);
+  }
+
   Future<void> showFinishDiaLog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext contextBuild) {
-        return BlocProvider.value(
-            value: BlocProvider.of<GameCubit>(context),
-            child: AlertDialog(
-              actions: [
-                AnimatedButton(
-                  text: 'game over'.tr(),
-                  buttonTextStyle: s18GgfaBeeColorWhite,
-                  color: colorErrorPrimary,
-                  pressEvent: () {
-                    AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.success,
-                        headerAnimationLoop: false,
-                        animType: AnimType.topSlide,
-                        dismissOnTouchOutside: false,
-                        closeIcon: const Icon(Icons.close_fullscreen_outlined),
-                        desc: 'score'.tr() +
-                            " : " +
-                            '$_score | $_totalNumberOfQuizzes',
-                        descTextStyle: s20GgBarColorMainTeal,
-                        btnOkText: "play again".tr(),
-                        btnOkOnPress: () {
-                          Navigator.pop(context);
-                          _startGameAgain();
-                          context.read<GameCubit>().changeDataPlayAgain();
-                        },
-                        btnCancelOnPress: () {
-                          soundDispose();
-                          Navigator.pushNamed(context, Routers.takeMediumQuiz);
-                        }).show();
-                  },
-                )
-              ],
-            ));
+        return AlertDialog(
+          actions: [
+            AnimatedButton(
+              text: 'game over'.tr(),
+              buttonTextStyle: s18GgfaBeeColorWhite,
+              color: colorErrorPrimary,
+              pressEvent: () {
+                AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.success,
+                    headerAnimationLoop: false,
+                    animType: AnimType.topSlide,
+                    dismissOnTouchOutside: false,
+                    closeIcon: const Icon(Icons.close_fullscreen_outlined),
+                    desc: 'score'.tr() +
+                        " : " +
+                        '$_score | $_totalNumberOfQuizzes',
+                    descTextStyle: s20GgBarColorMainTeal,
+                    btnOkText: "play again".tr(),
+                    btnOkOnPress: () {
+                      Navigator.pop(context);
+
+                      _startGameAgain();
+                      context.read<GameCubit>().changeDataPlayAgain();
+                    },
+                    btnCancelOnPress: () {
+                      soundDispose();
+                      Navigator.pushNamed(context, Routers.takeMediumQuiz);
+                    }).show();
+              },
+            ),
+          ],
+        );
       },
     );
   }

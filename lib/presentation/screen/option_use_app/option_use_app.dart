@@ -48,57 +48,63 @@ class OptionUseApp extends StatelessWidget {
       }
     }
 
-    return Scaffold(
-      backgroundColor: colorSystemWhite,
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/images/bg_bot.jpg"), fit: BoxFit.fill),
-          color: colorSystemWhite,
-        ),
-        child: Center(
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, Routers.login);
-                },
-                child: Container(
-                    padding: EdgeInsets.only(top: 10.h),
-                    width: 80.w,
-                    child: Text(
-                      "login".tr().toString(),
-                      style: const TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: colorWaringText,
-                          fontSize: 25),
-                      textAlign: TextAlign.right,
-                    )),
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-              Image.asset(
-                'assets/images/welcome.png',
-                height: 25.h,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              AnimatedTextKit(
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: colorSystemWhite,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/bg_bot.jpg"),
+                fit: BoxFit.fill),
+            color: colorSystemWhite,
+          ),
+          child: Center(
+            child: Column(
+              children: [
+                GestureDetector(
                   onTap: () {
-                    handleNavigationLoadApp();
+                    Navigator.pushNamed(context, Routers.login);
                   },
-                  animatedTexts: [
-                    ColorizeAnimatedText(
-                      'taptostart'.tr().toString(),
-                      textAlign: TextAlign.center,
-                      textStyle: kAnimationTextStyle,
-                      colors: kColorizeAnimationColors,
-                    )
-                  ],
-                  repeatForever: true),
-            ],
+                  child: Container(
+                      padding: EdgeInsets.only(top: 10.h),
+                      width: 80.w,
+                      child: Text(
+                        "login".tr().toString(),
+                        style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: colorWaringText,
+                            fontSize: 25),
+                        textAlign: TextAlign.right,
+                      )),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Image.asset(
+                  'assets/images/welcome.png',
+                  height: 25.h,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                AnimatedTextKit(
+                    onTap: () {
+                      handleNavigationLoadApp();
+                    },
+                    animatedTexts: [
+                      ColorizeAnimatedText(
+                        'taptostart'.tr().toString(),
+                        textAlign: TextAlign.center,
+                        textStyle: kAnimationTextStyle,
+                        colors: kColorizeAnimationColors,
+                      )
+                    ],
+                    repeatForever: true),
+              ],
+            ),
           ),
         ),
       ),

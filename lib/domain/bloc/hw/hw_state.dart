@@ -1,30 +1,27 @@
-part of 'game_cubit.dart';
+part of 'hw_cubit.dart';
 
-class GameState extends Equatable {
+class HWState extends Equatable {
   int trueQ;
   int falseQ;
   int qNow;
   int score;
   int timeNow;
-  String idServer;
   GameStatus status;
 
-  GameState(
-      {required this.trueQ,
-      required this.falseQ,
-      required this.qNow,
-      required this.score,
-      required this.status,
-      required this.timeNow,
-      required this.idServer
-      //this.user,
-      });
-  factory GameState.initial() {
-    return GameState(
+  HWState({
+    required this.trueQ,
+    required this.falseQ,
+    required this.qNow,
+    required this.score,
+    required this.status,
+    required this.timeNow,
+    //this.user,
+  });
+  factory HWState.initial() {
+    return HWState(
       trueQ: 0,
       falseQ: 0,
       score: 0, qNow: 1,
-      idServer: "",
       timeNow: 5,
       status: GameStatus.initial,
       //user: null,
@@ -38,28 +35,25 @@ class GameState extends Equatable {
         trueQ,
         falseQ,
         score,
-        idServer,
         qNow,
         status,
       ];
 
-  GameState copyWith({
+  HWState copyWith({
     int? trueQ,
     int? falseQ,
     int? score,
     int? qNow,
     int? timeNow,
     String? quiz,
-    String? idServer,
     GameStatus? status,
   }) {
-    return GameState(
+    return HWState(
       trueQ: trueQ ?? this.trueQ,
       falseQ: falseQ ?? this.falseQ,
       score: score ?? this.score,
       qNow: qNow ?? this.qNow,
       timeNow: timeNow ?? this.timeNow,
-      idServer: idServer ?? this.idServer,
       status: status ?? this.status,
       //user: user ?? this.user,
     );

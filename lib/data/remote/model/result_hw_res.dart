@@ -28,17 +28,17 @@ class ResultHWAPIRes {
 }
 
 class ResultHWAPIModel {
-  String? dateSave;
-  int? falseQ;
   String? key;
-  String? lop;
-  String? name;
+  String? week;
   int? numQ;
+  String? name;
+  String? userId;
   int? score;
   int? trueQ;
-  String? userId;
-  String? week;
-
+  int? falseQ;
+  String? lop;
+  String? dateSave;
+  String? status;
   ResultHWAPIModel(
       {this.dateSave,
       this.falseQ,
@@ -48,6 +48,7 @@ class ResultHWAPIModel {
       this.numQ,
       this.score,
       this.trueQ,
+      this.status,
       this.userId,
       this.week});
 
@@ -61,6 +62,8 @@ class ResultHWAPIModel {
     score = json['score'];
     trueQ = json['trueQ'];
     userId = json['userId'];
+    status = json['status'];
+
     week = json['week'];
   }
 
@@ -76,6 +79,8 @@ class ResultHWAPIModel {
     data['trueQ'] = this.trueQ;
     data['userId'] = this.userId;
     data['week'] = this.week;
+    data['status'] = this.status;
+
     return data;
   }
 }

@@ -2,9 +2,10 @@ import 'package:drift/drift.dart';
 import 'package:math/application/extension/precsision_double.dart';
 import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 
+import '../../../../application/utils/format.dart';
 import '../../driff/db/db_app.dart';
 
-class PreQuizLocalRepoImpl extends PreQuizGameRepo {
+class PreQuizLocalRepoImpl extends PrePraLocalRepo {
   PreQuizLocalRepoImpl(super.appDb);
 
   @override
@@ -128,5 +129,15 @@ class PreQuizLocalRepoImpl extends PreQuizGameRepo {
     List<PreQuizGameEntityData> data =
         await (appDb.select(appDb.preQuizGameEntity)).get();
     return data.length;
+  }
+
+  @override
+  Future<void> deleteAllPreQuizGameAfter7DaysFromNow() async {
+    final now = DateTime.now();
+    String expirationDate =
+        formatDateInput.format(now.subtract(const Duration(days: 6)));
+    await (appDb.delete(appDb.preQuizGameEntity)
+          ..where((t) => t.dateSave.isSmallerThanValue(expirationDate)))
+        .go();
   }
 }

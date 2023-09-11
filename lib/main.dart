@@ -8,11 +8,13 @@ import 'package:math/presentation/screen/restart_app/restart_app_widget.dart';
 import 'package:sizer/sizer.dart';
 import 'application/di/setupProject.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:get/get.dart';
 
 GetIt instance = GetIt.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+
   /// PERMISSION LOCAL NOTIFICATION
   await Permission.notification.isDenied.then((value) {
     if (value) {
@@ -50,7 +52,7 @@ class MathQuizApp extends StatelessWidget {
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();
           },
-          child: MaterialApp(
+          child: GetMaterialApp(
             theme: ThemeData.from(
               colorScheme: const ColorScheme.light(),
             ).copyWith(

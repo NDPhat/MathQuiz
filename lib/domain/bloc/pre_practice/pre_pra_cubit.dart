@@ -13,7 +13,7 @@ import '../../../main.dart';
 part 'pre_pra_state.dart';
 
 class PrePraCubit extends Cubit<PrePraState> {
-  final PreQuizGameRepo preQuizLocalRepo;
+  final PrePraLocalRepo preQuizLocalRepo;
   final PrePraRepo prePraRepo;
   PrePraCubit({required this.preQuizLocalRepo, required this.prePraRepo})
       : super(PrePraState.initial());

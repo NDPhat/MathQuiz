@@ -11,7 +11,7 @@ part 'history_state.dart';
 
 class HistoryCubit extends Cubit<HistoryState> {
   final PreTestLocalRepo preTestLocalRepo;
-  final PreQuizGameRepo preQuizLocalRepo;
+  final PrePraLocalRepo preQuizLocalRepo;
   HistoryCubit({required this.preTestLocalRepo, required this.preQuizLocalRepo})
       : super(HistoryState.initial());
   Future<void> datePraChanged(DateTime value) async {
@@ -92,6 +92,16 @@ class HistoryCubit extends Cubit<HistoryState> {
     }
   }
 
+  void getMoreDataPreQuiz() {
+    preQuizLocalRepo.getAllPreQuizGameByDayWithPagination(
+        state.timePraNow, state.pagePraNow);
+  }
+
+  void getMoreDataPreTest() {
+    preTestLocalRepo.getAllPreTestByDayWithPagination(
+        state.timeTestNow, state.pageTestNow);
+  }
+
   void deletePreTest(int id) async {
     try {
       emit(state.copyWith(lengthTest: state.lengthTest - 1));
@@ -109,25 +119,16 @@ class HistoryCubit extends Cubit<HistoryState> {
   void deletePreTestByDay(String dateSave) async {
     try {
       await preTestLocalRepo.deletePreTestByDay(dateSave);
-      emit(state.copyWith(lengthTest: 1, pageTestNow: 1));
+      emit(state.copyWith(lengthTest: 0, pageTestNow: 1));
     } on Exception catch (e) {
       print(e.toString());
     }
   }
 
-  void getMoreDataPreQuiz() {
-    preQuizLocalRepo.getAllPreQuizGameByDayWithPagination(
-        state.timePraNow, state.pagePraNow);
-  }
-
-  void getMoreDataPreTest() {
-    preTestLocalRepo.getAllPreTestByDayWithPagination(
-        state.timeTestNow, state.pageTestNow);
-  }
-
   void deleteAllPreTest() async {
     try {
       await preTestLocalRepo.deleteAllPreTest();
+      emit(state.copyWith(lengthTest: 0));
     } on Exception catch (e) {
       print(e.toString());
     }
@@ -150,7 +151,7 @@ class HistoryCubit extends Cubit<HistoryState> {
   void deletePreQuizByDay(String dateSave) async {
     try {
       await preQuizLocalRepo.deletePreQuizGameByDay(dateSave);
-      emit(state.copyWith(lengthTest: 1, pageTestNow: 1));
+      emit(state.copyWith(lengthPra: 0, pagePraNow: 1));
     } on Exception catch (e) {
       print(e.toString());
     }
@@ -159,6 +160,7 @@ class HistoryCubit extends Cubit<HistoryState> {
   void deleteAllPreQuiz() async {
     try {
       await preQuizLocalRepo.deleteAllPreQuiz();
+      emit(state.copyWith(lengthPra: 0));
     } on Exception catch (e) {
       print(e.toString());
     }

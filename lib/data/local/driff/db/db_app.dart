@@ -37,13 +37,4 @@ class AppDb extends _$AppDb {
   // Migrations are covered later in the documentation.
   @override
   int get schemaVersion => 1;
-
-  // delete Data
-
-  void deleteLocalPlayer() {
-    for (final table in allTables) {
-      table.deleteAll();
-    }
-    instance.get<AuthenRepository>().handleLocalAutoLoginApp(false);
-  }
 }

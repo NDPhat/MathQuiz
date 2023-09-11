@@ -34,7 +34,6 @@ class QuizPraAPIModel {
   String? key;
   String? prePraId;
   String? quiz;
-  String? userId;
 
   QuizPraAPIModel(
       {this.answer,
@@ -42,8 +41,8 @@ class QuizPraAPIModel {
         this.infoQuiz,
         this.key,
         this.prePraId,
-        this.quiz,
-        this.userId});
+        this.quiz
+        });
 
   QuizPraAPIModel.fromJson(Map<String, dynamic> json) {
     answer = json['answer'];
@@ -52,7 +51,6 @@ class QuizPraAPIModel {
     key = json['key'];
     prePraId = json['prePraId'];
     quiz = json['quiz'];
-    userId = json['userId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,7 +61,6 @@ class QuizPraAPIModel {
     data['key'] = this.key;
     data['prePraId'] = this.prePraId;
     data['quiz'] = this.quiz;
-    data['userId'] = this.userId;
     return data;
   }
 }

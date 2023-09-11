@@ -64,12 +64,15 @@ class HistoryTestState extends State<HistoryTest> {
       height: 50.h,
       padding: EdgeInsets.only(top: 2.h, left: 5.w, right: 5.w, bottom: 2.h),
       child: Container(
-        decoration:
-            BoxDecoration(border: Border.all(color: colorMainBlue, width: 2)),
+        decoration: BoxDecoration(
+            border: Border.all(color: colorMainTealPri, width: 2)),
         child: Column(
           children: [
             /// LINE CONTENT
-            SizedBox(
+            Container(
+              padding: EdgeInsets.only(
+                left: 3.w,
+              ),
               height: 4.h,
               width: 100.w,
               child: BlocBuilder<HistoryCubit, HistoryState>(
@@ -79,21 +82,16 @@ class HistoryTestState extends State<HistoryTest> {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                        left: 3.w,
-                      ),
-                      child: Text(
-                        'day'.tr(),
-                        style: GoogleFonts.abel(
-                            color: colorMainBlue, fontSize: 18),
-                      ),
+                    Text(
+                      'day'.tr(),
+                      style: GoogleFonts.abel(
+                          color: colorMainTealPri, fontSize: 18),
                     ),
                     SizedBox(
                       child: Text(
                         state.timeTestNow,
                         style: GoogleFonts.abel(
-                            color: colorMainBlue, fontSize: 18),
+                            color: colorMainTealPri, fontSize: 18),
                       ),
                     ),
                   ],
@@ -111,7 +109,7 @@ class HistoryTestState extends State<HistoryTest> {
                 dayTextStyle: const TextStyle(fontSize: 10),
                 monthTextStyle: const TextStyle(fontSize: 12),
                 initialSelectedDate: DateTime.now(),
-                selectionColor: colorMainBlue,
+                selectionColor: colorMainTealPri,
                 onDateChange: (date) {
                   context.read<HistoryCubit>().dateTestChanged(date);
                 },
@@ -152,7 +150,7 @@ class HistoryTestState extends State<HistoryTest> {
                       child: Text(
                         'NOTHING ADDED !!'.tr(),
                         style: GoogleFonts.abel(
-                            color: colorMainBlue, fontSize: 20),
+                            color: colorMainTealPri, fontSize: 20),
                       ),
                     );
                   }
@@ -167,10 +165,10 @@ class HistoryTestState extends State<HistoryTest> {
                   return pre.pageTestNow != now.pageTestNow;
                 }, builder: (context, state) {
                   return DotPageIndicator(
-                    colorBorder: colorMainBlue,
+                    colorBorder: colorMainTealPri,
                     icon: SvgPicture.asset(
                       "assets/icon/back.svg",
-                      color: colorMainBlue,
+                      color: colorMainTealPri,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
@@ -188,7 +186,7 @@ class HistoryTestState extends State<HistoryTest> {
                 }, builder: (context, state) {
                   return DotIndicator(
                     totalPage: findLength(state.lengthTest).toString(),
-                    colorBorder: colorMainBlue,
+                    colorBorder: colorMainTealPri,
                     pageIndex: state.pageTestNow.toString(),
                   );
                 }),
@@ -199,10 +197,10 @@ class HistoryTestState extends State<HistoryTest> {
                   return pre.pageTestNow != now.pageTestNow;
                 }, builder: (context, state) {
                   return DotPageIndicator(
-                    colorBorder: colorMainBlue,
+                    colorBorder: colorMainTealPri,
                     icon: SvgPicture.asset(
                       "assets/icon/next.svg",
-                      color: colorMainBlue,
+                      color: colorMainTealPri,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
@@ -211,7 +209,7 @@ class HistoryTestState extends State<HistoryTest> {
                   );
                 })
               ]),
-            ),
+            )
           ],
         ),
       ),

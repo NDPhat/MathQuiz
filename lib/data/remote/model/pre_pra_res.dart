@@ -11,7 +11,7 @@ class PrePraAPIRes {
     if (json['_items'] != null) {
       lItems = <PrePraAPIModel>[];
       json['_items'].forEach((v) {
-        lItems!.add(new PrePraAPIModel.fromJson(v));
+        lItems!.add(PrePraAPIModel.fromJson(v));
       });
     }
   }
@@ -20,7 +20,7 @@ class PrePraAPIRes {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_count'] = this.iCount;
     data['_last'] = this.nLast;
-    if (this.lItems != null) {
+    if (lItems != null) {
       data['_items'] = this.lItems!.map((v) => v.toJson()).toList();
     }
     return data;

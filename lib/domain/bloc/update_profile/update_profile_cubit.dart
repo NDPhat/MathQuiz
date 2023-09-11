@@ -119,8 +119,9 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
       }
       bool? updateDone = await userRepo.updateProfileUser(
           instance.get<UserGlobal>().id.toString(), dataNew);
+      print(updateDone);
       if (updateDone == true) {
-        await userRepo.getUserByID(instance.get<UserGlobal>().id.toString());
+        userRepo.getUserByID(instance.get<UserGlobal>().id.toString());
         emit(state.copyWith(status: UpdateProfileStatus.success));
       } else {
         emit(state.copyWith(status: UpdateProfileStatus.error));

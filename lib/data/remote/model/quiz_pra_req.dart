@@ -2,7 +2,6 @@ class QuizPraAPIReq {
   String? quiz;
   String? prePraId;
   int? answer;
-  String? userId;
   String? sign;
   int? answerSelect;
   bool? infoQuiz;
@@ -11,7 +10,6 @@ class QuizPraAPIReq {
       {this.quiz,
       this.prePraId,
       this.answer,
-      this.userId,
       this.sign,
       this.answerSelect,
       this.infoQuiz});
@@ -20,7 +18,6 @@ class QuizPraAPIReq {
     quiz = json['quiz'];
     prePraId = json['prePraId'];
     answer = json['answer'];
-    userId = json['userId'];
     sign = json['sign'];
     answerSelect = json['answerSelect'];
     infoQuiz = json['infoQuiz'];
@@ -31,7 +28,6 @@ class QuizPraAPIReq {
     data['quiz'] = this.quiz;
     data['prePraId'] = this.prePraId;
     data['answer'] = this.answer;
-    data['userId'] = this.userId;
     data['sign'] = this.sign;
     data['answerSelect'] = this.answerSelect;
     data['infoQuiz'] = this.infoQuiz;

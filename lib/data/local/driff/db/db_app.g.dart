@@ -594,7 +594,10 @@ class $QuizGameEntityTable extends QuizGameEntity
   @override
   late final GeneratedColumn<int> preId = GeneratedColumn<int>(
       'preId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES pre_quiz_game_entity (id)'));
   static const VerificationMeta _num1Meta = const VerificationMeta('num1');
   @override
   late final GeneratedColumn<String> num1 = GeneratedColumn<String>(
@@ -1028,7 +1031,10 @@ class $QuizTestEntityTable extends QuizTestEntity
   @override
   late final GeneratedColumn<int> preId = GeneratedColumn<int>(
       'preId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES pre_test_entity (id)'));
   static const VerificationMeta _num1Meta = const VerificationMeta('num1');
   @override
   late final GeneratedColumn<String> num1 = GeneratedColumn<String>(

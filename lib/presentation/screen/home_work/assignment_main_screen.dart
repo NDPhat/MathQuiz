@@ -40,6 +40,7 @@ class AssignmentMainScreen extends StatelessWidget {
               numQ: dataPre.numQ,
               trueQ: 0,
               falseQ: 0,
+              status: "GOING",
               dateSave: formatDateInput.format(DateTime.now()),
               lop: instance.get<UserGlobal>().lop.toString(),
               name: instance.get<UserGlobal>().fullName,

@@ -128,7 +128,7 @@ class HistoryPracticeState extends State<HistoryPractice> {
               return Expanded(
                   child: StreamBuilder<List<PreQuizGameEntityData>>(
                 stream: instance
-                    .get<PreQuizGameRepo>()
+                    .get<PrePraLocalRepo>()
                     .getAllPreQuizGameByDayWithPagination(
                         state.timePraNow.toString(), state.pagePraNow),
                 builder: (context, snapshot) {

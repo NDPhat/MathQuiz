@@ -33,7 +33,7 @@ import '../../data/remote/api/Repo_impl/user_repo_impl.dart';
 
 void initDBandLocalRepo() {
   instance.registerLazySingleton<AppDb>(() => AppDb());
-  instance.registerLazySingleton<PreQuizGameRepo>(
+  instance.registerLazySingleton<PrePraLocalRepo>(
       () => PreQuizLocalRepoImpl(instance.get<AppDb>()));
   instance.registerLazySingleton<PlayerLocalRepo>(
       () => PlayerLocalRepoImpl(instance.get<AppDb>()));

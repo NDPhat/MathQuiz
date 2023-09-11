@@ -24,9 +24,9 @@ class UserEventLocal {
   }
 
   static Future<void> getScoreAndJoinForLocal() async {
-    double scoreGame = await instance.get<PreQuizGameRepo>().getAverageScore();
+    double scoreGame = await instance.get<PrePraLocalRepo>().getAverageScore();
     int intGame =
-        await instance.get<PreQuizGameRepo>().getLengthAllPreQuizGame();
+        await instance.get<PrePraLocalRepo>().getLengthAllPreQuizGame();
     if (scoreGame.isNaN) {
       scoreGame = 0;
     }

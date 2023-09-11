@@ -8,6 +8,7 @@ abstract class PreTestLocalRepo {
   Future<void> insertPreTest(PreTestEntityCompanion entity);
   Future<void> deletePreTest(int testId);
   Future<void> deletePreTestByDay(String dateSave);
+  Future<void> deleteAllPreTestAfter7DaysFromNow();
   Future<void> deleteAllPreTest();
   Future<void> updatePreTest(int score, int sumQ, int id);
   Stream<List<PreTestEntityData>> getAllPreTestByDay(String dayNeeded);

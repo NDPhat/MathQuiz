@@ -1,8 +1,6 @@
 
 import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
-
 import '../../driff/db/db_app.dart';
-
 class QuizGameLocalRepoImpl extends QuizGameLocalRepo {
   QuizGameLocalRepoImpl(super.appDb);
 
@@ -35,4 +33,5 @@ class QuizGameLocalRepoImpl extends QuizGameLocalRepo {
           ..where((tbl) => tbl.id.equals(entity.id)))
         .write(entity);
   }
+
 }
