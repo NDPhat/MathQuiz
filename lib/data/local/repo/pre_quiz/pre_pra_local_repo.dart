@@ -6,19 +6,19 @@ abstract class PrePraLocalRepo {
   //Constructor
   PrePraLocalRepo(this.appDb);
   //WEIGHT INTERFACE
-  Future<void> insertPreQuizGame(PreQuizGameEntityCompanion entity);
-  Future<PreQuizGameEntityData> getLatestPreQuizGame();
-  Future<PreQuizGameEntityData> getPreQuizGameByPreId(int preId);
+  Future<void> insertPreQuizGame(PrePraLocalEntityCompanion entity);
+  Future<PrePraLocalEntityData> getLatestPreQuizGame();
+  Future<PrePraLocalEntityData> getPreQuizGameByPreId(int preId);
   Future<void> deletePreQuizGame(int id);
   Future<void> deletePreQuizGameByDay(String dateSave);
   Future<void> deleteAllPreQuizGameAfter7DaysFromNow();
   Future<void> deleteAllPreQuiz();
   Future<void> updatePreQuizGame(int id, int score, int numQ);
-  Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDay(String day);
+  Stream<List<PrePraLocalEntityData>> getAllPreQuizGameByDay(String day);
   Future<int> getLengthAllPreQuizGameByDay(String day);
   Future<int> getLengthAllPreQuizGame();
   Future<double> getAverageScore();
-  Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDayWithPagination(
+  Stream<List<PrePraLocalEntityData>> getAllPreQuizGameByDayWithPagination(
       String day, int page);
-  Stream<List<PreQuizGameEntityData>> getAllPreQuizGame();
+  Stream<List<PrePraLocalEntityData>> getAllPreQuizGame();
 }

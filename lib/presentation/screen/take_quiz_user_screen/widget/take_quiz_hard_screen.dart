@@ -41,7 +41,7 @@ class TakeQuizHardScreen extends StatelessWidget {
                 Navigator.pushNamed(context, Routers.homeGuest);
               }
             },
-            homeIcon: const Icon(
+            iconRight: const Icon(
               Icons.home,
               color: Colors.black,
             ),
@@ -108,7 +108,7 @@ class TakeQuizHardScreen extends StatelessWidget {
                                   arguments: PreTest(
                                       id: state.id,
                                       keyServer: state.idServer,
-                                      sumQuiz: 0));
+                                      sumQ: 0));
                             }
                           },
                           child: ItemTakeQuizEasy(

@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/utils/func.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import '../../../application/utils/format.dart';
-import '../../../data/local/repo/pre_test/pre_test_repo.dart';
+import '../../../data/local/repo/pre_quiz/pre_pra_local_repo.dart';
+import '../../../data/local/repo/pre_test/pre_test__local_repo.dart';
 
 part 'history_state.dart';
 

@@ -77,9 +77,9 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
     _playerCheck.dispose();
   }
 
-  void _startGame(PreQuizGame _preQuiz) async {
+  void _startGame(PreQuizGame preQuiz) async {
     setState(() {
-      _quizBrain.makeQuizTrueFalse(_preQuiz);
+      _quizBrain.makeQuizTrueFalse(preQuiz);
     });
     _score = 0;
     _totalNumberOfQuizzes = 1;
@@ -124,7 +124,7 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
   addNewDataPlayAgain() async {
     if (instance.get<UserGlobal>().onLogin == true) {
       context.read<GameCubit>().createPrePraServer(PrePraAPIReq(
-          numQ: _preQuiz.numQ,
+          numQ: _preQuiz.sumQ,
           status: "GOING",
           sign: _preQuiz.sign,
           score: 0,
@@ -141,8 +141,8 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
         showServerErrorDialog();
       }
     } else {
-      context.read<GameCubit>().createPrePraLocal(PreQuizGameEntityCompanion(
-          numQ: driff.Value(_preQuiz.numQ!),
+      context.read<GameCubit>().createPrePraLocal(PrePraLocalEntityCompanion(
+          sumQ: driff.Value(_preQuiz.sumQ!),
           sign: driff.Value(_preQuiz.sign!),
           option: driff.Value(_preQuiz.option!),
           dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
@@ -170,8 +170,8 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
           answer: _quizBrain.quizTrueFalse == "TRUE" ? 1 : 0,
           answerSelect: userChoose == _quizBrain.quizTrueFalse ? 1 : 0));
     } else {
-      context.read<GameCubit>().addQuizGameToLocal(QuizGameEntityCompanion(
-          preId: driff.Value(_preIdNow),
+      context.read<GameCubit>().addQuizGameToLocal(QuizPraLocalEntityCompanion(
+          prePraId: driff.Value(_preIdNow),
           num1:
               driff.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
           sign: driff.Value(_preQuiz.sign!),

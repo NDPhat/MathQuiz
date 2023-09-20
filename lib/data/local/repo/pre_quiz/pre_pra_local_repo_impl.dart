@@ -1,48 +1,48 @@
 import 'package:drift/drift.dart';
 import 'package:math/application/extension/precsision_double.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
+import 'package:math/data/local/repo/pre_quiz/pre_pra_local_repo.dart';
 
 import '../../../../application/utils/format.dart';
 import '../../driff/db/db_app.dart';
 
-class PreQuizLocalRepoImpl extends PrePraLocalRepo {
-  PreQuizLocalRepoImpl(super.appDb);
+class PrePraLocalRepoImpl extends PrePraLocalRepo {
+  PrePraLocalRepoImpl(super.appDb);
 
   @override
   Future<void> deletePreQuizGame(int id) async {
-    await (appDb.delete(appDb.preQuizGameEntity)..where((t) => t.id.equals(id)))
+    await (appDb.delete(appDb.prePraLocalEntity)..where((t) => t.id.equals(id)))
         .go();
   }
 
   @override
-  Stream<List<PreQuizGameEntityData>> getAllPreQuizGame() async* {
-    yield* (appDb.select(appDb.preQuizGameEntity)).watch();
+  Stream<List<PrePraLocalEntityData>> getAllPreQuizGame() async* {
+    yield* (appDb.select(appDb.prePraLocalEntity)).watch();
   }
 
   @override
-  Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDay(
+  Stream<List<PrePraLocalEntityData>> getAllPreQuizGameByDay(
       String day) async* {
-    yield* (appDb.select(appDb.preQuizGameEntity)
+    yield* (appDb.select(appDb.prePraLocalEntity)
           ..where((tbl) => tbl.dateSave.equals(day)))
         .watch();
   }
 
   @override
-  Future<void> insertPreQuizGame(PreQuizGameEntityCompanion entity) async {
-    await appDb.into(appDb.preQuizGameEntity).insert(entity);
+  Future<void> insertPreQuizGame(PrePraLocalEntityCompanion entity) async {
+    await appDb.into(appDb.prePraLocalEntity).insert(entity);
   }
 
   @override
   Future<void> updatePreQuizGame(int id, int score, int numQ) async {
-    (appDb.update(appDb.preQuizGameEntity)..where((tbl) => tbl.id.equals(id)))
+    (appDb.update(appDb.prePraLocalEntity)..where((tbl) => tbl.id.equals(id)))
         .write(
-            PreQuizGameEntityCompanion(score: Value(score), numQ: Value(numQ)));
+            PrePraLocalEntityCompanion(score: Value(score), sumQ: Value(numQ)));
   }
 
   @override
-  Future<PreQuizGameEntityData> getLatestPreQuizGame() async {
-    List<PreQuizGameEntityData> list = await (appDb
-            .select(appDb.preQuizGameEntity)
+  Future<PrePraLocalEntityData> getLatestPreQuizGame() async {
+    List<PrePraLocalEntityData> list = await (appDb
+            .select(appDb.prePraLocalEntity)
           ..orderBy(
               [(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
         .get();
@@ -50,38 +50,38 @@ class PreQuizLocalRepoImpl extends PrePraLocalRepo {
   }
 
   @override
-  Future<PreQuizGameEntityData> getPreQuizGameByPreId(int preId) async {
-    return (appDb.select(appDb.preQuizGameEntity)
+  Future<PrePraLocalEntityData> getPreQuizGameByPreId(int preId) async {
+    return (appDb.select(appDb.prePraLocalEntity)
           ..where((tbl) => tbl.id.equals(preId)))
         .getSingle();
   }
 
   @override
   Future<void> deleteAllPreQuiz() async {
-    await (appDb.delete(appDb.preQuizGameEntity)).go();
+    await (appDb.delete(appDb.prePraLocalEntity)).go();
   }
 
   @override
   Future<void> deletePreQuizGameByDay(String dateSave) async {
-    await (appDb.delete(appDb.preQuizGameEntity)
+    await (appDb.delete(appDb.prePraLocalEntity)
           ..where((t) => t.dateSave.equals(dateSave)))
         .go();
   }
 
   @override
-  Stream<List<PreQuizGameEntityData>> getAllPreQuizGameByDayWithPagination(
+  Stream<List<PrePraLocalEntityData>> getAllPreQuizGameByDayWithPagination(
       String day, int page) async* {
-    List<PreQuizGameEntityData> dataConvert =
-        await (appDb.select(appDb.preQuizGameEntity)
+    List<PrePraLocalEntityData> dataConvert =
+        await (appDb.select(appDb.prePraLocalEntity)
               ..where((tbl) => tbl.dateSave.equals(day)))
             .get();
     int length = dataConvert.length;
-    List<PreQuizGameEntityData> newData = [];
+    List<PrePraLocalEntityData> newData = [];
     int start = (page - 1) * 5;
     int end = start + 5;
     if (end <= length) {
       for (int i = start; i < end; i++) {
-        PreQuizGameEntityData model = dataConvert[i];
+        PrePraLocalEntityData model = dataConvert[i];
         if (model != null) {
           newData.add(model);
         } else {
@@ -90,7 +90,7 @@ class PreQuizLocalRepoImpl extends PrePraLocalRepo {
       }
     } else {
       for (int i = start; i < length; i++) {
-        PreQuizGameEntityData model = dataConvert[i];
+        PrePraLocalEntityData model = dataConvert[i];
         if (model != null) {
           newData.add(model);
         } else {
@@ -103,8 +103,8 @@ class PreQuizLocalRepoImpl extends PrePraLocalRepo {
 
   @override
   Future<int> getLengthAllPreQuizGameByDay(String day) async {
-    List<PreQuizGameEntityData> data =
-        await (appDb.select(appDb.preQuizGameEntity)
+    List<PrePraLocalEntityData> data =
+        await (appDb.select(appDb.prePraLocalEntity)
               ..where((tbl) => tbl.dateSave.equals(day)))
             .get();
     return data.length;
@@ -114,11 +114,11 @@ class PreQuizLocalRepoImpl extends PrePraLocalRepo {
   Future<double> getAverageScore() async {
     int score = 0;
     int quiz = 0;
-    List<PreQuizGameEntityData> data =
-        await (appDb.select(appDb.preQuizGameEntity)).get();
+    List<PrePraLocalEntityData> data =
+        await (appDb.select(appDb.prePraLocalEntity)).get();
     data.forEach((element) {
       score = score + element.score!;
-      quiz = element.numQ + quiz;
+      quiz = element.sumQ + quiz;
     });
     double value = (score / quiz).toPrecision(1) * 10; // 2.3
     return value;
@@ -126,8 +126,8 @@ class PreQuizLocalRepoImpl extends PrePraLocalRepo {
 
   @override
   Future<int> getLengthAllPreQuizGame() async {
-    List<PreQuizGameEntityData> data =
-        await (appDb.select(appDb.preQuizGameEntity)).get();
+    List<PrePraLocalEntityData> data =
+        await (appDb.select(appDb.prePraLocalEntity)).get();
     return data.length;
   }
 
@@ -136,7 +136,7 @@ class PreQuizLocalRepoImpl extends PrePraLocalRepo {
     final now = DateTime.now();
     String expirationDate =
         formatDateInput.format(now.subtract(const Duration(days: 6)));
-    await (appDb.delete(appDb.preQuizGameEntity)
+    await (appDb.delete(appDb.prePraLocalEntity)
           ..where((t) => t.dateSave.isSmallerThanValue(expirationDate)))
         .go();
   }

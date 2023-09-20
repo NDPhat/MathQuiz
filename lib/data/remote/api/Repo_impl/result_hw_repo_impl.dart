@@ -122,9 +122,9 @@ class ResultHWRepoImpl extends ResultHWRepo {
   }
 
   @override
-  Future<PreHWAPIModel?> getOnGoingPreHWandNotDO(String uid) async {
+  Future<PreHWAPIModel?> getOnGoingPreHWandNotDO(String uid, String lop) async {
     try {
-      const url = "${endpoint}getPreWStatusOnGoing";
+      final url = "${endpoint}getPreWStatusOnGoingByClass?lop=$lop";
       final req = await http.get(Uri.parse(url), headers: requestHeaders);
       Map<String, dynamic> parsed = json.decode(req.body);
       PreHWAPIModel? result = PreHWAPIRes.fromJson(parsed).lItems!.first;
@@ -143,9 +143,9 @@ class ResultHWRepoImpl extends ResultHWRepo {
   }
 
   @override
-  Future<PreHWAPIModel?> getPreQuizHWByWeek(String week) async {
+  Future<PreHWAPIModel?> getPreQuizHWByWeek(String week, String lop) async {
     try {
-      final url = "${endpoint}getPreQuizHWByWeek?week=$week";
+      final url = "${endpoint}getPreQuizHWByWeekAndClass?week=$week&lop=$lop";
       final res = await http.get(Uri.parse(url), headers: requestHeaders);
       if (res.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(res.body);

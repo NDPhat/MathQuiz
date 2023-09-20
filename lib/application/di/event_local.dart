@@ -1,9 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:math/data/local/repo/player_local/player_local_repo.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import 'package:math/data/remote/model/user_res.dart';
 
 import '../../data/local/driff/db/db_app.dart';
+import '../../data/local/repo/pre_quiz/pre_pra_local_repo.dart';
 import '../../data/model/user_global.dart';
 import '../../data/model/user_local.dart';
 import '../../main.dart';
@@ -34,10 +34,10 @@ class UserEventLocal {
       intGame = 0;
     }
     instance.get<UserLocal>().score = scoreGame;
-    instance.get<UserLocal>().join = intGame;
+    instance.get<UserLocal>().participate = intGame;
     instance.get<PlayerLocalRepo>().updatePlayerLocal(
         PlayerLocalEntityCompanion(
-            score: Value(scoreGame), join: Value(intGame)),
+            score: Value(scoreGame), participate: Value(intGame)),
         instance.get<UserLocal>().id!);
   }
 
@@ -47,6 +47,6 @@ class UserEventLocal {
     instance.get<UserLocal>().name = a.name;
     instance.get<UserLocal>().imageLink = a.imageUser;
     instance.get<UserLocal>().score = a.score;
-    instance.get<UserLocal>().join = a.join;
+    instance.get<UserLocal>().participate = a.participate;
   }
 }

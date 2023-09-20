@@ -180,4 +180,42 @@ class PrePraRepoImpl extends PrePraRepo {
       return false;
     }
   }
+
+  @override
+  Future<bool?> deleteAllPreQuizGameByUidAndType(
+      String uId, String type) async {
+    try {
+      final url =
+          "${endpoint}deleteAllPreQuizGameByUIDAndOptionGame?userID=$uId&option=$type";
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool?> deleteAllPreQuizGameLowScoreByUidAndType(
+      String uId, String type) async {
+    try {
+      final url =
+          "${endpoint}deleteAllPreQuizGameLowScoreByUIDAndOptionGame?userID=$uId&option=$type";
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
 }

@@ -3,19 +3,16 @@ import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/extension/to_get_model.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
-
 import '../../../application/utils/format.dart';
 import '../../../application/utils/func.dart';
+import '../../../data/local/repo/pre_quiz/pre_pra_local_repo.dart';
 import '../../../domain/bloc/history/history_cubit.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
@@ -126,7 +123,7 @@ class HistoryPracticeState extends State<HistoryPractice> {
                   pre.lengthPra != now.lengthPra;
             }, builder: (context, state) {
               return Expanded(
-                  child: StreamBuilder<List<PreQuizGameEntityData>>(
+                  child: StreamBuilder<List<PrePraLocalEntityData>>(
                 stream: instance
                     .get<PrePraLocalRepo>()
                     .getAllPreQuizGameByDayWithPagination(

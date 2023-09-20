@@ -16,7 +16,7 @@ import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_
 import '../../../../application/utils/format.dart';
 import '../../../../application/utils/make_quiz.dart';
 import '../../../../data/local/driff/db/db_app.dart';
-import '../../../../data/local/repo/pre_test/pre_test_repo.dart';
+import '../../../../data/local/repo/pre_test/pre_test__local_repo.dart';
 import '../../../../data/model/app_global.dart';
 import '../../../../data/model/user_global.dart';
 import '../../../../data/remote/model/quiz_test_req.dart';
@@ -115,8 +115,8 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
           infoQuiz: userAnswer,
           preTestId: preTest.keyServer));
     } else {
-      context.read<GameCubit>().addQuizMixToLocal(QuizTestEntityCompanion(
-          preId: drift.Value(preTest.id!),
+      context.read<GameCubit>().addQuizMixToLocal(QuizTestLocalEntityCompanion(
+          preTestId: drift.Value(preTest.id!),
           num1:
               drift.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
           quiz: drift.Value(_quizBrain.quiz),
@@ -137,6 +137,7 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
               numQ: _totalNumberOfQuizzes,
               trueQ: _score,
               falseQ: falseChoose,
+              status: "DONE",
               score: _score,
               dateSave: formatTimeTestInput.format(DateTime.now()),
               userId: instance.get<UserGlobal>().id));

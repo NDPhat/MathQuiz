@@ -1,6 +1,6 @@
 class PreTest {
   int? id;
-  int? sumQuiz;
+  int? sumQ;
   int? score;
   String? dateSave;
   int? falseQ;
@@ -9,7 +9,7 @@ class PreTest {
   String? userID;
   PreTest(
       {this.id,
-      this.sumQuiz,
+      this.sumQ,
       this.score,
       this.dateSave,
       this.trueQ,

@@ -25,7 +25,7 @@ class CheckAnswerHWScreen extends StatelessWidget {
             onPressHome: () {
               Navigator.pushNamed(context, Routers.homeUser);
             },
-            homeIcon: const Icon(
+            iconRight: const Icon(
               Icons.home,
               color: Colors.black,
             ),

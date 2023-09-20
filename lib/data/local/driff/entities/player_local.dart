@@ -5,5 +5,5 @@ class PlayerLocalEntity extends Table {
   TextColumn get name => text().named("name")();
   TextColumn get imageUser => text().named("imageUser")();
   RealColumn get score => real().nullable().named("score")();
-  IntColumn get join => integer().named("join")();
+  IntColumn get participate => integer().named("participate")();
 }

@@ -82,6 +82,16 @@ class DetailPracticesCubit extends Cubit<DetailPracticesState> {
     }
   }
 
+  void deleteALlPrePraByUidAndType(String type) {
+    prePraRepo.deleteAllPreQuizGameByUidAndType(
+        instance.get<UserGlobal>().id!, type);
+  }
+
+  void deleteLowScore(String type) {
+    prePraRepo.deleteAllPreQuizGameLowScoreByUidAndType(
+        instance.get<UserGlobal>().id!, type);
+  }
+
   Future<void> pagePlus(String type) async {
     if (state.pageNow < findLength((state.lengthNow))) {
       List<PrePraAPIModel>? dataList = [...state.posts!];

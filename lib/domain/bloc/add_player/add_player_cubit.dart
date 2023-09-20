@@ -24,13 +24,13 @@ class AddPlayerCubit extends Cubit<AddPlayerState> {
                 name: Value(state.name),
                 imageUser: Value(imageLink),
                 score: const Value(0),
-                join: const Value(0)));
+                participate: const Value(0)));
         UserEventLocal.updateUserLocal(PlayerLocalEntityData(
             id: userID,
             name: state.name,
             imageUser: imageLink,
             score: 0,
-            join: 0));
+            participate: 0));
         instance.get<AuthenRepository>().handleLocalAutoLoginApp(true);
         instance.get<AuthenRepository>().handleIDLocalPlayerLoginApp(userID);
         emit(state.copyWith(status: AddPlayerStatus.success));

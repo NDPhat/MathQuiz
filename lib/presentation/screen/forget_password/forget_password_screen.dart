@@ -82,7 +82,7 @@ class ForgetPassScreen extends StatelessWidget {
                       },
                       color: colorSystemWhite,
                       colorBorder: colorSystemYeloow,
-                      width: 90.w,
+                      width: 80.w,
                       height: 8.h,
                       child: state.status == ForgetPassStatus.onLoading
                           ? SizedBox(

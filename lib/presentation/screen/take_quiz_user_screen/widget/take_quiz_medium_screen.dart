@@ -37,7 +37,7 @@ class TakeQuizMediumScreen extends StatelessWidget {
                 Navigator.pushNamed(context, Routers.homeGuest);
               }
             },
-            homeIcon: const Icon(
+            iconRight: const Icon(
               Icons.home,
               color: Colors.black,
             ),

@@ -140,8 +140,8 @@ class _FindMissingNumberGameScreenState
         showServerErrorDialog();
       }
     } else {
-      context.read<GameCubit>().createPrePraLocal(PreQuizGameEntityCompanion(
-          numQ: const driff.Value(0),
+      context.read<GameCubit>().createPrePraLocal(PrePraLocalEntityCompanion(
+          sumQ: const driff.Value(0),
           sign: driff.Value(_preQuiz.sign!),
           option: driff.Value(_preQuiz.option!),
           dateSave: driff.Value(formatDateInput.format(DateTime.now()))));
@@ -184,8 +184,8 @@ class _FindMissingNumberGameScreenState
           answer: _quizBrain.quizAnswer,
           answerSelect: userChoose));
     } else {
-      context.read<GameCubit>().addQuizGameToLocal(QuizGameEntityCompanion(
-          preId: driff.Value(_preIdNow),
+      context.read<GameCubit>().addQuizGameToLocal(QuizPraLocalEntityCompanion(
+          prePraId: driff.Value(_preIdNow),
           num1:
               driff.Value(_quizBrain.quiz.toString().split(" ")[0].toString()),
           sign: driff.Value(_preQuiz.sign!),

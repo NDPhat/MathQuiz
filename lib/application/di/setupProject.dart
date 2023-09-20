@@ -1,11 +1,9 @@
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
-import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/data/model/user_global.dart';
 import 'package:math/main.dart';
 import 'package:background_fetch/background_fetch.dart';
-import 'package:math/presentation/widget/bg_list_view.dart';
-
 import '../../data/local/notifi/notifi_helper.dart';
+import '../../data/local/repo/pre_quiz/pre_pra_local_repo.dart';
+import '../../data/local/repo/pre_test/pre_test__local_repo.dart';
 import '../utils/network.dart';
 import 'initDB.dart';
 import 'package:get/get.dart';

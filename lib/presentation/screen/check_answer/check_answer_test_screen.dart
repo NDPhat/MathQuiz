@@ -1,9 +1,12 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:math/data/remote/api/Repo/pre_test_repo.dart';
 import 'package:math/data/remote/api/Repo/quiz_test_repo.dart';
 import 'package:math/presentation/widget/bg_list_view.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
+import '../../../application/cons/text_style.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/model/quiz_test_res.dart';
 import '../../../main.dart';
@@ -72,6 +75,30 @@ class _CheckAnswerTestScreenState extends State<CheckAnswerTestScreen> {
     });
   }
 
+  showSettingDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.info,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      desc: "choose one".tr(),
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkText: "home".tr(),
+      btnCancelText: "DELETE".tr(),
+      btnOkOnPress: () {
+        if (instance.get<UserGlobal>().onLogin == true) {
+          Navigator.pushNamed(context, Routers.homeUser);
+        } else {
+          Navigator.pushNamed(context, Routers.homeGuest);
+        }
+      },
+      btnCancelOnPress: () {
+        instance.get<PreTestRepo>().deletePreTestById(key);
+        Navigator.pushNamed(context, Routers.dataSheetScreen);
+      },
+    ).show();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,14 +109,10 @@ class _CheckAnswerTestScreenState extends State<CheckAnswerTestScreen> {
         colorTextAndIcon: Colors.black,
         textNow: 'check answer'.tr().toString(),
         onPressHome: () {
-          if (instance.get<UserGlobal>().onLogin == true) {
-            Navigator.pushNamed(context, Routers.homeUser);
-          } else {
-            Navigator.pushNamed(context, Routers.homeGuest);
-          }
+          showSettingDialog();
         },
-        homeIcon: const Icon(
-          Icons.home,
+        iconRight: const Icon(
+          Icons.settings,
           color: Colors.black,
         ),
         child: BackGroundListView(

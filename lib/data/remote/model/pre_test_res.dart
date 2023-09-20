@@ -35,11 +35,13 @@ class PreTestAPIModel {
   int? numQ;
   int? trueQ;
   String? userId;
+  String? status;
 
   PreTestAPIModel(
       {this.dateSave,
       this.falseQ,
       this.key,
+      this.status,
       this.score,
       this.numQ,
       this.trueQ,
@@ -53,6 +55,7 @@ class PreTestAPIModel {
     numQ = json['numQ'];
     trueQ = json['trueQ'];
     userId = json['userId'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -64,6 +67,7 @@ class PreTestAPIModel {
     data['numQ'] = this.numQ;
     data['trueQ'] = this.trueQ;
     data['userId'] = this.userId;
+    data['status'] = this.status;
     return data;
   }
 }

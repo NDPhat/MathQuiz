@@ -1,6 +1,6 @@
 class PreQuizGame {
   int? id;
-  int? numQ;
+  int? sumQ;
   String? sign;
   String? idServer;
   int? score;
@@ -10,7 +10,7 @@ class PreQuizGame {
   PreQuizGame(
       {this.id,
       this.sign,
-      this.numQ,
+      this.sumQ,
       this.idServer,
       this.score,
       this.dateSave,

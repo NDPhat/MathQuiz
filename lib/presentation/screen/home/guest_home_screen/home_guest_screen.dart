@@ -35,7 +35,7 @@ class HomeGuestMainScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      StudentName(),
+                      const StudentName(),
                       kHalfSizedBox,
                       StudentPicture(
                           picAddress: instance.get<UserLocal>().imageLink!),
@@ -47,7 +47,7 @@ class HomeGuestMainScreen extends StatelessWidget {
                     children: [
                       StudentDataCard(
                         title: 'attendance'.tr(),
-                        value: instance.get<UserLocal>().join.toString(),
+                        value: instance.get<UserLocal>().participate.toString(),
                       ),
                       StudentDataCard(
                         title: 'score'.tr(),

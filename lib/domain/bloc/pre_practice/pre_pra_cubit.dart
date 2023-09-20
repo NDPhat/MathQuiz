@@ -5,7 +5,7 @@ import 'package:math/application/utils/format.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/remote/api/Repo/pre_pra_repo.dart';
 import '../../../application/enum/pre_status.dart';
-import '../../../data/local/repo/pre_quiz/pre_quiz_repo.dart';
+import '../../../data/local/repo/pre_quiz/pre_pra_local_repo.dart';
 import '../../../data/model/user_global.dart';
 import '../../../data/remote/model/pre_pra_req.dart';
 import '../../../data/remote/model/pre_pra_res.dart';
@@ -54,7 +54,7 @@ class PrePraCubit extends Cubit<PrePraState> {
     }
   }
 
-  Future<void> createPrePraLocal(PreQuizGameEntityCompanion data) async {
+  Future<void> createPrePraLocal(PrePraLocalEntityCompanion data) async {
     try {
       await preQuizLocalRepo.insertPreQuizGame(data);
     } on Exception catch (e) {
@@ -89,15 +89,15 @@ class PrePraCubit extends Cubit<PrePraState> {
             idServer: dataServer!.key,
             status: PreQuizStatus.success));
       } else {
-        final entity = PreQuizGameEntityCompanion(
-            numQ: const Value(0),
+        final entity = PrePraLocalEntityCompanion(
+            sumQ: const Value(0),
             sign: Value(sign),
             score: const Value(0),
             option: Value(option),
             dateSave: Value(formatDateInput.format(DateTime.now())));
         //insert task
         await preQuizLocalRepo.insertPreQuizGame(entity);
-        PreQuizGameEntityData dataLocal =
+        PrePraLocalEntityData dataLocal =
             await preQuizLocalRepo.getLatestPreQuizGame();
         emit(state.copyWith(
             optionGame: option,

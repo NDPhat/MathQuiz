@@ -6,6 +6,9 @@ abstract class PrePraRepo {
   Future<PrePraAPIModel?> createPreQuizGame(PrePraAPIReq preQuizReq);
   Future<bool?> deletePreQuizGame(String id);
   Future<bool?> deletePreQuizGameErrorServer(String uId);
+  Future<bool?> deleteAllPreQuizGameByUidAndType(String uId, String type);
+  Future<bool?> deleteAllPreQuizGameLowScoreByUidAndType(
+      String uId, String type);
   Future<PrePraAPIModel?> updatePreQuizGameByID(
       PrePraAPIReq preQuizReq, String preID);
   Future<List<PrePraAPIModel>?> getALlPreQuizGameByUidandOptionGame(

@@ -104,4 +104,55 @@ class PreTestRepoImpl extends PreTestRepo {
       return false;
     }
   }
+
+  @override
+  Future<bool?> deletePreTestById(String preID) async {
+    try {
+      final url = "${endpoint}deletePreTestByID?id=$preID";
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool?> deleteAllPreTestByUid(String uid) async {
+    try {
+      final url = "${endpoint}deleteAllPreTestByUID?userID=$uid";
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool?> deleteAllPreTestLowScoreByuId(String uId) async {
+    try {
+      final url = "${endpoint}deleteAllPreTestLowScoreByUID?userID=$uId";
+      final req = await http.delete(Uri.parse(url), headers: requestHeaders);
+      if (req.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
 }

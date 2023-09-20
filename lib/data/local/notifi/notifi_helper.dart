@@ -1,11 +1,11 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:math/data/local/repo/detail_notifi/notify_task_repo.dart';
 import 'package:math/main.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
 import '../../model/task_notifi.dart';
+import '../repo/detail_notifi/local_notify_repo.dart';
 
 class NotifyHelper {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -30,18 +30,16 @@ class NotifyHelper {
         onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
   }
 
-
   /// HANDLE NOTIFY RECEIVE
   void onDidReceiveNotificationResponse(
       NotificationResponse notificationResponse) async {
     if (notificationResponse.id != null) {
-
       /// CANCEL NOTIFY
       flutterLocalNotificationsPlugin.cancel(notificationResponse.id!);
 
       /// UPDATE STATUS
       instance
-          .get<NotifyTaskLocalRepo>()
+          .get<LocalNotifyRepo>()
           .completeNotifyTask(notificationResponse.id!);
     }
   }

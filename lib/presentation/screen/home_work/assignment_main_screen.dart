@@ -31,7 +31,7 @@ class AssignmentMainScreen extends StatelessWidget {
     Future<void> createPreHW(PreHWAPIModel dataPre) async {
       PreHWAPIModel? preQuiz = await instance
           .get<ResultHWRepo>()
-          .getPreQuizHWByWeek(dataPre.week.toString());
+          .getPreQuizHWByWeek(dataPre.week.toString(), dataPre.lop.toString());
 
       ResultHWAPIModel? data = await instance
           .get<ResultHWRepo>()
@@ -204,10 +204,15 @@ class AssignmentMainScreen extends StatelessWidget {
                             child: FutureBuilder<PreHWAPIModel?>(
                                 future: instance
                                     .get<ResultHWRepo>()
-                                    .getOnGoingPreHWandNotDO(instance
-                                        .get<UserGlobal>()
-                                        .id
-                                        .toString()),
+                                    .getOnGoingPreHWandNotDO(
+                                        instance
+                                            .get<UserGlobal>()
+                                            .id
+                                            .toString(),
+                                        instance
+                                            .get<UserGlobal>()
+                                            .lop
+                                            .toString()),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {

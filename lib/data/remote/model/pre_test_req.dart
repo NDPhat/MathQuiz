@@ -5,14 +5,16 @@ class PreTestAPIReq {
   String? userId;
   int? falseQ;
   String? dateSave;
+  String? status;
 
   PreTestAPIReq(
       {this.numQ,
-        this.score,
-        this.trueQ,
-        this.userId,
-        this.falseQ,
-        this.dateSave});
+      this.score,
+      this.trueQ,
+      this.userId,
+      this.falseQ,
+      this.status,
+      this.dateSave});
 
   PreTestAPIReq.fromJson(Map<String, dynamic> json) {
     numQ = json['numQ'];
@@ -21,6 +23,7 @@ class PreTestAPIReq {
     userId = json['userId'];
     falseQ = json['falseQ'];
     dateSave = json['dateSave'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +34,7 @@ class PreTestAPIReq {
     data['userId'] = this.userId;
     data['falseQ'] = this.falseQ;
     data['dateSave'] = this.dateSave;
+    data['status'] = this.status;
     return data;
   }
 }

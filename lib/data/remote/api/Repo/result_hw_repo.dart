@@ -4,7 +4,7 @@ import '../../model/result_hw_res.dart';
 import '../../model/result_hw_res_pagi.dart';
 
 abstract class ResultHWRepo {
-  Future<PreHWAPIModel?> getPreQuizHWByWeek(String week);
+  Future<PreHWAPIModel?> getPreQuizHWByWeek(String week,String lop);
   Future<ResultHWAPIModel?> createResultHomeWorkWeek(
       ResultHWAPIReq resultQuizHWReq);
   Future<bool?> updateInfoHomeWorkWeek(
@@ -16,5 +16,5 @@ abstract class ResultHWRepo {
   Future<ResultHWAPIModel?> getResultQuizHWByUserIDAndWeek(
       String uid, String week);
   Future<List<PreHWAPIModel>?> getALlPreQuizHW();
-  Future<PreHWAPIModel?> getOnGoingPreHWandNotDO(String uid);
+  Future<PreHWAPIModel?> getOnGoingPreHWandNotDO(String uid,String lop);
 }

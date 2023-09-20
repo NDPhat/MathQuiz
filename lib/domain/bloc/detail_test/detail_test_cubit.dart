@@ -123,4 +123,12 @@ class DetailTestCubit extends Cubit<DetailTestState> {
       ));
     }
   }
+
+  void deleteAllPreTest() {
+    preTestRepo.deleteAllPreTestByUid(instance.get<UserGlobal>().id!);
+  }
+
+  void deleteAllPreTestLowScore() {
+    preTestRepo.deleteAllPreTestLowScoreByuId(instance.get<UserGlobal>().id!);
+  }
 }

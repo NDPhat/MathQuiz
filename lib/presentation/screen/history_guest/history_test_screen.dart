@@ -7,13 +7,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/extension/to_get_test_model.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
 import 'package:math/presentation/widget/pre_test_widget.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
 import '../../../application/cons/text_style.dart';
 import '../../../application/utils/format.dart';
 import '../../../application/utils/func.dart';
+import '../../../data/local/repo/pre_test/pre_test__local_repo.dart';
 import '../../../domain/bloc/history/history_cubit.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
@@ -65,7 +65,7 @@ class HistoryTestState extends State<HistoryTest> {
       padding: EdgeInsets.only(top: 2.h, left: 5.w, right: 5.w, bottom: 2.h),
       child: Container(
         decoration: BoxDecoration(
-            border: Border.all(color: colorMainTealPri, width: 2)),
+            border: Border.all(color: colorMainBlue, width: 2)),
         child: Column(
           children: [
             /// LINE CONTENT
@@ -85,13 +85,13 @@ class HistoryTestState extends State<HistoryTest> {
                     Text(
                       'day'.tr(),
                       style: GoogleFonts.abel(
-                          color: colorMainTealPri, fontSize: 18),
+                          color: colorMainBlue, fontSize: 18),
                     ),
                     SizedBox(
                       child: Text(
                         state.timeTestNow,
                         style: GoogleFonts.abel(
-                            color: colorMainTealPri, fontSize: 18),
+                            color: colorMainBlue, fontSize: 18),
                       ),
                     ),
                   ],
@@ -109,7 +109,7 @@ class HistoryTestState extends State<HistoryTest> {
                 dayTextStyle: const TextStyle(fontSize: 10),
                 monthTextStyle: const TextStyle(fontSize: 12),
                 initialSelectedDate: DateTime.now(),
-                selectionColor: colorMainTealPri,
+                selectionColor: colorMainBlue,
                 onDateChange: (date) {
                   context.read<HistoryCubit>().dateTestChanged(date);
                 },
@@ -123,7 +123,7 @@ class HistoryTestState extends State<HistoryTest> {
                   pre.lengthTest != now.lengthTest;
             }, builder: (context, state) {
               return Expanded(
-                  child: StreamBuilder<List<PreTestEntityData>>(
+                  child: StreamBuilder<List<PreTestLocalEntityData>>(
                 stream: instance
                     .get<PreTestLocalRepo>()
                     .getAllPreTestByDayWithPagination(
@@ -150,7 +150,7 @@ class HistoryTestState extends State<HistoryTest> {
                       child: Text(
                         'NOTHING ADDED !!'.tr(),
                         style: GoogleFonts.abel(
-                            color: colorMainTealPri, fontSize: 20),
+                            color: colorMainBlue, fontSize: 20),
                       ),
                     );
                   }
@@ -165,10 +165,10 @@ class HistoryTestState extends State<HistoryTest> {
                   return pre.pageTestNow != now.pageTestNow;
                 }, builder: (context, state) {
                   return DotPageIndicator(
-                    colorBorder: colorMainTealPri,
+                    colorBorder: colorMainBlue,
                     icon: SvgPicture.asset(
                       "assets/icon/back.svg",
-                      color: colorMainTealPri,
+                      color: colorMainBlue,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
@@ -186,7 +186,7 @@ class HistoryTestState extends State<HistoryTest> {
                 }, builder: (context, state) {
                   return DotIndicator(
                     totalPage: findLength(state.lengthTest).toString(),
-                    colorBorder: colorMainTealPri,
+                    colorBorder: colorMainBlue,
                     pageIndex: state.pageTestNow.toString(),
                   );
                 }),
@@ -197,10 +197,10 @@ class HistoryTestState extends State<HistoryTest> {
                   return pre.pageTestNow != now.pageTestNow;
                 }, builder: (context, state) {
                   return DotPageIndicator(
-                    colorBorder: colorMainTealPri,
+                    colorBorder: colorMainBlue,
                     icon: SvgPicture.asset(
                       "assets/icon/next.svg",
-                      color: colorMainTealPri,
+                      color: colorMainBlue,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {

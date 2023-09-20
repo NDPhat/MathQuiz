@@ -12,7 +12,7 @@ class ResultHWAPIResPagi {
     if (json['data'] != null) {
       data = <ResultHWAPIModel>[];
       json['data'].forEach((v) {
-        data!.add(new ResultHWAPIModel.fromJson(v));
+        data!.add(ResultHWAPIModel.fromJson(v));
       });
     }
     total = json['total'];
@@ -20,7 +20,7 @@ class ResultHWAPIResPagi {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }

@@ -5,14 +5,14 @@ class MainPageHomePG extends StatelessWidget {
   MainPageHomePG({
     Key? key,
     required this.child,
-    this.homeIcon,
+    this.iconRight,
     this.textNow,
     this.onPressHome,
     required this.onBack,
     required this.colorTextAndIcon,
   }) : super(key: key);
   Widget child;
-  Widget? homeIcon;
+  Widget? iconRight;
   VoidCallback? onPressHome;
   VoidCallback onBack;
   String? textNow;
@@ -51,7 +51,7 @@ class MainPageHomePG extends StatelessWidget {
                 child: Container(
                     alignment: Alignment.centerRight,
                     width: 100.w,
-                    child: homeIcon),
+                    child: iconRight),
               )
             ],
           ),

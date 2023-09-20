@@ -1,16 +1,14 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:math/data/local/driff/entities/lcoal_notify.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import '../../../../main.dart';
-import '../../../remote/authen/authen.dart';
-import '../entities/notify_task.dart';
-import '../entities/player.dart';
-import '../entities/pre_quiz_game.dart';
-import '../entities/pre_test.dart';
-import '../entities/quiz_game.dart';
-import '../entities/quiz_test.dart';
+import '../entities/player_local.dart';
+import '../entities/pre_pra_local.dart';
+import '../entities/pre_test_local.dart';
+import '../entities/quiz_pra_local.dart';
+import '../entities/quiz_test_local.dart';
 
 part 'db_app.g.dart';
 
@@ -23,11 +21,11 @@ LazyDatabase _openConnection() {
 }
 
 @DriftDatabase(tables: [
-  PreQuizGameEntity,
-  PreTestEntity,
-  QuizGameEntity,
-  QuizTestEntity,
-  NotifyTask,
+  PrePraLocalEntity,
+  PreTestLocalEntity,
+  QuizPraLocalEntity,
+  QuizTestLocalEntity,
+  LocalNotifyEntity,
   PlayerLocalEntity
 ])
 class AppDb extends _$AppDb {

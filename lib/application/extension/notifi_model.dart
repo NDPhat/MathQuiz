@@ -1,7 +1,7 @@
 import 'package:math/data/local/driff/db/db_app.dart';
 import 'package:math/data/model/task_notifi.dart';
 
-extension TaskModel on NotifyTaskData {
+extension TaskModel on LocalNotifyEntityData {
   TaskNotify toGetNotifyTask() {
     return TaskNotify(
         id: id,

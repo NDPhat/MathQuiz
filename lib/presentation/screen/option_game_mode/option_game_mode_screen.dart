@@ -39,11 +39,11 @@ class OptionGameModeScreen extends StatelessWidget {
                 Navigator.pushNamed(context, Routers.homeGuest);
               }
             },
-            homeIcon: const Icon(
+            iconRight: const Icon(
               Icons.home,
               color: Colors.black,
             ),
-            colorTextAndIcon: colorSystemWhite,
+            colorTextAndIcon: colorBlackSys,
             child: Padding(
               padding: EdgeInsets.only(
                 top: 5.h,
@@ -71,7 +71,7 @@ class OptionGameModeScreen extends StatelessWidget {
                                         context, Routers.enterAnswerGame,
                                         arguments: PreQuizGame(
                                           id: state.id,
-                                          numQ: 0,
+                                          sumQ: 0,
                                           sign: sign,
                                           idServer: state.idServer,
                                           option: "input",
@@ -112,7 +112,7 @@ class OptionGameModeScreen extends StatelessWidget {
                                     Navigator.pushNamed(context, Routers.tfGame,
                                         arguments: PreQuizGame(
                                           id: state.id,
-                                          numQ: 0,
+                                          sumQ: 0,
                                           sign: sign,
                                           idServer: state.idServer,
                                           option: "true/false",
@@ -154,7 +154,7 @@ class OptionGameModeScreen extends StatelessWidget {
                                         context, Routers.missingGame,
                                         arguments: PreQuizGame(
                                           id: state.id,
-                                          numQ: 0,
+                                          sumQ: 0,
                                           sign: sign,
                                           idServer: state.idServer,
                                           option: "missing",

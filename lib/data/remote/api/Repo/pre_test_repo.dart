@@ -8,4 +8,7 @@ abstract class PreTestRepo {
   Future<PreTestAPIResPagi?> getALlPreQuizTestByUidWithPagi(
       String uid, int page);
   Future<bool?> deleteTestingNotDoByPreTestId(String preID);
+  Future<bool?> deletePreTestById(String preID);
+  Future<bool?> deleteAllPreTestByUid(String uid);
+  Future<bool?> deleteAllPreTestLowScoreByuId(String uId);
 }

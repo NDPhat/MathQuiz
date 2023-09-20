@@ -7,11 +7,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:math/application/cons/constants.dart';
 import 'package:math/application/cons/text_style.dart';
 import 'package:math/application/extension/notifi_model.dart';
-import 'package:math/data/local/repo/detail_notifi/notify_task_repo.dart';
 import 'package:math/domain/bloc/notify_main/notify_main_cubit.dart';
 import 'package:math/main.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
+import '../../../data/local/repo/detail_notifi/local_notify_repo.dart';
 import '../../../data/model/task_notifi.dart';
 import '../../routers/navigation.dart';
 import '../../widget/button_custom.dart';
@@ -141,7 +141,7 @@ class LocalNotifyMainScreen extends StatelessWidget {
                       width: 100.w,
                       child: StreamBuilder(
                           stream: instance
-                              .get<NotifyTaskLocalRepo>()
+                              .get<LocalNotifyRepo>()
                               .getAllTaskByDay(state.timeNow),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==

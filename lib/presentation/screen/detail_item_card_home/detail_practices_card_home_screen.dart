@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +33,7 @@ class DetailItemCardPractices extends StatefulWidget {
 }
 
 class _DetailItemCardPracticesState extends State<DetailItemCardPractices> {
-  String type = "input";
+  String type = "";
   @override
   void initState() {
     super.initState();
@@ -41,10 +42,35 @@ class _DetailItemCardPracticesState extends State<DetailItemCardPractices> {
 
   void initPageData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      type = ModalRoute.of(context)!.settings.arguments as String;
-      // firstLoad();
+      String args = ModalRoute.of(context)!.settings.arguments as String;
+      setState(() {
+        type = args;
+      });
       context.read<DetailPracticesCubit>().initPage(type);
     });
+  }
+
+  showSettingDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.info,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      title: "DELETE",
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelText: "ALL".tr(),
+      btnOkText: "LOW SCORE".tr(),
+      btnCancelOnPress: () {
+        context.read<DetailPracticesCubit>().deleteALlPrePraByUidAndType(type);
+        Navigator.pushNamed(context, Routers.practicecardDetail,
+            arguments: type);
+      },
+      btnOkOnPress: () {
+        context.read<DetailPracticesCubit>().deleteLowScore(type);
+        Navigator.pushNamed(context, Routers.practicecardDetail,
+            arguments: type);
+      },
+    ).show();
   }
 
   @override
@@ -53,10 +79,16 @@ class _DetailItemCardPracticesState extends State<DetailItemCardPractices> {
       backgroundColor: colorSystemWhite,
       body: MainPageHomePG(
         onBack: () {
-          Navigator.pop(context);
+          Navigator.pushNamed(context, Routers.dataSheetScreen);
         },
         textNow: "${'practice'.tr()} ${'data sheet'.tr().toLowerCase()}",
-        onPressHome: () {},
+        onPressHome: () {
+          showSettingDialog();
+        },
+        iconRight: const Icon(
+          Icons.settings,
+          color: Colors.black,
+        ),
         colorTextAndIcon: Colors.black,
         child: Container(
           height: 90.h,

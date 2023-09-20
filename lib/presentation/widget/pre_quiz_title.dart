@@ -22,7 +22,7 @@ class PreQuizTitle extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: (preQuiz.score! / preQuiz.numQ!) * 100 > 80
+            color: (preQuiz.score! / preQuiz.sumQ!) * 100 > 80
                 ? colorMainTealPri
                 : colorErrorPrimary,
           ),
@@ -35,7 +35,7 @@ class PreQuizTitle extends StatelessWidget {
                 Text(
                   "PRACTICE WITH ${_getMath(preQuiz.sign!.toString())!} MATH",
                   style: GoogleFonts.lato(
-                    color: (preQuiz.score! / preQuiz.numQ!) * 100 > 80
+                    color: (preQuiz.score! / preQuiz.sumQ!) * 100 > 80
                         ? colorMainTealPri
                         : colorErrorPrimary,
                   ),
@@ -44,16 +44,16 @@ class PreQuizTitle extends StatelessWidget {
                 Text(
                   " SCORE : ${preQuiz.score ?? 1}",
                   style: GoogleFonts.lato(
-                    color: (preQuiz.score! / preQuiz.numQ!) * 100 > 80
+                    color: (preQuiz.score! / preQuiz.sumQ!) * 100 > 80
                         ? colorMainTealPri
                         : colorErrorPrimary,
                   ),
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  " TOTAL QUIZ : ${preQuiz!.numQ}",
+                  " TOTAL QUIZ : ${preQuiz!.sumQ}",
                   style: GoogleFonts.lato(
-                    color: (preQuiz.score! / preQuiz.numQ!) * 100 > 80
+                    color: (preQuiz.score! / preQuiz.sumQ!) * 100 > 80
                         ? colorMainTealPri
                         : colorErrorPrimary,
                   ),
@@ -65,18 +65,18 @@ class PreQuizTitle extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 10),
             height: 60,
             width: 0.5,
-            color: (preQuiz.score! / preQuiz.numQ!) * 100 > 80
+            color: (preQuiz.score! / preQuiz.sumQ!) * 100 > 80
                 ? colorMainTealPri
                 : colorErrorPrimary,
           ),
           RotatedBox(
             quarterTurns: 3,
             child: Text(
-              (preQuiz.score! / preQuiz.numQ!) * 100 > 80
+              (preQuiz.score! / preQuiz.sumQ!) * 100 > 80
                   ? "COMPLETED"
                   : "NOT GOOD",
               style: GoogleFonts.lato(
-                color: (preQuiz.score! / preQuiz.numQ!) * 100 > 80
+                color: (preQuiz.score! / preQuiz.sumQ!) * 100 > 80
                     ? colorMainTealPri
                     : colorErrorPrimary,
               ),

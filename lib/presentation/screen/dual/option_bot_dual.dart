@@ -27,7 +27,7 @@ class OptionModeBotDual extends StatelessWidget {
           onBack: () {
             Navigator.pushNamed(context, Routers.battleMainScreen);
           },
-          textNow: "battle game".tr(),
+          textNow: "mode".tr(),
           onPressHome: () {},
           colorTextAndIcon: Colors.black,
           child: Container(

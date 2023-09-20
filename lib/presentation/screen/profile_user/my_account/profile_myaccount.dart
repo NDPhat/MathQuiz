@@ -212,7 +212,7 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
         onPressHome: () {
           Navigator.pushNamed(context, Routers.homeUser);
         },
-        homeIcon: const Icon(
+        iconRight: const Icon(
           LineAwesomeIcons.home,
           color: Colors.black,
         ),

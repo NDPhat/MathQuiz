@@ -36,9 +36,9 @@ class DualMainScreen extends StatelessWidget {
                 Navigator.pushNamed(context, Routers.homeGuest);
               }
             },
-            textNow: "",
+            textNow: "battle game".tr(),
             onPressHome: () {},
-            colorTextAndIcon: colorSystemYeloow,
+            colorTextAndIcon: colorBlackSys,
             child: Container(
               alignment: Alignment.center,
               width: 100.w,

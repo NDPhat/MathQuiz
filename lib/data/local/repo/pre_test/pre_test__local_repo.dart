@@ -5,19 +5,19 @@ abstract class PreTestLocalRepo {
   final AppDb appDb;
   //Constructor
   PreTestLocalRepo(this.appDb);
-  Future<void> insertPreTest(PreTestEntityCompanion entity);
+  Future<void> insertPreTest(PreTestLocalEntityCompanion entity);
   Future<void> deletePreTest(int testId);
   Future<void> deletePreTestByDay(String dateSave);
   Future<void> deleteAllPreTestAfter7DaysFromNow();
   Future<void> deleteAllPreTest();
   Future<void> updatePreTest(int score, int sumQ, int id);
-  Stream<List<PreTestEntityData>> getAllPreTestByDay(String dayNeeded);
+  Stream<List<PreTestLocalEntityData>> getAllPreTestByDay(String dayNeeded);
   Future<int> getLengthAllPreTestByDay(String day);
-  Stream<List<PreTestEntityData>> getAllPreTestByDayWithPagination(
+  Stream<List<PreTestLocalEntityData>> getAllPreTestByDayWithPagination(
       String day, int page);
   Future<int> getLengthAllPreTest();
   Future<double> getAverageScore();
-  Stream<List<PreTestEntityData>> getAllPreTest();
-  Future<PreTestEntityData> getLatestPreTest();
+  Stream<List<PreTestLocalEntityData>> getAllPreTest();
+  Future<PreTestLocalEntityData> getLatestPreTest();
 
 }

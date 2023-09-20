@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/application/cons/color.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:math/presentation/widget/bg_list_view.dart';
 import 'package:sizer/sizer.dart';
+import '../../../data/local/repo/quiz_pra/quiz_pra_local_repo.dart';
 import '../../../main.dart';
 import '../../widget/answer_widget.dart';
 
@@ -33,9 +33,9 @@ class DetailQuizGame extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.only(top: 10.h),
               height: 85.h,
-              child: StreamBuilder<List<QuizGameEntityData>>(
+              child: StreamBuilder<List<QuizPraLocalEntityData>>(
                   stream: instance
-                      .get<QuizGameLocalRepo>()
+                      .get<QuizPraLocalRepo>()
                       .getAllQuizGameByPreQuizId(preId),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState ==

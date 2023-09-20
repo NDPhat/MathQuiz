@@ -24,6 +24,10 @@
 
   "DELETE BY DAY": "DELETE BY DAY",
   "DELETE ALL":"DELETE ALL",
+  "ALL":"ALL",
+  "LOW SCORE":"LOW SCORE",
+  "DELETE":"DELETE",
+  "home": "HOME",
   "history": "History",
   "practice":"Practice",
   "test": "Test",

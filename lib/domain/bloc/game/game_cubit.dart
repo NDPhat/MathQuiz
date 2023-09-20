@@ -1,9 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:math/data/local/repo/pre_quiz/pre_quiz_repo.dart';
-import 'package:math/data/local/repo/pre_test/pre_test_repo.dart';
-import 'package:math/data/local/repo/quiz_pra/quiz_game_repo.dart';
-import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 import 'package:math/data/model/user_global.dart';
 import 'package:math/data/remote/api/Repo/pre_test_repo.dart';
 import 'package:math/data/remote/api/Repo/quiz_pra_repo.dart';
@@ -13,6 +9,10 @@ import 'package:math/data/remote/model/quiz_test_req.dart';
 import 'package:math/main.dart';
 import '../../../application/enum/game_status.dart';
 import '../../../data/local/driff/db/db_app.dart';
+import '../../../data/local/repo/pre_quiz/pre_pra_local_repo.dart';
+import '../../../data/local/repo/pre_test/pre_test__local_repo.dart';
+import '../../../data/local/repo/quiz_pra/quiz_pra_local_repo.dart';
+import '../../../data/local/repo/test/quiz_test_local_repo.dart';
 import '../../../data/remote/api/Repo/pre_pra_repo.dart';
 import '../../../data/remote/model/pre_pra_req.dart';
 import '../../../data/remote/model/pre_pra_res.dart';
@@ -20,7 +20,7 @@ import '../../../data/remote/model/quiz_pra_req.dart';
 part 'game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
-  final QuizGameLocalRepo quizPraLocalRepo;
+  final QuizPraLocalRepo quizPraLocalRepo;
   final PrePraLocalRepo prePraLocalRepo;
   final PreTestLocalRepo preTestLocalRepo;
   final QuizTestLocalRepo quizTestLocalRepo;
@@ -39,11 +39,11 @@ class GameCubit extends Cubit<GameState> {
       required this.quizTestRepo,
       required this.prePraRepo})
       : super(GameState.initial());
-  void addQuizGameToLocal(QuizGameEntityCompanion entityCompanion) {
+  void addQuizGameToLocal(QuizPraLocalEntityCompanion entityCompanion) {
     quizPraLocalRepo.insertQuizGame(entityCompanion);
   }
 
-  void addQuizMixToLocal(QuizTestEntityCompanion entityCompanion) {
+  void addQuizMixToLocal(QuizTestLocalEntityCompanion entityCompanion) {
     quizTestLocalRepo.insertTest(entityCompanion);
   }
 
@@ -71,7 +71,7 @@ class GameCubit extends Cubit<GameState> {
     }
   }
 
-  Future<void> createPrePraLocal(PreQuizGameEntityCompanion data) async {
+  Future<void> createPrePraLocal(PrePraLocalEntityCompanion data) async {
     try {
       await prePraLocalRepo.insertPreQuizGame(data);
     } on Exception catch (e) {
@@ -79,9 +79,9 @@ class GameCubit extends Cubit<GameState> {
     }
   }
 
-  Future<PreQuizGameEntityData?> getLatestPreQuizGame() async {
+  Future<PrePraLocalEntityData?> getLatestPreQuizGame() async {
     try {
-      PreQuizGameEntityData data = await prePraLocalRepo.getLatestPreQuizGame();
+      PrePraLocalEntityData data = await prePraLocalRepo.getLatestPreQuizGame();
       return data;
     } on Exception catch (e) {
       print(e.toString());

@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:math/data/local/driff/db/db_app.dart';
-import 'package:math/data/local/repo/test/quiz_test_repo.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
 import 'package:math/presentation/widget/bg_list_view.dart';
 import 'package:sizer/sizer.dart';
 import '../../../application/cons/color.dart';
+import '../../../data/local/repo/test/quiz_test_local_repo.dart';
 import '../../../main.dart';
 import '../../widget/answer_widget.dart';
 
@@ -32,7 +32,7 @@ class DetailTestScreen extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.only(top: 10.h),
               height: 85.h,
-              child: StreamBuilder<List<QuizTestEntityData>>(
+              child: StreamBuilder<List<QuizTestLocalEntityData>>(
                   stream: instance
                       .get<QuizTestLocalRepo>()
                       .getAllTestByPreTestId(preId),

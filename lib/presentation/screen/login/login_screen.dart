@@ -49,7 +49,7 @@ class _LoginUserApp extends State<LoginUserApp> {
       resizeToAvoidBottomInset: true,
       backgroundColor: colorMainBlue,
       body: MainPageHomePG(
-        colorTextAndIcon: colorSystemYeloow,
+        colorTextAndIcon: colorBlackSys,
         onBack: () {
           Navigator.pushNamed(context, Routers.chooseOptionUseApp);
         },

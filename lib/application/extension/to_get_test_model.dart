@@ -2,8 +2,8 @@
 import '../../data/local/driff/db/db_app.dart';
 import '../../data/model/pre_test_model.dart';
 
-extension PreTestModel on PreTestEntityData {
+extension PreTestModel on PreTestLocalEntityData {
   PreTest toGetTestModel() {
-    return PreTest(id: id, sumQuiz: sumQuiz, score: score, dateSave: dateSave);
+    return PreTest(id: id, sumQ: sumQ, score: score, dateSave: dateSave);
   }
 }

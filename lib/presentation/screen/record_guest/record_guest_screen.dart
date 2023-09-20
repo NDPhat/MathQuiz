@@ -28,8 +28,8 @@ class _RecordGuestScreenApp extends State<RecordGuestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: MainPageHomePG(
-        textNow: "",
-        colorTextAndIcon: colorErrorPrimary,
+        textNow: "your trophy".tr(),
+        colorTextAndIcon: colorBlackSys,
         onBack: () {
           Navigator.pop(context);
         },
@@ -173,7 +173,7 @@ class _RecordGuestScreenApp extends State<RecordGuestScreen> {
                                           child: Text(
                                             instance
                                                 .get<UserLocal>()
-                                                .join
+                                                .participate
                                                 .toString(),
                                             style: GoogleFonts.abel(
                                                 color: colorSystemYeloow,

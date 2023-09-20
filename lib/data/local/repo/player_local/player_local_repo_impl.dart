@@ -28,7 +28,7 @@ class PlayerLocalRepoImpl extends PlayerLocalRepo {
       PlayerLocalEntityCompanion entityData, int id) async {
     await (appDb.update(appDb.playerLocalEntity)..where((tbl) => tbl.id.equals(id)))
         .write(PlayerLocalEntityCompanion(
-      score: entityData.score , join:  entityData.join
+      score: entityData.score , participate:  entityData.participate
     ));
   }
 }

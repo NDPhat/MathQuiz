@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,16 +43,43 @@ class _DetailMixGameScreenState extends State<DetailMixGameScreen> {
     });
   }
 
+  showSettingDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.info,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      title: "DELETE",
+      descTextStyle: s20GgBarColorMainTeal,
+      btnCancelText: "ALL".tr(),
+      btnOkText: "LOW SCORE".tr(),
+      btnCancelOnPress: () {
+        context.read<DetailTestCubit>().deleteAllPreTest();
+        Navigator.pushNamed(context, Routers.testDetail);
+      },
+      btnOkOnPress: () {
+        context.read<DetailTestCubit>().deleteAllPreTestLowScore();
+        Navigator.pushNamed(context, Routers.testDetail);
+      },
+    ).show();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: colorSystemWhite,
         body: MainPageHomePG(
             onBack: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, Routers.dataSheetScreen);
             },
             textNow: "${'test'.tr()} ${'data sheet'.tr().toLowerCase()}",
-            onPressHome: () {},
+            onPressHome: () {
+              showSettingDialog();
+            },
+            iconRight: const Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
             colorTextAndIcon: Colors.black,
             child: Container(
               height: 90.h,

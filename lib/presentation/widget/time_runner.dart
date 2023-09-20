@@ -15,19 +15,19 @@ class Time_Runner extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: 60,
-      backgroundColor: colorSystemWhite,
+      backgroundColor: colorSystemYeloow,
       child: CircleAvatar(
           radius: 40,
-          backgroundColor: colorSystemWhite,
+          backgroundColor: colorSystemYeloow,
           child: CircularCountDownTimer(
             duration: 60,
             initialDuration: 0,
             controller: controller,
             width: 50,
             height: 50,
-            ringColor: colorSystemWhite,
+            ringColor: colorSystemYeloow,
             fillColor: colorSystemWhite,
-            backgroundColor: colorGrayBG,
+            backgroundColor: colorSystemYeloow,
             backgroundGradient: null,
             strokeWidth: 20.0,
             strokeCap: StrokeCap.round,
