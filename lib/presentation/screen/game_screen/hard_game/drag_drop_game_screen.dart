@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,10 @@ import 'package:sizer/sizer.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import '../../../../application/utils/make_quiz.dart';
+import '../../../../data/model/app_global.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
+import '../../../widget/dialog.dart';
 
 class DragDropGameScreen extends StatefulWidget {
   const DragDropGameScreen({Key? key}) : super(key: key);
@@ -37,6 +40,7 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
   bool playerAgain = false;
   late bool firstTimeValue;
   bool trustShow = false;
+  final _playerCheck = AudioPlayer();
   final CountDownController _controller = CountDownController();
   List<ItemValueConnect> listQuiz = [];
   List<ItemValueConnect> listAnswer = [];
@@ -46,6 +50,17 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
     _quizBrain = QuizBrain();
     handleFirstTime();
   }
+  @override
+  void dispose() {
+    super.dispose();
+    soundDispose();
+  }
+
+  Future<void> soundDispose() async {
+    await _playerCheck.stop();
+    _playerCheck.dispose();
+  }
+
 
   Future<void> handleFirstTime() async {
     firstTimeValue = await instance
@@ -187,6 +202,8 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
   }
 
   void playAgain() {
+    listAnswer.clear();
+    listQuiz.clear();
     _score = 0;
     setState(() {
       _quizBrain.makeQuizDragDrop();
@@ -412,17 +429,42 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
                                     onWillAccept: (data) {
                                       return data == e.value;
                                     },
+                                    onLeave: (data) {
+                                      if (e.accepting == false) {
+                                        _playerCheck.play(
+                                            AssetSource(
+                                              'wrong-choice.wav',
+                                            ),
+                                            volume:
+                                            instance.get<AppGlobal>().volumeApp);
+                                        DialogCommon().showInfoQuiz("false".tr(), context, colorErrorPrimary);
+                                        Future.delayed(const Duration(milliseconds: 500), () {
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
                                     onAccept: (data) {
-                                      _score++;
-                                      setState(() {
-                                        e.accepting = true;
-                                        int index = listQuiz.indexWhere(
-                                            (element) => element.value == data);
-                                        listQuiz[index].accepting = true;
-                                        listQuiz.removeAt(index);
-                                        listAnswer.remove(e);
+                                      _playerCheck.play(
+                                          AssetSource(
+                                            'correct-choice.wav',
+                                          ),
+                                          volume:
+                                          instance.get<AppGlobal>().volumeApp);
+                                      DialogCommon().showInfoQuiz("true".tr(), context, colorMainTealPri);
+                                      Future.delayed(const Duration(milliseconds: 500), () {
+                                        Navigator.pop(context);
+                                        _score++;
+                                        setState(() {
+                                          e.accepting = true;
+                                          int index = listQuiz.indexWhere(
+                                                  (element) => element.value == data);
+                                          listQuiz[index].accepting = true;
+                                          listQuiz.removeAt(index);
+                                          listAnswer.remove(e);
+                                        });
+                                        checkEndGame();
                                       });
-                                      checkEndGame();
+
                                     },
                                   );
                                 }).toList()),

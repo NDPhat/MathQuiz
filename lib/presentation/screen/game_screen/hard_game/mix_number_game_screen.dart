@@ -22,6 +22,7 @@ import '../../../../data/model/user_global.dart';
 import '../../../../data/remote/model/quiz_test_req.dart';
 import '../../../routers/navigation.dart';
 import '';
+import '../../../widget/dialog.dart';
 import '../../../widget/portrait_mode_game.dart';
 
 class MixNumberGameScreen extends StatefulWidget {
@@ -75,9 +76,21 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
       userAnswer = true;
       _playerCheck.play(AssetSource('correct-choice.wav'),
           volume: instance.get<AppGlobal>().volumeApp);
+      _controller.pause();
+      DialogCommon().showInfoQuiz("true".tr(), context, colorMainTealPri);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
+      _controller.resume();
       _score++;
     } else {
       userAnswer = false;
+      _controller.pause();
+      DialogCommon().showInfoQuiz("false".tr(), context, colorErrorPrimary);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
+      _controller.resume();
       falseChoose++;
       _playerCheck.play(
           AssetSource(

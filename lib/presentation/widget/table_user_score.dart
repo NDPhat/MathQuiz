@@ -32,8 +32,8 @@ class UserTableScore extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border.all(color: colorSystemYeloow),
                 borderRadius: BorderRadius.all(Radius.circular(10.w))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

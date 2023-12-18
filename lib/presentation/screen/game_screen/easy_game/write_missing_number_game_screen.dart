@@ -18,6 +18,7 @@ import '../../../../data/model/user_global.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
 import '../../../widget/board_item_take_easy_game.dart';
+import '../../../widget/dialog.dart';
 
 class WriteMissingNumberGameScreen extends StatefulWidget {
   @override
@@ -148,6 +149,10 @@ class _WriteMissingNumberGameScreenState
       if (int.parse(prediction.label) == randomList[position][1]) {
         _playerCheck.play(AssetSource('correct-choice.wav'),
             volume: instance.get<AppGlobal>().volumeApp);
+        DialogCommon().showInfoQuiz("true".tr(), context, colorMainTealPri);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pop(context);
+        });
         Future.delayed(const Duration(seconds: 1), () {
           setState(() {
             position++;
@@ -161,6 +166,10 @@ class _WriteMissingNumberGameScreenState
               'wrong-choice.wav',
             ),
             volume: instance.get<AppGlobal>().volumeApp);
+        DialogCommon().showInfoQuiz("false".tr(), context, colorErrorPrimary);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pop(context);
+        });
         setState(() {
           _points.clear();
           _prediction.clear();
@@ -170,6 +179,10 @@ class _WriteMissingNumberGameScreenState
       if (int.parse(prediction.label) == randomList[position]) {
         _playerCheck.play(AssetSource('correct-choice.wav'),
             volume: instance.get<AppGlobal>().volumeApp);
+        DialogCommon().showInfoQuiz("true".tr(), context, colorMainTealPri);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pop(context);
+        });
         Future.delayed(const Duration(seconds: 1), () {
           setState(() {
             _points.clear();
@@ -183,6 +196,10 @@ class _WriteMissingNumberGameScreenState
               'wrong-choice.wav',
             ),
             volume: instance.get<AppGlobal>().volumeApp);
+        DialogCommon().showInfoQuiz("false".tr(), context, colorErrorPrimary);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pop(context);
+        });
         setState(() {
           _points.clear();
           _prediction.clear();

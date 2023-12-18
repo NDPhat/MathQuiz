@@ -29,6 +29,7 @@ class WriteAndCountGameScreen extends StatefulWidget {
 class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
   double strokeWidth = 5;
   bool loading = false;
+  int answer = 0;
   final _recognizer = Recognizer();
   List<Prediction> _prediction = [];
   final List<Offset?> _points = [];
@@ -134,6 +135,15 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
     );
   }
 
+  void resetDialogAnswer() {
+    Future.delayed(const Duration(seconds: 1), ()
+    {
+      setState(() {
+        answer = 0;
+      });
+    });
+  }
+
   Future<void> showFinishGameDialog() {
     return AwesomeDialog(
       context: context,
@@ -170,13 +180,13 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
           randomListValue[position].first.value) {
         _playerCheck.play(AssetSource('correct-choice.wav'),
             volume: instance.get<AppGlobal>().volumeApp);
-        Future.delayed(const Duration(seconds: 1), () {
           setState(() {
+            answer = 1;
             position++;
             _points.clear();
             _prediction.clear();
           });
-        });
+          resetDialogAnswer();
       } else {
         _playerCheck.play(
             AssetSource(
@@ -184,20 +194,22 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
             ),
             volume: instance.get<AppGlobal>().volumeApp);
         setState(() {
+          answer = 2;
           _points.clear();
           _prediction.clear();
         });
+        resetDialogAnswer();
       }
     } else {
       if (int.parse(prediction.label) == randomList[position]) {
         _playerCheck.play(AssetSource('correct-choice.wav'),
             volume: instance.get<AppGlobal>().volumeApp);
-        Future.delayed(const Duration(seconds: 1), () {
           setState(() {
+            answer = 1;
             _points.clear();
             _prediction.clear();
           });
-        });
+          resetDialogAnswer();
         showFinishGameDialog();
       } else {
         _playerCheck.play(
@@ -206,9 +218,11 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
             ),
             volume: instance.get<AppGlobal>().volumeApp);
         setState(() {
+          answer = 2;
           _points.clear();
           _prediction.clear();
         });
+        resetDialogAnswer();
       }
     }
   }
@@ -263,6 +277,22 @@ class _WriteAndCountGameScreenState extends State<WriteAndCountGameScreen> {
                 ),
                 sizedBox,
                 _drawCanvasWidget(60.w, 30.h),
+                answer != 0 ?
+                Container(
+                  alignment: Alignment.center,
+                  padding:  EdgeInsets.only(top: 5.h),
+                  child: Visibility(
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 60.w,
+                        height: 5.h,
+                        decoration: BoxDecoration(
+                            color: answer == 1 ? colorMainTealPri: colorErrorPrimary,
+                            borderRadius: const BorderRadius.all(Radius.circular(10))
+                        ),
+                        child: Text(answer == 1 ? "true".tr().toUpperCase():"false".tr().toUpperCase(),style: s16f500ColorSysWhite,textAlign: TextAlign.center,),
+                      )),
+                ): const SizedBox.shrink()
               ],
             ),
           ),

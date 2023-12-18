@@ -18,6 +18,7 @@ import '../../../../data/model/app_global.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
 import '../../../widget/board_item_take_easy_game.dart';
+import '../../../widget/dialog.dart';
 import '../hard_game/widget/features_to_user.dart';
 
 class MatchNumberGameScreen extends StatefulWidget {
@@ -336,6 +337,10 @@ class _MatchNumberGameScreenState extends State<MatchNumberGameScreen> {
                                       ),
                                       volume:
                                           instance.get<AppGlobal>().volumeApp);
+                                  DialogCommon().showInfoQuiz("false".tr(), context, colorErrorPrimary);
+                                  Future.delayed(const Duration(milliseconds: 500), () {
+                                    Navigator.pop(context);
+                                  });
                                 }
                               },
                               onAccept: (data) {
@@ -344,6 +349,10 @@ class _MatchNumberGameScreenState extends State<MatchNumberGameScreen> {
                                     AssetSource('correct-choice.wav'),
                                     volume:
                                         instance.get<AppGlobal>().volumeApp);
+                                DialogCommon().showInfoQuiz("true".tr(), context, colorMainTealPri);
+                                Future.delayed(const Duration(milliseconds: 500), () {
+                                  Navigator.pop(context);
+                                });
                                 setState(() {
                                   e.accepting = true;
                                   int index = randomListDrag.indexWhere(

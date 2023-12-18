@@ -22,6 +22,7 @@ import '../../../../domain/bloc/game/game_cubit.dart';
 import '../../../../application/utils/make_quiz.dart';
 import '../../../../main.dart';
 import '../../../routers/navigation.dart';
+import '../../../widget/dialog.dart';
 import '../../../widget/portrait_mode_game.dart';
 
 class FindMissingNumberGameScreen extends StatefulWidget {
@@ -218,6 +219,12 @@ class _FindMissingNumberGameScreenState
         _saveData(context);
         _playerCheck.play(AssetSource('correct-choice.wav'),
             volume: instance.get<AppGlobal>().volumeApp);
+        _controller.pause();
+        DialogCommon().showInfoQuiz("true".tr(), context, colorMainTealPri);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pop(context);
+        });
+        _controller.resume();
         _score++;
         _resetScreen();
       } else {
@@ -228,12 +235,24 @@ class _FindMissingNumberGameScreenState
               'wrong-choice.wav',
             ),
             volume: instance.get<AppGlobal>().volumeApp);
+        _controller.pause();
+        DialogCommon().showInfoQuiz("false".tr(), context, colorErrorPrimary);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pop(context);
+        });
+        _controller.resume();
         falseChoose++;
         _resetScreen();
       }
     } else {
       userAnswer = false;
       _saveData(context);
+      _controller.pause();
+      DialogCommon().showInfoQuiz("false".tr(), context, colorErrorPrimary);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
+      _controller.resume();
       falseChoose++;
       _resetScreen();
     }
@@ -266,36 +285,37 @@ class _FindMissingNumberGameScreenState
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext contextBuild) {
         return AlertDialog(
-          actions: [
-            AnimatedButton(
-              text: 'game over'.tr(),
-              buttonTextStyle: s18GgfaBeeColorWhite,
-              color: colorErrorPrimary,
-              pressEvent: () {
-                AwesomeDialog(
-                    context: context,
-                    dialogType: DialogType.success,
-                    headerAnimationLoop: false,
-                    animType: AnimType.topSlide,
-                    dismissOnTouchOutside: false,
-                    closeIcon: const Icon(Icons.close_fullscreen_outlined),
-                    desc: 'score'.tr() +
-                        " : " +
-                        '$_score | $_totalNumberOfQuizzes',
-                    descTextStyle: s20GgBarColorMainTeal,
-                    btnOkText: "play again".tr(),
-                    btnOkOnPress: () {
-                      Navigator.pop(context);
-                      _startGameAgain();
-                      context.read<GameCubit>().changeDataPlayAgain();
-                    },
-                    btnCancelOnPress: () {
-                      soundDispose();
-                      Navigator.pushNamed(context, Routers.takeMediumQuiz);
-                    }).show();
-              },
+          backgroundColor: colorSystemWhite,
+          alignment: Alignment.center,
+          title: GestureDetector(
+            onTap: () {
+              AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.success,
+                  headerAnimationLoop: false,
+                  animType: AnimType.topSlide,
+                  dismissOnTouchOutside: false,
+                  closeIcon: const Icon(Icons.close_fullscreen_outlined),
+                  desc:
+                  'score'.tr() + " : " + '$_score | $_totalNumberOfQuizzes',
+                  descTextStyle: s20GgBarColorMainTeal,
+                  btnOkText: "play again".tr(),
+                  btnOkOnPress: () {
+                    Navigator.pop(context);
+                    _startGameAgain();
+                    context.read<GameCubit>().changeDataPlayAgain();
+                  },
+                  btnCancelOnPress: () {
+                    soundDispose();
+                    Navigator.pushNamed(context, Routers.takeMediumQuiz);
+                  }).show();
+            },
+            child: Text(
+              'game over'.tr(),
+              style: s18GgfaBeeColorErrorPri,
+              textAlign: TextAlign.center,
             ),
-          ],
+          ),
         );
       },
     );

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math/application/enum/game_status.dart';
 import 'package:math/presentation/screen/home/user_home_screen/widget/main_home_page_bg.dart';
+import 'package:math/presentation/widget/dialog.dart';
 import '../../../../application/cons/color.dart';
 import '../../../../application/cons/text_style.dart';
 import '../../../../application/utils/format.dart';
@@ -102,6 +103,49 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext contextBuild) {
         return AlertDialog(
+          backgroundColor: colorSystemWhite,
+          alignment: Alignment.center,
+          title: GestureDetector(
+            onTap: () {
+              AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.success,
+                  headerAnimationLoop: false,
+                  animType: AnimType.topSlide,
+                  dismissOnTouchOutside: false,
+                  closeIcon: const Icon(Icons.close_fullscreen_outlined),
+                  desc:
+                      'score'.tr() + " : " + '$_score | $_totalNumberOfQuizzes',
+                  descTextStyle: s20GgBarColorMainTeal,
+                  btnOkText: "play again".tr(),
+                  btnOkOnPress: () {
+                    Navigator.pop(context);
+                    _startGameAgain();
+                    context.read<GameCubit>().changeDataPlayAgain();
+                  },
+                  btnCancelOnPress: () {
+                    soundDispose();
+                    Navigator.pushNamed(context, Routers.takeMediumQuiz);
+                  }).show();
+            },
+            child: Text(
+              'game over'.tr(),
+              style: s18GgfaBeeColorErrorPri,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> showTrue() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext contextBuild) {
+        return AlertDialog(
+          backgroundColor: colorSystemWhite,
           actions: [
             AnimatedButton(
               text: 'game over'.tr(),
@@ -297,6 +341,12 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
         _saveData(context);
         _playerCheck.play(AssetSource('correct-choice.wav'),
             volume: instance.get<AppGlobal>().volumeApp);
+        _controller.pause();
+        DialogCommon().showInfoQuiz("true".tr(), context, colorMainTealPri);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pop(context);
+        });
+        _controller.resume();
         _score++;
         _resetScreen();
       } else {
@@ -307,12 +357,24 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
               'wrong-choice.wav',
             ),
             volume: instance.get<AppGlobal>().volumeApp);
+        _controller.pause();
+        DialogCommon().showInfoQuiz("false".tr(), context, colorErrorPrimary);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pop(context);
+        });
+        _controller.resume();
         falseChoose++;
         _resetScreen();
       }
     } else {
       userAnswer = false;
       _saveData(context);
+      _controller.pause();
+      DialogCommon().showInfoQuiz("false".tr(), context, colorErrorPrimary);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
+      _controller.resume();
       falseChoose++;
       _resetScreen();
     }
