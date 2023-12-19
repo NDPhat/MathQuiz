@@ -95,9 +95,8 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
         textNow: "${'home work'.tr()} ${'data sheet'.tr().toLowerCase()}",
         onPressHome: () {},
         colorTextAndIcon: Colors.black,
-        child: Container(
-          height: 90.h,
-          padding: EdgeInsets.only(left: 05.w, right: 5.w),
+        child: Padding(
+          padding:  EdgeInsets.only(left: 5.w,right: 5.w),
           child: Column(
             children: [
               LineContentItem(
@@ -159,6 +158,8 @@ class _DetailItemCardHomeWorkState extends State<DetailItemCardHomeWork> {
                                 padding:
                                     EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
                                 child: ItemAsyncDataDetail(
+                                  totalQuiz: posts![index].numQ.toString(),
+                                  score: posts![index].score.toString(),
                                   colorBorder: colorErrorPrimary,
                                   textTitle:
                                       "${'week'.tr()} ${posts![index].week!}",

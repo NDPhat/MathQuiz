@@ -275,6 +275,23 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
     }
   }
 
+  Future<void> showEndAfterChooseOutDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      desc: 'score'.tr() + " : " + '$_score | $_totalNumberOfQuizzes',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkOnPress: () {
+        Navigator.pushNamed(context, Routers.takeMediumQuiz);
+      },
+    ).show();
+  }
+
   void deletePreGameNotDoing() {
     context.read<GameCubit>().deletePreGameNowError();
     Navigator.pushNamed(context, Routers.takeMediumQuiz);
@@ -337,7 +354,7 @@ class _TrueFalseGameScreenState extends State<TrueFalseGameScreen> {
       btnOkOnPress: () {
         updateScore();
         soundDispose();
-        Navigator.pushNamed(context, Routers.takeMediumQuiz);
+        showEndAfterChooseOutDialog();
       },
     ).show();
   }

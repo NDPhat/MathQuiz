@@ -321,6 +321,24 @@ class _FindMissingNumberGameScreenState
     );
   }
 
+  Future<void> showEndAfterChooseOutDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      desc: 'score'.tr() + " : " + '$_score | $_totalNumberOfQuizzes',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkOnPress: () {
+        Navigator.pushNamed(context, Routers.takeMediumQuiz);
+      },
+    ).show();
+  }
+
+
   Future<void> showOutPageDialog() {
     return AwesomeDialog(
       context: context,
@@ -336,7 +354,7 @@ class _FindMissingNumberGameScreenState
       btnOkOnPress: () {
         soundDispose();
         updateScore();
-        Navigator.pushNamed(context, Routers.takeMediumQuiz);
+        showEndAfterChooseOutDialog();
       },
     ).show();
   }

@@ -23,8 +23,10 @@ class MainPageHomePG extends StatelessWidget {
       children: [
         Container(
           height: 10.h,
-          padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(left: 3.w, right: 5.w, top: 2.h),
           child: Stack(
+            alignment: Alignment.center,
             children: [
               Container(
                 alignment: Alignment.centerLeft,

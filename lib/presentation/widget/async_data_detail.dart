@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -11,8 +12,12 @@ class ItemAsyncDataDetail extends StatelessWidget {
     required this.timeSave,
     required this.colorBorder,
     required this.onPress,
+    required this.score,
+    required this.totalQuiz,
   }) : super(key: key);
   final String textTitle;
+  final String score;
+  final String totalQuiz;
   final String timeSave;
   final Widget childRight;
   final Color colorBorder;
@@ -42,6 +47,20 @@ class ItemAsyncDataDetail extends StatelessWidget {
                     child: Text(
                       textTitle,
                       style: GoogleFonts.abel(color: colorBorder, fontSize: 18),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      children: [
+                        Text(
+                          "${"score".tr()} :",
+                          style: GoogleFonts.abel(color: colorBorder, fontSize: 18),
+                        ),  Text(
+                          "$score / $totalQuiz",
+                          style: GoogleFonts.abel(color: colorBorder, fontSize: 18),
+                        ),
+                      ],
                     ),
                   ),
                 ],

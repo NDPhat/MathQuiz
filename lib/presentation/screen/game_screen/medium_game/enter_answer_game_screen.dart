@@ -196,7 +196,7 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
       btnOkOnPress: () {
         soundDispose();
         updateScore();
-        Navigator.pushNamed(context, Routers.takeMediumQuiz);
+        showEndAfterChooseOutDialog();
       },
     ).show();
   }
@@ -332,6 +332,23 @@ class _EnterAnswerGameScreenState extends State<EnterAnswerGameScreen> {
           .read<GameCubit>()
           .updateScoreQuizGameLocal(_score, _preIdNow, _totalNumberOfQuizzes);
     }
+  }
+
+  Future<void> showEndAfterChooseOutDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      desc: 'score'.tr() + " : " + '$_score | $_totalNumberOfQuizzes',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkOnPress: () {
+        Navigator.pushNamed(context, Routers.takeMediumQuiz);
+      },
+    ).show();
   }
 
   void _checkAnswer(int userChoice, BuildContext context) async {

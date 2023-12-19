@@ -100,6 +100,23 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
     }
   }
 
+  Future<void> showEndAfterChooseOutDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      desc: 'score'.tr() + " : " + '$_score | $_totalNumberOfQuizzes',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkOnPress: () {
+        Navigator.pushNamed(context, Routers.takeHardQuiz);
+      },
+    ).show();
+  }
+
   Future<void> showOutPageDialog() {
     return AwesomeDialog(
       context: context,
@@ -115,6 +132,7 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
       btnOkOnPress: () {
         soundDispose();
         updateScore();
+        showEndAfterChooseOutDialog();
       },
     ).show();
   }
@@ -143,7 +161,6 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
 
   void updateScore() async {
     if (instance.get<UserGlobal>().onLogin == true) {
-      Navigator.pop(context);
       context.read<GameCubit>().updatePreTestServer(
           preTest.keyServer.toString(),
           PreTestAPIModel(
@@ -154,13 +171,10 @@ class _MixNumberGameScreenState extends State<MixNumberGameScreen> {
               score: _score,
               dateSave: formatTimeTestInput.format(DateTime.now()),
               userId: instance.get<UserGlobal>().id));
-      Navigator.pushNamed(context, Routers.takeHardQuiz);
     } else {
-      Navigator.pop(context);
       instance
           .get<PreTestLocalRepo>()
           .updatePreTest(_score, _totalNumberOfQuizzes, preTest.id!);
-      Navigator.pushNamed(context, Routers.takeHardQuiz);
     }
   }
 

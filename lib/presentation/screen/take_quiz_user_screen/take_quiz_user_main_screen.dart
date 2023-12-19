@@ -38,7 +38,7 @@ class TakeQuizUserScreen extends StatelessWidget {
             colorTextAndIcon: Colors.black,
             child: Container(
               width: 100.w,
-              height: 90.h,
+              height: 80.h,
               alignment: Alignment.center,
               child: Container(
                 width: 90.w,

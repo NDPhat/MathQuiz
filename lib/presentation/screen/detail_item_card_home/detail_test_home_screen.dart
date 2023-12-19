@@ -162,6 +162,8 @@ class _DetailMixGameScreenState extends State<DetailMixGameScreen> {
                                     padding: EdgeInsets.only(
                                         top: 0.5.h, bottom: 0.5.h),
                                     child: ItemAsyncDataDetail(
+                                      totalQuiz: state.posts![index].numQ.toString(),
+                                      score: state.posts![index].score.toString(),
                                       colorBorder: colorSystemYeloow,
                                       textTitle:
                                           "${'task'.tr()} ${index + 1 + (state.pageNow - 1) * 5}",

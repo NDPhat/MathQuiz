@@ -237,7 +237,7 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
         _controller.resume();
       },
       btnOkOnPress: () {
-        Navigator.pushNamed(context, Routers.takeHardQuiz);
+        showEndAfterChooseOutDialog();
       },
     ).show();
   }
@@ -257,6 +257,24 @@ class _DragDropGameScreenState extends State<DragDropGameScreen> {
       btnOkOnPress: () {
         _controller.start();
         initData();
+      },
+    ).show();
+  }
+
+  Future<void> showEndAfterChooseOutDialog() {
+    return AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      headerAnimationLoop: false,
+      animType: AnimType.topSlide,
+      dismissOnTouchOutside: false,
+      closeIcon: const Icon(Icons.close_fullscreen_outlined),
+      title: 'game over'.tr(),
+      desc: 'score'.tr() + " : " + '$_score | 5',
+      descTextStyle: s20GgBarColorMainTeal,
+      btnOkText: "ok".tr(),
+      btnOkOnPress: () {
+        Navigator.pushNamed(context, Routers.takeHardQuiz);
       },
     ).show();
   }

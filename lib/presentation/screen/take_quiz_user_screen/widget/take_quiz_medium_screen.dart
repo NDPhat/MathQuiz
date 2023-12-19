@@ -45,7 +45,7 @@ class TakeQuizMediumScreen extends StatelessWidget {
             child: Container(
               alignment: Alignment.center,
               width: 100.w,
-              height: 90.h,
+              height: 80.h,
               padding: EdgeInsets.only(left: 5.w, right: 5.w),
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
