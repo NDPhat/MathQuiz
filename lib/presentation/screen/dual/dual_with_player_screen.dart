@@ -13,6 +13,7 @@ import '../../../application/utils/sound.dart';
 import '../../../data/model/app_global.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
+import '../../widget/dialog.dart';
 import '../../widget/divider_line.dart';
 import '../../widget/line_info_player.dart';
 import '../../widget/playey_dual_screen.dart';
@@ -73,6 +74,10 @@ class _HumanBattleScreenState extends State<PlayerDual> {
     if (userChoice == _quizBrain.quizAnswer) {
       playSoundLocal(_playerCheck, 'correct-choice.wav',
           instance.get<AppGlobal>().volumeApp);
+      DialogCommon().showInfoQuiz("${"player".tr()}1 + 1", context, colorMainTealPri);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
       setState(() {
         _score1++;
       });
@@ -80,6 +85,10 @@ class _HumanBattleScreenState extends State<PlayerDual> {
     } else {
       playSoundLocal(_playerCheck, 'wrong-choice.wav',
           instance.get<AppGlobal>().volumeApp);
+      DialogCommon().showInfoQuiz("${"player".tr()}1 Wrong", context, colorErrorPrimary);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
       setState(() {
         _falsePlayer1--;
         if (_falsePlayer1 == 0) {
@@ -96,6 +105,10 @@ class _HumanBattleScreenState extends State<PlayerDual> {
     if (userChoice == _quizBrain.quizAnswer) {
       playSoundLocal(_playerCheck, 'correct-choice.wav',
           instance.get<AppGlobal>().volumeApp);
+      DialogCommon().showInfoQuiz("${"player".tr()}2 + 1", context, colorMainTealPri);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
       setState(() {
         _score2++;
       });
@@ -103,6 +116,10 @@ class _HumanBattleScreenState extends State<PlayerDual> {
     } else {
       playSoundLocal(_playerCheck, 'wrong-choice.wav',
           instance.get<AppGlobal>().volumeApp);
+      DialogCommon().showInfoQuiz("${"player".tr()}2 Wrong", context, colorErrorPrimary);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
       setState(() {
         _falsePlayer2--;
         if (_falsePlayer2 == 0) {
@@ -221,7 +238,7 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                 Column(
                   children: [
                     SizedBox(
-                      height: 35.h,
+                      height: 34.h,
                       child: Column(
                         children: [
                           RotatedBox(
@@ -237,7 +254,7 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                       ),
                     ),
                     SizedBox(
-                      height: 20.h,
+                      height: 22.h,
                       child: Column(
                         children: [
                           SizedBox(
@@ -270,7 +287,7 @@ class _HumanBattleScreenState extends State<PlayerDual> {
                       ),
                     ),
                     SizedBox(
-                      height: 35.h,
+                      height: 34.h,
                       child: Column(
                         children: [
                           PlayerDualScreen(

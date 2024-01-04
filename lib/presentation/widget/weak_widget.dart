@@ -27,14 +27,15 @@ class WeakWidget extends StatelessWidget {
                   style: GoogleFonts.saira(color: colorBorder, fontSize: 20),
                 ),
               ),
-              Container(
-                alignment: Alignment.center,
-                child: (Text(
-                  '${'score'.tr()} : ${dataResult!.score!} / ${dataResult!.numQ!}',
-                  style:
-                      GoogleFonts.songMyung(color: colorBorder, fontSize: 14),
-                )),
-              )
+              if(dataResult!.numQ! == 11)
+                Container(
+                  alignment: Alignment.center,
+                  child: (Text(
+                    '${'score'.tr()} : ${dataResult!.score!} / 10',
+                    style:
+                        GoogleFonts.songMyung(color: colorBorder, fontSize: 14),
+                  )),
+                )
             ],
           )
         : Column(

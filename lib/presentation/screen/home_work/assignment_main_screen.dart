@@ -162,13 +162,15 @@ class AssignmentMainScreen extends StatelessWidget {
                                                   top: 0.5.h, bottom: 0.5.h),
                                               child: ItemCardHW(
                                                 onTap: () {
-                                                  showReviewHWDialog(snapshot
-                                                      .data![index].key!);
+                                                  if( snapshot.data![index].numQ! == 11) {
+                                                    showReviewHWDialog(snapshot
+                                                        .data![index].key!);
+                                                  }
                                                 },
                                                 colorBorder: colorMainTealPri,
                                                 childRight: Center(
-                                                    child: Text(
-                                                  'view'.tr().toString(),
+                                                    child: Text(snapshot.data![index].numQ! == 11 ?
+                                                  'view'.tr().toString() : "done".tr(),
                                                   style: GoogleFonts.aBeeZee(
                                                       color: colorMainTealPri,
                                                       fontSize: 20),

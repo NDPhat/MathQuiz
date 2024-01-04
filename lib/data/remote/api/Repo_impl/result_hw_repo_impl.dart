@@ -83,12 +83,24 @@ class ResultHWRepoImpl extends ResultHWRepo {
       if (req.statusCode == 200) {
         Map<String, dynamic> parsed = json.decode(req.body);
         List<ResultHWAPIModel>? result = ResultHWAPIRes.fromJson(parsed).lItems;
-        return result;
+        List<ResultHWAPIModel>? data = [];
+        result!.forEach((element) {
+          if(element.numQ == 11){
+            data.add(element);
+          }
+        });
+        return data;
       } else {
         // log(req.body);
         Map<String, dynamic> parsed = json.decode(req.body);
         List<ResultHWAPIModel>? result = ResultHWAPIRes.fromJson(parsed).lItems;
-        return result;
+        List<ResultHWAPIModel>? data = [];
+        result!.forEach((element) {
+          if(element.numQ == 11){
+            data.add(element);
+          }
+        });
+        return data;
       }
     } on SocketException catch (_) {
       return Future.error('No network found');

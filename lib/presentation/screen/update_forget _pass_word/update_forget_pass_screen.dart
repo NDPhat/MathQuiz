@@ -44,135 +44,150 @@ class UpdateForgetPasswordScreen extends StatelessWidget {
         animType: AnimType.topSlide,
         dismissOnTouchOutside: false,
         closeIcon: const Icon(Icons.close_fullscreen_outlined),
-        title: 'change password'.tr(),
+        title: "${'do you want to quit'.tr()}?",
         descTextStyle: s20GgBarColorMainTeal,
-        btnOkOnPress: () {},
+        btnOkOnPress: () {
+          Navigator.pushNamed(context, Routers.login);
+        },
+        btnCancelOnPress: () {},
       ).show();
     }
 
     String email = (ModalRoute.of(context)!.settings.arguments as String?) ??
         instance.get<UserGlobal>().email!;
     return Scaffold(
-        body: MainPageHomePG(
-      onBack: () {
-        showOutDialog();
-      },
-      colorTextAndIcon: Colors.black,
-      textNow: 'update password'.tr().toString(),
-      onPressHome: () {
-        if (instance.get<UserGlobal>().onLogin == true) {
-          Navigator.pushNamed(context, Routers.homeUser);
-        } else {
-          Navigator.pushNamed(context, Routers.homeGuest);
-        }
-      },
-      child: SingleChildScrollView(
-        child: Container(
-          height: 90.h,
-          padding: EdgeInsets.only(
-            left: 10.w,
-            right: 10.w,
-            bottom: 5.h,
-          ),
-          child: Column(
-            children: [
-              Image.asset(
-                'assets/images/image_update_pass.png',
-                height: 30.h,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'change your password.'.tr(),
-                  style: s16f400ColorGreyTe,
-                ),
-              ),
-              SizedBox(
-                height: 3.h,
-              ),
-              SizedBox(
-                height: 35.h,
-                child: Column(
-                  children: [
-                    BlocBuilder<UpdatePassCubit, UpdatePassState>(
-                        buildWhen: (pre, now) {
-                      return pre.passErrorMessage != now.passErrorMessage;
-                    }, builder: (BuildContext context, state) {
-                      return InputFieldWidget(
-                        hintText: 'your new password'.tr(),
-                        width: 80.w,
-                        height: 8.h,
-                        nameTitle: "new password".tr(),
-                        onChanged: (value) {
-                          context.read<UpdatePassCubit>().passChanged(value);
-                        },
-                        validateText: state.passErrorMessage,
-                        isHidden: state.passErrorMessage != "",
-                        icon: const Icon(Icons.fingerprint),
-                      );
-                    }),
-                    SizedBox(
-                      height: 3.h,
-                    ),
-                    BlocBuilder<UpdatePassCubit, UpdatePassState>(
-                        buildWhen: (pre, now) {
-                      return pre.confirmPassErrorMessage !=
-                          now.confirmPassErrorMessage;
-                    }, builder: (BuildContext context, state) {
-                      return InputFieldWidget(
-                        hintText: 're-your new password'.tr(),
-                        width: 80.w,
-                        height: 8.h,
-                        nameTitle: "re-new password".tr(),
-                        onChanged: (value) {
-                          context
-                              .read<UpdatePassCubit>()
-                              .confirmPassChange(value);
-                        },
-                        validateText: state.confirmPassErrorMessage,
-                        isHidden: state.confirmPassErrorMessage != "",
-                        icon: const Icon(Icons.key),
-                      );
-                    }),
-                  ],
-                ),
-              ),
-              BlocConsumer<UpdatePassCubit, UpdatePassState>(
-                  listener: (context, state) {
-                if (state.status == UpdatePassStatus.success) {
-                  showDoneDialog();
-                }
-              }, builder: (context, state) {
-                return RoundedButton(
-                    press: () {
-                      context.read<UpdatePassCubit>().clearData();
-                      context
-                          .read<UpdatePassCubit>()
-                          .updatePassWithCredentials(email);
-                    },
-                    color: colorSystemWhite,
-                    colorBorder: colorSystemYeloow,
-                    width: 80.w,
-                    height: 8.h,
-                    child: state.status == UpdatePassStatus.onLoading
-                        ? SizedBox(
-                            height: 10.h,
-                            child: const Center(
-                              child: CircularProgressIndicator(
-                                color: colorSystemYeloow,
-                                strokeWidth: 3,
-                              ),
+      resizeToAvoidBottomInset: true,
+      body: LayoutBuilder(builder: (context, constraint) {
+        return SingleChildScrollView(
+            child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: MainPageHomePG(
+                  onBack: () {
+                    showOutDialog();
+                  },
+                  colorTextAndIcon: Colors.black,
+                  textNow: 'update password'.tr().toString(),
+                  onPressHome: () {
+                    if (instance.get<UserGlobal>().onLogin == true) {
+                      Navigator.pushNamed(context, Routers.homeUser);
+                    } else {
+                      Navigator.pushNamed(context, Routers.homeGuest);
+                    }
+                  },
+                  child: SingleChildScrollView(
+                    child: Container(
+                      height: 90.h,
+                      padding: EdgeInsets.only(
+                        left: 10.w,
+                        right: 10.w,
+                        bottom: 5.h,
+                      ),
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/images/image_update_pass.png',
+                            height: 30.h,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'change your password.'.tr(),
+                              style: s16f400ColorGreyTe,
                             ),
-                          )
-                        : Text(
-                            'go'.tr(),
-                            style: s16f700ColorSysYel,
-                          ));
-              })
-            ],
-          ),
-        ),
-      ),
-    ));
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          SizedBox(
+                            height: 35.h,
+                            child: Column(
+                              children: [
+                                BlocBuilder<UpdatePassCubit, UpdatePassState>(
+                                    buildWhen: (pre, now) {
+                                  return pre.passErrorMessage !=
+                                      now.passErrorMessage;
+                                }, builder: (BuildContext context, state) {
+                                  return InputFieldWidget(
+                                    hintText: 'your new password'.tr(),
+                                    width: 80.w,
+                                    height: 8.h,
+                                    nameTitle: "new password".tr(),
+                                    onChanged: (value) {
+                                      context
+                                          .read<UpdatePassCubit>()
+                                          .passChanged(value);
+                                    },
+                                    validateText: state.passErrorMessage,
+                                    isHidden: state.passErrorMessage != "",
+                                    icon: const Icon(Icons.fingerprint),
+                                  );
+                                }),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                BlocBuilder<UpdatePassCubit, UpdatePassState>(
+                                    buildWhen: (pre, now) {
+                                  return pre.confirmPassErrorMessage !=
+                                      now.confirmPassErrorMessage;
+                                }, builder: (BuildContext context, state) {
+                                  return InputFieldWidget(
+                                    hintText: 're-your new password'.tr(),
+                                    width: 80.w,
+                                    height: 8.h,
+                                    nameTitle: "re-new password".tr(),
+                                    onChanged: (value) {
+                                      context
+                                          .read<UpdatePassCubit>()
+                                          .confirmPassChange(value);
+                                    },
+                                    validateText: state.confirmPassErrorMessage,
+                                    isHidden:
+                                        state.confirmPassErrorMessage != "",
+                                    icon: const Icon(Icons.key),
+                                  );
+                                }),
+                              ],
+                            ),
+                          ),
+                          BlocConsumer<UpdatePassCubit, UpdatePassState>(
+                              listener: (context, state) {
+                            if (state.status == UpdatePassStatus.success) {
+                              showDoneDialog();
+                            }
+                          }, builder: (context, state) {
+                            return RoundedButton(
+                                press: () {
+                                  context.read<UpdatePassCubit>().clearData();
+                                  context
+                                      .read<UpdatePassCubit>()
+                                      .updatePassWithCredentials(email);
+                                },
+                                color: colorSystemWhite,
+                                colorBorder: colorSystemYeloow,
+                                width: 80.w,
+                                height: 8.h,
+                                child:
+                                    state.status == UpdatePassStatus.onLoading
+                                        ? SizedBox(
+                                            height: 10.h,
+                                            child: const Center(
+                                              child: CircularProgressIndicator(
+                                                color: colorSystemYeloow,
+                                                strokeWidth: 3,
+                                              ),
+                                            ),
+                                          )
+                                        : Text(
+                                            'go'.tr(),
+                                            style: s16f700ColorSysYel,
+                                          ));
+                          })
+                        ],
+                      ),
+                    ),
+                  ),
+                )));
+      }),
+    );
   }
 }

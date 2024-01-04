@@ -28,17 +28,15 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   /// LANGUAGE
-  runApp(DevicePreview(
-    builder: (context) => EasyLocalization(
-        supportedLocales: const [
-          Locale("vi", "VI"),
-          Locale("en", "EN"),
-        ],
-        path: "resources/langs",
-        saveLocale: true,
-        fallbackLocale: const Locale("en", "EN"),
-        child: const RestartWidget(child: MathQuizApp())), // Wrap your app
-  ));
+  runApp(EasyLocalization(
+      supportedLocales: const [
+        Locale("vi", "VI"),
+        Locale("en", "EN"),
+      ],
+      path: "resources/langs",
+      saveLocale: true,
+      fallbackLocale: const Locale("en", "EN"),
+      child: const RestartWidget(child: MathQuizApp())));
 }
 
 class MathQuizApp extends StatelessWidget {

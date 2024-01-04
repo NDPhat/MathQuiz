@@ -67,336 +67,339 @@ class _DetailMixGameScreenState extends State<DetailMixGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         backgroundColor: colorSystemWhite,
-        body: MainPageHomePG(
-            onBack: () {
-              Navigator.pushNamed(context, Routers.dataSheetScreen);
-            },
-            textNow: "${'test'.tr()} ${'data sheet'.tr().toLowerCase()}",
-            onPressHome: () {
-              showSettingDialog();
-            },
-            iconRight: const Icon(
-              Icons.settings,
-              color: Colors.black,
-            ),
-            colorTextAndIcon: Colors.black,
-            child: Container(
-              height: 90.h,
-              padding: EdgeInsets.only(left: 5.w, right: 5.w),
-              child: Column(children: [
-                Column(
-                  children: [
-                    const ChartSeasonTest(),
-                    Center(
-                        child: Text(
-                      "detailed test data".tr(),
-                      style: s14f500ColorMainTe,
-                    ))
-                  ],
-                ),
-                SizedBox(
-                  height: 1.h,
-                ),
-                Container(
-                  height: 1,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 2, color: colorGrayBG),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 1.h),
-                SizedBox(
-                  height: 5.h,
-                  width: 100.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: SingleChildScrollView(
+          child: MainPageHomePG(
+              onBack: () {
+                Navigator.pushNamed(context, Routers.dataSheetScreen);
+              },
+              textNow: "${'test'.tr()} ${'data sheet'.tr().toLowerCase()}",
+              onPressHome: () {
+                showSettingDialog();
+              },
+              iconRight: const Icon(
+                Icons.settings,
+                color: Colors.black,
+              ),
+              colorTextAndIcon: Colors.black,
+              child: Container(
+                height: 90.h,
+                padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                child: Column(children: [
+                  Column(
                     children: [
-                      SizedBox(
-                        width: 90.w,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            renderSortText(),
-                            BlocBuilder<DetailTestCubit, DetailTestState>(
-                                buildWhen: (pre, now) {
-                              return pre.scoreChoose != now.scoreChoose;
-                            }, builder: (context, state) {
-                              return renderScoreChoose(context, state);
-                            }),
-                            BlocBuilder<DetailTestCubit, DetailTestState>(
-                                buildWhen: (pre, now) {
-                              return pre.dayChoose != now.dayChoose;
-                            }, builder: (context, state) {
-                              return renderDayChoose(context, state);
-                            }),
-                          ],
-                        ),
-                      ),
+                      const ChartSeasonTest(),
+                      Center(
+                          child: Text(
+                        "detailed test data".tr(),
+                        style: s14f500ColorMainTe,
+                      ))
                     ],
                   ),
-                ),
-                BlocBuilder<DetailTestCubit, DetailTestState>(
-                    buildWhen: (pre, now) {
-                  return pre.pageNow != now.pageNow ||
-                      pre.posts != now.posts ||
-                      pre.dayChoose != now.dayChoose ||
-                      pre.scoreChoose != now.scoreChoose;
-                }, builder: (context, state) {
-                  return SizedBox(
-                      height: 45.h,
-                      child: state.posts!.isNotEmpty
-                          ? CustomScrollView(slivers: [
-                              SliverList(
-                                  delegate: SliverChildBuilderDelegate(
-                                childCount: state.posts!.length,
-                                (context, index) {
-                                  int totalQ = 0;
-                                  int score = 0;
-                                  for (var element in state.posts!) {
-                                    totalQ = totalQ + element.numQ!;
-                                    score = score + element.score!;
-                                  }
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 0.5.h, bottom: 0.5.h),
-                                    child: ItemAsyncDataDetail(
-                                      totalQuiz: state.posts![index].numQ.toString(),
-                                      score: state.posts![index].score.toString(),
-                                      colorBorder: colorSystemYeloow,
-                                      textTitle:
-                                          "${'task'.tr()} ${index + 1 + (state.pageNow - 1) * 5}",
-                                      childRight: SizedBox(
-                                        width: 45.w,
-                                        child: FutureBuilder<
-                                                List<QuizTestAPIModel>?>(
-                                            future: instance
-                                                .get<QuizTestRepo>()
-                                                .getALlQuizTestByPreTestID(
-                                                    state.posts![index].key!),
-                                            builder: (context, snapshotChild) {
-                                              if (snapshotChild.hasData) {
-                                                int signAddTrue = 0;
-                                                int signSubTrue = 0;
-                                                int signMulTrue = 0;
-                                                int signDiviTrue = 0;
-                                                int signAddFalse = 0;
-                                                int signSubFalse = 0;
-                                                int signMulFalse = 0;
-                                                int signDiviFalse = 0;
-                                                for (int i = 0;
-                                                    i <
-                                                        snapshotChild
-                                                            .data!.length;
-                                                    i++) {
-                                                  int sign = getSign(
-                                                      quiz: snapshotChild
-                                                          .data![i].quiz!);
-                                                  if (snapshotChild
-                                                          .data![i].infoQuiz ==
-                                                      true) {
-                                                    switch (sign) {
-                                                      case 0:
-                                                        signAddTrue++;
-                                                        break;
-                                                      case 1:
-                                                        signSubTrue++;
-                                                        break;
-                                                      case 2:
-                                                        signMulTrue++;
-                                                        break;
-                                                      case 3:
-                                                        signDiviTrue++;
-                                                        break;
-                                                    }
-                                                  } else {
-                                                    switch (sign) {
-                                                      case 0:
-                                                        signAddFalse++;
-                                                        break;
-                                                      case 1:
-                                                        signSubFalse++;
-                                                        break;
-                                                      case 2:
-                                                        signMulFalse++;
-                                                        break;
-                                                      case 3:
-                                                        signDiviFalse++;
-                                                        break;
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Container(
+                    height: 1,
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 2, color: colorGrayBG),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 1.h),
+                  SizedBox(
+                    height: 5.h,
+                    width: 100.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 90.w,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              renderSortText(),
+                              BlocBuilder<DetailTestCubit, DetailTestState>(
+                                  buildWhen: (pre, now) {
+                                return pre.scoreChoose != now.scoreChoose;
+                              }, builder: (context, state) {
+                                return renderScoreChoose(context, state);
+                              }),
+                              BlocBuilder<DetailTestCubit, DetailTestState>(
+                                  buildWhen: (pre, now) {
+                                return pre.dayChoose != now.dayChoose;
+                              }, builder: (context, state) {
+                                return renderDayChoose(context, state);
+                              }),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  BlocBuilder<DetailTestCubit, DetailTestState>(
+                      buildWhen: (pre, now) {
+                    return pre.pageNow != now.pageNow ||
+                        pre.posts != now.posts ||
+                        pre.dayChoose != now.dayChoose ||
+                        pre.scoreChoose != now.scoreChoose;
+                  }, builder: (context, state) {
+                    return SizedBox(
+                        height: 45.h,
+                        child: state.posts!.isNotEmpty
+                            ? CustomScrollView(slivers: [
+                                SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                  childCount: state.posts!.length,
+                                  (context, index) {
+                                    int totalQ = 0;
+                                    int score = 0;
+                                    for (var element in state.posts!) {
+                                      totalQ = totalQ + element.numQ!;
+                                      score = score + element.score!;
+                                    }
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 0.5.h, bottom: 0.5.h),
+                                      child: ItemAsyncDataDetail(
+                                        totalQuiz: state.posts![index].numQ.toString(),
+                                        score: state.posts![index].score.toString(),
+                                        colorBorder: colorSystemYeloow,
+                                        textTitle:
+                                            "${'task'.tr()} ${index + 1 + (state.pageNow - 1) * 5}",
+                                        childRight: SizedBox(
+                                          width: 45.w,
+                                          child: FutureBuilder<
+                                                  List<QuizTestAPIModel>?>(
+                                              future: instance
+                                                  .get<QuizTestRepo>()
+                                                  .getALlQuizTestByPreTestID(
+                                                      state.posts![index].key!),
+                                              builder: (context, snapshotChild) {
+                                                if (snapshotChild.hasData) {
+                                                  int signAddTrue = 0;
+                                                  int signSubTrue = 0;
+                                                  int signMulTrue = 0;
+                                                  int signDiviTrue = 0;
+                                                  int signAddFalse = 0;
+                                                  int signSubFalse = 0;
+                                                  int signMulFalse = 0;
+                                                  int signDiviFalse = 0;
+                                                  for (int i = 0;
+                                                      i <
+                                                          snapshotChild
+                                                              .data!.length;
+                                                      i++) {
+                                                    int sign = getSign(
+                                                        quiz: snapshotChild
+                                                            .data![i].quiz!);
+                                                    if (snapshotChild
+                                                            .data![i].infoQuiz ==
+                                                        true) {
+                                                      switch (sign) {
+                                                        case 0:
+                                                          signAddTrue++;
+                                                          break;
+                                                        case 1:
+                                                          signSubTrue++;
+                                                          break;
+                                                        case 2:
+                                                          signMulTrue++;
+                                                          break;
+                                                        case 3:
+                                                          signDiviTrue++;
+                                                          break;
+                                                      }
+                                                    } else {
+                                                      switch (sign) {
+                                                        case 0:
+                                                          signAddFalse++;
+                                                          break;
+                                                        case 1:
+                                                          signSubFalse++;
+                                                          break;
+                                                        case 2:
+                                                          signMulFalse++;
+                                                          break;
+                                                        case 3:
+                                                          signDiviFalse++;
+                                                          break;
+                                                      }
                                                     }
                                                   }
+                                                  List<ChartDataWeek> dataList = [
+                                                    ChartDataWeek(
+                                                        "+",
+                                                        signAddTrue,
+                                                        signAddFalse),
+                                                    ChartDataWeek(
+                                                        "-",
+                                                        signSubTrue,
+                                                        signSubFalse),
+                                                    ChartDataWeek(
+                                                        "x",
+                                                        signMulTrue,
+                                                        signMulFalse),
+                                                    ChartDataWeek(
+                                                        "/",
+                                                        signDiviTrue,
+                                                        signDiviFalse),
+                                                  ];
+                                                  return SfCartesianChart(
+                                                      plotAreaBorderColor:
+                                                          colorMainBlue,
+                                                      plotAreaBorderWidth: 0,
+                                                      primaryXAxis: CategoryAxis(
+                                                        majorGridLines:
+                                                            const MajorGridLines(
+                                                                width: 0),
+                                                        //Hide the axis line of x-axis
+                                                      ),
+                                                      primaryYAxis: NumericAxis(
+                                                        //Hide the gridlines of y-axis
+                                                        majorGridLines:
+                                                            const MajorGridLines(
+                                                                width: 0),
+                                                        //Hide the axis line of y-axis
+                                                      ),
+                                                      series: <CartesianSeries<
+                                                          ChartDataWeek, String>>[
+                                                        ColumnSeries<
+                                                            ChartDataWeek,
+                                                            String>(
+                                                          color: colorMainBlue,
+                                                          dataSource: dataList,
+                                                          xValueMapper:
+                                                              (ChartDataWeek
+                                                                          chart,
+                                                                      _) =>
+                                                                  chart.x,
+                                                          yValueMapper:
+                                                              (ChartDataWeek
+                                                                          chart,
+                                                                      _) =>
+                                                                  chart.y,
+                                                          dataLabelSettings:
+                                                              const DataLabelSettings(
+                                                                  color:
+                                                                      colorMainBlue,
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                          fontSize:
+                                                                              2)),
+                                                        ),
+                                                        ColumnSeries<
+                                                            ChartDataWeek,
+                                                            String>(
+                                                          color:
+                                                              colorErrorPrimary,
+                                                          dataSource: dataList,
+                                                          xValueMapper:
+                                                              (ChartDataWeek
+                                                                          chart,
+                                                                      _) =>
+                                                                  chart.x,
+                                                          yValueMapper:
+                                                              (ChartDataWeek
+                                                                          chart,
+                                                                      _) =>
+                                                                  chart.y1,
+                                                          dataLabelSettings:
+                                                              const DataLabelSettings(
+                                                                  color:
+                                                                      colorMainBlue,
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                          fontSize:
+                                                                              2)),
+                                                        ),
+                                                      ]);
+                                                } else {
+                                                  return Container();
                                                 }
-                                                List<ChartDataWeek> dataList = [
-                                                  ChartDataWeek(
-                                                      "+",
-                                                      signAddTrue,
-                                                      signAddFalse),
-                                                  ChartDataWeek(
-                                                      "-",
-                                                      signSubTrue,
-                                                      signSubFalse),
-                                                  ChartDataWeek(
-                                                      "x",
-                                                      signMulTrue,
-                                                      signMulFalse),
-                                                  ChartDataWeek(
-                                                      "/",
-                                                      signDiviTrue,
-                                                      signDiviFalse),
-                                                ];
-                                                return SfCartesianChart(
-                                                    plotAreaBorderColor:
-                                                        colorMainBlue,
-                                                    plotAreaBorderWidth: 0,
-                                                    primaryXAxis: CategoryAxis(
-                                                      majorGridLines:
-                                                          const MajorGridLines(
-                                                              width: 0),
-                                                      //Hide the axis line of x-axis
-                                                    ),
-                                                    primaryYAxis: NumericAxis(
-                                                      //Hide the gridlines of y-axis
-                                                      majorGridLines:
-                                                          const MajorGridLines(
-                                                              width: 0),
-                                                      //Hide the axis line of y-axis
-                                                    ),
-                                                    series: <CartesianSeries<
-                                                        ChartDataWeek, String>>[
-                                                      ColumnSeries<
-                                                          ChartDataWeek,
-                                                          String>(
-                                                        color: colorMainBlue,
-                                                        dataSource: dataList,
-                                                        xValueMapper:
-                                                            (ChartDataWeek
-                                                                        chart,
-                                                                    _) =>
-                                                                chart.x,
-                                                        yValueMapper:
-                                                            (ChartDataWeek
-                                                                        chart,
-                                                                    _) =>
-                                                                chart.y,
-                                                        dataLabelSettings:
-                                                            const DataLabelSettings(
-                                                                color:
-                                                                    colorMainBlue,
-                                                                textStyle:
-                                                                    TextStyle(
-                                                                        fontSize:
-                                                                            2)),
-                                                      ),
-                                                      ColumnSeries<
-                                                          ChartDataWeek,
-                                                          String>(
-                                                        color:
-                                                            colorErrorPrimary,
-                                                        dataSource: dataList,
-                                                        xValueMapper:
-                                                            (ChartDataWeek
-                                                                        chart,
-                                                                    _) =>
-                                                                chart.x,
-                                                        yValueMapper:
-                                                            (ChartDataWeek
-                                                                        chart,
-                                                                    _) =>
-                                                                chart.y1,
-                                                        dataLabelSettings:
-                                                            const DataLabelSettings(
-                                                                color:
-                                                                    colorMainBlue,
-                                                                textStyle:
-                                                                    TextStyle(
-                                                                        fontSize:
-                                                                            2)),
-                                                      ),
-                                                    ]);
-                                              } else {
-                                                return Container();
-                                              }
-                                            }),
+                                              }),
+                                        ),
+                                        timeSave:
+                                            "${state.posts![index].dateSave}",
+                                        onPress: () {
+                                          Navigator.pushNamed(
+                                              context, Routers.checkAnswerTest,
+                                              arguments: state.posts![index].key);
+                                        },
                                       ),
-                                      timeSave:
-                                          "${state.posts![index].dateSave}",
-                                      onPress: () {
-                                        Navigator.pushNamed(
-                                            context, Routers.checkAnswerTest,
-                                            arguments: state.posts![index].key);
-                                      },
-                                    ),
-                                  );
-                                },
-                              ))
-                            ])
-                          : Center(
-                              child: Text(
-                                'NOTHING ADDED !!'.tr(),
-                                style: GoogleFonts.abel(
-                                    color: colorMainTealPri, fontSize: 20),
-                              ),
-                            ));
-                }),
-                Container(
-                  padding: EdgeInsets.only(right: 5.w),
-                  width: 100.w,
-                  child:
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    BlocBuilder<DetailTestCubit, DetailTestState>(
-                        buildWhen: (pre, now) {
-                      return pre.pageNow != now.pageNow;
-                    }, builder: (context, state) {
-                      return DotPageIndicator(
-                        colorBorder: colorMainBlue,
-                        icon: SvgPicture.asset(
-                          "assets/icon/back.svg",
-                          color: colorMainBlue,
-                          fit: BoxFit.cover,
-                        ),
-                        onTap: () {
-                          context.read<DetailTestCubit>().pageMinus();
-                        },
-                      );
-                    }),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    BlocBuilder<DetailTestCubit, DetailTestState>(
-                        buildWhen: (pre, now) {
-                      return pre.pageNow != now.pageNow ||
-                          pre.posts != now.posts;
-                    }, builder: (context, state) {
-                      return DotIndicator(
-                        totalPage: findLength(state.lengthNow).toString(),
-                        colorBorder: colorErrorPrimary,
-                        pageIndex: state.pageNow.toString(),
-                      );
-                    }),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    BlocBuilder<DetailTestCubit, DetailTestState>(
-                        buildWhen: (pre, now) {
-                      return pre.pageNow != now.pageNow;
-                    }, builder: (context, state) {
-                      return DotPageIndicator(
-                        colorBorder: colorMainBlue,
-                        icon: SvgPicture.asset(
-                          "assets/icon/next.svg",
-                          color: colorMainBlue,
-                          fit: BoxFit.cover,
-                        ),
-                        onTap: () {
-                          context.read<DetailTestCubit>().pagePlus();
-                        },
-                      );
-                    })
-                  ]),
-                )
-              ]),
-            )));
+                                    );
+                                  },
+                                ))
+                              ])
+                            : Center(
+                                child: Text(
+                                  'NOTHING ADDED !!'.tr(),
+                                  style: GoogleFonts.abel(
+                                      color: colorMainTealPri, fontSize: 20),
+                                ),
+                              ));
+                  }),
+                  Container(
+                    padding: EdgeInsets.only(right: 5.w),
+                    width: 100.w,
+                    child:
+                        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      BlocBuilder<DetailTestCubit, DetailTestState>(
+                          buildWhen: (pre, now) {
+                        return pre.pageNow != now.pageNow;
+                      }, builder: (context, state) {
+                        return DotPageIndicator(
+                          colorBorder: colorMainBlue,
+                          icon: SvgPicture.asset(
+                            "assets/icon/back.svg",
+                            color: colorMainBlue,
+                            fit: BoxFit.cover,
+                          ),
+                          onTap: () {
+                            context.read<DetailTestCubit>().pageMinus();
+                          },
+                        );
+                      }),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      BlocBuilder<DetailTestCubit, DetailTestState>(
+                          buildWhen: (pre, now) {
+                        return pre.pageNow != now.pageNow ||
+                            pre.posts != now.posts;
+                      }, builder: (context, state) {
+                        return DotIndicator(
+                          totalPage: findLength(state.lengthNow).toString(),
+                          colorBorder: colorErrorPrimary,
+                          pageIndex: state.pageNow.toString(),
+                        );
+                      }),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      BlocBuilder<DetailTestCubit, DetailTestState>(
+                          buildWhen: (pre, now) {
+                        return pre.pageNow != now.pageNow;
+                      }, builder: (context, state) {
+                        return DotPageIndicator(
+                          colorBorder: colorMainBlue,
+                          icon: SvgPicture.asset(
+                            "assets/icon/next.svg",
+                            color: colorMainBlue,
+                            fit: BoxFit.cover,
+                          ),
+                          onTap: () {
+                            context.read<DetailTestCubit>().pagePlus();
+                          },
+                        );
+                      })
+                    ]),
+                  )
+                ]),
+              )),
+        ));
   }
 
   Text renderSortText() {

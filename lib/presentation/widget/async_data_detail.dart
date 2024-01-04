@@ -84,7 +84,7 @@ class ItemAsyncDataDetail extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(right: 5.w),
                     alignment: Alignment.centerRight,
-                    height: 3.w,
+                    height: 2.h,
                     width: 65.w,
                     child: Text(
                       timeSave,

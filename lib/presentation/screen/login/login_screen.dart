@@ -32,14 +32,14 @@ class _LoginUserApp extends State<LoginUserApp> {
 
   Future showLoginFailDialog() {
     return AwesomeDialog(
-            context: context,
-            dialogType: DialogType.warning,
-            headerAnimationLoop: false,
-            animType: AnimType.topSlide,
-            dismissOnTouchOutside: false,
-            desc: 'login fail'.tr(),
-            descTextStyle: s20GgBarColorMainTeal,
-            btnCancelOnPress: () {})
+        context: context,
+        dialogType: DialogType.warning,
+        headerAnimationLoop: false,
+        animType: AnimType.topSlide,
+        dismissOnTouchOutside: false,
+        desc: 'login fail'.tr(),
+        descTextStyle: s20GgBarColorMainTeal,
+        btnCancelOnPress: () {})
         .show();
   }
 
@@ -48,179 +48,187 @@ class _LoginUserApp extends State<LoginUserApp> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: colorMainBlue,
-      body: MainPageHomePG(
-        colorTextAndIcon: colorBlackSys,
-        onBack: () {
-          Navigator.pushNamed(context, Routers.chooseOptionUseApp);
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 100.w,
-                height: 35.h,
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/splash.png',
-                      height: 20.h,
-                    ),
-                    sizedBox,
-                    Text('Hi Student',
-                        style: GoogleFonts.cabin(
-                            color: colorSystemWhite,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700)),
-                    Text('sign in to continue'.tr(),
-                        style: GoogleFonts.cabin(
-                            color: colorSystemWhite,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700)),
-                    sizedBox,
-                  ],
-                ),
-              ),
-              Container(
-                height: 55.h,
-                padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                decoration: BoxDecoration(
-                  color: colorSystemWhite,
-                  //reusable radius,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10.h),
-                      topLeft: Radius.circular(10.h)),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 4.h,
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                      child: Column(
-                        children: [
-                          BlocBuilder<LoginCubit, LoginState>(
-                              buildWhen: (pre, now) {
-                            return pre.emailError != now.emailError;
-                          }, builder: (BuildContext context, state) {
-                            return InputFieldWidget(
-                              hintText: 'your email'.tr(),
-                              nameTitle: 'email'.tr(),
-                              width: 80.w,
-                              height: 8.h,
-                              onChanged: (value) {
-                                context.read<LoginCubit>().emailChanged(value);
-                              },
-                              validateText: state.emailError,
-                              isHidden: state.emailError != "",
-                              icon: const Icon(Icons.email_outlined),
-                            );
-                          }),
-                          SizedBox(
-                            height: 2.5.h,
+      body: LayoutBuilder(
+          builder: (context, constraint) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: MainPageHomePG(
+                  colorTextAndIcon: colorBlackSys,
+                  onBack: () {
+                    Navigator.pushNamed(context, Routers.chooseOptionUseApp);
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: 100.w,
+                          height: 35.h,
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/splash.png',
+                                height: 20.h,
+                              ),
+                              sizedBox,
+                              Text('Hi Student',
+                                  style: GoogleFonts.cabin(
+                                      color: colorSystemWhite,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700)),
+                              Text('sign in to continue'.tr(),
+                                  style: GoogleFonts.cabin(
+                                      color: colorSystemWhite,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700)),
+                              sizedBox,
+                            ],
                           ),
-                          BlocBuilder<LoginCubit, LoginState>(
-                              buildWhen: (pre, now) {
-                            return pre.passError != now.passError;
-                          }, builder: (BuildContext context, state) {
-                            return InputFieldWidget(
-                              hintText: 'your password'.tr(),
-                              nameTitle: 'password'.tr(),
-                              width: 80.w,
-                              height: 8.h,
-                              onChanged: (value) {
-                                context.read<LoginCubit>().passChanged(value);
-                              },
-                              iconRight: _obscureText
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        _toggle();
-                                      },
-                                      child: const Icon(Icons.visibility_off))
-                                  : GestureDetector(
-                                      onTap: () {
-                                        _toggle();
-                                      },
-                                      child: const Icon(Icons.visibility)),
-                              validateText: state.passError,
-                              isHidden: state.passError != "",
-                              showValue: _obscureText,
-                              icon: const Icon(Icons.fingerprint),
-                            );
-                          }),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ForgetPassWidget(
-                            onForget: () {
-                              Navigator.pushNamed(context, Routers.forgetPass);
-                            },
+                        ),
+                        Container(
+                          height: 55.h,
+                          padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                          decoration: BoxDecoration(
+                            color: colorSystemWhite,
+                            //reusable radius,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(10.h),
+                                topLeft: Radius.circular(10.h)),
                           ),
-                          SizedBox(
-                            height: 10.h,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                BlocConsumer<LoginCubit, LoginState>(
-                                    listener: (context, state) {
-                                  if (state.status == LoginStatus.success) {
-                                    Navigator.pushNamed(
-                                        context, Routers.homeUser);
-                                  } else if (state.status ==
-                                      LoginStatus.error) {
-                                    showLoginFailDialog();
-                                  }
-                                }, builder: (context, state) {
-                                  return CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: colorMainBlue,
-                                    child: state.status == LoginStatus.onLoading
-                                        ? SizedBox(
-                                            height: 10.h,
-                                            child: const Center(
-                                              child: CircularProgressIndicator(
-                                                color: colorSystemWhite,
-                                                strokeWidth: 3,
-                                              ),
-                                            ),
-                                          )
-                                        : IconButton(
-                                            color: Colors.white,
-                                            onPressed: () async {
-                                              context
-                                                  .read<LoginCubit>()
-                                                  .clearData();
-                                              await context
-                                                  .read<LoginCubit>()
-                                                  .loginAppWithEmailAndPass();
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 4.h,
+                              ),
+                              SizedBox(
+                                height: 30.h,
+                                child: Column(
+                                  children: [
+                                    BlocBuilder<LoginCubit, LoginState>(
+                                        buildWhen: (pre, now) {
+                                          return pre.emailError != now.emailError;
+                                        }, builder: (BuildContext context, state) {
+                                      return InputFieldWidget(
+                                        hintText: 'your email'.tr(),
+                                        nameTitle: 'email'.tr(),
+                                        width: 80.w,
+                                        height: 8.h,
+                                        onChanged: (value) {
+                                          context.read<LoginCubit>().emailChanged(value);
+                                        },
+                                        validateText: state.emailError,
+                                        isHidden: state.emailError != "",
+                                        icon: const Icon(Icons.email_outlined),
+                                      );
+                                    }),
+                                    SizedBox(
+                                      height: 2.5.h,
+                                    ),
+                                    BlocBuilder<LoginCubit, LoginState>(
+                                        buildWhen: (pre, now) {
+                                          return pre.passError != now.passError;
+                                        }, builder: (BuildContext context, state) {
+                                      return InputFieldWidget(
+                                        hintText: 'your password'.tr(),
+                                        nameTitle: 'password'.tr(),
+                                        width: 80.w,
+                                        height: 8.h,
+                                        onChanged: (value) {
+                                          context.read<LoginCubit>().passChanged(value);
+                                        },
+                                        iconRight: _obscureText
+                                            ? GestureDetector(
+                                            onTap: () {
+                                              _toggle();
                                             },
-                                            icon: const Icon(
-                                              Icons.arrow_forward,
-                                              size: 30,
-                                            )),
-                                  );
-                                })
-                              ],
-                            ),
+                                            child: const Icon(Icons.visibility_off))
+                                            : GestureDetector(
+                                            onTap: () {
+                                              _toggle();
+                                            },
+                                            child: const Icon(Icons.visibility)),
+                                        validateText: state.passError,
+                                        isHidden: state.passError != "",
+                                        showValue: _obscureText,
+                                        icon: const Icon(Icons.fingerprint),
+                                      );
+                                    }),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2.h,
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ForgetPassWidget(
+                                      onForget: () {
+                                        Navigator.pushNamed(context, Routers.forgetPass);
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          BlocConsumer<LoginCubit, LoginState>(
+                                              listener: (context, state) {
+                                                if (state.status == LoginStatus.success) {
+                                                  Navigator.pushNamed(
+                                                      context, Routers.homeUser);
+                                                } else if (state.status ==
+                                                    LoginStatus.error) {
+                                                  showLoginFailDialog();
+                                                }
+                                              }, builder: (context, state) {
+                                            return CircleAvatar(
+                                              radius: 50,
+                                              backgroundColor: colorMainBlue,
+                                              child: state.status == LoginStatus.onLoading
+                                                  ? SizedBox(
+                                                height: 10.h,
+                                                child: const Center(
+                                                  child: CircularProgressIndicator(
+                                                    color: colorSystemWhite,
+                                                    strokeWidth: 3,
+                                                  ),
+                                                ),
+                                              )
+                                                  : IconButton(
+                                                  color: Colors.white,
+                                                  onPressed: () async {
+                                                    context
+                                                        .read<LoginCubit>()
+                                                        .clearData();
+                                                    await context
+                                                        .read<LoginCubit>()
+                                                        .loginAppWithEmailAndPass();
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.arrow_forward,
+                                                    size: 30,
+                                                  )),
+                                            );
+                                          })
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
+            );}
       ),
     );
   }

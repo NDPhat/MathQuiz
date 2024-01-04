@@ -68,7 +68,7 @@ class DataSheetUserScreen extends StatelessWidget {
                             int totalQ = 0;
                             int score = 0;
                             for (var element in snapshot.data!) {
-                              totalQ = totalQ + element.numQ!;
+                              totalQ = totalQ + 10;
                               score = score + element.score!;
                             }
                             return ItemAsyncDataPageHome(

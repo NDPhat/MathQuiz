@@ -49,14 +49,9 @@ class HomeProfileUserScreen extends StatelessWidget {
                     sizedBox,
                     Stack(
                       children: [
-                        Container(
+                        SizedBox(
                             width: 22.w,
                             height: 10.h,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(60)),
-                                border: Border.all(color: colorSystemYeloow),
-                                color: colorSystemWhite),
                             child: CircleAvatar(
                               radius: 60,
                               backgroundColor: colorSystemYeloow,

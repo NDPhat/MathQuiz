@@ -56,7 +56,7 @@ class PortraitModeHomeWork extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(top: 10.h),
+                      padding: EdgeInsets.only(top: 8.h),
                       alignment: Alignment.centerRight,
                       child: QuizBodyHW(quizBrainObject: quizBrainObject),
                     ),

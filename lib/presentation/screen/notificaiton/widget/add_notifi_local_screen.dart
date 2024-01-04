@@ -62,6 +62,7 @@ class AddNotifyScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: colorSystemYeloow,
       body: MainPageHomePG(
         textNow: "",

@@ -77,147 +77,149 @@ class _DetailItemCardPracticesState extends State<DetailItemCardPractices> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: colorSystemWhite,
-      body: MainPageHomePG(
-        onBack: () {
-          Navigator.pushNamed(context, Routers.dataSheetScreen);
-        },
-        textNow: "${'practice'.tr()} ${'data sheet'.tr().toLowerCase()}",
-        onPressHome: () {
-          showSettingDialog();
-        },
-        iconRight: const Icon(
-          Icons.settings,
-          color: Colors.black,
-        ),
-        colorTextAndIcon: Colors.black,
-        child: Container(
-          height: 90.h,
-          padding: EdgeInsets.only(left: 5.w, right: 5.w),
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  ChartSeasonPra(
-                    typeGame: type,
-                  ),
-                  Center(
-                      child: Text(
-                    "detailed data".tr(),
-                    style: s14f500ColorMainTe,
-                  ))
-                ],
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              Container(
-                height: 1,
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 2, color: colorGrayBG),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              SizedBox(
-                height: 5.h,
-                width: 100.w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: SingleChildScrollView(
+        child: MainPageHomePG(
+          onBack: () {
+            Navigator.pushNamed(context, Routers.dataSheetScreen);
+          },
+          textNow: "${'practice'.tr()} ${'data sheet'.tr().toLowerCase()}",
+          onPressHome: () {
+            showSettingDialog();
+          },
+          iconRight: const Icon(
+            Icons.settings,
+            color: Colors.black,
+          ),
+          colorTextAndIcon: Colors.black,
+          child: Container(
+            height: 90.h,
+            padding: EdgeInsets.only(left: 5.w, right: 5.w),
+            child: Column(
+              children: [
+                Column(
                   children: [
-                    SizedBox(
-                      width: 48.w,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          renderSortText(),
-                          BlocBuilder<DetailPracticesCubit,
-                              DetailPracticesState>(buildWhen: (pre, now) {
-                            return pre.scoreChoose != now.scoreChoose;
-                          }, builder: (context, state) {
-                            return renderScoreChoose(context, state);
-                          }),
-                          BlocBuilder<DetailPracticesCubit,
-                              DetailPracticesState>(buildWhen: (pre, now) {
-                            return pre.dayChoose != now.dayChoose;
-                          }, builder: (context, state) {
-                            return renderDayChoose(context, state);
-                          }),
-                        ],
-                      ),
+                    ChartSeasonPra(
+                      typeGame: type,
                     ),
-                    SizedBox(
-                      width: 40.w,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          renderFilterText(),
-                          SizedBox(
-                              width: 25.w,
-                              height: 3.h,
-                              child: BlocBuilder<DetailPracticesCubit,
-                                  DetailPracticesState>(buildWhen: (pre, now) {
-                                return pre.signFilter != now.signFilter;
-                              }, builder: (context, state) {
-                                return renderFilter(state, context);
-                              })),
-                        ],
-                      ),
-                    ),
+                    Center(
+                        child: Text(
+                      "detailed data".tr(),
+                      style: s14f500ColorMainTe,
+                    ))
                   ],
                 ),
-              ),
-
-              /// LIST DATA
-              BlocBuilder<DetailPracticesCubit, DetailPracticesState>(
-                  buildWhen: (pre, now) {
-                return pre.pageNow != now.pageNow ||
-                    pre.posts != now.posts ||
-                    pre.dayChoose != now.dayChoose ||
-                    pre.scoreChoose != now.scoreChoose;
-              }, builder: (context, state) {
-                return renderListData(state);
-              }),
-
-              /// DOT INDICATOR
-              Container(
-                padding: EdgeInsets.only(right: 5.w),
-                width: 100.w,
-                child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  /// MINUS
-                  BlocBuilder<DetailPracticesCubit, DetailPracticesState>(
-                      buildWhen: (pre, now) {
-                    return pre.pageNow != now.pageNow;
-                  }, builder: (context, state) {
-                    return renderMinusPage(context);
-                  }),
-                  SizedBox(
-                    width: 2.w,
+                SizedBox(
+                  height: 1.h,
+                ),
+                Container(
+                  height: 1,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 2, color: colorGrayBG),
+                    ),
                   ),
-
-                  /// VALUE
-                  BlocBuilder<DetailPracticesCubit, DetailPracticesState>(
-                      buildWhen: (pre, now) {
-                    return pre.pageNow != now.pageNow || pre.posts != now.posts;
-                  }, builder: (context, state) {
-                    return renderPageValue(state);
-                  }),
-                  SizedBox(
-                    width: 2.w,
+                ),
+                SizedBox(
+                  height: 1.h,
+                ),
+                SizedBox(
+                  height: 5.h,
+                  width: 100.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 48.w,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            renderSortText(),
+                            BlocBuilder<DetailPracticesCubit,
+                                DetailPracticesState>(buildWhen: (pre, now) {
+                              return pre.scoreChoose != now.scoreChoose;
+                            }, builder: (context, state) {
+                              return renderScoreChoose(context, state);
+                            }),
+                            BlocBuilder<DetailPracticesCubit,
+                                DetailPracticesState>(buildWhen: (pre, now) {
+                              return pre.dayChoose != now.dayChoose;
+                            }, builder: (context, state) {
+                              return renderDayChoose(context, state);
+                            }),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 40.w,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            renderFilterText(),
+                            SizedBox(
+                                width: 25.w,
+                                height: 3.h,
+                                child: BlocBuilder<DetailPracticesCubit,
+                                    DetailPracticesState>(buildWhen: (pre, now) {
+                                  return pre.signFilter != now.signFilter;
+                                }, builder: (context, state) {
+                                  return renderFilter(state, context);
+                                })),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
+                ),
 
-                  ///PLUS
-                  BlocBuilder<DetailPracticesCubit, DetailPracticesState>(
-                      buildWhen: (pre, now) {
-                    return pre.pageNow != now.pageNow;
-                  }, builder: (context, state) {
-                    return renderPlusPage(context);
-                  }),
-                ]),
-              )
-            ],
+                /// LIST DATA
+                BlocBuilder<DetailPracticesCubit, DetailPracticesState>(
+                    buildWhen: (pre, now) {
+                  return pre.pageNow != now.pageNow ||
+                      pre.posts != now.posts ||
+                      pre.dayChoose != now.dayChoose ||
+                      pre.scoreChoose != now.scoreChoose;
+                }, builder: (context, state) {
+                  return renderListData(state);
+                }),
+
+                /// DOT INDICATOR
+                Container(
+                  padding: EdgeInsets.only(right: 5.w),
+                  width: 100.w,
+                  child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    /// MINUS
+                    BlocBuilder<DetailPracticesCubit, DetailPracticesState>(
+                        buildWhen: (pre, now) {
+                      return pre.pageNow != now.pageNow;
+                    }, builder: (context, state) {
+                      return renderMinusPage(context);
+                    }),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+
+                    /// VALUE
+                    BlocBuilder<DetailPracticesCubit, DetailPracticesState>(
+                        buildWhen: (pre, now) {
+                      return pre.pageNow != now.pageNow || pre.posts != now.posts;
+                    }, builder: (context, state) {
+                      return renderPageValue(state);
+                    }),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+
+                    ///PLUS
+                    BlocBuilder<DetailPracticesCubit, DetailPracticesState>(
+                        buildWhen: (pre, now) {
+                      return pre.pageNow != now.pageNow;
+                    }, builder: (context, state) {
+                      return renderPlusPage(context);
+                    }),
+                  ]),
+                )
+              ],
+            ),
           ),
         ),
       ),

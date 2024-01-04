@@ -28,13 +28,13 @@ class ChartSeasonHW extends StatelessWidget {
                 List<ChartDataSheet> dataList = [];
                 for (int i = 0; i < snapshot.data!.length; i++) {
                   dataList.add(ChartDataSheet(i + 1, snapshot.data![i].score!,
-                      snapshot.data![i].numQ! - snapshot.data![i].score!));
+                      10 - snapshot.data![i].score!));
                 }
 
                 return SfCartesianChart(
                     plotAreaBorderColor: colorMainBlue,
                     plotAreaBorderWidth: 0,
-                    legend: Legend(isVisible: true, width: '20'),
+                    legend: Legend(isVisible: true, width: '25'),
                     tooltipBehavior: TooltipBehavior(enable: true),
                     primaryXAxis: CategoryAxis(
                       majorGridLines: const MajorGridLines(width: 0),
@@ -53,7 +53,7 @@ class ChartSeasonHW extends StatelessWidget {
                       LineSeries<ChartDataSheet, String>(
                         color: colorMainBlue,
                         isVisible: true,
-                        name: "true".tr(),
+                        name: "T",
                         dataSource: dataList,
                         xValueMapper: (ChartDataSheet chart, _) =>
                             chart.x.toString(),
@@ -64,7 +64,7 @@ class ChartSeasonHW extends StatelessWidget {
                       ), LineSeries<ChartDataSheet, String>(
                         color: colorErrorPrimary,
                         isVisible: true,
-                        name: "false".tr(),
+                        name: "F",
                         dataSource: dataList,
                         xValueMapper: (ChartDataSheet chart, _) =>
                             chart.x.toString(),

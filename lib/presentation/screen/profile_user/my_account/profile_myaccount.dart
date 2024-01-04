@@ -204,420 +204,430 @@ class _UpdateProfileUserScreenState extends State<UpdateProfileUserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: MainPageHomePG(
-        onBack: () {
-          Navigator.pushNamed(context, Routers.profileScreen);
-        },
-        colorTextAndIcon: Colors.black,
-        textNow: 'profile'.tr().toString(),
-        onPressHome: () {
-          Navigator.pushNamed(context, Routers.homeUser);
-        },
-        iconRight: const Icon(
-          LineAwesomeIcons.home,
-          color: Colors.black,
-        ),
-        child: Expanded(
-          child: SingleChildScrollView(
-            reverse: true,
-            child: Padding(
-              padding: EdgeInsets.only(top: 5.h, left: 2.w, right: 2.w),
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    // -- IMAGE with ICON
-                    Stack(
-                      children: [
-                        CircleAvatar(
-                            radius: 15.w,
-                            child: FutureBuilder<void>(
-                              future: retrieveLostData(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<void> snapshot) {
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.none:
-                                  case ConnectionState.waiting:
-                                  case ConnectionState.done:
-                                    return handlePreview();
-                                  case ConnectionState.active:
-                                    return Image.asset(
-                                        "assets/images/profile.png");
-                                }
+          onBack: () {
+            Navigator.pushNamed(context, Routers.profileScreen);
+          },
+          colorTextAndIcon: Colors.black,
+          textNow: 'profile'.tr().toString(),
+          onPressHome: () {
+            Navigator.pushNamed(context, Routers.homeUser);
+          },
+          iconRight: const Icon(
+            LineAwesomeIcons.home,
+            color: Colors.black,
+          ),
+          child: Expanded(
+            child: SingleChildScrollView(
+              reverse: true,
+              child: Padding(
+                padding: EdgeInsets.only(top: 5.h, left: 2.w, right: 2.w),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      // -- IMAGE with ICON
+                      Stack(
+                        children: [
+                          CircleAvatar(
+                              radius: 15.w,
+                              child: FutureBuilder<void>(
+                                future: retrieveLostData(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<void> snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.none:
+                                    case ConnectionState.waiting:
+                                    case ConnectionState.done:
+                                      return handlePreview();
+                                    case ConnectionState.active:
+                                      return Image.asset(
+                                          "assets/images/profile.png");
+                                  }
+                                },
+                              )),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                _onImageButtonPressed(context: context);
                               },
-                            )),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: GestureDetector(
-                            onTap: () {
-                              _onImageButtonPressed(context: context);
-                            },
-                            child: Container(
-                              width: 30,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: colorSystemYeloow),
-                              child: const Row(
+                              child: Container(
+                                width: 30,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: colorSystemYeloow),
+                                child: const Row(
+                                  children: [
+                                    Icon(
+                                      LineAwesomeIcons.retro_camera,
+                                      color: Colors.black,
+                                      size: 30,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+                          buildWhen: (pre, now) {
+                        return pre.nameError != now.nameError;
+                      }, builder: (context, state) {
+                        return InputFieldWidget(
+                          width: 90.w,
+                          height: 8.h,
+                          controller:
+                              TextEditingController(text: state.fullName),
+                          hintText: 'name'.tr(),
+                          nameTitle: 'your name'.tr(),
+                          onChanged: (value) {
+                            context
+                                .read<UpdateProfileCubit>()
+                                .nameChanged(value);
+                          },
+                          icon: const Icon(
+                            LineAwesomeIcons.user,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                          isHidden: state.nameError != "",
+                          validateText: state.nameError,
+                        );
+                      }),
+                      sizedBox,
+                      BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+                          builder: (context, state) {
+                        return InputFieldWidget(
+                          controller: TextEditingController(text: state.lop),
+                          readOnly: true,
+                          nameTitle: 'class'.tr(),
+                          hintText: 'your class'.tr(),
+                          width: 90.w,
+                          height: 8.h,
+                          icon: const Icon(
+                            LineAwesomeIcons.restroom,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                        );
+                      }),
+                      sizedBox,
+                      BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+                          buildWhen: (pre, now) {
+                        return pre.sex != now.sex;
+                      }, builder: (context, state) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 18),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              isExpanded: true,
+                              hint: Row(
                                 children: [
-                                  Icon(
-                                    LineAwesomeIcons.retro_camera,
-                                    color: Colors.black,
-                                    size: 30,
+                                  const Icon(Icons.list,
+                                      size: 16, color: colorMainBlue),
+                                  Expanded(
+                                    child: Text(
+                                      'choose gender'.tr(),
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: colorMainBlue),
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
-                        buildWhen: (pre, now) {
-                      return pre.nameError != now.nameError;
-                    }, builder: (context, state) {
-                      return InputFieldWidget(
-                        width: 90.w,
-                        height: 8.h,
-                        controller: TextEditingController(text: state.fullName),
-                        hintText: 'name'.tr(),
-                        nameTitle: 'your name'.tr(),
-                        onChanged: (value) {
-                          context.read<UpdateProfileCubit>().nameChanged(value);
-                        },
-                        icon: const Icon(
-                          LineAwesomeIcons.user,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                        isHidden: state.nameError != "",
-                        validateText: state.nameError,
-                      );
-                    }),
-                    sizedBox,
-                    BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
-                        builder: (context, state) {
-                      return InputFieldWidget(
-                        controller: TextEditingController(text: state.lop),
-                        readOnly: true,
-                        nameTitle: 'class'.tr(),
-                        hintText: 'your class'.tr(),
-                        width: 90.w,
-                        height: 8.h,
-                        icon: const Icon(
-                          LineAwesomeIcons.restroom,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                      );
-                    }),
-                    sizedBox,
-                    BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
-                        buildWhen: (pre, now) {
-                      return pre.sex != now.sex;
-                    }, builder: (context, state) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 18),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Row(
-                              children: [
-                                const Icon(Icons.list,
-                                    size: 16, color: colorMainBlue),
-                                Expanded(
-                                  child: Text(
-                                    'choose gender'.tr(),
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: colorMainBlue),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            items: genders
-                                .map((item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: colorMainBlue,
+                              items: genders
+                                  .map((item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(
+                                          item,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: colorMainBlue,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
-                                .toList(),
-                            value: state.sex,
-                            onChanged: (value) {
-                              context
-                                  .read<UpdateProfileCubit>()
-                                  .sexChanged(value ?? "Male");
-                            },
-                            buttonStyleData: ButtonStyleData(
-                              width: 90.w,
-                              height: 7.5.h,
-                              padding:
-                                  const EdgeInsets.only(left: 14, right: 14),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: Colors.black26,
+                                      ))
+                                  .toList(),
+                              value: state.sex,
+                              onChanged: (value) {
+                                context
+                                    .read<UpdateProfileCubit>()
+                                    .sexChanged(value ?? "Male");
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                width: 90.w,
+                                height: 7.5.h,
+                                padding: const EdgeInsets.only(
+                                    left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: Colors.black26,
+                                  ),
+                                  color: colorSystemWhite,
                                 ),
-                                color: colorSystemWhite,
+                                elevation: 2,
                               ),
-                              elevation: 2,
-                            ),
-                            iconStyleData: const IconStyleData(
-                              icon: Icon(
-                                Icons.arrow_forward_ios_outlined,
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                ),
+                                iconSize: 14,
+                                iconEnabledColor: colorMainBlue,
+                                iconDisabledColor: Colors.grey,
                               ),
-                              iconSize: 14,
-                              iconEnabledColor: colorMainBlue,
-                              iconDisabledColor: Colors.grey,
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              maxHeight: 100,
-                              width: 45.w,
-                              padding: null,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: colorSystemWhite,
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 100,
+                                width: 45.w,
+                                padding: null,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: colorSystemWhite,
+                                ),
+                                elevation: 8,
                               ),
-                              elevation: 8,
-                            ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              height: 40,
-                              padding: EdgeInsets.only(left: 14, right: 14),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
-                    sizedBox,
-                    BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
-                        buildWhen: (pre, now) {
-                      return pre.phoneError != now.phoneError;
-                    }, builder: (context, state) {
-                      return InputFieldWidget(
-                        onChanged: (value) {
-                          context
-                              .read<UpdateProfileCubit>()
-                              .phoneChanged(value);
-                        },
-                        controller: TextEditingController(text: state.phone),
-                        width: 90.w,
-                        height: 8.h,
-                        typeText: TextInputType.number,
-                        hintText: 'phone'.tr(),
-                        nameTitle: 'your phone'.tr(),
-                        icon: const Icon(
-                          LineAwesomeIcons.phone,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                        isHidden: state.phoneError != "",
-                        validateText: state.phoneError,
-                      );
-                    }),
-                    SizedBox(height: 1.h),
-                    BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
-                        buildWhen: (pre, now) {
-                      return pre.birthDateError != now.birthDateError ||
-                          pre.birthDate != now.birthDate;
-                    }, builder: (context, state) {
-                      return InputFieldWidget(
-                        readOnly: true,
-                        width: 90.w,
-                        height: 8.h,
-                        hintText: "birthday".tr(),
-                        nameTitle: 'your birthday'.tr(),
-                        isHidden: state.birthDateError != "",
-                        validateText: state.birthDateError,
-                        icon: const Icon(
-                          LineAwesomeIcons.birthday_cake,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                        iconRight: IconButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(25)),
-                                  ),
-                                  builder: (_) {
-                                    return BlocProvider.value(
-                                        value:
-                                            BlocProvider.of<UpdateProfileCubit>(
-                                                context),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                            left: 5.w,
-                                            right: 5.w,
-                                          ),
-                                          child: SizedBox(
-                                            height: 30.h,
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 23.h,
-                                                  child: MyScrollDatePicker(
-                                                      widthScreen: 100.w,
-                                                      scrollViewOptions:
-                                                          const DatePickerScrollViewOptions(
-                                                        year:
-                                                            ScrollViewDetailOptions(
-                                                                margin:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            10)),
-                                                        month:
-                                                            ScrollViewDetailOptions(
-                                                                margin:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            10)),
-                                                        day: ScrollViewDetailOptions(
-                                                            margin:
-                                                                EdgeInsets.all(
-                                                                    10)),
-                                                      ),
-                                                      maximumDate:
-                                                          DateTime.now(),
-                                                      selectedDate:
-                                                          DateTime.now(),
-                                                      locale:
-                                                          const Locale('en'),
-                                                      onDateTimeChanged:
-                                                          (DateTime value) {
-                                                        final f = DateFormat(
-                                                            'yyyy-MM-dd');
-                                                        context
-                                                            .read<
-                                                                UpdateProfileCubit>()
-                                                            .birthChanged(f
-                                                                .format(value)
-                                                                .toString());
-                                                      }),
-                                                ),
-                                                RoundedButton(
-                                                  press: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  color: colorMainBlue,
-                                                  width: 80.w,
-                                                  height: 6.h,
-                                                  child: Text(
-                                                    'go'.tr(),
-                                                    style: s14f500colorSysWhite,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ));
-                                  });
-                            },
-                            icon: const Icon(Icons.calendar_month)),
-                        controller:
-                            TextEditingController(text: state.birthDate),
-                      );
-                    }),
-                    sizedBox,
-
-                    BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
-                        builder: (context, state) {
-                      return InputFieldWidget(
-                        readOnly: true,
-                        controller: TextEditingController(text: state.email),
-                        width: 90.w,
-                        height: 8.h,
-                        hintText: 'your email'.tr(),
-                        nameTitle: 'email'.tr(),
-                        icon: const Icon(
-                          LineAwesomeIcons.mail_bulk,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                      );
-                    }),
-                    sizedBox,
-
-                    BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
-                        buildWhen: (pre, now) {
-                      return pre.addError != now.addError;
-                    }, builder: (context, state) {
-                      return InputFieldWidget(
-                        width: 90.w,
-                        height: 8.h,
-                        hintText: 'address'.tr(),
-                        nameTitle: 'your address'.tr(),
-                        isHidden: state.addError != "",
-                        validateText: state.addError,
-                        onChanged: (value) {
-                          context.read<UpdateProfileCubit>().addChanged(value);
-                        },
-                        controller: TextEditingController(text: state.address),
-                        icon: const Icon(
-                          LineAwesomeIcons.location_arrow,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                      );
-                    }),
-                    sizedBox,
-
-                    BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
-                        listener: (context, state) {
-                      if (state.status == UpdateProfileStatus.success) {
-                        showUpdateDoneDialog();
-                      } else if (state.status == UpdateProfileStatus.error) {
-                        showUpdateFailDialog();
-                      }
-                    }, builder: (context, state) {
-                      return RoundedButton(
-                          press: () async {
-                            if (_imageFile != null) {
-                              await uploadImageToServer(
-                                  instance.get<UserGlobal>().fullName!);
-                            }
-                            context.read<UpdateProfileCubit>().clearData();
+                        );
+                      }),
+                      sizedBox,
+                      BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+                          buildWhen: (pre, now) {
+                        return pre.phoneError != now.phoneError;
+                      }, builder: (context, state) {
+                        return InputFieldWidget(
+                          onChanged: (value) {
                             context
                                 .read<UpdateProfileCubit>()
-                                .updateProfileUser(
-                                    linkImage, deleteHash, _imageFile);
+                                .phoneChanged(value);
                           },
-                          color: colorSystemWhite,
-                          colorBorder: colorSystemYeloow,
-                          width: 80.w,
+                          controller:
+                              TextEditingController(text: state.phone),
+                          width: 90.w,
                           height: 8.h,
-                          child: state.status == UpdateProfileStatus.onLoading
-                              ? SizedBox(
-                                  height: 10.h,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(
-                                      color: colorSystemYeloow,
-                                      strokeWidth: 3,
+                          typeText: TextInputType.number,
+                          hintText: 'phone'.tr(),
+                          nameTitle: 'your phone'.tr(),
+                          icon: const Icon(
+                            LineAwesomeIcons.phone,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                          isHidden: state.phoneError != "",
+                          validateText: state.phoneError,
+                        );
+                      }),
+                      SizedBox(height: 1.h),
+                      BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+                          buildWhen: (pre, now) {
+                        return pre.birthDateError != now.birthDateError ||
+                            pre.birthDate != now.birthDate;
+                      }, builder: (context, state) {
+                        return InputFieldWidget(
+                          readOnly: true,
+                          width: 90.w,
+                          height: 8.h,
+                          hintText: "birthday".tr(),
+                          nameTitle: 'your birthday'.tr(),
+                          isHidden: state.birthDateError != "",
+                          validateText: state.birthDateError,
+                          icon: const Icon(
+                            LineAwesomeIcons.birthday_cake,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                          iconRight: IconButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(25)),
                                     ),
-                                  ),
-                                )
-                              : Text(
-                                  'go'.tr().toString(),
-                                  style: s16f700ColorSysYel,
-                                ));
-                    })
-                  ],
+                                    builder: (_) {
+                                      return BlocProvider.value(
+                                          value: BlocProvider.of<
+                                              UpdateProfileCubit>(context),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              left: 5.w,
+                                              right: 5.w,
+                                            ),
+                                            child: SizedBox(
+                                              height: 30.h,
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 23.h,
+                                                    child: MyScrollDatePicker(
+                                                        widthScreen: 100.w,
+                                                        scrollViewOptions:
+                                                            const DatePickerScrollViewOptions(
+                                                          year: ScrollViewDetailOptions(
+                                                              margin:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                          10)),
+                                                          month: ScrollViewDetailOptions(
+                                                              margin:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                          10)),
+                                                          day: ScrollViewDetailOptions(
+                                                              margin:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                          10)),
+                                                        ),
+                                                        maximumDate:
+                                                            DateTime.now(),
+                                                        selectedDate:
+                                                            DateTime.now(),
+                                                        locale: const Locale(
+                                                            'en'),
+                                                        onDateTimeChanged:
+                                                            (DateTime value) {
+                                                          final f = DateFormat(
+                                                              'yyyy-MM-dd');
+                                                          context
+                                                              .read<
+                                                                  UpdateProfileCubit>()
+                                                              .birthChanged(f
+                                                                  .format(
+                                                                      value)
+                                                                  .toString());
+                                                        }),
+                                                  ),
+                                                  RoundedButton(
+                                                    press: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    color: colorMainBlue,
+                                                    width: 80.w,
+                                                    height: 6.h,
+                                                    child: Text(
+                                                      'go'.tr(),
+                                                      style:
+                                                          s14f500colorSysWhite,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ));
+                                    });
+                              },
+                              icon: const Icon(Icons.calendar_month)),
+                          controller:
+                              TextEditingController(text: state.birthDate),
+                        );
+                      }),
+                      sizedBox,
+
+                      BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+                          builder: (context, state) {
+                        return InputFieldWidget(
+                          readOnly: true,
+                          controller:
+                              TextEditingController(text: state.email),
+                          width: 90.w,
+                          height: 8.h,
+                          hintText: 'your email'.tr(),
+                          nameTitle: 'email'.tr(),
+                          icon: const Icon(
+                            LineAwesomeIcons.mail_bulk,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                        );
+                      }),
+                      sizedBox,
+
+                      BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+                          buildWhen: (pre, now) {
+                        return pre.addError != now.addError;
+                      }, builder: (context, state) {
+                        return InputFieldWidget(
+                          width: 90.w,
+                          height: 8.h,
+                          hintText: 'address'.tr(),
+                          nameTitle: 'your address'.tr(),
+                          isHidden: state.addError != "",
+                          validateText: state.addError,
+                          onChanged: (value) {
+                            context
+                                .read<UpdateProfileCubit>()
+                                .addChanged(value);
+                          },
+                          controller:
+                              TextEditingController(text: state.address),
+                          icon: const Icon(
+                            LineAwesomeIcons.location_arrow,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                        );
+                      }),
+                      sizedBox,
+
+                      BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
+                          listener: (context, state) {
+                        if (state.status == UpdateProfileStatus.success) {
+                          showUpdateDoneDialog();
+                        } else if (state.status ==
+                            UpdateProfileStatus.error) {
+                          showUpdateFailDialog();
+                        }
+                      }, builder: (context, state) {
+                        return RoundedButton(
+                            press: () async {
+                              if (_imageFile != null) {
+                                await uploadImageToServer(
+                                    instance.get<UserGlobal>().fullName!);
+                              }
+                              context.read<UpdateProfileCubit>().clearData();
+                              context
+                                  .read<UpdateProfileCubit>()
+                                  .updateProfileUser(
+                                      linkImage, deleteHash, _imageFile);
+                            },
+                            color: colorSystemWhite,
+                            colorBorder: colorSystemYeloow,
+                            width: 80.w,
+                            height: 8.h,
+                            child:
+                                state.status == UpdateProfileStatus.onLoading
+                                    ? SizedBox(
+                                        height: 10.h,
+                                        child: const Center(
+                                          child: CircularProgressIndicator(
+                                            color: colorSystemYeloow,
+                                            strokeWidth: 3,
+                                          ),
+                                        ),
+                                      )
+                                    : Text(
+                                        'go'.tr().toString(),
+                                        style: s16f700ColorSysYel,
+                                      ));
+                      })
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        )
     );
   }
 }

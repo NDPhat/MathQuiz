@@ -42,6 +42,7 @@ class LocalNotifyMainScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: MainPageHomePG(
             textNow: 'localnotifi'.tr(),
             onBack: () {

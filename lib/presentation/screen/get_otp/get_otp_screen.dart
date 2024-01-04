@@ -56,6 +56,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
   Widget build(BuildContext context) {
     String email = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: MainPageHomePG(
       colorTextAndIcon: Colors.black,
       textNow: "otp code".tr(),
@@ -88,7 +89,7 @@ class _GetOTPScreenScreen extends State<GetOTPScreen> {
                     ),
                   ),
                   Container(
-                    height: 2.h,
+                    height: 3.h,
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "please enter the verification code.".tr(),

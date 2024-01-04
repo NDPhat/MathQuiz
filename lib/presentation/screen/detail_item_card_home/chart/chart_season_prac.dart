@@ -37,7 +37,7 @@ class ChartSeasonPra extends StatelessWidget {
                 return SfCartesianChart(
                     plotAreaBorderColor: colorMainBlue,
                     plotAreaBorderWidth: 0,
-                    legend: Legend(isVisible: true, width: '20'),
+                    legend: Legend(isVisible: true, width: '25'),
                     tooltipBehavior: TooltipBehavior(enable: true),
                     primaryXAxis: CategoryAxis(
                       majorGridLines: const MajorGridLines(width: 0),
@@ -54,7 +54,7 @@ class ChartSeasonPra extends StatelessWidget {
                       LineSeries<ChartDataSheet, String>(
                         color: colorMainBlue,
                         isVisible: true,
-                        name: "true".tr(),
+                        name: "T",
                         dataSource: dataList,
                         xValueMapper: (ChartDataSheet chart, _) =>
                             chart.x.toString(),
@@ -66,7 +66,7 @@ class ChartSeasonPra extends StatelessWidget {
                       LineSeries<ChartDataSheet, String>(
                         color: colorErrorPrimary,
                         isVisible: true,
-                        name: "false".tr(),
+                        name: "F",
                         dataSource: dataList,
                         xValueMapper: (ChartDataSheet chart, _) =>
                             chart.x.toString(),

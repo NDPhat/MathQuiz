@@ -33,7 +33,7 @@ class ChildRightHWAndTest extends StatelessWidget {
                       dataList.add(ChartDataSheet(
                           i + 1,
                           snapshot.data![i].score!,
-                          snapshot.data![i].numQ! - snapshot.data![i].score!));
+                          10  - snapshot.data![i].score!));
                     }
 
                     return SfCartesianChart(

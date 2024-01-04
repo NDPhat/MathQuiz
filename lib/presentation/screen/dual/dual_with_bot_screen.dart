@@ -13,6 +13,7 @@ import '../../../data/model/app_global.dart';
 import '../../../data/model/level_game_bot.dart';
 import '../../../main.dart';
 import '../../routers/navigation.dart';
+import '../../widget/dialog.dart';
 import '../../widget/divider_line.dart';
 import '../../widget/line_info_player.dart';
 import '../../widget/playey_dual_screen.dart';
@@ -113,6 +114,10 @@ class _BOTBattleScreenState extends State<BotDual> {
     if (userChoice == _quizBrain.quizAnswer) {
       _playerCheck.play(AssetSource('correct-choice.wav'),
           volume: instance.get<AppGlobal>().volumeApp);
+      DialogCommon().showInfoQuiz("${"player".tr()} + 1", context, colorMainTealPri);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
       setState(() {
         _scoreHM++;
       });
@@ -126,6 +131,10 @@ class _BOTBattleScreenState extends State<BotDual> {
             'wrong-choice.wav',
           ),
           volume: instance.get<AppGlobal>().volumeApp);
+      DialogCommon().showInfoQuiz("${"player".tr()} Wrong", context, colorErrorPrimary);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
       setState(() {
         _falsePlayer--;
         timer.cancel();
@@ -142,6 +151,10 @@ class _BOTBattleScreenState extends State<BotDual> {
   void _checkAnswerBot() async {
     _playerCheck.play(AssetSource('hw_sound.mp3'),
         volume: instance.get<AppGlobal>().volumeApp);
+    DialogCommon().showInfoQuiz("${"bot".tr()} + 1", context, colorMainTealPri);
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.pop(context);
+    });
     setState(() {
       _scoreBot++;
     });
@@ -247,11 +260,11 @@ class _BOTBattleScreenState extends State<BotDual> {
                   Column(
                     children: [
                       SizedBox(
-                        height: 35.h,
+                        height: 34.h,
                         child: Image.asset("assets/images/dual_bot.png"),
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 22.h,
                         child: Column(
                           children: [
                             SizedBox(
@@ -283,7 +296,7 @@ class _BOTBattleScreenState extends State<BotDual> {
                         ),
                       ),
                       SizedBox(
-                        height: 35.h,
+                        height: 34.h,
                         child: Column(
                           children: [
                             SizedBox(

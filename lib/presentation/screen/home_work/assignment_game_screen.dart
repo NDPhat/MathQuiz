@@ -137,8 +137,8 @@ class _GameHWScreenState extends State<AssignmentGameScreen> {
         }
       } else {
         userAnswer = false;
-        falseChoose++;
         _player.play(AssetSource('hw_sound.mp3'));
+        falseChoose++;
         if (_totalNumberOfQuizzes == _preQuiz.numQ!) {
           _endGame();
         } else {
